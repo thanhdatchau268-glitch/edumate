@@ -43,15 +43,6 @@ function showLoggedInUI() {
     linkGt.href = "personal.html";
   }
 
-  // thêm nút Đăng xuất vào cạnh avatar (chỉ thêm 1 lần)
-  if (userProfile && !document.getElementById("btn-logout")) {
-    const nutThoat = document.createElement("button");
-    nutThoat.id = "btn-logout";
-    nutThoat.type = "button";
-    nutThoat.textContent = "Đăng xuất";
-    nutThoat.addEventListener("click", dangXuat);
-    userProfile.appendChild(nutThoat);
-  }
 
   // bấm vào avatar hoặc tên thì mở trang hồ sơ
   document.querySelectorAll(".user-avatar, .username").forEach((el) => {
@@ -65,7 +56,8 @@ function dangXuat() {
   ["isLoggedIn", "username", "userId", "streak", "monChuyen"].forEach((k) =>
     localStorage.removeItem(k),
   );
-  window.location.href = "index.html";
+  // replace để không quay lại được trang cũ bằng nút Back
+  window.location.replace("index.html");
 }
 
 // 2. Xử lý Submit Đăng nhập (Kết nối Backend Flask)
@@ -90,15 +82,19 @@ async function handleLoginSubmit(event) {
       localStorage.setItem("userId", data.user.id);
       localStorage.setItem("streak", data.user.streak);
       // Giữ môn chuyên mà server đã lưu, không ghi đè bằng chuỗi rỗng
-      // (|| "" để nếu server trả về null thì vẫn là chuỗi rỗng, không bị lỗi)
       localStorage.setItem("monChuyen", data.user.mon_chuyen || "");
 
-      window.location.href = "khaosat.html"; // nhảy sang trang khảo sát
+      // Đã có môn chuyên lưu trong tài khoản thì bỏ qua khảo sát
+      if (data.user.mon_chuyen) {
+        window.location.href = "personal.html";
+      } else {
+        window.location.href = "khaosat.html"; // chưa có thì làm khảo sát
+      }
     } else {
       alert(data.message);
     }
   } catch (error) {
-    alert("Không kết nối được server. Dm m bật app.py !!!");
+    alert("Không kết nối được server. Hãy bật app.py!");
   }
 }
 

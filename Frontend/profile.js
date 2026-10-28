@@ -10,6 +10,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   const $ = (id) => document.getElementById(id);
   const TEN_MON = { toan: "Chuyên Toán", ly: "Chuyên Lý", hoa: "Chuyên Hóa" };
 
+  // ----- Nút Đăng xuất: gắn sớm để server lỗi vẫn đăng xuất được -----
+  $("btn-dang-xuat").addEventListener("click", () => {
+    if (typeof dangXuat === "function") {
+      dangXuat(); // hàm nằm trong script.js
+    } else {
+      // phòng khi script.js chưa nạp được
+      ["isLoggedIn", "username", "userId", "streak", "monChuyen"].forEach((k) =>
+        localStorage.removeItem(k),
+      );
+      window.location.replace("index.html");
+    }
+  });
+
   // Đổ thông tin lên trang (dùng textContent để tên không chạy được code lạ)
   function hienThongTin(u) {
     $("pf-username").textContent = u.username;
@@ -28,61 +41,57 @@ document.addEventListener("DOMContentLoaded", async () => {
     user = kq.data;
     hienThongTin(user);
   } catch (err) {
-    document.querySelector(".container").textContent = "Lỗi: " + err.message;
+    // Chỉ thay phần thẻ hồ sơ, KHÔNG xoá nút Đăng xuất / Sửa hồ sơ
+    document.querySelector(".profile-card").textContent = "Lỗi: " + err.message;
     return;
   }
 
-// ----- Khóa nút Sửa nếu chưa đủ điểm -----
-const DIEM_MO_KHOA = 500;                 // phải giống số bên app.py
-const duDiem = user.score >= DIEM_MO_KHOA;
-const nutSua = $("btn-sua");
+  // ----- Khóa nút Sửa nếu chưa đủ điểm -----
+  const DIEM_MO_KHOA = 500; // phải giống số bên app.py
+  const duDiem = user.score >= DIEM_MO_KHOA;
+  const nutSua = $("btn-sua");
 
-if (!duDiem) {
-  nutSua.classList.add("btn-khoa");       // làm nút xám
-  nutSua.dataset.tip = `Bạn phải đủ ${DIEM_MO_KHOA} điểm mới mở khóa tính năng này`;
-}
+  if (!duDiem) {
+    nutSua.classList.add("btn-khoa"); // làm nút xám
+    nutSua.dataset.tip = `Bạn phải đủ ${DIEM_MO_KHOA} điểm mới mở khóa tính năng này`;
+  }
 
-// ----- Mở / đóng hộp sửa hồ sơ -----
-const nen = $("sua-nen");
-const form = $("form-sua");
+  // ----- Mở / đóng hộp sửa hồ sơ -----
+  const nen = $("sua-nen");
+  const form = $("form-sua");
 
-function moForm() {
-  if (!duDiem) return;
-  $("in-username").value = user.username;   // điền sẵn giá trị cũ
-  $("in-bio").value = user.bio || "";
-  $("sua-thong-bao").textContent = "";
-  nen.classList.remove("hidden");           // hiện nền mờ + hộp
-  document.body.style.overflow = "hidden";  // khóa cuộn trang phía sau
-  $("in-username").focus();                 // đưa con trỏ vào ô tên luôn
-}
+  function moForm() {
+    if (!duDiem) return;
+    $("in-username").value = user.username; // điền sẵn giá trị cũ
+    $("in-bio").value = user.bio || "";
+    $("sua-thong-bao").textContent = "";
+    nen.classList.remove("hidden"); // hiện nền mờ + hộp
+    document.body.style.overflow = "hidden"; // khóa cuộn trang phía sau
+    $("in-username").focus(); // đưa con trỏ vào ô tên luôn
+  }
 
-function dongForm() {
-  nen.classList.add("hidden");
-  document.body.style.overflow = "";        // cho cuộn trang lại
-}
+  function dongForm() {
+    nen.classList.add("hidden");
+    document.body.style.overflow = ""; // cho cuộn trang lại
+  }
 
-$("btn-sua").addEventListener("click", moForm);
-$("btn-dong-sua").addEventListener("click", dongForm);   // nút ✕
-$("btn-huy").addEventListener("click", dongForm);        // nút Hủy
+  $("btn-sua").addEventListener("click", moForm);
+  $("btn-dong-sua").addEventListener("click", dongForm); // nút ✕
+  $("btn-huy").addEventListener("click", dongForm); // nút Hủy
 
-// Bấm vùng mờ bên ngoài hộp thì đóng (bấm trong hộp thì không đóng)
-nen.addEventListener("click", (e) => {
-  if (e.target === nen) dongForm();
-});
+  // Bấm vùng mờ bên ngoài hộp thì đóng (bấm trong hộp thì không đóng)
+  nen.addEventListener("click", (e) => {
+    if (e.target === nen) dongForm();
+  });
 
-// Bấm phím Esc cũng đóng được
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") dongForm();
-});
-
-  $("btn-huy").addEventListener("click", () => {
-    form.classList.add("hidden");
-    nutSua.classList.remove("hidden");
+  // Bấm phím Esc cũng đóng được
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") dongForm();
   });
 
   // ----- Bấm Lưu: gửi lên server -----
   form.addEventListener("submit", async (e) => {
-    e.preventDefault();   // chặn trang tự tải lại
+    e.preventDefault(); // chặn trang tự tải lại
     const tb = $("sua-thong-bao");
     tb.style.color = "#5b6b82";
     tb.textContent = "Đang lưu...";
@@ -109,11 +118,10 @@ document.addEventListener("keydown", (e) => {
       const tenMenu = document.querySelector("#user-profile .username");
       if (tenMenu) tenMenu.textContent = kq.username;
 
-      // Đóng form
-      dongForm();   // lưu xong thì đóng hộp
+      dongForm(); // lưu xong thì đóng hộp
     } catch (err) {
       tb.style.color = "#dc2626";
-      tb.textContent = err.message;   // vd: "Tên không được để trống!"
+      tb.textContent = err.message; // vd: "Tên không được để trống!"
     }
   });
 });

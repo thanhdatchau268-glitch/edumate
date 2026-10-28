@@ -600,22 +600,22 @@ header {
     width: 56px;
     height: 56px;
   }
+}
 
-  /* Nút đăng xuất trên thanh menu */
-  #btn-logout {
-    padding: 6px 12px;
-    font: inherit;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--nhan);
-    background: var(--nen);
-    border: 1px solid var(--nhan);
-    border-radius: 8px;
-    cursor: pointer;
-  }
+/* Nút đăng xuất trên thanh menu (áp dụng mọi kích thước màn hình) */
+#btn-logout {
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--nhan);
+  background: var(--nen);
+  border: 1px solid var(--nhan);
+  border-radius: 8px;
+  cursor: pointer;
+}
 
-  #btn-logout:hover {
-    color: #ffffff;
-    background: var(--nhan);
-  }
+#btn-logout:hover {
+  color: #ffffff;
+  background: var(--nhan);
 }
