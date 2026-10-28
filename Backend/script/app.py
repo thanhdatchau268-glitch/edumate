@@ -16,6 +16,17 @@ DIEM_MO_KHOA_SUA = 500
 
 app = Flask(__name__)
 CORS(app)  # Cho phép Frontend kết nối tới Backend
+# Tự thêm cột da_khao_sat nếu DB chưa có (tài khoản cũ coi như đã khảo sát)
+def dam_bao_cot():
+    conn = sqlite3.connect(DB_PATH)
+    cac_cot = [c[1] for c in conn.execute("PRAGMA table_info(users)")]
+    if 'da_khao_sat' not in cac_cot:
+        conn.execute("ALTER TABLE users ADD COLUMN da_khao_sat INTEGER DEFAULT 0")
+        conn.execute("UPDATE users SET da_khao_sat = 1")
+        conn.commit()
+    conn.close()
+
+dam_bao_cot()
 
 # thư mục chứa đáp án, nằm ở Backend nên trình duyệt không đọc được
 THU_MUC_DAP_AN = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'Dap_an')
@@ -62,35 +73,38 @@ def register():
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json(silent=True) or {}
-    email = (data.get('email') or '').strip().lower()  # đổi chữ thường giống lúc đăng ký
+    email = (data.get('email') or '').strip().lower()
     mk = data.get('mk') or ''
 
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
-    # tìm theo email thôi, chưa so mật khẩu ở đây
     row = conn.execute(
-        "SELECT id, username, email, bio, mon_chuyen, mk, streak, last_active_date "
+        "SELECT id, username, email, bio, mon_chuyen, mk, streak, last_active_date, da_khao_sat "
         "FROM users WHERE email = ?", (email,)
     ).fetchone()
-    conn.close()
 
-    # không có email, hoặc mật khẩu không khớp -> báo sai (gộp chung để người lạ không đoán được email nào tồn tại)
     if not row or not check_password_hash(row['mk'], mk):
+        conn.close()
         return jsonify({"success": False, "message": "Sai email hoặc mật khẩu!"}), 401
+
+    # chưa khảo sát lần nào thì đánh dấu luôn: các lần đăng nhập sau không hiện khảo sát nữa
+    can_khao_sat = (row['da_khao_sat'] == 0)
+    if can_khao_sat:
+        conn.execute("UPDATE users SET da_khao_sat = 1 WHERE id = ?", (row['id'],))
+        conn.commit()
+    conn.close()
 
     hom_nay = str(date.today())
     hom_qua = str(date.today() - timedelta(days=1))
-    # bỏ lỡ từ 2 ngày trở lên thì chuỗi đứt, hiện 0
     streak_hien_thi = row['streak'] if row['last_active_date'] in (hom_nay, hom_qua) else 0
 
-    # chỉ gửi thứ cần thiết, KHÔNG gửi mật khẩu về trình duyệt
     info = {
         "id": row['id'], "username": row['username'], "email": row['email'],
-        "bio": row['bio'], "mon_chuyen": row['mon_chuyen'], "streak": streak_hien_thi
+        "bio": row['bio'], "mon_chuyen": row['mon_chuyen'], "streak": streak_hien_thi,
+        "can_khao_sat": can_khao_sat
     }
-    return jsonify({"success": True, "message": "Đăng nhập thành công!", "user": info}), 200
-
-
+    return jsonify({"success": True, "message": "Đăng nhập thành công!", "user": info}), 200\
+    
 # 3. API Lấy danh sách tất cả user (Read)
 #@app.route('/api/users', methods=['GET'])
 #def list_users():

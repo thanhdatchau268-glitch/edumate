@@ -73,31 +73,36 @@ async function handleLoginSubmit(event) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, mk }),
     });
+
+    // Server lỗi 500 trả về HTML, không phải JSON
+    if (response.status >= 500) {
+      alert("Server bị lỗi (" + response.status + "). Xem chữ đỏ trong terminal chạy app.py nhé!");
+      return;
+    }
+
     const data = await response.json();
 
     if (data.success) {
-      // Lưu thông tin để coi như đã đăng nhập
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("username", data.user.username);
       localStorage.setItem("userId", data.user.id);
       localStorage.setItem("streak", data.user.streak);
-      // Giữ môn chuyên mà server đã lưu, không ghi đè bằng chuỗi rỗng
       localStorage.setItem("monChuyen", data.user.mon_chuyen || "");
 
-      // Đã có môn chuyên lưu trong tài khoản thì bỏ qua khảo sát
-      if (data.user.mon_chuyen) {
-        window.location.href = "personal.html";
+      // Chỉ lần đăng nhập đầu tiên mới khảo sát, các lần sau vào thẳng trang chính
+      if (data.user.can_khao_sat) {
+        window.location.href = "khaosat.html";
       } else {
-        window.location.href = "khaosat.html"; // chưa có thì làm khảo sát
+        window.location.href = "personal.html";
       }
     } else {
       alert(data.message);
     }
   } catch (error) {
-    alert("Không kết nối được server. Hãy bật app.py!");
+    console.error(error);
+    alert("Lỗi đăng nhập: " + error.message);
   }
 }
-
 // 3. Xử lý Submit Đăng ký (Kết nối Backend Flask)
 async function handleRegisterSubmit(event) {
   event.preventDefault();

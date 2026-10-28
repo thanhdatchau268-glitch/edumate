@@ -21,7 +21,8 @@ def init_db():
         score INTEGER DEFAULT 0,
         streak INTEGER DEFAULT 0,
         last_active_date TEXT,
-        mon_chuyen TEXT DEFAULT ''
+        mon_chuyen TEXT DEFAULT '',
+        da_khao_sat INTEGER DEFAULT 0
     )
     ''')
 
@@ -60,6 +61,11 @@ def init_db():
     cac_cot = [c[1] for c in cursor.fetchall()]
     if 'mon_chuyen' not in cac_cot:
         cursor.execute("ALTER TABLE users ADD COLUMN mon_chuyen TEXT DEFAULT ''")
+
+    # DB cũ chưa có cột da_khao_sat thì thêm vào; tài khoản cũ coi như đã khảo sát rồi
+    if 'da_khao_sat' not in cac_cot:
+        cursor.execute("ALTER TABLE users ADD COLUMN da_khao_sat INTEGER DEFAULT 0")
+        cursor.execute("UPDATE users SET da_khao_sat = 1")
 
     conn.commit()
     conn.close()
