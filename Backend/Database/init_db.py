@@ -6,11 +6,10 @@ THU_MUC = os.path.dirname(os.path.abspath(__file__))
 DB_FILE = os.path.join(THU_MUC, 'edumate.db')
 
 def init_db():
-    # Thư mục này chắc chắn tồn tại vì file đang nằm trong đó
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
-    # Tạo bảng users
+    # Tạo bảng users (có thêm cột avatar: tên file ảnh trong Frontend/img/avatar/, '' = ảnh mặc định)
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,7 +21,8 @@ def init_db():
         streak INTEGER DEFAULT 0,
         last_active_date TEXT,
         mon_chuyen TEXT DEFAULT '',
-        da_khao_sat INTEGER DEFAULT 0
+        da_khao_sat INTEGER DEFAULT 0,
+        avatar TEXT DEFAULT ''
     )
     ''')
 
@@ -46,7 +46,6 @@ def init_db():
     ''')
 
     # Bảng ghi ai đã thi và được bao nhiêu điểm
-    # PRIMARY KEY (user_id, contest_id) = mỗi người chỉ nộp 1 lần
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS contest_ket_qua (
         user_id INTEGER,
@@ -56,16 +55,16 @@ def init_db():
     )
     ''')
 
-    # DB cũ chưa có cột mon_chuyen thì thêm vào (không mất dữ liệu)
+    # DB cũ thiếu cột nào thì thêm vào (không mất dữ liệu)
     cursor.execute("PRAGMA table_info(users)")
     cac_cot = [c[1] for c in cursor.fetchall()]
     if 'mon_chuyen' not in cac_cot:
         cursor.execute("ALTER TABLE users ADD COLUMN mon_chuyen TEXT DEFAULT ''")
-
-    # DB cũ chưa có cột da_khao_sat thì thêm vào; tài khoản cũ coi như đã khảo sát rồi
     if 'da_khao_sat' not in cac_cot:
         cursor.execute("ALTER TABLE users ADD COLUMN da_khao_sat INTEGER DEFAULT 0")
         cursor.execute("UPDATE users SET da_khao_sat = 1")
+    if 'avatar' not in cac_cot:
+        cursor.execute("ALTER TABLE users ADD COLUMN avatar TEXT DEFAULT ''")
 
     conn.commit()
     conn.close()

@@ -68,9 +68,12 @@
 .modal-nen {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);   /* giảm từ 0.75 để thấy nền mờ phía sau */
-  backdrop-filter: blur(6px);         /* làm mờ mọi thứ phía sau hộp */
-  -webkit-backdrop-filter: blur(6px); /* dành cho Safari */
+  background: rgba(0, 0, 0, 0.55);
+  /* giảm từ 0.75 để thấy nền mờ phía sau */
+  backdrop-filter: blur(6px);
+  /* làm mờ mọi thứ phía sau hộp */
+  -webkit-backdrop-filter: blur(6px);
+  /* dành cho Safari */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -337,7 +340,8 @@
 /* ===== Trang hồ sơ ===== */
 .profile-card {
   max-width: 560px;
-  text-align: center;          /* căn giữa mọi thứ trong thẻ */
+  text-align: center;
+  /* căn giữa mọi thứ trong thẻ */
   padding: 40px 32px;
 }
 
@@ -346,7 +350,8 @@
   display: block;
   width: 120px;
   height: 120px;
-  margin: 0 auto 16px;         /* auto hai bên = nằm chính giữa */
+  margin: 0 auto 16px;
+  /* auto hai bên = nằm chính giữa */
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid var(--nen);
@@ -402,7 +407,8 @@
 /* ===== Form sửa hồ sơ ===== */
 .profile-form {
   margin-top: 20px;
-  text-align: left;            /* chữ trong form căn trái cho dễ đọc */
+  text-align: left;
+  /* chữ trong form căn trái cho dễ đọc */
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -432,7 +438,8 @@
 }
 
 #sua-thong-bao {
-  min-height: 1.2em;           /* giữ chỗ để form không giật khi hiện chữ */
+  min-height: 1.2em;
+  /* giữ chỗ để form không giật khi hiện chữ */
   font-size: 0.9rem;
 }
 
@@ -445,20 +452,25 @@
 .modal-hop .profile-form {
   margin-top: 0;
   padding: 20px;
-  overflow-y: auto;   /* form dài quá thì cuộn bên trong hộp */
+  overflow-y: auto;
+  /* form dài quá thì cuộn bên trong hộp */
 }
 
 .profile-form textarea {
-  resize: vertical;   /* chỉ cho kéo giãn chiều cao */
+  resize: vertical;
+  /* chỉ cho kéo giãn chiều cao */
 }
 
 /* ===== Nút bị khóa (chưa đủ điểm) ===== */
 .btn.btn-khoa {
-  position: relative;            /* để dòng chữ nổi bám theo nút */
-  background: #e5e7eb;           /* xám */
+  position: relative;
+  /* để dòng chữ nổi bám theo nút */
+  background: #e5e7eb;
+  /* xám */
   color: #9ca3af;
   border-color: #d1d5db;
-  cursor: not-allowed;           /* con trỏ hình cấm */
+  cursor: not-allowed;
+  /* con trỏ hình cấm */
 }
 
 /* rê chuột vào thì nút không đổi màu xanh, không nhích lên */
@@ -472,12 +484,16 @@
 .btn-khoa::after {
   content: attr(data-tip);
   position: absolute;
-  bottom: calc(100% + 8px);      /* nằm phía trên nút */
+  bottom: calc(100% + 8px);
+  /* nằm phía trên nút */
   left: 50%;
   transform: translateX(-50%);
-  width: max-content;            /* rộng vừa chữ... */
-  max-width: 220px;              /* ...nhưng không quá 220px, dài hơn thì xuống dòng */
-  white-space: normal;           /* cho phép xuống dòng (trước đây là nowrap) */
+  width: max-content;
+  /* rộng vừa chữ... */
+  max-width: 220px;
+  /* ...nhưng không quá 220px, dài hơn thì xuống dòng */
+  white-space: normal;
+  /* cho phép xuống dòng (trước đây là nowrap) */
   text-align: center;
   line-height: 1.4;
   padding: 6px 12px;
@@ -489,10 +505,70 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s;
-  z-index: 10;                   /* nằm trên các phần khác */
+  z-index: 10;
+  /* nằm trên các phần khác */
 }
 
 /* rê chuột vào thì hiện */
 .btn-khoa:hover::after {
   opacity: 1;
+}
+
+/* ===== Chọn avatar ===== */
+.avatar-noi-dung {
+  width: 100%;
+  min-height: 0;
+  padding: 20px;
+  overflow-y: auto;
+  text-align: center;
+}
+
+#avatar-luoi {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+#avatar-luoi .avatar-o {
+  width: 84px;
+  height: 84px;
+  max-width: 84px;
+  padding: 0;
+  overflow: hidden;
+  background: #f4f7fc;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+#avatar-luoi .avatar-o:hover {
+  transform: scale(1.06);
+  border-color: var(--nhan);
+}
+
+#avatar-luoi .avatar-o:focus-visible {
+  outline: 3px solid rgba(36, 87, 214, 0.35);
+  outline-offset: 2px;
+}
+
+#avatar-luoi .avatar-o.dang-chon {
+  border-color: var(--nhan);
+  box-shadow: 0 0 0 3px rgba(36, 87, 214, 0.25);
+}
+
+#avatar-luoi .avatar-o img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.avatar-thong-bao {
+  min-height: 1.2em;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
 }

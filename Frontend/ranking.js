@@ -14,37 +14,31 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    // Gọi server lấy danh sách
     const res = await fetch("http://127.0.0.1:5000/api/ranking");
     const kq = await res.json();
 
     tbody.innerHTML = ""; // xóa dữ liệu cũ trước khi đổ mới
 
-    // Chưa có ai thì báo cho người dùng biết
     if (!kq.data || kq.data.length === 0) {
       themDong(["", "Chưa có ai trên bảng xếp hạng", "", ""]);
       return;
     }
 
-    // Điền 3 người đầu vào bục (người nào chưa có thì để trống)
+    // Điền 3 người đầu vào bục (người nào chưa có thì để trống + ảnh mặc định)
     [1, 2, 3].forEach((hang) => {
-      const u = kq.data[hang - 1]; // hạng 1 là phần tử số 0  cout << "hello world";
+      const u = kq.data[hang - 1]; // hạng 1 là phần tử số 0
       const the = document.getElementById(`podium-${hang}`);
       if (!the) return;
-      // textContent để tên người dùng không chạy được code lạ
-      the.querySelector(".podium-name").textContent = u? `${u.username} - ${u.score}`: "";
+      the.querySelector(".podium-name").textContent = u ? `${u.username} - ${u.score}` : "";
+      datAvatar(the.querySelector(".avatar"), u ? u.avatar : ""); // hàm nằm trong script.js
     });
-
-    //?? hello world 
-    
 
     // Mỗi người dùng = 1 dòng: ID, Bio, Username, Điểm
     kq.data.forEach((u) => {
       themDong([u.id, u.bio || "", u.username, u.score]);
     });
   } catch (err) {
-    // Server chưa bật hoặc bị lỗi mạng
     tbody.innerHTML = "";
-    themDong(["", "Không kết nối được server. Dm m bật app.py !!!", "", ""]);
+    themDong(["", "Không kết nối được server. Bật app.py nhé!", "", ""]);
   }
 });

@@ -6,10 +6,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os, re, json
 from datetime import datetime
 from db_ops import (
-    DB_PATH,  # lấy đường dẫn từ db_ops để cả 2 file dùng chung 1 chỗ
+    DB_PATH,
     add_user, get_all_users, update_user, delete_user,
     update_streak, update_user_score, get_ranking, update_mon_chuyen,
-    get_user
+    get_user, update_avatar
 )
 
 DIEM_MO_KHOA_SUA = 500
@@ -23,10 +23,22 @@ def dam_bao_cot():
     if 'da_khao_sat' not in cac_cot:
         conn.execute("ALTER TABLE users ADD COLUMN da_khao_sat INTEGER DEFAULT 0")
         conn.execute("UPDATE users SET da_khao_sat = 1")
-        conn.commit()
+    if 'avatar' not in cac_cot:
+        conn.execute("ALTER TABLE users ADD COLUMN avatar TEXT DEFAULT ''")
+    conn.commit()
     conn.close()
 
 dam_bao_cot()
+
+# thư mục avatar do admin bỏ ảnh vào (nằm trong Frontend để trình duyệt hiện được)
+THU_MUC_AVATAR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'Frontend', 'img', 'avatar')
+DUOI_AVATAR = ('.webp', '.png', '.jpg', '.jpeg', '.gif')
+
+def ds_avatar():
+    # đọc thẳng thư mục: admin bỏ ảnh vào là có ngay, không cần sửa file nào
+    if not os.path.isdir(THU_MUC_AVATAR):
+        return []
+    return sorted(f for f in os.listdir(THU_MUC_AVATAR) if f.lower().endswith(DUOI_AVATAR))
 
 # thư mục chứa đáp án, nằm ở Backend nên trình duyệt không đọc được
 THU_MUC_DAP_AN = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'Dap_an')
@@ -79,7 +91,7 @@ def login():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     row = conn.execute(
-        "SELECT id, username, email, bio, mon_chuyen, mk, streak, last_active_date, da_khao_sat "
+        "SELECT id, username, email, bio, mon_chuyen, mk, streak, last_active_date, da_khao_sat, avatar "
         "FROM users WHERE email = ?", (email,)
     ).fetchone()
 
@@ -101,7 +113,7 @@ def login():
     info = {
         "id": row['id'], "username": row['username'], "email": row['email'],
         "bio": row['bio'], "mon_chuyen": row['mon_chuyen'], "streak": streak_hien_thi,
-        "can_khao_sat": can_khao_sat
+        "can_khao_sat": can_khao_sat, "avatar": row['avatar'] or ""
     }
     return jsonify({"success": True, "message": "Đăng nhập thành công!", "user": info}), 200\
     
@@ -335,12 +347,30 @@ def contest_ranking(cid):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     rows = conn.execute('''
-        SELECT u.username, k.diem FROM contest_ket_qua k
+        SELECT u.username, u.avatar, k.diem FROM contest_ket_qua k
         JOIN users u ON u.id = k.user_id
         WHERE k.contest_id = ? ORDER BY k.diem DESC LIMIT 50
     ''', (cid,)).fetchall()
     conn.close()
     return jsonify({"success": True, "data": [dict(r) for r in rows]}), 200
+# 11. API lấy danh sách avatar admin đã thêm
+@app.route('/api/avatars', methods=['GET'])
+def list_avatars():
+    return jsonify({"success": True, "data": ds_avatar()}), 200
+
+# 12. API chọn avatar (chỉ nhận tên file có trong thư mục avatar, hoặc '' để về mặc định)
+@app.route('/api/users/<int:user_id>/avatar', methods=['PUT'])
+def save_avatar(user_id):
+    data = request.get_json(silent=True) or {}
+    avatar = (data.get('avatar') or '').strip()
+
+    if not get_user(user_id):
+        return jsonify({"success": False, "message": "Không tìm thấy người dùng!"}), 404
+    if avatar != '' and avatar not in ds_avatar():
+        return jsonify({"success": False, "message": "Avatar không tồn tại!"}), 400
+
+    update_avatar(user_id, avatar)
+    return jsonify({"success": True, "avatar": avatar}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)

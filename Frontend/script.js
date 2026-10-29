@@ -1,6 +1,24 @@
 const menuBtn = document.getElementById("menu-btn");
 const nav = document.getElementById("nav");
 
+// ---------- Avatar: dùng chung cho mọi trang ----------
+const AVATAR_MAC_DINH = "img/avartar.webp";
+
+// tên file lưu trong DB -> đường dẫn ảnh ('' hoặc null = ảnh mặc định)
+function duongDanAvatar(ten) {
+  return ten ? "img/avatar/" + encodeURIComponent(ten) : AVATAR_MAC_DINH;
+}
+
+// gán avatar cho 1 thẻ <img>; ảnh bị xóa/lỗi thì tự quay về ảnh mặc định
+function datAvatar(img, ten) {
+  if (!img) return;
+  img.onerror = () => {
+    img.onerror = null; // tránh lặp vô hạn nếu ảnh mặc định cũng lỗi
+    img.src = AVATAR_MAC_DINH;
+  };
+  img.src = duongDanAvatar(ten);
+}
+
 // Bật/tắt menu trên điện thoại
 if (menuBtn && nav) {
   menuBtn.addEventListener("click", () => {
@@ -34,6 +52,12 @@ function showLoggedInUI() {
     // hiện số ngày học liên tiếp
     const streakEl = document.querySelector(".streak-box span");
     if (streakEl) streakEl.textContent = localStorage.getItem("streak") || "0";
+
+    // hiện avatar đã chọn trên thanh menu
+    datAvatar(
+      userProfile.querySelector(".user-avatar"),
+      localStorage.getItem("avatar") || "",
+    );
   }
 
   // đã đăng nhập thì "Giới thiệu" được thay bằng "Học tập cá nhân hoá"
@@ -42,7 +66,6 @@ function showLoggedInUI() {
     linkGt.textContent = "Học tập cá nhân hoá";
     linkGt.href = "personal.html";
   }
-
 
   // bấm vào avatar hoặc tên thì mở trang hồ sơ
   document.querySelectorAll(".user-avatar, .username").forEach((el) => {
@@ -53,7 +76,7 @@ function showLoggedInUI() {
 
 // Đăng xuất = xoá thông tin đăng nhập rồi về trang chủ
 function dangXuat() {
-  ["isLoggedIn", "username", "userId", "streak", "monChuyen"].forEach((k) =>
+  ["isLoggedIn", "username", "userId", "streak", "monChuyen", "avatar"].forEach((k) =>
     localStorage.removeItem(k),
   );
   // replace để không quay lại được trang cũ bằng nút Back
@@ -88,6 +111,7 @@ async function handleLoginSubmit(event) {
       localStorage.setItem("userId", data.user.id);
       localStorage.setItem("streak", data.user.streak);
       localStorage.setItem("monChuyen", data.user.mon_chuyen || "");
+      localStorage.setItem("avatar", data.user.avatar || "");
 
       // Chỉ lần đăng nhập đầu tiên mới khảo sát, các lần sau vào thẳng trang chính
       if (data.user.can_khao_sat) {
@@ -103,6 +127,7 @@ async function handleLoginSubmit(event) {
     alert("Lỗi đăng nhập: " + error.message);
   }
 }
+
 // 3. Xử lý Submit Đăng ký (Kết nối Backend Flask)
 async function handleRegisterSubmit(event) {
   event.preventDefault();

@@ -101,15 +101,13 @@ def update_streak(user_id):
 
     conn.close()
 
-# 7. Lấy bảng xếp hạng: điểm cao nhất đứng trên cùng
+# 7. Lấy bảng xếp hạng: điểm cao nhất đứng trên cùng (kèm avatar)
 def get_ranking(limit=50):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
-    # ORDER BY score DESC = sắp xếp điểm từ cao xuống thấp
-    # LIMIT = chỉ lấy 50 người đầu cho nhẹ
     cursor.execute(
-        "SELECT id, username, bio, score FROM users ORDER BY score DESC LIMIT ?",
+        "SELECT id, username, bio, score, avatar FROM users ORDER BY score DESC LIMIT ?",
         (limit,)
     )
     rows = [dict(r) for r in cursor.fetchall()]
@@ -129,7 +127,7 @@ def get_user(user_id):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     row = conn.execute(
-        "SELECT id, username, bio, score, streak, mon_chuyen, last_active_date "
+        "SELECT id, username, bio, score, streak, mon_chuyen, last_active_date, avatar "
         "FROM users WHERE id = ?", (user_id,)
     ).fetchone()
     conn.close()
@@ -144,3 +142,9 @@ def get_user(user_id):
         u['streak'] = 0
     u.pop('last_active_date')   # không cần gửi ngày này ra ngoài
     return u
+# 10. Lưu avatar của người dùng ('' = dùng ảnh mặc định)
+def update_avatar(user_id, avatar):
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute("UPDATE users SET avatar = ? WHERE id = ?", (avatar, user_id))
+    conn.commit()
+    conn.close()

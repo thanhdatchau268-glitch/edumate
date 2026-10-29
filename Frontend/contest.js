@@ -168,9 +168,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Điền 3 người đầu lên bục (thứ tự trên màn hình: hạng 2, hạng 1, hạng 3)
       const ten = noiDung.querySelectorAll(".podium-name");
+      const anh = noiDung.querySelectorAll(".podium-card .avatar");
       [1, 0, 2].forEach((viTri, i) => {
         const u = kq.data[viTri];
         ten[i].textContent = u ? `${u.username} - ${u.diem}` : "";
+        datAvatar(anh[i], u ? u.avatar : ""); // hàm nằm trong script.js
       });
 
       // Mỗi người = 1 dòng: Hạng, Username, Điểm

@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
   <title>EduMate</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="style2.css" />
-  <link rel="stylesheet" href="style3.css" />
+  <link rel="stylesheet" href="style.css?v=4" />
+  <link rel="stylesheet" href="style2.css?v=4" />
+  <link rel="stylesheet" href="style3.css?v=4" />
 </head>
 
 <body>
@@ -41,7 +41,6 @@
           <a href="login.html" class="auth-link">Đăng nhập</a>
           <a href="register.html" class="auth-link">Đăng ký</a>
         </div>
-        <!-- 2. Khi đã đăng nhập (mặc định thêm class hidden) -->
         <div id="user-profile" class="hidden">
           <div class="streak-box">🔥 <span>0</span></div>
           <span class="username">Username</span>
@@ -53,7 +52,6 @@
 
   <!-- Giữ class "container" để đoạn báo lỗi trong profile.js vẫn chạy -->
   <div class="container profile-card">
-    <!-- Avatar nằm giữa, to hơn trên thanh menu -->
     <img id="pf-avatar" class="profile-avatar" src="img/avartar.webp" alt="Avatar" />
 
     <h2 id="pf-username"></h2>
@@ -76,13 +74,30 @@
     </div>
   </div>
 
-  <!-- MỚI: nút sửa hồ sơ và đăng xuất, căn giữa trang -->
+  <!-- Nút đổi avatar, sửa hồ sơ và đăng xuất, căn giữa trang -->
   <div style="text-align:center; margin-top:24px;">
+    <button type="button" id="btn-doi-avatar" class="btn">🖼️ Đổi avatar</button>
     <button type="button" id="btn-sua" class="btn">✏️ Sửa hồ sơ</button>
     <button type="button" id="btn-dang-xuat" class="btn">Đăng xuất</button>
   </div>
 
-  <!-- Lớp nền mờ phủ toàn màn hình, bên trong là hộp chứa form -->
+  <!-- Hộp chọn avatar -->
+  <div id="avatar-nen" class="modal-nen hidden">
+    <div class="modal-hop" role="dialog" aria-modal="true" aria-labelledby="avatar-tieu-de">
+      <div class="modal-dau">
+        <h3 id="avatar-tieu-de">Chọn avatar</h3>
+        <button type="button" id="btn-dong-avatar" class="modal-dong" aria-label="Đóng">✕</button>
+      </div>
+      <div class="avatar-noi-dung">
+        <!-- profile.js đổ các ảnh vào đây -->
+        <div id="avatar-luoi" class="avatar-luoi"></div>
+        <p id="avatar-thong-bao" class="avatar-thong-bao"></p>
+        <button type="button" id="btn-avatar-mac-dinh" class="btn">Dùng ảnh mặc định</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hộp sửa hồ sơ -->
   <div id="sua-nen" class="modal-nen hidden">
     <div class="modal-hop modal-nho" role="dialog" aria-modal="true" aria-labelledby="sua-tieu-de">
       <div class="modal-dau">
@@ -90,7 +105,6 @@
         <button type="button" id="btn-dong-sua" class="modal-dong" aria-label="Đóng">✕</button>
       </div>
 
-      <!-- Các id bên trong giữ nguyên như cũ -->
       <form id="form-sua" class="profile-form">
         <label for="in-username">Tên hiển thị:</label>
         <input type="text" id="in-username" maxlength="30" required>
@@ -108,8 +122,8 @@
     </div>
   </div>
 
-  <script src="profile.js?v=2"></script>
-  <script src="script.js?v=2"></script>
+  <script src="profile.js?v=3"></script>
+  <script src="script.js?v=3"></script>
 </body>
 
 </html>
