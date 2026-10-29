@@ -22,7 +22,13 @@ def init_db():
         last_active_date TEXT,
         mon_chuyen TEXT DEFAULT '',
         da_khao_sat INTEGER DEFAULT 0,
-        avatar TEXT DEFAULT ''
+        avatar TEXT DEFAULT '',
+                avatar TEXT DEFAULT '',
+        dd_tong INTEGER DEFAULT 0,
+        dd_last TEXT DEFAULT '',
+        the_bao_ho INTEGER DEFAULT 0,
+        luot_quay INTEGER DEFAULT 0,
+        x15_den TEXT DEFAULT ''
     )
     ''')
 

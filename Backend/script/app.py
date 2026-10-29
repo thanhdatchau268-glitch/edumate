@@ -10,8 +10,9 @@ from db_ops import (
     DB_PATH,
     add_user, get_all_users, update_user, delete_user,
     update_streak, update_user_score, get_ranking, update_mon_chuyen,
-    get_user, update_avatar
+      get_user, update_avatar, streak_hien_thi
 )
+from qua_tang import qua_bp, he_so_x15   # điểm danh + vòng quay + buff x1,5
 
 DIEM_MO_KHOA_SUA = 500      # điểm để mở khóa "Sửa hồ sơ"
 DIEM_MO_KHOA_AVATAR = 500   # điểm để mở khóa "Tải ảnh avatar riêng"
@@ -22,6 +23,7 @@ DIEM_BUFF = 500
 
 app = Flask(__name__)
 CORS(app)  # Cho phép Frontend kết nối tới Backend
+app.register_blueprint(qua_bp)
 
 # Giới hạn dung lượng 1 request là 3MB (ảnh đã được trình duyệt thu nhỏ nên rất nhẹ)
 app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024
@@ -127,7 +129,7 @@ def login():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     row = conn.execute(
-        "SELECT id, username, email, bio, mon_chuyen, mk, streak, last_active_date, da_khao_sat, avatar "
+        "SELECT id, username, email, bio, mon_chuyen, mk, streak, last_active_date, da_khao_sat, avatar, the_bao_ho "
         "FROM users WHERE email = ?", (email,)
     ).fetchone()
 
@@ -144,11 +146,11 @@ def login():
 
     hom_nay = str(date.today())
     hom_qua = str(date.today() - timedelta(days=1))
-    streak_hien_thi = row['streak'] if row['last_active_date'] in (hom_nay, hom_qua) else 0
+    streak_dang_nhap = streak_hien_thi(row['streak'], row['last_active_date'], row['the_bao_ho'] or 0)
 
     info = {
         "id": row['id'], "username": row['username'], "email": row['email'],
-        "bio": row['bio'], "mon_chuyen": row['mon_chuyen'], "streak": streak_hien_thi,
+        "bio": row['bio'], "mon_chuyen": row['mon_chuyen'], "streak": streak_dang_nhap,
         "can_khao_sat": can_khao_sat, "avatar": row['avatar'] or ""
     }
     return jsonify({"success": True, "message": "Đăng nhập thành công!", "user": info}), 200
@@ -252,7 +254,7 @@ def submit():
 
             if da_luu:   # lần đầu làm bài này mới được cộng điểm
                 # cứ 3 ngày liên tiếp thưởng thêm 10%, tối đa 50%
-                he_so = 1 + min(streak // 3, 5) * 0.1
+                he_so = 1 + min(streak // 3, 5) * 0.1 + he_so_x15(user_id)
                 diem_cong = round(diem_dat * he_so)
                 update_user_score(user_id, diem_cong)
 

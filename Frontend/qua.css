@@ -1,0 +1,174 @@
+/* Trang Điểm danh & Quay thưởng */
+.qua-trang {
+    max-width: 640px;
+}
+
+.qua-tieu-de {
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.qua-trang h3 {
+    margin: 28px 0 6px;
+}
+
+.qua-mo-ta {
+    color: var(--nhat);
+    font-size: 0.95rem;
+    margin: 0 0 12px;
+}
+
+.qua-thong-bao {
+    min-height: 1.4em;
+    text-align: center;
+    font-weight: 600;
+    margin: 10px 0 0;
+}
+
+.qua-chi-so {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.qua-the {
+    flex: 1;
+    text-align: center;
+    background: #f4f7fc;
+    border-radius: 12px;
+    padding: 12px 6px;
+}
+
+.qua-so {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--chu);
+}
+
+.qua-nhan {
+    font-size: 0.8rem;
+    color: var(--nhat);
+}
+
+.qua-x15 {
+    text-align: center;
+    font-weight: 700;
+    color: #c27410;
+    background: #fff4e0;
+    border-radius: 10px;
+    padding: 8px;
+    margin-top: 12px;
+}
+
+/* 7 ô điểm danh */
+.qua-lich {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.qua-o {
+    text-align: center;
+    border: 1px solid #dfe5ee;
+    border-radius: 10px;
+    padding: 8px 2px;
+    background: #fff;
+    font-size: 0.78rem;
+    color: var(--nhat);
+}
+
+.qua-o b {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--chu);
+    margin-bottom: 2px;
+}
+
+.qua-o.da-nhan {
+    background: #e6f6ee;
+    border-color: #178a5a;
+    color: #178a5a;
+}
+
+.qua-o.da-nhan b {
+    color: #178a5a;
+}
+
+/* Vòng quay: nền chia 7 múi bằng conic-gradient, chữ xếp bằng JS */
+.qua-quay-khung {
+    position: relative;
+    width: 300px;
+    max-width: 100%;
+    aspect-ratio: 1;
+    margin: 12px auto 0;
+}
+
+.qua-kim {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 22px solid #d62424;
+}
+
+.qua-banh {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 6px solid var(--chu);
+    box-shadow: 0 6px 24px rgba(27, 42, 65, 0.2);
+    transition: transform 4.2s cubic-bezier(0.12, 0.7, 0.1, 1);
+}
+
+.qua-nhan-mui {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+}
+
+.qua-nhan-mui span {
+    position: absolute;
+    left: -48px;
+    width: 96px;
+    top: -128px;
+    text-align: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1b2a41;
+    line-height: 1.15;
+}
+
+#btn-diem-danh:disabled,
+#btn-quay:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    background: #fff;
+    color: var(--nhan);
+}
+
+@media (max-width: 480px) {
+    .qua-lich {
+        gap: 4px;
+    }
+
+    .qua-o {
+        font-size: 0.68rem;
+    }
+
+    .qua-quay-khung {
+        width: 260px;
+    }
+
+    .qua-nhan-mui span {
+        top: -108px;
+        font-size: 0.7rem;
+    }
+}

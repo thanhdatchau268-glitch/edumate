@@ -1,34 +1,774 @@
 {
-  "ly_thuyet": "<p>ghi ly-thuyet vào đây</p>", 
+  "ly_thuyet": "<p>ghi ly-thuyet vào đây</p>",
   "bai_tap": [
     {
       "id": "1.1",
       "do_kho": 1,
+      "ten": "Khái niệm phương trình và hệ hai phương trình bậc nhất hai ẩn",
       "cau_hoi": [
-        { "id": "1", "type": "tra-loi-ngan", "de_bai": "Nhân vật chính là ai?",
-          "dap_an_dung": "Lão Hạc", "goi_y": "Đọc câu đầu", "loi_giai": "Là Lão Hạc." },
-        { "id": "2", "type": "dung-sai", "de_bai": "Truyện kể ở ngôi thứ nhất.",
-          "dap_an_dung": true, "loi_giai": "Người kể xưng \"tôi\"." }
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình nào sau đây là phương trình bậc nhất hai ẩn $x$ và $y$?",
+          "dap_an": [
+            "$x^2 + y = 3$",
+            "$0x + 0y = 5$",
+            "$2x - 3y = 1$",
+            "$\\frac{1}{x} + y = 4$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Trong phương trình bậc nhất hai ẩn $ax + by = c$, điều kiện bắt buộc của các hệ số $a$ và $b$ là gì?",
+          "dap_an": [
+            "$a$ và $b$ đồng thời bằng $0$",
+            "$a = 0$ và $b \\neq 0$",
+            "$a \\neq 0$ và $b = 0$",
+            "$a \\neq 0$ hoặc $b \\neq 0$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $3x - 0y = 6$ có các hệ số $a, b, c$ lần lượt là:",
+          "dap_an": [
+            "$a = 3, b = 0, c = 6$",
+            "$a = 3, b = 0, c = -6$",
+            "$a = 0, b = 3, c = 6$",
+            "$a = 3, b = 1, c = 6$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Cặp số $(x_0; y_0)$ là một nghiệm của phương trình $ax + by = c$ khi nào?",
+          "dap_an": [
+            "$a x_0 + b y_0 \\neq c$",
+            "Khẳng định $a x_0 + b y_0 = c$ là đúng",
+            "$a x_0 + b y_0 = 0$",
+            "$x_0 + y_0 = c$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Cặp số nào sau đây là một nghiệm của phương trình $x - 2y = 3$?",
+          "dap_an": [
+            "$(3; 0)$",
+            "$(0; 3)$",
+            "$(1; 2)$",
+            "$(2; 1)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $2x + y = 5$. Cặp số nào dưới đây không phải là nghiệm của phương trình?",
+          "dap_an": [
+            "$(1; 3)$",
+            "$(2; 1)$",
+            "$(0; 5)$",
+            "$(1; 1)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Mỗi phương trình bậc nhất hai ẩn $ax + by = c$ có bao nhiêu nghiệm?",
+          "dap_an": [
+            "Vô nghiệm",
+            "Có duy nhất 1 nghiệm",
+            "Có đúng 2 nghiệm",
+            "Có vô số nghiệm"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Trong mặt phẳng tọa độ $Oxy$, tập hợp tất cả các điểm biểu diễn nghiệm của phương trình $ax + by = c$ là hình gì?",
+          "dap_an": [
+            "Một điểm",
+            "Một đoạn thẳng",
+            "Một đường thẳng",
+            "Một đường tròn"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Đường thẳng biểu diễn tập nghiệm của phương trình $0x + y = -2$ có đặc điểm gì?",
+          "dap_an": [
+            "Song song với trục tung $Oy$",
+            "Song song với trục hoành $Ox$",
+            "Đi qua gốc tọa độ $O(0;0)$",
+            "Đi qua điểm $(2; 0)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Đường thẳng $x + 0y = 3$ đi qua điểm nào trong các điểm sau?",
+          "dap_an": [
+            "$(3; 0)$",
+            "$(0; 3)$",
+            "$(0; -3)$",
+            "$(-3; 0)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Dạng tổng quát của hệ hai phương trình bậc nhất hai ẩn là:",
+          "dap_an": [
+            "$ax + by = c$",
+            "$\\begin{cases} ax + by = c \\\\ a'x + b'y = c' \\end{cases}$",
+            "$ax^2 + bx + c = 0$",
+            "$\\begin{cases} x + y = c \\\\ x - y = c \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Cặp số $(x_0; y_0)$ được gọi là một nghiệm của hệ hai phương trình bậc nhất hai ẩn khi nào?",
+          "dap_an": [
+            "Chỉ cần là nghiệm của phương trình thứ nhất",
+            "Chỉ cần là nghiệm của phương trình thứ hai",
+            "Đồng thời là nghiệm của cả hai phương trình trong hệ",
+            "Không là nghiệm của phương trình nào trong hệ"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Cho hệ phương trình $\\begin{cases} x + y = 4 \\\\ x - y = 2 \\end{cases}$. Cặp số nào sau đây là nghiệm của hệ?",
+          "dap_an": [
+            "$(1; 3)$",
+            "$(3; 1)$",
+            "$(2; 2)$",
+            "$(4; 0)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Kiểm tra xem cặp số $(2; -1)$ có phải là nghiệm của hệ phương trình $\\begin{cases} 2x + y = 3 \\\\ x - 3y = 5 \\end{cases}$ hay không?",
+          "dap_an": [
+            "Là nghiệm của hệ",
+            "Không phải là nghiệm của hệ",
+            "Chỉ là nghiệm của phương trình thứ nhất",
+            "Chỉ là nghiệm của phương trình thứ hai"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Trên mặt phẳng tọa độ $Oxy$, nghiệm của hệ phương trình $\\begin{cases} ax + by = c \\\\ a'x + b'y = c' \\end{cases}$ tương ứng với:",
+          "dap_an": [
+            "Độ dài của hai đường thẳng",
+            "Trung điểm của đoạn thẳng nối hai giao điểm",
+            "Tọa độ giao điểm của hai đường thẳng biểu diễn hai phương trình trong hệ",
+            "Khoảng cách giữa hai đường thẳng"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Nếu hai đường thẳng biểu diễn hai phương trình trong hệ song song với nhau thì hệ phương trình đó có bao nhiêu nghiệm?",
+          "dap_an": [
+            "Vô nghiệm",
+            "Có duy nhất 1 nghiệm",
+            "Có đúng 2 nghiệm",
+            "Có vô số nghiệm"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Nếu hai đường thẳng biểu diễn hai phương trình trong hệ cắt nhau tại duy nhất một điểm thì hệ phương trình có bao nhiêu nghiệm?",
+          "dap_an": [
+            "Vô nghiệm",
+            "Có duy nhất 1 nghiệm",
+            "Có đúng 2 nghiệm",
+            "Có vô số nghiệm"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Nếu hai đường thẳng biểu diễn hai phương trình trong hệ trùng nhau thì hệ phương trình đó có bao nhiêu nghiệm?",
+          "dap_an": [
+            "Vô nghiệm",
+            "Có duy nhất 1 nghiệm",
+            "Có đúng 2 nghiệm",
+            "Có vô số nghiệm"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Cặp số $(-1; 2)$ là nghiệm của phương trình nào sau đây?",
+          "dap_an": [
+            "$x + y = 1$",
+            "$x - y = 1$",
+            "$2x + y = 1$",
+            "$x + 2y = 1$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Trong các hệ phương trình sau, hệ nào không phải là hệ hai phương trình bậc nhất hai ẩn?",
+          "dap_an": [
+            "$\\begin{cases} 2x - y = 1 \\\\ x + 3y = 4 \\end{cases}$",
+            "$\\begin{cases} 0x + 2y = 3 \\\\ x - y = 0 \\end{cases}$",
+            "$\\begin{cases} x^2 + y = 2 \\\\ x - y = 1 \\end{cases}$",
+            "$\\begin{cases} x = 2 \\\\ y = -1 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Biểu diễn nghiệm tổng quát của phương trình $x - y = 2$ theo $x$ là:",
+          "dap_an": [
+            "$(x; x + 2)$",
+            "$(x; x - 2)$",
+            "$(x; 2 - x)$",
+            "$(x; 2x)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Biểu diễn nghiệm tổng quát của phương trình $2x + y = 3$ theo $x$ là:",
+          "dap_an": [
+            "$(x; 3 - 2x)$",
+            "$(x; 2x - 3)$",
+            "$(x; 3 + 2x)$",
+            "$(x; -2x - 3)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $0x - 2y = 4$. Khẳng định nào sau đây là đúng về nghiệm tổng quát của phương trình?",
+          "dap_an": [
+            "$x = -2$ với $y \\in \\mathbb{R}$ tùy ý",
+            "$y = -2$ với $x \\in \\mathbb{R}$ tùy ý",
+            "$y = 2$ với $x \\in \\mathbb{R}$ tùy ý",
+            "$x = 2$ với $y \\in \\mathbb{R}$ tùy ý"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Cặp số $(0; 0)$ là nghiệm của phương trình bậc nhất hai ẩn nào sau đây?",
+          "dap_an": [
+            "$3x + 2y = 0$",
+            "$2x - y = 1$",
+            "$x + 4y = 3$",
+            "$0x + 5y = 2$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Hệ phương trình $\\begin{cases} x = 1 \\\\ y = -3 \\end{cases}$ có bao nhiêu nghiệm?",
+          "dap_an": [
+            "Vô nghiệm",
+            "Có duy nhất nghiệm $(1; -3)$",
+            "Có 2 nghiệm $(1; 0)$ và $(0; -3)$",
+            "Có vô số nghiệm"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Cho phương trình bậc nhất hai ẩn $3x - y = 2$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Hệ số của phương trình là $a = 3, b = -1, c = 2$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Cặp số $(1; 1)$ là một nghiệm của phương trình.",
+          "diem": 2.5
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Cặp số $(0; 2)$ là một nghiệm của phương trình.",
+          "diem": 2.5
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Phương trình có nghiệm tổng quát dạng $(x; 3x - 2)$ với $x \\in \\mathbb{R}$ tùy ý.",
+          "diem": 2.5
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Cho hệ phương trình hai ẩn $x, y$: $\\begin{cases} x + 2y = 5 \\\\ 2x - y = 0 \\end{cases}$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Cặp số $(1; 2)$ là nghiệm của phương trình thứ hai $2x - y = 0$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Cặp số $(1; 2)$ là nghiệm của phương trình thứ nhất $x + 2y = 5$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Cặp số $(1; 2)$ không phải là nghiệm của hệ phương trình đã cho.",
+          "diem": 2.5
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Hệ phương trình có nghiệm duy nhất là $(1; 2)$.",
+          "diem": 2.5
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm giá trị của $y$ sao cho cặp số $(2; y)$ là một nghiệm của phương trình $2x + y = 7$.",
+          "diem": 6
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm giá trị của $x$ sao cho cặp số $(x; -1)$ là một nghiệm của phương trình $3x - 2y = 8$.",
+          "diem": 6
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tính tổng $x_0 + y_0$ biết $(x_0; y_0)$ là nghiệm của hệ phương trình $\\begin{cases} x = 4 \\\\ y = 1 \\end{cases}$.",
+          "diem": 6
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Hệ số $b$ trong phương trình bậc nhất hai ẩn $5x + by = 9$ bằng bao nhiêu nếu cặp số $(1; 2)$ là một nghiệm của phương trình?",
+          "diem": 6
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Cho đường thẳng biểu diễn tập nghiệm của phương trình $4x + 0y = 12$. Đường thẳng này cắt trục hoành $Ox$ tại điểm có hoành độ bằng bao nhiêu?",
+          "diem": 6
+        }
       ]
     },
     {
       "id": "1.2",
-      "do_kho": 1,
+      "do_kho": 1.5,
+      "ten": "Khái niệm phương trình và hệ hai phương trình bậc nhất hai ẩn",
       "cau_hoi": [
-        { "id": "1", "type": "tra-loi-ngan", "de_bai": "Nhân vật chính là ai?",
-          "dap_an_dung": "Lão Hạc", "goi_y": "Đọc câu đầu", "loi_giai": "Là Lão Hạc." },
-        { "id": "2", "type": "dung-sai", "de_bai": "Truyện kể ở ngôi thứ nhất.",
-          "dap_an_dung": true, "loi_giai": "Người kể xưng \"tôi\"." }
-      ]
-    },
-    {
-      "id": "1.2",
-      "do_kho": 2,
-      "cau_hoi": [
-        { "id": "1", "type": "tra-loi-ngan", "de_bai": "Nhân vật chính là ai?",
-          "dap_an_dung": "Lão Hạc", "goi_y": "Đọc câu đầu", "loi_giai": "Là Lão Hạc." },
-        { "id": "2", "type": "dung-sai", "de_bai": "Truyện kể ở ngôi thứ nhất.",
-          "dap_an_dung": true, "loi_giai": "Người kể xưng \"tôi\"." }
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình nào dưới đây là phương trình bậc nhất hai ẩn $x$ và $y$?",
+          "dap_an": [
+            "$0x + 0y = 7$",
+            "$3x - \\frac{1}{2}y = 4$",
+            "$x^2 - 2y = 1$",
+            "$xy + y = 3$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $-2x + 5y = -3$. Bộ ba hệ số $(a; b; c)$ tương ứng của phương trình là:",
+          "dap_an": [
+            "$(2; 5; -3)$",
+            "$(-2; 5; -3)$",
+            "$(-2; -5; -3)$",
+            "$(-2; 5; 3)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Cặp số nào sau đây <b>không</b> phải là nghiệm của phương trình $2x - 3y = 5$?",
+          "dap_an": [
+            "$(1; -1)$",
+            "$(4; 1)$",
+            "$(2; 0)$",
+            "$(-2; -3)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Biết cặp số $(1; y_0)$ là một nghiệm của phương trình $3x + 2y = 11$. Giá trị của $y_0$ là:",
+          "dap_an": [
+            "$y_0 = 2$",
+            "$y_0 = 4$",
+            "$y_0 = 3$",
+            "$y_0 = 1$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm $m$ để cặp số $(2; -1)$ là một nghiệm của phương trình $mx + 3y = 1$.",
+          "dap_an": [
+            "$m = 1$",
+            "$m = 2$",
+            "$m = -2$",
+            "$m = 3$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Công thức nghiệm tổng quát của phương trình $3x - y = 2$ biểu diễn theo $x$ là:",
+          "dap_an": [
+            "$(x; 3x - 2)$ với $x \\in \\mathbb{R}$",
+            "$(x; 2 - 3x)$ với $x \\in \\mathbb{R}$",
+            "$(x; 3x + 2)$ với $x \\in \\mathbb{R}$",
+            "$(3x - 2; x)$ với $x \\in \\mathbb{R}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Đường thẳng biểu diễn tập nghiệm của phương trình $x - 2y = 0$ đi qua điểm nào dưới đây?",
+          "dap_an": [
+            "Gốc tọa độ $O(0; 0)$",
+            "Điểm $A(0; 2)$",
+            "Điểm $B(1; 2)$",
+            "Điểm $C(-2; 0)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Đường thẳng biểu diễn tập nghiệm của phương trình $0x + 3y = 6$ là đường thẳng:",
+          "dap_an": [
+            "Song song với trục hoành $Ox$ và cắt trục tung $Oy$ tại điểm $(0; 3)$",
+            "Song song với trục hoành $Ox$ và cắt trục tung $Oy$ tại điểm $(0; 2)$",
+            "Song song với trục tung $Oy$ và cắt trục hoành $Ox$ tại điểm $(2; 0)$",
+            "Đi qua gốc tọa độ $O(0; 0)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Đường thẳng biểu diễn tập nghiệm của phương trình $2x + 0y = -8$ cắt trục hoành $Ox$ tại điểm có tọa độ là:",
+          "dap_an": [
+            "$(0; -4)$",
+            "$(-4; 0)$",
+            "$(4; 0)$",
+            "$(0; 4)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình bậc nhất hai ẩn $4x - y = 1$ có bao nhiêu nghiệm $(x; y)$ thỏa mãn $x &gt; 0$ và $y &gt; 0$?",
+          "dap_an": [
+            "Vô nghiệm",
+            "Có 1 nghiệm",
+            "Có 2 nghiệm",
+            "Có vô số nghiệm"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Trong các hệ phương trình sau, hệ nào là hệ hai phương trình bậc nhất hai ẩn?",
+          "dap_an": [
+            "$\\begin{cases} x + y^2 = 3 \\\\ 2x - y = 1 \\end{cases}$",
+            "$\\begin{cases} \\sqrt{2}x - y = 1 \\\\ 3x + 2y = 0 \\end{cases}$",
+            "$\\begin{cases} \\frac{2}{x} + y = 1 \\\\ x - y = 2 \\end{cases}$",
+            "$\\begin{cases} xy = 2 \\\\ x + y = 3 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Cho hệ phương trình $\\begin{cases} x + 2y = 4 \\\\ 2x - y = 3 \\end{cases}$. Cặp số nào sau đây là nghiệm của hệ?",
+          "dap_an": [
+            "$(2; 1)$",
+            "$(0; 2)$",
+            "$(1; 1)$",
+            "$(3; -1)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Cặp số $(-1; 3)$ là nghiệm của hệ phương trình nào dưới đây?",
+          "dap_an": [
+            "$\\begin{cases} x + y = 2 \\\\ x - y = 4 \\end{cases}$",
+            "$\\begin{cases} 2x + y = 1 \\\\ -x + y = 4 \\end{cases}$",
+            "$\\begin{cases} x - 2y = -7 \\\\ 2x + y = 0 \\end{cases}$",
+            "$\\begin{cases} 3x + y = 1 \\\\ x + y = 1 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Cho hệ phương trình $\\begin{cases} ax - y = 2 \\\\ x + by = 5 \\end{cases}$. Biết hệ có nghiệm $(x; y) = (1; 2)$, giá trị của $a$ và $b$ lần lượt là:",
+          "dap_an": [
+            "$a = 3, b = 2$",
+            "$a = 4, b = 2$",
+            "$a = 4, b = -2$",
+            "$a = 2, b = 4$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Cho hai đường thẳng $(d_1): 2x - y = 1$ và $(d_2): x + y = 5$. Tọa độ giao điểm của $(d_1)$ và $(d_2)$ trên mặt phẳng tọa độ $Oxy$ là:",
+          "dap_an": [
+            "$(2; 3)$",
+            "$(3; 2)$",
+            "$(1; 4)$",
+            "$(4; 1)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Nếu hai đường thẳng $d_1: ax + by = c$ và $d_2: a'x + b'y = c'$ song song với nhau thì hệ phương trình $\\begin{cases} ax + by = c \\\\ a'x + b'y = c' \\end{cases}$ có bao nhiêu nghiệm?",
+          "dap_an": [
+            "Vô nghiệm (0 nghiệm)",
+            "Có duy nhất 1 nghiệm",
+            "Có 2 nghiệm",
+            "Có vô số nghiệm"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Hệ phương trình $\\begin{cases} x - y = 1 \\\\ 2x - 2y = 2 \\end{cases}$ có bao nhiêu nghiệm?",
+          "dap_an": [
+            "Vô nghiệm",
+            "Có duy nhất 1 nghiệm",
+            "Có 2 nghiệm",
+            "Có vô số nghiệm"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Hệ phương trình $\\begin{cases} 3x + y = 5 \\\\ 3x + y = 2 \\end{cases}$ có bao nhiêu nghiệm?",
+          "dap_an": [
+            "Vô nghiệm",
+            "Có duy nhất 1 nghiệm",
+            "Có 2 nghiệm",
+            "Có vô số nghiệm"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Cặp số $(x_0; y_0) = (3; -2)$ thỏa mãn phương trình nào sau đây?",
+          "dap_an": [
+            "$x + y = 5$",
+            "$2x + 3y = 0$",
+            "$x - y = 1$",
+            "$3x + y = 4$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Biểu diễn tập nghiệm của phương trình $x + 2y = 3$ trên mặt phẳng tọa độ $Oxy$ là đường thẳng đi qua hai điểm nào?",
+          "dap_an": [
+            "$(3; 0)$ và $(0; 1,5)$",
+            "$(3; 0)$ và $(0; 3)$",
+            "$(1; 0)$ và $(0; 2)$",
+            "$(0; 3)$ và $(1,5; 0)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $5x - 2y = 10$. Giao điểm của đường thẳng biểu diễn tập nghiệm phương trình này với trục tung $Oy$ là:",
+          "dap_an": [
+            "$(2; 0)$",
+            "$(0; -5)$",
+            "$(0; 5)$",
+            "$(-5; 0)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Giá trị của $k$ để hệ phương trình $\\begin{cases} kx + y = 3 \\\\ 2x - y = 1 \\end{cases}$ nhận $(x; y) = (1; 1)$ làm nghiệm là:",
+          "dap_an": [
+            "$k = 2$",
+            "$k = 1$",
+            "$k = -2$",
+            "$k = 3$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình bậc nhất hai ẩn $ax + by = c$ có nghiệm $(x; y) = (0; 0)$ khi và chỉ khi:",
+          "dap_an": [
+            "$a = 0$",
+            "$b = 0$",
+            "$c = 0$",
+            "$a = b = 0$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $-x + 4y = 8$. Nếu $y = 1$ thì giá trị $x$ tương ứng bằng bao nhiêu để cặp $(x; y)$ là một nghiệm?",
+          "dap_an": [
+            "$x = 4$",
+            "$x = -4$",
+            "$x = 12$",
+            "$x = -12$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Cho bài toán dân gian: \"Vừa gà vừa chó / Bó lại cho tròn / Khai ba mươi sáu con / Một trăm chân chẵn\". Nếu gọi $x$ là số gà, $y$ là số chó ($x, y \\in \\mathbb{N}^*$), hệ hai phương trình bậc nhất hai ẩn lập được từ bài toán là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 36 \\\\ 2x + 4y = 100 \\end{cases}$",
+            "$\\begin{cases} x + y = 36 \\\\ 4x + 2y = 100 \\end{cases}$",
+            "$\\begin{cases} x + y = 100 \\\\ 2x + 4y = 36 \\end{cases}$",
+            "$\\begin{cases} 2x + y = 36 \\\\ x + 4y = 100 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Cho phương trình bậc nhất hai ẩn $2x + 3y = 6$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Phương trình có các hệ số $a = 2, b = 3, c = 6$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Cặp số $(0; 2)$ là một nghiệm của phương trình.",
+          "diem": 2.5
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Đường thẳng biểu diễn tập nghiệm cắt trục hoành $Ox$ tại điểm $(3; 0)$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Với mọi $x \\in \\mathbb{R}$, tung độ tương ứng $y$ của nghiệm được tính theo công thức $y = \\frac{2x - 6}{3}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Cho hệ phương trình hai ẩn $x, y$: $\\begin{cases} 3x - y = 5 \\\\ x + 2y = 4 \\end{cases}$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Cặp số $(2; 1)$ thỏa mãn phương trình thứ nhất $3x - y = 5$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Cặp số $(2; 1)$ thỏa mãn phương trình thứ hai $x + 2y = 4$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Cặp số $(2; 1)$ là nghiệm duy nhất của hệ phương trình đã cho.",
+          "diem": 2.5
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Đường thẳng $3x - y = 5$ và đường thẳng $x + 2y = 4$ song song với nhau trên mặt phẳng tọa độ $Oxy$.",
+          "diem": 2.5
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm giá trị của $a$ để cặp số $(1; -2)$ là một nghiệm của phương trình $ax + 3y = -1$.",
+          "diem": 6
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Cho hệ phương trình $\\begin{cases} 2x + y = 7 \\\\ 3x - y = 3 \\end{cases}$. Nếu $(x_0; y_0)$ là nghiệm của hệ phương trình thì giá trị của tích $x_0 \\cdot y_0$ bằng bao nhiêu?",
+          "diem": 6
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Đường thẳng biểu diễn tập nghiệm của phương trình $3x - 4y = 12$ cắt trục tung $Oy$ tại điểm có tung độ bằng bao nhiêu?",
+          "diem": 6
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm số tự nhiên $m$ sao cho cặp số $(m; m+1)$ là một nghiệm của phương trình $5x - 2y = 7$.",
+          "diem": 6
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một cửa hàng bán được tổng cộng 20 chiếc áo gồm hai loại: loại A giá 100 nghìn đồng/chiếc và loại B giá 150 nghìn đồng/chiếc. Tổng số tiền thu được là 2,5 triệu đồng (tức 2500 nghìn đồng). Hỏi cửa hàng đó đã bán được bao nhiêu chiếc áo loại B?",
+          "diem": 6
+        }
       ]
     }
   ]

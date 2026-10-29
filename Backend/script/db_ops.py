@@ -67,6 +67,20 @@ def update_user_score(user_id, points):
     conn.close()
     print(f"Đã cộng thêm {points} điểm cho user ID {user_id}!")
 
+# Streak để HIỂN THỊ: bỏ lỡ 1 ngày mà còn thẻ bảo hộ thì chuỗi vẫn được giữ
+def streak_hien_thi(streak, last_date, bao_ho=0):
+    if not last_date:
+        return 0
+    try:
+        cach = (date.today() - date.fromisoformat(last_date)).days
+    except ValueError:
+        return 0
+    if cach <= 1:
+        return streak
+    if cach == 2 and bao_ho > 0:
+        return streak
+    return 0
+
 # 6. Sửa streak người dùng theo ID và ngày dùng cuối cùng
 def update_streak(user_id):
     conn = sqlite3.connect(DB_PATH)
@@ -74,29 +88,36 @@ def update_streak(user_id):
     cursor = conn.cursor()
 
     today = str(date.today())
-    cursor.execute("SELECT streak, last_active_date FROM users WHERE id = ?", (user_id,))
+    cursor.execute("SELECT streak, last_active_date, the_bao_ho FROM users WHERE id = ?", (user_id,))
     user = cursor.fetchone()
 
     if user:
         current_streak = user['streak']
         last_date = user['last_active_date']
+        bao_ho = user['the_bao_ho'] or 0
 
         if last_date == today:
             conn.close()
-            return  # hôm nay đã tính rồi
+            return
 
-        yesterday = str(date.today() - timedelta(days=1))
+        try:
+            cach = (date.today() - date.fromisoformat(last_date)).days
+        except (TypeError, ValueError):
+            cach = None
 
-        if last_date == yesterday:
-            current_streak += 1  # tăng
+        if cach == 1:
+            current_streak += 1
+        elif cach == 2 and bao_ho > 0:
+            current_streak += 1      # dùng 1 thẻ bảo hộ để giữ chuỗi
+            bao_ho -= 1
         else:
-            current_streak = 1   # reset
+            current_streak = 1
 
         cursor.execute('''
             UPDATE users 
-            SET streak = ?, last_active_date = ? 
+            SET streak = ?, last_active_date = ?, the_bao_ho = ?
             WHERE id = ?
-        ''', (current_streak, today, user_id))
+        ''', (current_streak, today, bao_ho, user_id))
         conn.commit()
 
     conn.close()
@@ -107,7 +128,7 @@ def get_ranking(limit=50):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT id, username, bio, score, avatar FROM users ORDER BY score DESC LIMIT ?",
+        "SELECT id, username, bio, score, streak, mon_chuyen, last_active_date, avatar, the_bao_ho "
         (limit,)
     )
     rows = [dict(r) for r in cursor.fetchall()]
@@ -135,11 +156,7 @@ def get_user(user_id):
         return None
 
     u = dict(row)
-    hom_nay = str(date.today())
-    hom_qua = str(date.today() - timedelta(days=1))
-    # bỏ lỡ từ 2 ngày trở lên thì chuỗi đứt, hiện 0 (giống lúc đăng nhập)
-    if u['last_active_date'] not in (hom_nay, hom_qua):
-        u['streak'] = 0
+    u['streak'] = streak_hien_thi(u['streak'], u['last_active_date'], u['the_bao_ho'] or 0)
     u.pop('last_active_date')   # không cần gửi ngày này ra ngoài
     return u
 # 10. Lưu avatar của người dùng ('' = dùng ảnh mặc định)

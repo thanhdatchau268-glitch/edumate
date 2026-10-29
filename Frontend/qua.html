@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
+    <title>EduMate - Quà tặng</title>
+    <link rel="stylesheet" href="style.css?v=7" />
+    <link rel="stylesheet" href="style2.css?v=7" />
+    <link rel="stylesheet" href="style3.css?v=7" />
+    <link rel="stylesheet" href="qua.css?v=1" />
+</head>
+
+<body>
+    <header id="header">
+        <div id="header-inner">
+            <section class="right">
+                <a href="index.html" id="logo">
+                    <img src="img/logo.webp" alt="Logo" />
+                    <span>Edu<span id="logo-span">Mate</span></span>
+                </a>
+            </section>
+            <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">☰</button>
+            <ul id="nav" class="center">
+                <li id="nav-gioi-thieu">
+                    <a href="index.html" id="link-gioi-thieu" class="active">Giới thiệu</a>
+                </li>
+                <li id="nav-bai-tap">
+                    <a href="subjects.html" id="link-bai-tap">Bài tập</a>
+                </li>
+                <li id="nav-cuoc-thi">
+                    <a href="contest.html" id="link-cuoc-thi">Cuộc thi</a>
+                </li>
+                <li id="nav-xep-hang">
+                    <a href="ranking.html" id="link-xep-hang">Xếp hạng</a>
+                </li>
+            </ul>
+            <!-- KHU VỰC TÀI KHOẢN -->
+            <div class="user-account-area">
+                <div id="auth-buttons">
+                    <a href="login.html" class="auth-link">Đăng nhập</a>
+                    <a href="register.html" class="auth-link">Đăng ký</a>
+                </div>
+                <div id="user-profile" class="hidden">
+                    <div class="streak-box">🔥 <span>0</span></div>
+                    <span class="username">Username</span>
+                    <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container qua-trang">
+        <h2 class="qua-tieu-de">🎁 Điểm danh &amp; Quay thưởng</h2>
+        <p id="qua-loi" class="qua-thong-bao"></p>
+
+        <!-- Các thẻ trạng thái -->
+        <div class="qua-chi-so">
+            <div class="qua-the"><span class="qua-so" id="qua-diem">0</span><span class="qua-nhan">Điểm</span></div>
+            <div class="qua-the"><span class="qua-so">🛡️ <span id="qua-bao-ho">0</span></span><span
+                    class="qua-nhan">Thẻ bảo hộ streak</span></div>
+            <div class="qua-the"><span class="qua-so">🎟️ <span id="qua-luot">0</span></span><span class="qua-nhan">Lượt
+                    quay</span></div>
+        </div>
+        <p id="qua-x15" class="qua-x15 hidden"></p>
+
+        <!-- Điểm danh -->
+        <h3>Điểm danh</h3>
+        <p id="qua-mo-ta" class="qua-mo-ta"></p>
+        <div id="qua-lich" class="qua-lich"></div>
+        <div style="text-align:center; margin-top:16px;">
+            <button type="button" id="btn-diem-danh" class="btn">✅ Điểm danh hôm nay</button>
+        </div>
+        <p id="qua-dd-tb" class="qua-thong-bao"></p>
+
+        <!-- Vòng quay -->
+        <h3>Vòng quay thưởng</h3>
+        <p class="qua-mo-ta">Cứ đủ 7 lần điểm danh bạn nhận 1 lượt quay.</p>
+        <div class="qua-quay-khung">
+            <div class="qua-kim"></div>
+            <div id="qua-banh" class="qua-banh"></div>
+        </div>
+        <div style="text-align:center; margin-top:16px;">
+            <button type="button" id="btn-quay" class="btn">🎡 Quay</button>
+        </div>
+        <p id="qua-quay-tb" class="qua-thong-bao"></p>
+    </div>
+
+    <script src="qua.js?v=1"></script>
+    <script src="script.js?v=7"></script>
+</body>
+
+</html>

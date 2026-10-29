@@ -231,6 +231,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       quizContainer.appendChild(btnNop);
       quizContainer.appendChild(tongKet);
+      // Đặt ngay sau dòng: quizContainer.appendChild(tongKet);
+      const veCongThuc = () => window.renderMathInElement && renderMathInElement(quizContainer, {
+        delimiters: [{ left: "$$", right: "$$", display: true }, { left: "$", right: "$", display: false }],
+      });
+      veCongThuc();
+
+      // Đặt ngay sau dòng: tongKet.textContent = `Điểm của bạn: ${diemDat} / ${diemToiDa}`;
+      veCongThuc(); // vẽ lại công thức trong phần lời giải vừa hiện ra
 
       // ----- Bấm Nộp bài: gửi câu trả lời lên server, server chấm -----
       btnNop.addEventListener("click", async () => {

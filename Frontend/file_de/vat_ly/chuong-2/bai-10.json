@@ -1,38 +1,22 @@
 {
-    "1.1": {
-        "1": {
-            "dap_an_dung": "22",
-            "loi_giai": "Từ không khí sang nước (n = 1,33): sin r = sin 30° / 1,33 ≈ 0,376 nên r ≈ 22°."
-        },
-        "2": {
-            "dap_an_dung": "19",
-            "loi_giai": "Từ không khí sang thủy tinh (n = 1,5): sin r = sin 30° / 1,5 ≈ 0,333 nên r ≈ 19°. Chiết suất càng lớn thì góc khúc xạ càng nhỏ."
-        },
-        "3": {
-            "dap_an_dung": true,
-            "loi_giai": "Từ môi trường kém chiết quang (không khí) sang môi trường chiết quang hơn (nước), tia khúc xạ bị bẻ lại gần pháp tuyến nên r < i."
-        },
-        "4": {
-            "dap_an_dung": 1,
-            "loi_giai": "Góc tới tăng thì góc khúc xạ cũng tăng (nhưng luôn nhỏ hơn góc tới khi đi từ không khí vào nước)."
-        }
+    "mo_phong": {
+        "url": "https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_all.html",
+        "ten": "Khúc xạ ánh sáng",
+        "nguon": "PhET Interactive Simulations, Đại học Colorado Boulder (CC-BY 4.0)"
     },
-    "1.2": {
-        "1": {
-            "dap_an_dung": 1,
-            "loi_giai": "Phản xạ toàn phần chỉ xảy ra khi ánh sáng đi từ môi trường chiết quang hơn sang môi trường kém chiết quang hơn và góc tới lớn hơn góc giới hạn."
-        },
-        "2": {
-            "dap_an_dung": "49",
-            "loi_giai": "sin i_gh = n(không khí) / n(nước) = 1 / 1,33 ≈ 0,752 nên i_gh ≈ 49°."
-        },
-        "3": {
-            "dap_an_dung": "42",
-            "loi_giai": "sin i_gh = 1 / 1,5 ≈ 0,667 nên i_gh ≈ 42°."
-        },
-        "4": {
-            "dap_an_dung": true,
-            "loi_giai": "Khi góc tới lớn hơn góc giới hạn, toàn bộ ánh sáng bị phản xạ lại, không còn tia khúc xạ."
+    "ly_thuyet": "<p>Nội dung lý thuyết...</p>",
+    "bai_tap": [
+        {
+            "id": "1.1",
+            "do_kho": 1,
+            "cau_hoi": [
+                {
+                    "id": "1",
+                    "type": "tra-loi-ngan",
+                    "de_bai": "Tia sáng từ không khí sang nước (n = 1,33) với góc tới 30°. Tính góc khúc xạ (độ, làm tròn).",
+                    "goi_y": "Dùng định luật khúc xạ"
+                }
+            ]
         }
-    }
+    ]
 }
