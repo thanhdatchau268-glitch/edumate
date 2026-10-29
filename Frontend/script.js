@@ -3,10 +3,16 @@ const nav = document.getElementById("nav");
 
 // ---------- Avatar: dùng chung cho mọi trang ----------
 const AVATAR_MAC_DINH = "img/avartar.webp";
+const API_SERVER = "http://127.0.0.1:5000";
 
-// tên file lưu trong DB -> đường dẫn ảnh ('' hoặc null = ảnh mặc định)
+// tên lưu trong DB -> đường dẫn ảnh
+//  - ''/null       : ảnh mặc định
+//  - "up_xxx.webp" : ảnh người dùng tự tải lên (nằm ở server)
+//  - tên khác      : ảnh admin bỏ trong Frontend/img/avatar/
 function duongDanAvatar(ten) {
-  return ten ? "img/avatar/" + encodeURIComponent(ten) : AVATAR_MAC_DINH;
+  if (!ten) return AVATAR_MAC_DINH;
+  if (ten.startsWith("up_")) return API_SERVER + "/uploads/avatars/" + encodeURIComponent(ten);
+  return "img/avatar/" + encodeURIComponent(ten);
 }
 
 // gán avatar cho 1 thẻ <img>; ảnh bị xóa/lỗi thì tự quay về ảnh mặc định

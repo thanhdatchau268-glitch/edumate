@@ -19,13 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
       icon: "fa-feather-pointed",
       coBai: true,
     },
-    {
-      ten: "Vật Lí",
-      subject: "vat-ly", // thư mục thật là vat_ly (gạch ngang tự đổi thành gạch dưới)
-      anh: "vat_ly",
-      icon: "fa-atom",
-      coBai: true,
-    },
   ];
 
   const MON_CHUYEN = {
@@ -38,10 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     ly: {
       ten: "Chuyên Vật Lý",
-      subject: "chuyen-ly",
+      subject: "vat-ly", // dùng bài Vật Lí hiện có (thư mục vat_ly)
       anh: "chuyen_ly",
       icon: "fa-atom",
-      coBai: false,
+      coBai: true,
     },
     hoa: {
       ten: "Chuyên Hóa Học",

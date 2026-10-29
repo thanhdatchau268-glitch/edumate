@@ -636,3 +636,30 @@
   max-width: 800px;
   margin: 16px auto 0;
 }
+
+/* ===== Hàng nút trong hộp avatar (Tải ảnh / Dùng ảnh mặc định) ===== */
+.avatar-hanh-dong {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Nút tải ảnh khi chưa đủ điểm: xám, vẫn bấm được để hiện thông báo */
+.btn.da-khoa {
+  background: #e5e7eb;
+  color: #9ca3af;
+  border-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.btn.da-khoa:hover {
+  background: #e5e7eb;
+  color: #9ca3af;
+  transform: none;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}

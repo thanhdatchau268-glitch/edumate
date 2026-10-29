@@ -1,10 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory, abort
 from flask_cors import CORS
 import sqlite3
 from datetime import date, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
-import os, re, json
+import os, re, json, uuid
 from datetime import datetime
+from PIL import Image, ImageOps
 from db_ops import (
     DB_PATH,
     add_user, get_all_users, update_user, delete_user,
@@ -12,11 +13,25 @@ from db_ops import (
     get_user, update_avatar
 )
 
-DIEM_MO_KHOA_SUA = 500
+DIEM_MO_KHOA_SUA = 500      # điểm để mở khóa "Sửa hồ sơ"
+DIEM_MO_KHOA_AVATAR = 500   # điểm để mở khóa "Tải ảnh avatar riêng"
+
+# ---- NÚT BUFF ĐIỂM: chỉ để thử nghiệm. ĐỂ False KHI ĐƯA LÊN HOSTING! ----
+CHO_PHEP_BUFF = True
+DIEM_BUFF = 500
 
 app = Flask(__name__)
 CORS(app)  # Cho phép Frontend kết nối tới Backend
-# Tự thêm cột da_khao_sat nếu DB chưa có (tài khoản cũ coi như đã khảo sát)
+
+# Giới hạn dung lượng 1 request là 3MB (ảnh đã được trình duyệt thu nhỏ nên rất nhẹ)
+app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024
+Image.MAX_IMAGE_PIXELS = 25_000_000   # chặn ảnh "bom" giải nén ra quá lớn
+
+@app.errorhandler(413)
+def file_qua_lon(e):
+    return jsonify({"success": False, "message": "Ảnh quá lớn (tối đa 3MB)!"}), 413
+
+# Tự thêm cột nếu DB chưa có (tài khoản cũ coi như đã khảo sát)
 def dam_bao_cot():
     conn = sqlite3.connect(DB_PATH)
     cac_cot = [c[1] for c in conn.execute("PRAGMA table_info(users)")]
@@ -30,18 +45,39 @@ def dam_bao_cot():
 
 dam_bao_cot()
 
+GOC = os.path.dirname(os.path.abspath(__file__))
+
 # thư mục avatar do admin bỏ ảnh vào (nằm trong Frontend để trình duyệt hiện được)
-THU_MUC_AVATAR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'Frontend', 'img', 'avatar')
+THU_MUC_AVATAR = os.path.join(GOC, '..', '..', 'Frontend', 'img', 'avatar')
 DUOI_AVATAR = ('.webp', '.png', '.jpg', '.jpeg', '.gif')
+
+# thư mục ảnh do NGƯỜI DÙNG tải lên (nằm ngoài Frontend, chỉ phục vụ qua route bên dưới)
+THU_MUC_UPLOAD = os.path.abspath(os.path.join(GOC, '..', 'uploads', 'avatars'))
+os.makedirs(THU_MUC_UPLOAD, exist_ok=True)
+
+# tên file người dùng tải lên luôn có dạng up_<32 ký tự hex>.webp
+TEN_UPLOAD = re.compile(r'^up_[a-f0-9]{32}\.webp$')
 
 def ds_avatar():
     # đọc thẳng thư mục: admin bỏ ảnh vào là có ngay, không cần sửa file nào
+    # bỏ qua tên bắt đầu bằng "up_" để không lẫn với ảnh người dùng tải lên
     if not os.path.isdir(THU_MUC_AVATAR):
         return []
-    return sorted(f for f in os.listdir(THU_MUC_AVATAR) if f.lower().endswith(DUOI_AVATAR))
+    return sorted(
+        f for f in os.listdir(THU_MUC_AVATAR)
+        if f.lower().endswith(DUOI_AVATAR) and not f.startswith('up_')
+    )
+
+def xoa_anh_upload(ten):
+    # xóa file ảnh người dùng đã tải lên (chỉ xóa đúng file có tên hợp lệ)
+    if ten and TEN_UPLOAD.match(ten):
+        try:
+            os.remove(os.path.join(THU_MUC_UPLOAD, ten))
+        except OSError:
+            pass
 
 # thư mục chứa đáp án, nằm ở Backend nên trình duyệt không đọc được
-THU_MUC_DAP_AN = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'Dap_an')
+THU_MUC_DAP_AN = os.path.join(GOC, '..', 'Dap_an')
 
 # chỉ cho chữ thường, số, gạch ngang, gạch dưới
 # để không ai gõ "../" đọc trộm file khác trên máy
@@ -115,8 +151,8 @@ def login():
         "bio": row['bio'], "mon_chuyen": row['mon_chuyen'], "streak": streak_hien_thi,
         "can_khao_sat": can_khao_sat, "avatar": row['avatar'] or ""
     }
-    return jsonify({"success": True, "message": "Đăng nhập thành công!", "user": info}), 200\
-    
+    return jsonify({"success": True, "message": "Đăng nhập thành công!", "user": info}), 200
+
 # 3. API Lấy danh sách tất cả user (Read)
 #@app.route('/api/users', methods=['GET'])
 #def list_users():
@@ -139,8 +175,7 @@ def login():
 #    delete_user(user_id)
 #    return jsonify({"success": True, "message": "Đã xóa tài khoản!"}), 200
 
-# 6. API cộng điểm sau khi nộp bài
-# API nộp bài: server tự chấm, tự cộng điểm
+# 6. API nộp bài: server tự chấm, tự cộng điểm
 @app.route('/api/submit', methods=['POST'])
 def submit():
     data = request.get_json(silent=True) or {}
@@ -162,7 +197,7 @@ def submit():
     duong_dan = os.path.join(THU_MUC_DAP_AN, subject, chapter, article + '.json')
     if not os.path.isfile(duong_dan):
         return jsonify({"success": False, "message": "Không tìm thấy đáp án bài này!"}), 404
-        # file trống hoặc viết sai thì báo nhẹ nhàng, không để server sập
+    # file trống hoặc viết sai thì báo nhẹ nhàng, không để server sập
     try:
         with open(duong_dan, encoding='utf-8') as f:
             dap_an_bai = json.load(f).get(bai_id)
@@ -221,7 +256,7 @@ def submit():
                 diem_cong = round(diem_dat * he_so)
                 update_user_score(user_id, diem_cong)
 
-    return jsonify({"success": True, "diem_dat": diem_dat, "diem_toi_da": diem_toi_da,"ket_qua": ket_qua, "da_luu": da_luu, "streak": streak,"diem_cong": diem_cong, "he_so": he_so}), 200
+    return jsonify({"success": True, "diem_dat": diem_dat, "diem_toi_da": diem_toi_da, "ket_qua": ket_qua, "da_luu": da_luu, "streak": streak, "diem_cong": diem_cong, "he_so": he_so}), 200
 
 # 7. API bảng xếp hạng
 @app.route('/api/ranking', methods=['GET'])
@@ -353,24 +388,85 @@ def contest_ranking(cid):
     ''', (cid,)).fetchall()
     conn.close()
     return jsonify({"success": True, "data": [dict(r) for r in rows]}), 200
+
 # 11. API lấy danh sách avatar admin đã thêm
 @app.route('/api/avatars', methods=['GET'])
 def list_avatars():
     return jsonify({"success": True, "data": ds_avatar()}), 200
 
-# 12. API chọn avatar (chỉ nhận tên file có trong thư mục avatar, hoặc '' để về mặc định)
+# 12. API chọn avatar có sẵn (chỉ nhận tên file có trong thư mục avatar, hoặc '' để về mặc định)
 @app.route('/api/users/<int:user_id>/avatar', methods=['PUT'])
 def save_avatar(user_id):
     data = request.get_json(silent=True) or {}
     avatar = (data.get('avatar') or '').strip()
 
-    if not get_user(user_id):
+    u = get_user(user_id)
+    if not u:
         return jsonify({"success": False, "message": "Không tìm thấy người dùng!"}), 404
     if avatar != '' and avatar not in ds_avatar():
         return jsonify({"success": False, "message": "Avatar không tồn tại!"}), 400
 
     update_avatar(user_id, avatar)
+    xoa_anh_upload(u.get('avatar'))   # đang dùng ảnh tự tải lên mà chuyển sang ảnh khác thì dọn file cũ
     return jsonify({"success": True, "avatar": avatar}), 200
+
+# 13. API người dùng tự tải ảnh avatar lên (cần đủ điểm)
+@app.route('/api/users/<int:user_id>/avatar-upload', methods=['POST'])
+def upload_avatar(user_id):
+    u = get_user(user_id)
+    if not u:
+        return jsonify({"success": False, "message": "Không tìm thấy người dùng!"}), 404
+
+    # chưa đủ điểm thì từ chối (kiểm tra ở server, không tin giao diện)
+    if u['score'] < DIEM_MO_KHOA_AVATAR:
+        return jsonify({"success": False,
+                        "message": f"Bạn phải đủ {DIEM_MO_KHOA_AVATAR} điểm mới tải được avatar riêng!"}), 403
+
+    f = request.files.get('file')
+    if not f:
+        return jsonify({"success": False, "message": "Chưa chọn ảnh!"}), 400
+
+    try:
+        img = Image.open(f.stream)
+        # kiểm tra ảnh thật bằng nội dung, không tin đuôi file hay Content-Type
+        if img.format not in ('JPEG', 'PNG', 'WEBP', 'GIF'):
+            raise ValueError("định dạng không hỗ trợ")
+        img.load()                              # đọc hết ảnh: file hỏng sẽ báo lỗi ở đây
+        img = ImageOps.exif_transpose(img)      # xoay đúng chiều nếu ảnh chụp điện thoại
+        img = ImageOps.fit(img.convert('RGBA'), (256, 256), Image.LANCZOS)  # cắt vuông giữa ảnh + thu về 256x256
+    except Exception:
+        return jsonify({"success": False, "message": "File không phải ảnh hợp lệ (chỉ nhận JPG, PNG, WEBP, GIF)!"}), 400
+
+    # tên ngẫu nhiên: không ai đoán được, cũng không bị trùng
+    ten_moi = f"up_{uuid.uuid4().hex}.webp"
+    img.save(os.path.join(THU_MUC_UPLOAD, ten_moi), 'WEBP', quality=85)
+
+    update_avatar(user_id, ten_moi)
+    xoa_anh_upload(u.get('avatar'))   # xóa ảnh cũ (nếu ảnh cũ cũng là ảnh tự tải lên)
+    return jsonify({"success": True, "avatar": ten_moi}), 200
+
+# 14. Phục vụ ảnh người dùng đã tải lên (chỉ nhận đúng dạng tên up_<hex>.webp)
+@app.route('/uploads/avatars/<ten>', methods=['GET'])
+def xem_avatar_upload(ten):
+    if not TEN_UPLOAD.match(ten):
+        abort(404)
+    # tên ngẫu nhiên, mỗi lần đổi ảnh là tên mới -> cho trình duyệt nhớ lâu
+    return send_from_directory(THU_MUC_UPLOAD, ten, max_age=31536000)
+
+# 15. NÚT BUFF ĐIỂM (chỉ để thử nghiệm)
+@app.route('/api/dev/buff-diem', methods=['POST'])
+def buff_diem():
+    # chỉ chạy khi bật cờ và gọi từ chính máy này
+    if not CHO_PHEP_BUFF or request.remote_addr not in ('127.0.0.1', '::1'):
+        return jsonify({"success": False, "message": "Tính năng này đã tắt!"}), 403
+
+    data = request.get_json(silent=True) or {}
+    user_id = data.get('user_id')
+    if not user_id or not get_user(user_id):
+        return jsonify({"success": False, "message": "Không tìm thấy người dùng!"}), 404
+
+    update_user_score(user_id, DIEM_BUFF)
+    return jsonify({"success": True, "score": get_user(user_id)['score']}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)

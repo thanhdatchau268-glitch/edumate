@@ -11,6 +11,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const $ = (id) => document.getElementById(id);
   const TEN_MON = { toan: "Chuyên Toán", ly: "Chuyên Lý", hoa: "Chuyên Hóa" };
 
+  // các mốc điểm (phải giống số bên app.py)
+  const DIEM_MO_KHOA = 500;         // mở "Sửa hồ sơ"
+  const DIEM_TAI_ANH = 500;         // mở "Tải ảnh avatar riêng"
+  const DUNG_LUONG_ANH_TOI_DA = 15 * 1024 * 1024; // ảnh gốc tối đa 15MB (sẽ được thu nhỏ trước khi gửi)
+
   // ----- Nút Đăng xuất: gắn sớm để server lỗi vẫn đăng xuất được -----
   $("btn-dang-xuat").addEventListener("click", () => {
     if (typeof dangXuat === "function") {
@@ -49,15 +54,40 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // =========================================================
-  // ĐỔI AVATAR (chọn trong kho ảnh admin đã thêm)
+  // KHÓA / MỞ KHÓA theo điểm (gọi lại mỗi khi điểm thay đổi)
+  // =========================================================
+  const nutSua = $("btn-sua");
+  const nutTaiAnh = $("btn-tai-anh");
+  const ttKhoa = $("avatar-khoa-tt");
+
+  function capNhatKhoa() {
+    // nút "Sửa hồ sơ"
+    const duSua = user.score >= DIEM_MO_KHOA;
+    nutSua.classList.toggle("btn-khoa", !duSua);
+    if (duSua) delete nutSua.dataset.tip;
+    else nutSua.dataset.tip = `Bạn phải đủ ${DIEM_MO_KHOA} điểm mới mở khóa tính năng này`;
+
+    // nút "Tải ảnh của bạn"
+    const duAnh = user.score >= DIEM_TAI_ANH;
+    nutTaiAnh.classList.toggle("da-khoa", !duAnh);
+    ttKhoa.style.color = "#5b6b82";
+    ttKhoa.textContent = duAnh
+      ? ""
+      : `🔒 Tải ảnh riêng sẽ mở khóa khi đạt ${DIEM_TAI_ANH} điểm (bạn đang có ${user.score}).`;
+  }
+
+  // =========================================================
+  // ĐỔI AVATAR (chọn ảnh có sẵn hoặc tự tải lên)
   // =========================================================
   const nenAv = $("avatar-nen");
   const luoiAv = $("avatar-luoi");
   const ttAv = $("avatar-thong-bao");
+  const fileAv = $("file-avatar");
 
   function moAvatar() {
     nenAv.classList.remove("hidden");
     document.body.style.overflow = "hidden";
+    capNhatKhoa();
     taiDanhSachAvatar();
   }
 
@@ -73,17 +103,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
   }
 
+  // Sau khi server đã lưu avatar mới: cập nhật mọi nơi trên trang
+  function apDungAvatar(ten) {
+    user.avatar = ten;
+    localStorage.setItem("avatar", ten);
+    datAvatar($("pf-avatar"), ten); // ảnh to trong hồ sơ
+    document.querySelectorAll(".user-avatar").forEach((i) => datAvatar(i, ten)); // ảnh trên menu
+    danhDauAvatar();
+    dongAvatar();
+  }
+
   async function taiDanhSachAvatar() {
     ttAv.style.color = "#5b6b82";
     ttAv.textContent = "Đang tải...";
     luoiAv.innerHTML = "";
+    luoiAv.style.cssText =
+      "display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:14px;";
     try {
       const res = await fetch(`${API}/api/avatars`);
       const kq = await res.json();
       if (!kq.success) throw new Error(kq.message);
 
       if (kq.data.length === 0) {
-        ttAv.textContent = "Chưa có avatar nào, bạn quay lại sau nhé!";
+        ttAv.textContent = "Chưa có avatar có sẵn nào.";
         return;
       }
       ttAv.textContent = "";
@@ -115,12 +157,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (err) {
       ttAv.style.color = "#dc2626";
       ttAv.textContent = "Không tải được danh sách avatar. Bật app.py nhé!";
-      luoiAv.style.cssText =
-        "display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:14px;";
     }
   }
 
-  // Gửi avatar đã chọn lên server ('' = về ảnh mặc định)
+  // Gửi avatar có sẵn đã chọn lên server ('' = về ảnh mặc định)
   async function chonAvatar(ten) {
     ttAv.style.color = "#5b6b82";
     ttAv.textContent = "Đang lưu...";
@@ -132,18 +172,91 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
       const kq = await res.json();
       if (!kq.success) throw new Error(kq.message);
-
-      user.avatar = kq.avatar;
-      localStorage.setItem("avatar", kq.avatar);
-      datAvatar($("pf-avatar"), kq.avatar); // ảnh to trong hồ sơ
-      document.querySelectorAll(".user-avatar").forEach((i) => datAvatar(i, kq.avatar)); // ảnh trên menu
-      danhDauAvatar();
-      dongAvatar();
+      apDungAvatar(kq.avatar);
     } catch (err) {
       ttAv.style.color = "#dc2626";
       ttAv.textContent = err.message;
     }
   }
+
+  // ----- Tự tải ảnh lên -----
+
+  // Cắt vuông giữa ảnh, thu nhỏ tối đa 512x512, đổi sang WebP -> file chỉ còn vài chục KB
+  function thuNhoAnh(file) {
+    return new Promise((ok, loi) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const canh = Math.min(img.naturalWidth, img.naturalHeight); // cạnh hình vuông cắt ra
+        const kichThuoc = Math.min(512, canh);
+        const c = document.createElement("canvas");
+        c.width = c.height = kichThuoc;
+        const sx = (img.naturalWidth - canh) / 2;   // cắt đều hai bên
+        const sy = (img.naturalHeight - canh) / 2;
+        c.getContext("2d").drawImage(img, sx, sy, canh, canh, 0, 0, kichThuoc, kichThuoc);
+        c.toBlob(
+          (b) => (b ? ok(b) : loi(new Error("Không xử lý được ảnh này."))),
+          "image/webp",
+          0.85,
+        );
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        loi(new Error("Không đọc được ảnh này. Hãy thử file JPG, PNG hoặc WEBP."));
+      };
+      img.src = url;
+    });
+  }
+
+  async function taiAnhLen(file) {
+    if (!file) return;
+    ttAv.style.color = "#5b6b82";
+
+    if (!file.type.startsWith("image/")) {
+      ttAv.style.color = "#dc2626";
+      ttAv.textContent = "Hãy chọn một file ảnh.";
+      return;
+    }
+    if (file.size > DUNG_LUONG_ANH_TOI_DA) {
+      ttAv.style.color = "#dc2626";
+      ttAv.textContent = "Ảnh quá lớn (tối đa 15MB).";
+      return;
+    }
+
+    nutTaiAnh.disabled = true;
+    ttAv.textContent = "Đang xử lý và tải ảnh lên...";
+    try {
+      const blob = await thuNhoAnh(file);
+      const fd = new FormData();
+      fd.append("file", blob, "avatar.webp");
+
+      // không tự đặt Content-Type: trình duyệt tự thêm boundary cho FormData
+      const res = await fetch(`${API}/api/users/${userId}/avatar-upload`, {
+        method: "POST",
+        body: fd,
+      });
+      const kq = await res.json();
+      if (!kq.success) throw new Error(kq.message);
+      apDungAvatar(kq.avatar);
+    } catch (err) {
+      ttAv.style.color = "#dc2626";
+      ttAv.textContent = err.message;
+    } finally {
+      nutTaiAnh.disabled = false;
+      fileAv.value = ""; // cho phép chọn lại đúng file đó lần sau
+    }
+  }
+
+  nutTaiAnh.addEventListener("click", () => {
+    if (user.score < DIEM_TAI_ANH) {
+      ttAv.style.color = "#dc2626";
+      ttAv.textContent = `Bạn cần ${DIEM_TAI_ANH} điểm để tải ảnh riêng.`;
+      return;
+    }
+    fileAv.click(); // mở hộp chọn file
+  });
+  fileAv.addEventListener("change", () => taiAnhLen(fileAv.files[0]));
 
   $("btn-doi-avatar").addEventListener("click", moAvatar);
   $("btn-dong-avatar").addEventListener("click", dongAvatar);
@@ -153,22 +266,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // =========================================================
-  // SỬA HỒ SƠ (giữ nguyên như cũ)
+  // SỬA HỒ SƠ
   // =========================================================
-  const DIEM_MO_KHOA = 500; // phải giống số bên app.py
-  const duDiem = user.score >= DIEM_MO_KHOA;
-  const nutSua = $("btn-sua");
-
-  if (!duDiem) {
-    nutSua.classList.add("btn-khoa"); // làm nút xám
-    nutSua.dataset.tip = `Bạn phải đủ ${DIEM_MO_KHOA} điểm mới mở khóa tính năng này`;
-  }
-
   const nen = $("sua-nen");
   const form = $("form-sua");
 
   function moForm() {
-    if (!duDiem) return;
+    if (user.score < DIEM_MO_KHOA) return;
     $("in-username").value = user.username; // điền sẵn giá trị cũ
     $("in-bio").value = user.bio || "";
     $("sua-thong-bao").textContent = "";
@@ -230,4 +334,35 @@ document.addEventListener("DOMContentLoaded", async () => {
       tb.textContent = err.message;
     }
   });
+
+  // =========================================================
+  // NÚT BUFF +500 ĐIỂM (thử nghiệm, chỉ hiện khi chạy ở localhost)
+  // =========================================================
+  const nutBuff = $("btn-buff");
+  const laMayLocal = ["localhost", "127.0.0.1", ""].includes(location.hostname);
+  if (laMayLocal) nutBuff.classList.remove("hidden");
+
+  nutBuff.addEventListener("click", async () => {
+    nutBuff.disabled = true;
+    try {
+      const res = await fetch(`${API}/api/dev/buff-diem`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: Number(userId) }),
+      });
+      const kq = await res.json();
+      if (!kq.success) throw new Error(kq.message);
+
+      user.score = kq.score;   // điểm mới từ server
+      hienThongTin(user);
+      capNhatKhoa();           // đủ điểm thì mở khóa luôn, không cần tải lại trang
+    } catch (err) {
+      alert("Không buff được: " + err.message);
+    } finally {
+      nutBuff.disabled = false;
+    }
+  });
+
+  // chạy lần đầu để áp trạng thái khóa theo điểm hiện có
+  capNhatKhoa();
 });

@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
   <title>EduMate</title>
-  <link rel="stylesheet" href="style.css?v=4" />
-  <link rel="stylesheet" href="style2.css?v=4" />
-  <link rel="stylesheet" href="style3.css?v=4" />
+  <link rel="stylesheet" href="style.css?v=7" />
+  <link rel="stylesheet" href="style2.css?v=7" />
+  <link rel="stylesheet" href="style3.css?v=7" />
 </head>
 
 <body>
@@ -81,6 +81,11 @@
     <button type="button" id="btn-dang-xuat" class="btn">Đăng xuất</button>
   </div>
 
+  <!-- Nút thử nghiệm: chỉ hiện khi mở web bằng localhost. XÓA khi đưa lên hosting -->
+  <div style="text-align:center; margin-top:14px;">
+    <button type="button" id="btn-buff" class="btn hidden">🎁 +500 điểm (thử nghiệm)</button>
+  </div>
+
   <!-- Hộp chọn avatar -->
   <div id="avatar-nen" class="modal-nen hidden">
     <div class="modal-hop" role="dialog" aria-modal="true" aria-labelledby="avatar-tieu-de">
@@ -89,10 +94,18 @@
         <button type="button" id="btn-dong-avatar" class="modal-dong" aria-label="Đóng">✕</button>
       </div>
       <div class="avatar-noi-dung">
-        <!-- profile.js đổ các ảnh vào đây -->
+        <!-- profile.js đổ các ảnh có sẵn vào đây -->
         <div id="avatar-luoi" class="avatar-luoi"></div>
         <p id="avatar-thong-bao" class="avatar-thong-bao"></p>
-        <button type="button" id="btn-avatar-mac-dinh" class="btn">Dùng ảnh mặc định</button>
+
+        <div class="avatar-hanh-dong">
+          <!-- Tải ảnh riêng: bị khóa cho tới khi đủ điểm -->
+          <button type="button" id="btn-tai-anh" class="btn">⬆️ Tải ảnh của bạn</button>
+          <button type="button" id="btn-avatar-mac-dinh" class="btn">Dùng ảnh mặc định</button>
+        </div>
+        <p id="avatar-khoa-tt" class="avatar-thong-bao"></p>
+
+        <input type="file" id="file-avatar" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
       </div>
     </div>
   </div>
@@ -122,8 +135,8 @@
     </div>
   </div>
 
-  <script src="profile.js?v=3"></script>
-  <script src="script.js?v=3"></script>
+  <script src="profile.js?v=7"></script>
+  <script src="script.js?v=7"></script>
 </body>
 
 </html>
