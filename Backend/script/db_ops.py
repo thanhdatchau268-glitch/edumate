@@ -129,6 +129,7 @@ def get_ranking(limit=50):
     cursor = conn.cursor()
     cursor.execute(
         "SELECT id, username, bio, score, streak, mon_chuyen, last_active_date, avatar, the_bao_ho "
+        "FROM users ORDER BY score DESC LIMIT ?",
         (limit,)
     )
     rows = [dict(r) for r in cursor.fetchall()]
@@ -148,12 +149,18 @@ def get_user(user_id):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     row = conn.execute(
-        "SELECT id, username, bio, score, streak, mon_chuyen, last_active_date, avatar "
+        "SELECT id, username, bio, score, streak, mon_chuyen, last_active_date, avatar, the_bao_ho "
         "FROM users WHERE id = ?", (user_id,)
     ).fetchone()
     conn.close()
     if not row:
         return None
+
+    u = dict(row)
+    u['streak'] = streak_hien_thi(u['streak'], u['last_active_date'], u['the_bao_ho'] or 0)
+    u.pop('last_active_date')   # không cần gửi ra ngoài
+    u.pop('the_bao_ho')
+    return u
 
     u = dict(row)
     u['streak'] = streak_hien_thi(u['streak'], u['last_active_date'], u['the_bao_ho'] or 0)
