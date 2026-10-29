@@ -1,0 +1,84 @@
+{
+    "ly_thuyet": "<h3>1. Khúc xạ ánh sáng</h3><p>Khi tia sáng truyền xiên góc từ môi trường trong suốt này sang môi trường trong suốt khác thì tia sáng bị <b>gãy khúc</b> tại mặt phân cách. Đó là hiện tượng <b>khúc xạ ánh sáng</b>.</p><ul><li><b>Pháp tuyến</b>: đường thẳng vuông góc với mặt phân cách tại điểm tới.</li><li><b>Góc tới (i)</b>: góc giữa tia tới và pháp tuyến.</li><li><b>Góc khúc xạ (r)</b>: góc giữa tia khúc xạ và pháp tuyến.</li><li>Từ không khí sang nước (hoặc thủy tinh): <b>r &lt; i</b>. Từ nước (hoặc thủy tinh) sang không khí: <b>r &gt; i</b>.</li><li>Khi góc tới tăng thì góc khúc xạ cũng tăng.</li></ul><p><i>Mở rộng:</i> môi trường có chiết suất n càng lớn thì tia sáng càng bị bẻ gần pháp tuyến. Định luật Snell: n₁·sin i = n₂·sin r.</p><h3>2. Phản xạ toàn phần</h3><p>Khi ánh sáng đi từ môi trường <b>chiết quang hơn</b> sang môi trường <b>kém chiết quang hơn</b> (ví dụ nước → không khí) và góc tới <b>lớn hơn góc giới hạn</b> thì <b>không còn tia khúc xạ</b>, toàn bộ ánh sáng bị phản xạ trở lại. Đó là hiện tượng <b>phản xạ toàn phần</b>. Ứng dụng: cáp quang, lăng kính phản xạ toàn phần.</p><h3>3. Cách dùng mô phỏng</h3><ol><li>Bấm nút <b>🔬 Thực hành với mô phỏng</b> và mở màn hình đầu tiên (Giới thiệu / Intro).</li><li>Chọn môi trường phía trên và phía dưới (không khí, nước, thủy tinh).</li><li>Bật <b>Pháp tuyến</b> và <b>Thước đo góc</b>. Kéo thước đo để đọc góc tới và góc khúc xạ.</li><li>Bật <b>Phản xạ</b> để thấy cả tia phản xạ.</li><li>Kéo đèn laser (hoặc đổi vị trí) để thay đổi góc tới, rồi bật đèn để quan sát.</li></ol><p><small>Tên nút trong mô phỏng có thể khác đôi chút so với mô tả trên.</small></p>",
+    "mo_phong": {
+        "url": "https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_vi.html",
+        "ten": "Mô phỏng: Bẻ cong ánh sáng",
+        "nguon": "PhET Interactive Simulations, Đại học Colorado Boulder (CC-BY 4.0)"
+    },
+    "bai_tap": [
+        {
+            "id": "1.1",
+            "do_kho": 1,
+            "ten": "Thực hành khúc xạ ánh sáng",
+            "cau_hoi": [
+                {
+                    "id": "1",
+                    "type": "tra-loi-ngan",
+                    "de_bai": "Trong mô phỏng, đặt môi trường phía trên là <b>Không khí</b>, phía dưới là <b>Nước</b>. Chiếu tia laser với <b>góc tới 30°</b>. Góc khúc xạ bằng bao nhiêu độ? (làm tròn đến hàng đơn vị, chỉ nhập số)",
+                    "goi_y": "Dùng thước đo góc, đọc góc giữa tia khúc xạ và pháp tuyến."
+                },
+                {
+                    "id": "2",
+                    "type": "tra-loi-ngan",
+                    "de_bai": "Giữ nguyên góc tới 30°, đổi môi trường phía dưới thành <b>Thủy tinh</b>. Góc khúc xạ bây giờ là bao nhiêu độ? (làm tròn đến hàng đơn vị, chỉ nhập số)",
+                    "goi_y": "Thủy tinh bẻ cong tia sáng nhiều hơn nước, nên góc sẽ nhỏ hơn câu 1."
+                },
+                {
+                    "id": "3",
+                    "type": "dung-sai",
+                    "de_bai": "Tia sáng truyền xiên góc từ không khí sang nước thì góc khúc xạ nhỏ hơn góc tới.",
+                    "goi_y": "Quan sát thước đo góc ở câu 1."
+                },
+                {
+                    "id": "4",
+                    "type": "trac-nghiem",
+                    "de_bai": "Tia sáng truyền từ không khí vào nước. Khi tăng dần góc tới thì góc khúc xạ thay đổi thế nào?",
+                    "dap_an": [
+                        "Giảm dần",
+                        "Tăng dần",
+                        "Không đổi",
+                        "Luôn bằng góc tới"
+                    ],
+                    "goi_y": "Thử kéo laser để tăng góc tới và quan sát tia khúc xạ."
+                }
+            ]
+        },
+        {
+            "id": "1.2",
+            "do_kho": 2,
+            "ten": "Thực hành phản xạ toàn phần",
+            "cau_hoi": [
+                {
+                    "id": "1",
+                    "type": "trac-nghiem",
+                    "de_bai": "Phản xạ toàn phần xảy ra trong trường hợp nào?",
+                    "dap_an": [
+                        "Ánh sáng đi từ không khí vào nước",
+                        "Ánh sáng đi từ nước ra không khí, góc tới lớn hơn góc giới hạn",
+                        "Ánh sáng đi từ nước ra không khí, góc tới nhỏ hơn góc giới hạn",
+                        "Ánh sáng đi vuông góc với mặt phân cách"
+                    ],
+                    "goi_y": "Ánh sáng phải đi từ môi trường chiết quang hơn sang môi trường kém chiết quang hơn."
+                },
+                {
+                    "id": "2",
+                    "type": "tra-loi-ngan",
+                    "de_bai": "Đặt môi trường phía trên là <b>Không khí</b>, phía dưới là <b>Nước</b>, đặt đèn laser trong nước chiếu lên mặt phân cách. Tăng dần góc tới đến khi tia khúc xạ biến mất. Góc giới hạn xấp xỉ bao nhiêu độ? (làm tròn đến hàng đơn vị, chỉ nhập số)",
+                    "goi_y": "Tăng góc tới từng chút một, dừng lại khi tia khúc xạ vừa biến mất."
+                },
+                {
+                    "id": "3",
+                    "type": "tra-loi-ngan",
+                    "de_bai": "Làm tương tự câu 2 nhưng thay nước bằng <b>Thủy tinh</b>. Góc giới hạn xấp xỉ bao nhiêu độ? (làm tròn đến hàng đơn vị, chỉ nhập số)",
+                    "goi_y": "Thủy tinh có chiết suất lớn hơn nước nên góc giới hạn sẽ nhỏ hơn câu 2."
+                },
+                {
+                    "id": "4",
+                    "type": "dung-sai",
+                    "de_bai": "Khi xảy ra phản xạ toàn phần thì không còn tia khúc xạ.",
+                    "goi_y": "Quan sát mô phỏng khi góc tới lớn hơn góc giới hạn."
+                }
+            ]
+        }
+    ]
+}

@@ -1,88 +1,104 @@
 <!doctype html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css"
-    />
-    <title>EduMate</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="style2.css" />
-    <link rel="stylesheet" href="style3.css" />
-  </head>
 
-  <body>
-    <header id="header">
-      <div id="header-inner">
-        <section class="right">
-          <a href="index.html" id="logo">
-            <img src="img/logo.webp" alt="Logo" />
-            <span>Edu<span id="logo-span">Mate</span></span>
-          </a>
-        </section>
-        <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">
-          ☰
-        </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
+  <title>EduMate</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style2.css" />
+  <link rel="stylesheet" href="style3.css" />
+</head>
 
-        <ul id="nav" class="center">
-          <li id="nav-gioi-thieu">
-            <a href="index.html" id="link-gioi-thieu">Giới thiệu</a>
-          </li>
-          <li id="nav-bai-tap">
-            <a href="subjects.html" id="link-bai-tap" class="active">Bài tập</a>
-          </li>
-          <li id="nav-cuoc-thi">
-            <a href="contest.html" id="link-cuoc-thi">Cuộc thi</a>
-          </li>
-          <li id="nav-xep-hang">
-            <a href="ranking.html" id="link-xep-hang">Xếp hạng</a>
-          </li>
-        </ul>
+<body>
+  <header id="header">
+    <div id="header-inner">
+      <section class="right">
+        <a href="index.html" id="logo">
+          <img src="img/logo.webp" alt="Logo" />
+          <span>Edu<span id="logo-span">Mate</span></span>
+        </a>
+      </section>
+      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">
+        ☰
+      </button>
 
-        <div class="user-account-area">
-          <div id="auth-buttons">
-            <a href="login.html" class="auth-link">Đăng nhập</a>
-            <a href="register.html" class="auth-link">Đăng ký</a>
-          </div>
-          <!-- Khi đã đăng nhập (mặc định thêm class hidden) -->
-          <div id="user-profile" class="hidden">
-            <div class="streak-box">🔥 <span>0</span></div>
-            <span class="username">Username</span>
-            <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
-          </div>
+      <ul id="nav" class="center">
+        <li id="nav-gioi-thieu">
+          <a href="index.html" id="link-gioi-thieu">Giới thiệu</a>
+        </li>
+        <li id="nav-bai-tap">
+          <a href="subjects.html" id="link-bai-tap" class="active">Bài tập</a>
+        </li>
+        <li id="nav-cuoc-thi">
+          <a href="contest.html" id="link-cuoc-thi">Cuộc thi</a>
+        </li>
+        <li id="nav-xep-hang">
+          <a href="ranking.html" id="link-xep-hang">Xếp hạng</a>
+        </li>
+      </ul>
+
+      <div class="user-account-area">
+        <div id="auth-buttons">
+          <a href="login.html" class="auth-link">Đăng nhập</a>
+          <a href="register.html" class="auth-link">Đăng ký</a>
+        </div>
+        <!-- Khi đã đăng nhập (mặc định thêm class hidden) -->
+        <div id="user-profile" class="hidden">
+          <div class="streak-box">🔥 <span>0</span></div>
+          <span class="username">Username</span>
+          <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
         </div>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <div class="container">
-      <h2>Lý thuyết</h2>
+  <div class="container">
+    <h2>Lý thuyết</h2>
 
-      <!-- Nút bấm để mở ô lý thuyết (chờ tải xong JSON mới bấm được) -->
+    <!-- Hai nút nằm cạnh nhau. Nút mô phỏng chỉ hiện khi file JSON của bài có "mo_phong" -->
+    <div class="nhom-nut-bai">
       <button type="button" id="btn-ly-thuyet" class="btn" disabled>
         📖 Xem lý thuyết
       </button>
-
-      <br /><br />
-      <h2>Luyện tập</h2>
-      <div id="ds-cau"></div>
+      <button type="button" id="btn-mo-phong" class="btn hidden">
+        🔬 Thực hành với mô phỏng
+      </button>
     </div>
 
-    <!-- Lớp nền đen phủ toàn màn hình, bên trong là ô chữ nhật chứa lý thuyết -->
-    <div id="ly-thuyet-nen" class="modal-nen hidden">
-      <div class="modal-hop" role="dialog" aria-modal="true" aria-labelledby="modal-tieu-de">
-        <div class="modal-dau">
-          <h3 id="modal-tieu-de">Lý thuyết</h3>
-          <button type="button" id="btn-dong-ly-thuyet" class="modal-dong" aria-label="Đóng">✕</button>
-        </div>
-        <!-- Lý thuyết từ file JSON sẽ được đổ vào đây -->
-        <div id="ly-thuyet-noi-dung" class="noi-dung-ly-thuyet"></div>
+    <br /><br />
+    <h2>Luyện tập</h2>
+    <div id="ds-cau"></div>
+  </div>
+
+  <!-- Ô lý thuyết -->
+  <div id="ly-thuyet-nen" class="modal-nen hidden">
+    <div class="modal-hop" role="dialog" aria-modal="true" aria-labelledby="modal-tieu-de">
+      <div class="modal-dau">
+        <h3 id="modal-tieu-de">Lý thuyết</h3>
+        <button type="button" id="btn-dong-ly-thuyet" class="modal-dong" aria-label="Đóng">✕</button>
       </div>
+      <div id="ly-thuyet-noi-dung" class="noi-dung-ly-thuyet"></div>
     </div>
+  </div>
 
-    <script src="script.js"></script>
-    <script src="lesson.js"></script>
-    
-  </body>
+  <!-- Ô mô phỏng (iframe chỉ được nạp lần đầu khi bấm mở) -->
+  <div id="mo-phong-nen" class="modal-nen hidden">
+    <div class="modal-hop mo-phong-hop" role="dialog" aria-modal="true" aria-labelledby="mo-phong-tieu-de">
+      <div class="modal-dau">
+        <h3 id="mo-phong-tieu-de">Mô phỏng</h3>
+        <button type="button" id="btn-dong-mo-phong" class="modal-dong" aria-label="Đóng">✕</button>
+      </div>
+      <p class="mo-phong-xoay">📱 Xoay ngang điện thoại để dùng mô phỏng dễ hơn.</p>
+      <iframe id="mo-phong-khung" title="Mô phỏng" allowfullscreen referrerpolicy="no-referrer"
+        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+      <p id="mo-phong-nguon" class="mo-phong-nguon"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="lesson.js"></script>
+</body>
+
 </html>

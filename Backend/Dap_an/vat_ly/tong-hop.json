@@ -1,0 +1,16 @@
+{
+    "mon": "Vật Lí",
+    "chuong_list": [
+        {
+            "id_chuong": "chuong-1",
+            "ten_chuong": "Chương 1: Ánh Sáng",
+            "danh_sach_bai": [
+                {
+                    "id": "01",
+                    "ten_bai": "Khúc xạ ánh sáng và phản xạ toàn phần",
+                    "diem": 100
+                }
+            ]
+        }
+    ]
+}

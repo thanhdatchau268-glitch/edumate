@@ -19,6 +19,13 @@ document.addEventListener("DOMContentLoaded", () => {
       icon: "fa-feather-pointed",
       coBai: true,
     },
+    {
+      ten: "Vật Lí",
+      subject: "vat-ly", // thư mục thật là vat_ly (gạch ngang tự đổi thành gạch dưới)
+      anh: "vat_ly",
+      icon: "fa-atom",
+      coBai: true,
+    },
   ];
 
   const MON_CHUYEN = {

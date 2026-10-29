@@ -572,3 +572,67 @@
   margin-bottom: 10px;
   font-size: 0.9rem;
 }
+
+/* ===== Mô phỏng (iframe) ===== */
+
+/* Hai nút "Xem lý thuyết" và "Thực hành" nằm cạnh nhau */
+.nhom-nut-bai {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Hộp mô phỏng to hơn hộp lý thuyết */
+.modal-hop.mo-phong-hop {
+  max-width: 1100px;
+  height: 88vh;
+  max-height: 88vh;
+}
+
+/* iframe chiếm hết phần còn lại của hộp */
+#mo-phong-khung {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  border: 0;
+  background: #fff;
+}
+
+/* Dòng ghi nguồn phía dưới (CC-BY yêu cầu ghi nguồn) */
+.mo-phong-nguon {
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  color: var(--nhat);
+  background: #f5f8ff;
+  border-top: 1px solid var(--vien);
+}
+
+.mo-phong-nguon:empty {
+  display: none;
+}
+
+/* Gợi ý xoay ngang: chỉ hiện khi điện thoại đang để dọc */
+.mo-phong-xoay {
+  display: none;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  color: #c27410;
+  background: #fdf1de;
+}
+
+@media (max-width: 640px) and (orientation: portrait) {
+  .mo-phong-xoay {
+    display: block;
+  }
+
+  .modal-hop.mo-phong-hop {
+    height: 92vh;
+    max-height: 92vh;
+  }
+}
+
+/* Nút "Mở mô phỏng ở tab mới" nằm đầu trang làm bài (form.html) */
+.mo-phong-lien-ket {
+  max-width: 800px;
+  margin: 16px auto 0;
+}

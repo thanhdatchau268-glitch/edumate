@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         throw new Error(`Không tìm thấy file JSON (HTTP ${response.status})`);
       }
 
-       // file trống thì báo thân thiện
+      // file trống thì báo thân thiện
       const text = await response.text();
       if (!text.trim()) throw new Error("Bài này chưa có nội dung, bạn quay lại sau nhé!");
       const data = JSON.parse(text);
@@ -111,6 +111,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (dsBai.length === 0) {
         quizContainer.insertAdjacentHTML("afterbegin", `<p>Không tìm thấy bài này.</p>`);
         return;
+      }
+      // Bài có mô phỏng thì thêm nút mở mô phỏng ở tab mới (chỉ nhận link https)
+      const moPhong = typeof data.mo_phong === "string" ? data.mo_phong : (data.mo_phong || {}).url;
+      if (moPhong && /^https:\/\//i.test(moPhong)) {
+        quizContainer.insertAdjacentHTML(
+          "afterbegin",
+          `<p class="mo-phong-lien-ket">
+             <a class="btn" href="${moPhong}" target="_blank" rel="noopener">🔬 Mở mô phỏng ở tab mới</a>
+           </p>`
+        );
       }
 
       // Điểm mỗi câu: lấy trong JSON, không có thì mặc định 10
