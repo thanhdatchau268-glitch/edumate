@@ -1,0 +1,39 @@
+{
+  "ly_thuyet": "<p>Đọc hiểu: xác định nhân vật, sự việc, ý nghĩa.</p>",
+  "bai_tap": [
+    {
+      "id": "1.1",
+      "do_kho": 1,
+      "ten": "Đọc hiểu Lão Hạc",
+      "tac_pham": {
+        "ten": "Lão Hạc",
+        "tac_gia": "Nam Cao",
+        "hinh": ["hinh-1.webp"],
+        "noi_dung": "<p>Đoạn 1...</p><p>Đoạn 2...</p>"
+      },
+      "cau_hoi": [
+        { "id": "1", "type": "tra-loi-ngan", "de_bai": "Nhân vật chính là ai?",
+          "dap_an_dung": "Lão Hạc", "goi_y": "Đọc câu đầu", "loi_giai": "Là Lão Hạc." },
+        { "id": "2", "type": "dung-sai", "de_bai": "Truyện kể ở ngôi thứ nhất.",
+          "dap_an_dung": true, "loi_giai": "Người kể xưng \"tôi\"." }
+      ]
+    },
+    {
+      "id": "1.2",
+      "do_kho": 1,
+      "ten": "Đọc hiểu Lão Hạc",
+      "tac_pham": {
+        "ten": "Lão Hạc",
+        "tac_gia": "Nam Cao",
+        "hinh": ["hinh-1.webp"],
+        "noi_dung": "<p>Đoạn 1...</p><p>Đoạn 2...</p>"
+      },
+      "cau_hoi": [
+        { "id": "1", "type": "tra-loi-ngan", "de_bai": "Nhân vật chính là ai?",
+          "dap_an_dung": "Lão Hạc", "goi_y": "Đọc câu đầu", "loi_giai": "Là Lão Hạc." },
+        { "id": "2", "type": "dung-sai", "de_bai": "Truyện kể ở ngôi thứ nhất.",
+          "dap_an_dung": true, "loi_giai": "Người kể xưng \"tôi\"." }
+      ]
+    }
+  ]
+}

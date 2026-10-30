@@ -1,0 +1,1697 @@
+{
+  "ly_thuyet": "<p>Chưa có lý thuyết.</p>",
+  "bai_tap": [
+    {
+      "id": "4.1",
+      "do_kho": 1,
+      "ten": "Phương trình quy về phương trình bậc nhất một ẩn",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình tích dạng $(ax + b)(cx + d) = 0$ tương đương với khẳng định nào sau đây?",
+          "dap_an": [
+            "$ax + b = 0$ hoặc $cx + d = 0$",
+            "$ax + b = 0$ và $cx + d = 0$",
+            "$ax + b = cx + d$",
+            "$a + c = 0$ hoặc $b + d = 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Tích của hai thừa số bằng $0$ khi và chỉ khi ít nhất một trong hai thừa số bằng $0$."
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Nghiệm của phương trình $(x - 3)(x + 2) = 0$ là:",
+          "dap_an": [
+            "$x = 3$ và $x = 2$",
+            "$x = 3$ hoặc $x = -2$",
+            "$x = -3$ hoặc $x = 2$",
+            "$x = -3$ và $x = -2$"
+          ],
+          "diem": 2,
+          "goi_y": "Cho từng thừa số bằng $0$: $x - 3 = 0$ hoặc $x + 2 = 0$."
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Tập nghiệm của phương trình $(2x - 4)(x + 1) = 0$ là:",
+          "dap_an": [
+            "$S = \\{2; -1\\}$",
+            "$S = \\{-2; 1\\}$",
+            "$S = \\{4; -1\\}$",
+            "$S = \\{2; 1\\}$"
+          ],
+          "diem": 2,
+          "goi_y": "Giải $2x - 4 = 0 \\Leftrightarrow x = 2$ và $x + 1 = 0 \\Leftrightarrow x = -1$."
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Điều kiện xác định (ĐKXĐ) của phương trình $\\frac{2x - 1}{x - 5} = 0$ là:",
+          "dap_an": [
+            "$x \\neq \\frac{1}{2}$",
+            "$x \\neq 5$",
+            "$x \\neq -5$",
+            "$x \\neq 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Mẫu thức phải khác $0$, tức là $x - 5 \\neq 0$."
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Điều kiện xác định của phương trình $\\frac{1}{x + 3} + \\frac{x}{x - 2} = 1$ là:",
+          "dap_an": [
+            "$x \\neq 3$ và $x \\neq 2$",
+            "$x \\neq -3$ và $x \\neq 2$",
+            "$x \\neq -3$ và $x \\neq -2$",
+            "$x \\neq 3$ và $x \\neq -2$"
+          ],
+          "diem": 2,
+          "goi_y": "Cho tất cả các mẫu thức khác $0$: $x + 3 \\neq 0$ và $x - 2 \\neq 0$."
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{x - 4}{x + 1} = 0$ có nghiệm là:",
+          "dap_an": [
+            "$x = 4$",
+            "$x = -1$",
+            "$x = -4$",
+            "Phương trình vô nghiệm"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq -1$. Cho tử thức $x - 4 = 0$."
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Giá trị $x = 2$ là nghiệm của phương trình nào sau đây?",
+          "dap_an": [
+            "$(x + 2)(x - 1) = 0$",
+            "$(x - 2)(3x + 1) = 0$",
+            "$\\frac{x}{x - 2} = 1$",
+            "$(2x + 1)(x + 3) = 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Thay $x = 2$ vào từng phương trình để kiểm tra phương trình nào thỏa mãn."
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Số nghiệm của phương trình $x(x - 5)(2x + 6) = 0$ là:",
+          "dap_an": [
+            "1",
+            "2",
+            "3",
+            "0"
+          ],
+          "diem": 2,
+          "goi_y": "Cho $x = 0$, $x - 5 = 0$, $2x + 6 = 0$ để tìm tất cả các nghiệm phân biệt."
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $(x + 7)(3x - 9) = 0$. Khẳng định nào sau đây là đúng?",
+          "dap_an": [
+            "Phương trình có hai nghiệm là $x = -7$ và $x = 3$",
+            "Phương trình có duy nhất một nghiệm $x = 3$",
+            "Phương trình có hai nghiệm là $x = 7$ và $x = -3$",
+            "Phương trình vô nghiệm"
+          ],
+          "diem": 2,
+          "goi_y": "Giải các phương trình bậc nhất $x + 7 = 0$ và $3x - 9 = 0$."
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Trong các phương trình sau, phương trình nào <b>không</b> phải là phương trình chứa ẩn ở mẫu?",
+          "dap_an": [
+            "$\\frac{3}{x - 1} = 2$",
+            "$x + \\frac{1}{x} = 5$",
+            "$\\frac{2x - 1}{3} = 4$",
+            "$\\frac{x + 1}{x + 2} = 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Phương trình chứa ẩn ở mẫu là phương trình có chứa biến $x$ ở dưới mẫu thức."
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Mẫu thức chung đơn giản nhất của hai phân thức $\\frac{1}{x - 1}$ và $\\frac{3}{x + 1}$ là:",
+          "dap_an": [
+            "$x - 1$",
+            "$x + 1$",
+            "$(x - 1)(x + 1)$",
+            "$x^2 + 1$"
+          ],
+          "diem": 2,
+          "goi_y": "Mẫu thức chung là tích của hai mẫu thức khác nhau $(x - 1)(x + 1)$."
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Bước đầu tiên khi giải phương trình chứa ẩn ở mẫu là gì?",
+          "dap_an": [
+            "Tìm điều kiện xác định của phương trình",
+            "Quy đồng mẫu thức hai vế rồi khử mẫu",
+            "Giải phương trình vừa nhận được",
+            "Kết luận tập nghiệm"
+          ],
+          "diem": 2,
+          "goi_y": "Dựa vào quy tắc giải phương trình chứa ẩn ở mẫu trong SGK."
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "ĐKXĐ của phương trình $\\frac{x + 2}{x(x - 3)} = 0$ là:",
+          "dap_an": [
+            "$x \\neq 0$",
+            "$x \\neq 3$",
+            "$x \\neq 0$ và $x \\neq 3$",
+            "$x \\neq -2$"
+          ],
+          "diem": 2,
+          "goi_y": "Mẫu thức $x(x - 3) \\neq 0 \\Leftrightarrow x \\neq 0$ và $x - 3 \\neq 0$."
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{x^2 - 9}{x - 3} = 0$ có tập nghiệm là:",
+          "dap_an": [
+            "$S = \\{3; -3\\}$",
+            "$S = \\{-3\\}$",
+            "$S = \\{3\\}$",
+            "$S = \\varnothing$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 3$. Tử thức $x^2 - 9 = (x-3)(x+3) = 0 \\Leftrightarrow x = 3$ hoặc $x = -3$. Loại $x = 3$."
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $x^2 - 4x = 0$. Bằng cách đặt nhân tử chung, phương trình được đưa về dạng phương trình tích nào?",
+          "dap_an": [
+            "$x(x - 4) = 0$",
+            "$x(x + 4) = 0$",
+            "$(x - 2)(x + 2) = 0$",
+            "$(x - 4)^2 = 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Đặt $x$ làm nhân tử chung: $x(x - 4) = 0$."
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Tổng các nghiệm của phương trình $(x - 1)(x - 5) = 0$ bằng:",
+          "dap_an": [
+            "4",
+            "6",
+            "-6",
+            "5"
+          ],
+          "diem": 2,
+          "goi_y": "Tìm hai nghiệm $x_1 = 1, x_2 = 5$ rồi tính $x_1 + x_2$."
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Tích các nghiệm của phương trình $(2x + 6)(x - 4) = 0$ bằng:",
+          "dap_an": [
+            "12",
+            "-12",
+            "-24",
+            "24"
+          ],
+          "diem": 2,
+          "goi_y": "Giải các nghiệm $x_1 = -3, x_2 = 4$ rồi tính $x_1 \\cdot x_2$."
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "ĐKXĐ của phương trình $\\frac{x}{2x + 4} - \\frac{1}{x} = 0$ là:",
+          "dap_an": [
+            "$x \\neq 0$ và $x \\neq -2$",
+            "$x \\neq 0$ và $x \\neq 2$",
+            "$x \\neq -2$",
+            "$x \\neq 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Cho $2x + 4 \\neq 0 \\Leftrightarrow x \\neq -2$ và $x \\neq 0$."
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $(x^2 + 1)(x - 2) = 0$ có bao nhiêu nghiệm thực?",
+          "dap_an": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "diem": 2,
+          "goi_y": "Vì $x^2 + 1 &gt; 0$ với mọi $x$ nên chỉ có $x - 2 = 0$."
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Nghiệm của phương trình $\\frac{3x - 6}{x + 2} = 0$ là:",
+          "dap_an": [
+            "$x = -2$",
+            "$x = 2$",
+            "$x = 6$",
+            "Vô nghiệm"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq -2$. Cho tử thức $3x - 6 = 0 \\Leftrightarrow x = 2$ (thỏa mãn ĐKXĐ)."
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Khi giải phương trình $\\frac{x}{x - 1} = \\frac{1}{x - 1} + 2$, bước khử mẫu thu được phương trình nào sau đây?",
+          "dap_an": [
+            "$x = 1 + 2(x - 1)$",
+            "$x = 1 + 2$",
+            "$x(x - 1) = 1 + 2$",
+            "$x = 1 - 2(x - 1)$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 1$. Quy đồng cùng mẫu $x - 1$ rồi bỏ mẫu: $x = 1 + 2(x - 1)$."
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $(3x + 12)(2 - x) = 0$. Nghiệm âm của phương trình là:",
+          "dap_an": [
+            "$x = -4$",
+            "$x = -2$",
+            "$x = -3$",
+            "$x = -12$"
+          ],
+          "diem": 2,
+          "goi_y": "Giải các nghiệm $x = -4$ và $x = 2$, chọn nghiệm nhỏ hơn $0$."
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{x - 1}{x - 1} = 1$ có tập nghiệm là:",
+          "dap_an": [
+            "$S = \\mathbb{R}$",
+            "$S = \\mathbb{R} \\setminus \\{1\\}$",
+            "$S = \\{1\\}$",
+            "$S = \\varnothing$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 1$. Với $x \\neq 1$, $1 = 1$ luôn đúng nên nghiệm là mọi $x \\neq 1$."
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Phân tích đa thức $x^2 - 5x + 6$ thành nhân tử để đưa về phương trình tích $x^2 - 5x + 6 = 0$ ta được phương trình:",
+          "dap_an": [
+            "$(x - 1)(x - 6) = 0$",
+            "$(x - 2)(x - 3) = 0$",
+            "$(x + 2)(x + 3) = 0$",
+            "$(x + 1)(x - 6) = 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Tách $-5x = -2x - 3x$ ta được $(x - 2)(x - 3) = 0$."
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{2x}{x + 3} = 2$ có nghiệm là:",
+          "dap_an": [
+            "$x = 3$",
+            "$x = -3$",
+            "$x = 0$",
+            "Vô nghiệm"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq -3$. Quy đồng: $2x = 2(x + 3) \\Leftrightarrow 2x = 2x + 6 \\Leftrightarrow 0x = 6$ (vô lý)."
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Cho phương trình tích $(2x - 6)(x + 4) = 0$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Phương trình đã cho là phương trình tích.",
+          "diem": 2.5,
+          "goi_y": "Biến đổi phương trình thành hai trường hợp $2x - 6 = 0$ hoặc $x + 4 = 0$ để kiểm tra từng mệnh đề."
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Giá trị $x = 3$ là một nghiệm của phương trình.",
+          "diem": 2.5,
+          "goi_y": "Biến đổi phương trình thành hai trường hợp $2x - 6 = 0$ hoặc $x + 4 = 0$ để kiểm tra từng mệnh đề."
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Giá trị $x = 4$ là một nghiệm của phương trình.",
+          "diem": 2.5,
+          "goi_y": "Biến đổi phương trình thành hai trường hợp $2x - 6 = 0$ hoặc $x + 4 = 0$ để kiểm tra từng mệnh đề."
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Tập nghiệm của phương trình là $S = \\{3; -4\\}$.",
+          "diem": 2.5,
+          "goi_y": "Biến đổi phương trình thành hai trường hợp $2x - 6 = 0$ hoặc $x + 4 = 0$ để kiểm tra từng mệnh đề."
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Cho phương trình chứa ẩn ở mẫu $\\frac{x + 1}{x - 2} = \\frac{3}{x - 2}$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Điều kiện xác định của phương trình là $x \\neq 2$.",
+          "diem": 2.5,
+          "goi_y": "Tìm ĐKXĐ $x \\neq 2$, sau đó bỏ mẫu được $x + 1 = 3 \\Leftrightarrow x = 2$ rồi đối chiếu ĐKXĐ."
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Khử mẫu hai vế ta được phương trình $x + 1 = 3$.",
+          "diem": 2.5,
+          "goi_y": "Tìm ĐKXĐ $x \\neq 2$, sau đó bỏ mẫu được $x + 1 = 3 \\Leftrightarrow x = 2$ rồi đối chiếu ĐKXĐ."
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Giá trị tìm được $x = 2$ thỏa mãn điều kiện xác định.",
+          "diem": 2.5,
+          "goi_y": "Tìm ĐKXĐ $x \\neq 2$, sau đó bỏ mẫu được $x + 1 = 3 \\Leftrightarrow x = 2$ rồi đối chiếu ĐKXĐ."
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Phương trình đã cho có tập nghiệm $S = \\varnothing$ (vô nghiệm).",
+          "diem": 2.5,
+          "goi_y": "Tìm ĐKXĐ $x \\neq 2$, sau đó bỏ mẫu được $x + 1 = 3 \\Leftrightarrow x = 2$ rồi đối chiếu ĐKXĐ."
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm nghiệm dương của phương trình $(x - 5)(x + 3) = 0$.",
+          "diem": 6,
+          "goi_y": "Giải hai nghiệm $x = 5$ và $x = -3$, chọn giá trị dương."
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Cho phương trình $\\frac{2x - 8}{x + 1} = 0$. Tìm nghiệm $x$ của phương trình.",
+          "diem": 6,
+          "goi_y": "ĐKXĐ $x \\neq -1$. Cho $2x - 8 = 0$."
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Giá trị $x = -2$ là nghiệm của phương trình $(x + 2)(3x - m) = 0$. Tính giá trị của $m$ nếu biết phương trình còn có nghiệm $x = 3$.",
+          "diem": 6,
+          "goi_y": "Nếu $x = 3$ là nghiệm thì $(3 + 2)(3(3) - m) = 0 \\Leftrightarrow 9 - m = 0$."
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm số nghiệm của phương trình $(x^2 - 16)(x - 4) = 0$.",
+          "diem": 6,
+          "goi_y": "$x^2 - 16 = 0 \\Leftrightarrow x = 4$ hoặc $x = -4$. Thừa số thứ hai cho $x = 4$. Liệt kê các nghiệm phân biệt."
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm nghiệm của phương trình $\\frac{x + 3}{x - 1} = 2$.",
+          "diem": 6,
+          "goi_y": "ĐKXĐ $x \\neq 1$. Quy đồng khử mẫu: $x + 3 = 2(x - 1) \\Leftrightarrow x + 3 = 2x - 2$."
+        }
+      ]
+    },
+    {
+      "id": "4.2",
+      "do_kho": 1.3,
+      "ten": "Phương trình quy về phương trình bậc nhất một ẩn",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình tích $(2x - 4)(x + 3) = 0$ có tập nghiệm $S$ là:",
+          "dap_an": [
+            "$S = \\{2; 3\\}$",
+            "$S = \\{2; -3\\}$",
+            "$S = \\{-2; 3\\}$",
+            "$S = \\{-2; -3\\}$"
+          ],
+          "diem": 2,
+          "goi_y": "Phương trình có dạng $A(x) \\cdot B(x) = 0 \\Leftrightarrow A(x) = 0$ hoặc $B(x) = 0$. Giải $2x - 4 = 0$ và $x + 3 = 0$."
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Số nghiệm của phương trình $(x^2 + 1)(3x - 9) = 0$ là:",
+          "dap_an": [
+            "$0$",
+            "$1$",
+            "$2$",
+            "$3$"
+          ],
+          "diem": 2,
+          "goi_y": "Cho $x^2 + 1 = 0$ (vô nghiệm vì $x^2 + 1 \\ge 1 &gt; 0$) hoặc $3x - 9 = 0$."
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Nghiệm nhỏ nhất của phương trình $(x + 5)(2x - 1)(x - 3) = 0$ là:",
+          "dap_an": [
+            "$-5$",
+            "$\\frac{1}{2}$",
+            "$3$",
+            "$0$"
+          ],
+          "diem": 2,
+          "goi_y": "Tìm 3 nghiệm từ 3 thừa số lần lượt là $x = -5$, $x = \\frac{1}{2}$, $x = 3$. So sánh để tìm giá trị nhỏ nhất."
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Bằng cách đặt nhân tử chung, phương trình $x(x - 2) + 3(x - 2) = 0$ được biến đổi thành phương trình tích nào?",
+          "dap_an": [
+            "$(x - 2)(x - 3) = 0$",
+            "$(x - 2)(x + 3) = 0$",
+            "$(x + 2)(x + 3) = 0$",
+            "$x(x - 2)(x + 3) = 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Đặt $(x - 2)$ làm nhân tử chung, biểu thức còn lại trong ngoặc thứ hai là $x + 3$."
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Giải phương trình $x^2 - 9 = 0$.",
+          "dap_an": [
+            "$x = 3$",
+            "$x = -3$",
+            "$x = 3$ hoặc $x = -3$",
+            "$x = 9$ hoặc $x = -9$"
+          ],
+          "diem": 2,
+          "goi_y": "Áp dụng hằng đẳng thức hiệu hai bình phương $x^2 - 9 = (x - 3)(x + 3) = 0$."
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Tổng tất cả các nghiệm của phương trình $(2x - 6)(3x + 9) = 0$ bằng:",
+          "dap_an": [
+            "$0$",
+            "$6$",
+            "$-6$",
+            "$3$"
+          ],
+          "diem": 2,
+          "goi_y": "Giải các thừa số thu được $x_1 = 3$ và $x_2 = -3$. Tính tổng $x_1 + x_2$."
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $2x(x + 1) - (x + 1) = 0$. Nghiệm của phương trình là:",
+          "dap_an": [
+            "$x = 1$ hoặc $x = 2$",
+            "$x = -1$ hoặc $x = 2$",
+            "$x = -1$ hoặc $x = \\frac{1}{2}$",
+            "$x = 1$ hoặc $x = \\frac{1}{2}$"
+          ],
+          "diem": 2,
+          "goi_y": "Đặt $(x + 1)$ làm nhân tử chung ta được $(x + 1)(2x - 1) = 0$."
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $x^2 + 4x + 4 = 0$ có bao nhiêu nghiệm?",
+          "dap_an": [
+            "$0$",
+            "$1$",
+            "$2$",
+            "Vô số"
+          ],
+          "diem": 2,
+          "goi_y": "Biến đổi vế trái theo hằng đẳng thức $(x + 2)^2 = 0 \\Leftrightarrow x + 2 = 0$."
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Điều kiện xác định của phương trình $\\frac{2x - 1}{x + 3} = 1$ là:",
+          "dap_an": [
+            "$x \\neq 3$",
+            "$x \\neq -3$",
+            "$x \\neq \\frac{1}{2}$",
+            "$x \\neq 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Cho mẫu thức $x + 3 \\neq 0 \\Leftrightarrow x \\neq -3$."
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Điều kiện xác định của phương trình $\\frac{x}{x - 1} + \\frac{2}{x + 2} = 0$ là:",
+          "dap_an": [
+            "$x \\neq 1$",
+            "$x \\neq -2$",
+            "$x \\neq 1$ và $x \\neq -2$",
+            "$x \\neq -1$ và $x \\neq 2$"
+          ],
+          "diem": 2,
+          "goi_y": "Phương trình có hai mẫu thức $x - 1$ và $x + 2$. Cho cả hai mẫu thức khác $0$."
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Mẫu thức chung đơn giản nhất của hai phân thức trong phương trình $\\frac{1}{x - 2} + \\frac{3}{x + 2} = \\frac{5}{x^2 - 4}$ là:",
+          "dap_an": [
+            "$x - 2$",
+            "$x + 2$",
+            "$x^2 - 4$",
+            "$(x - 2)^2$"
+          ],
+          "diem": 2,
+          "goi_y": "Phân tích $x^2 - 4 = (x - 2)(x + 2)$. Mẫu thức chung là tích $(x - 2)(x + 2) = x^2 - 4$."
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Giải phương trình $\\frac{3x - 2}{x + 1} = 2$.",
+          "dap_an": [
+            "$x = 2$",
+            "$x = 4$",
+            "$x = -1$",
+            "$x = 0$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq -1$. Quy đồng khử mẫu: $3x - 2 = 2(x + 1) \\Leftrightarrow 3x - 2 = 2x + 2$."
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Giải phương trình $\\frac{x^2 - 4}{x - 2} = 0$.",
+          "dap_an": [
+            "$S = \\{2; -2\\}$",
+            "$S = \\{2\\}$",
+            "$S = \\{-2\\}$",
+            "$S = \\emptyset$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 2$. Rút gọn hoặc cho tử số bằng $0$: $x^2 - 4 = 0 \\Leftrightarrow x = \\pm 2$. Đối chiếu ĐKXĐ loại $x = 2$."
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{x + 1}{x - 1} = \\frac{x - 1}{x + 1}$ có nghiệm là:",
+          "dap_an": [
+            "$x = 0$",
+            "$x = 1$",
+            "$x = -1$",
+            "Vô nghiệm"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq \\pm 1$. Quy đồng khử mẫu: $(x + 1)^2 = (x - 1)^2 \\Leftrightarrow x^2 + 2x + 1 = x^2 - 2x + 1 \\Leftrightarrow 4x = 0$."
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $\\frac{2x}{x - 3} - \\frac{5}{x - 3} = 1$. Giá trị của $x$ tìm được sau khi khử mẫu là:",
+          "dap_an": [
+            "$x = 3$",
+            "$x = 2$",
+            "$x = -2$",
+            "$x = 5$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 3$. Khử mẫu thu được $2x - 5 = x - 3 \\Leftrightarrow x = 2$ (thỏa mãn ĐKXĐ)."
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Tập nghiệm của phương trình $(x + 1)(x - 3) = x + 1$ là:",
+          "dap_an": [
+            "$S = \\{-1; 3\\}$",
+            "$S = \\{-1; 4\\}$",
+            "$S = \\{1; 4\\}$",
+            "$S = \\{4\\}$"
+          ],
+          "diem": 2,
+          "goi_y": "Chuyển vế: $(x + 1)(x - 3) - (x + 1) = 0 \\Leftrightarrow (x + 1)(x - 4) = 0$."
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{x^2 - x}{x - 1} = 2$ có bao nhiêu nghiệm?",
+          "dap_an": [
+            "$0$",
+            "$1$",
+            "$2$",
+            "Vô số"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 1$. Rút gọn vế trái $x(x - 1)/(x - 1) = x$. Thu được $x = 2$ (thỏa mãn ĐKXĐ)."
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Điểm khác biệt quan trọng nhất khi giải phương trình chứa ẩn ở mẫu so với phương trình bậc nhất thông thường là bước nào?",
+          "dap_an": [
+            "Nhân hai vế với 0",
+            "Tìm ĐKXĐ và đối chiếu điều kiện để chọn nghiệm thích hợp",
+            "Chuyển vế đổi dấu các số hạng",
+            "Rút gọn vế trái"
+          ],
+          "diem": 2,
+          "goi_y": "Cần tìm ĐKXĐ và đối chiếu giá trị tìm được với ĐKXĐ để loại bỏ nghiệm ngoại lai."
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Giải phương trình $\\frac{x - 1}{x + 2} = \\frac{x + 3}{x - 1}$.",
+          "dap_an": [
+            "$x = \\frac{5}{7}$",
+            "$x = -\\frac{5}{7}$",
+            "$x = -\\frac{7}{5}$",
+            "$x = 1$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq -2$ và $x \\neq 1$. Quy đồng khử mẫu: $(x - 1)^2 = (x + 2)(x + 3) \\Leftrightarrow x^2 - 2x + 1 = x^2 + 5x + 6 \\Leftrightarrow -7x = 5$."
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $x(2x - 1) = 0$ có tích hai nghiệm bằng:",
+          "dap_an": [
+            "$0$",
+            "$\\frac{1}{2}$",
+            "$-\\frac{1}{2}$",
+            "$2$"
+          ],
+          "diem": 2,
+          "goi_y": "Hai nghiệm của phương trình là $x_1 = 0$ và $x_2 = \\frac{1}{2}$. Tích $x_1 \\cdot x_2 = 0 \\cdot \\frac{1}{2} = 0$."
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{1}{x - 1} + \\frac{1}{x + 1} = 0$ có nghiệm là:",
+          "dap_an": [
+            "$x = 0$",
+            "$x = 1$",
+            "$x = -1$",
+            "Vô nghiệm"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq \\pm 1$. Quy đồng khử mẫu: $(x + 1) + (x - 1) = 0 \\Leftrightarrow 2x = 0 \\Leftrightarrow x = 0$ (thỏa mãn ĐKXĐ)."
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Điều kiện xác định của phương trình $\\frac{x + 3}{x^2 - 1} = 0$ là:",
+          "dap_an": [
+            "$x \\neq 1$",
+            "$x \\neq -1$",
+            "$x \\neq 1$ và $x \\neq -1$",
+            "$x \\neq -3$"
+          ],
+          "diem": 2,
+          "goi_y": "Cho mẫu thức $x^2 - 1 \\neq 0 \\Leftrightarrow (x - 1)(x + 1) \\neq 0 \\Leftrightarrow x \\neq 1$ và $x \\neq -1$."
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Giá trị của $x = 2$ là nghiệm của phương trình nào dưới đây?",
+          "dap_an": [
+            "$\\frac{x}{x - 2} = 0$",
+            "$\\frac{x + 2}{x - 1} = 4$",
+            "$\\frac{x - 2}{x - 2} = 0$",
+            "$(x + 2)(x - 2) = 5$"
+          ],
+          "diem": 2,
+          "goi_y": "Thay $x = 2$ vào từng phương trình để kiểm tra vế trái bằng vế phải và thỏa mãn ĐKXĐ."
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $(x^2 - 4)(x + 1) = 0$ có tập nghiệm là:",
+          "dap_an": [
+            "$S = \\{2; -2; -1\\}$",
+            "$S = \\{2; -1\\}$",
+            "$S = \\{-2; -1\\}$",
+            "$S = \\{4; -1\\}$"
+          ],
+          "diem": 2,
+          "goi_y": "Phân tích $x^2 - 4 = (x - 2)(x + 2)$. Ta được 3 nghiệm $x = 2, x = -2, x = -1$."
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Giải phương trình $\\frac{x}{2x - 4} - \\frac{1}{x - 2} = 0$.",
+          "dap_an": [
+            "$x = 2$",
+            "$x = 0$",
+            "Vô nghiệm ($S = \\emptyset$)",
+            "$x = -2$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 2$. Mẫu chung $2(x - 2)$. Quy đồng: $\\frac{x}{2(x - 2)} - \\frac{2}{2(x - 2)} = 0 \\Rightarrow x - 2 = 0 \\Leftrightarrow x = 2$. Kết hợp ĐKXĐ $\\Rightarrow$ Phương trình vô nghiệm."
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Cho phương trình $(x^2 - 1)(2x + 4) = 0$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Phương trình đã cho là một phương trình tích.",
+          "diem": 2.5,
+          "goi_y": "Biến đổi vế trái thành $(x - 1)(x + 1)(2x + 4) = 0$. Cho từng thừa số bằng $0$ để tìm các nghiệm."
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Phương trình có đúng 2 nghiệm phân biệt.",
+          "diem": 2.5,
+          "goi_y": "Biến đổi vế trái thành $(x - 1)(x + 1)(2x + 4) = 0$. Cho từng thừa số bằng $0$ để tìm các nghiệm."
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Tất cả các nghiệm của phương trình là $x = 1$, $x = -1$ và $x = -2$.",
+          "diem": 2.5,
+          "goi_y": "Biến đổi vế trái thành $(x - 1)(x + 1)(2x + 4) = 0$. Cho từng thừa số bằng $0$ để tìm các nghiệm."
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Tổng các nghiệm của phương trình bằng $-2$.",
+          "diem": 2.5,
+          "goi_y": "Biến đổi vế trái thành $(x - 1)(x + 1)(2x + 4) = 0$. Cho từng thừa số bằng $0$ để tìm các nghiệm."
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Cho phương trình chứa ẩn ở mẫu $\\frac{x + 2}{x - 1} = \\frac{3}{x - 1} + 2$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Điều kiện xác định của phương trình là $x \\neq 1$.",
+          "diem": 2.5,
+          "goi_y": "Xác định ĐKXĐ $x \\neq 1$. Khử mẫu ta được $x + 2 = 3 + 2(x - 1) \\Leftrightarrow x + 2 = 2x + 1 \\Leftrightarrow x = 1$. So sánh với ĐKXĐ."
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Sau khi quy đồng khử mẫu, ta thu được phương trình $x + 2 = 3 + 2(x - 1)$.",
+          "diem": 2.5,
+          "goi_y": "Xác định ĐKXĐ $x \\neq 1$. Khử mẫu ta được $x + 2 = 3 + 2(x - 1) \\Leftrightarrow x + 2 = 2x + 1 \\Leftrightarrow x = 1$. So sánh với ĐKXĐ."
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Giá trị $x = 1$ tìm được thỏa mãn điều kiện xác định.",
+          "diem": 2.5,
+          "goi_y": "Xác định ĐKXĐ $x \\neq 1$. Khử mẫu ta được $x + 2 = 3 + 2(x - 1) \\Leftrightarrow x + 2 = 2x + 1 \\Leftrightarrow x = 1$. So sánh với ĐKXĐ."
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Phương trình đã cho vô nghiệm ($S = \\emptyset$).",
+          "diem": 2.5,
+          "goi_y": "Xác định ĐKXĐ $x \\neq 1$. Khử mẫu ta được $x + 2 = 3 + 2(x - 1) \\Leftrightarrow x + 2 = 2x + 1 \\Leftrightarrow x = 1$. So sánh với ĐKXĐ."
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm nghiệm dương của phương trình $(x - 3)(x + 4) = 0$.",
+          "diem": 6,
+          "goi_y": "Giải hai thừa số thu được $x = 3$ và $x = -4$. Chọn giá trị dương."
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm nghiệm của phương trình $\\frac{2x - 6}{x + 2} = 0$.",
+          "diem": 6,
+          "goi_y": "ĐKXĐ $x \\neq -2$. Cho tử số $2x - 6 = 0 \\Leftrightarrow x = 3$ (thỏa mãn ĐKXĐ)."
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tính tổng tất cả các nghiệm của phương trình $(x^2 - 16)(x - 2) = 0$.",
+          "diem": 6,
+          "goi_y": "Các nghiệm là $x = 4, x = -4, x = 2$. Tính $4 + (-4) + 2$."
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm giá trị của $x$ thỏa mãn phương trình $\\frac{x + 1}{x - 2} = 3$.",
+          "diem": 6,
+          "goi_y": "ĐKXĐ $x \\neq 2$. Khử mẫu: $x + 1 = 3(x - 2) \\Leftrightarrow x + 1 = 3x - 6 \\Leftrightarrow 2x = 7 \\Leftrightarrow x = 3,5$."
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Biết phương trình $\\frac{x^2 - 5x + 6}{x - 2} = 0$ có một nghiệm. Giá trị của nghiệm đó bằng bao nhiêu?",
+          "diem": 6,
+          "goi_y": "ĐKXĐ $x \\neq 2$. Phân tích tử số $(x - 2)(x - 3) = 0 \\Leftrightarrow x = 2$ hoặc $x = 3$. Đối chiếu ĐKXĐ loại $x = 2$, nhận $x = 3$."
+        }
+      ]
+    },
+    {
+      "id": "4.3",
+      "do_kho": 1.5,
+      "ten": "Phương trình quy về phương trình bậc nhất một ẩn",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình nào sau đây quy về phương trình bậc nhất một ẩn bằng cách đưa về phương trình tích?",
+          "dap_an": [
+            "$(2x + 1)(x - 3) = 0$",
+            "$x^2 + 2x + 1 = x^2 - 3$",
+            "$\\frac{x+1}{2} = 3$",
+            "$2x - 5 = 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Kiểm tra phương trình có dạng $A(x) \\cdot B(x) = 0$ hoặc phân tích được thành nhân tử."
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Nghiệm lớn nhất của phương trình $(x^2 - 4)(2x + 6) = 0$ là:",
+          "dap_an": [
+            "$x = 2$",
+            "$x = -2$",
+            "$x = -3$",
+            "$x = 4$"
+          ],
+          "diem": 2,
+          "goi_y": "Giải các phương trình thành phần $x^2 - 4 = 0$ và $2x + 6 = 0$ rồi chọn giá trị lớn nhất."
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Tổng tất cả các nghiệm của phương trình $x^2 - 5x + 6 = 0$ bằng bao nhiêu?",
+          "dap_an": [
+            "$1$",
+            "$5$",
+            "$-5$",
+            "$6$"
+          ],
+          "diem": 2,
+          "goi_y": "Phân tích $x^2 - 5x + 6 = (x - 2)(x - 3) = 0$ để tìm các nghiệm rồi cộng lại."
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $(x + 2)^2 - 9 = 0$. Phương trình này có tập nghiệm là:",
+          "dap_an": [
+            "$S = \\{1; 5\\}$",
+            "$S = \\{1; -5\\}$",
+            "$S = \\{-1; 5\\}$",
+            "$S = \\{-1; -5\\}$"
+          ],
+          "diem": 2,
+          "goi_y": "Sử dụng hằng đẳng thức $A^2 - B^2 = (A - B)(A + B)$ với $A = x + 2$ và $B = 3$."
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $x^3 - 4x = 0$ có bao nhiêu nghiệm phân biệt?",
+          "dap_an": [
+            "$1$",
+            "$2$",
+            "$3$",
+            "$0$"
+          ],
+          "diem": 2,
+          "goi_y": "Đặt $x$ làm nhân tử chung thu được $x(x^2 - 4) = 0 \\Leftrightarrow x(x - 2)(x + 2) = 0$."
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Đâu là điều kiện xác định (ĐKXĐ) của phương trình $\\frac{x}{x-2} + \\frac{1}{x+2} = \\frac{4}{x^2-4}$?",
+          "dap_an": [
+            "$x \\neq 2$",
+            "$x \\neq -2$",
+            "$x \\neq 2$ và $x \\neq -2$",
+            "$x \\neq 4$"
+          ],
+          "diem": 2,
+          "goi_y": "Cho tất cả các mẫu thức khác $0$: $x - 2 \\neq 0$, $x + 2 \\neq 0$ và $x^2 - 4 \\neq 0$."
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Giải phương trình $\\frac{2x}{x-1} - \\frac{2}{x-1} = 0$.",
+          "dap_an": [
+            "$x = 1$",
+            "Vô nghiệm",
+            "$x = -1$",
+            "Vô số nghiệm"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 1$. Quy đồng và khử mẫu thu được $2x - 2 = 0 \\Leftrightarrow x = 1$. Đối chiếu ĐKXĐ."
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{x+1}{x-3} = \\frac{4}{x-3}$ có tập nghiệm là:",
+          "dap_an": [
+            "$S = \\varnothing$",
+            "$S = \\{3\\}$",
+            "$S = \\{4\\}$",
+            "$S = \\{1\\}$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 3$. Mẫu thức giống nhau, cho hai tử thức bằng nhau: $x + 1 = 4$. Đối chiếu ĐKXĐ."
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Tích các nghiệm của phương trình $(2x - 1)^2 = (x + 3)^2$ bằng bao nhiêu?",
+          "dap_an": [
+            "$-8$",
+            "$-\\frac{8}{3}$",
+            "$8$",
+            "$\\frac{8}{3}$"
+          ],
+          "diem": 2,
+          "goi_y": "Chuyển vế dùng hằng đẳng thức $A^2 - B^2 = (A - B)(A + B) = 0 \\Leftrightarrow (3x + 2)(x - 4) = 0$."
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{1}{x-1} + \\frac{2}{x+1} = \\frac{3}{x^2-1}$ có nghiệm $x$ bằng bao nhiêu?",
+          "dap_an": [
+            "$x = 1$",
+            "$x = -1$",
+            "$x = \\frac{4}{3}$",
+            "$x = 2$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq \\pm 1$. Quy đồng với mẫu chung $(x-1)(x+1)$: $1(x+1) + 2(x-1) = 3$."
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $(x^2 + 1)(x - 2) = 0$. Khẳng định nào sau đây là đúng?",
+          "dap_an": [
+            "Phương trình chỉ có một nghiệm duy nhất $x = 2$",
+            "Phương trình có ba nghiệm",
+            "Phương trình vô nghiệm",
+            "Phương trình có hai nghiệm $x = 2$ và $x = -1$"
+          ],
+          "diem": 2,
+          "goi_y": "Do $x^2 + 1 &gt; 0$ với mọi $x \\in \\mathbb{R}$ nên phương trình chỉ có nghiệm khi $x - 2 = 0$."
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{x-1}{x+2} + \\frac{x+1}{x-2} = \\frac{2x^2}{x^2-4}$ có bao nhiêu nghiệm?",
+          "dap_an": [
+            "Vô nghiệm",
+            "$1$ nghiệm",
+            "$2$ nghiệm",
+            "Vô số nghiệm"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq \\pm 2$. Quy đồng khử mẫu: $(x-1)(x-2) + (x+1)(x+2) = 2x^2 \\Leftrightarrow 2x^2 + 4 = 2x^2$."
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{x}{2(x-3)} + \\frac{x}{2x+6} = \\frac{2x}{x^2-9}$ có ĐKXĐ là:",
+          "dap_an": [
+            "$x \\neq 3$",
+            "$x \\neq -3$",
+            "$x \\neq 3$ và $x \\neq -3$",
+            "$x \\neq 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Mẫu thức $2(x-3) \\neq 0$, $2(x+3) \\neq 0$ và $(x-3)(x+3) \\neq 0$."
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Để đưa phương trình $x^2 - 3x = 2x - 6$ về phương trình tích, bước biến đổi đúng là:",
+          "dap_an": [
+            "$(x - 3)(x - 2) = 0$",
+            "$(x - 3)(x + 2) = 0$",
+            "$(x + 3)(x - 2) = 0$",
+            "$x(x - 3) = 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Chuyển vế: $x(x - 3) - 2(x - 3) = 0 \\Leftrightarrow (x - 3)(x - 2) = 0$."
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $\\frac{2x - 5}{x - 2} = 3$. Giá trị của $x$ là:",
+          "dap_an": [
+            "$x = 1$",
+            "$x = -1$",
+            "$x = 2$",
+            "$x = 3$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 2$. Khử mẫu: $2x - 5 = 3(x - 2) \\Leftrightarrow 2x - 5 = 3x - 6$."
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $x(x - 1) = 2(x - 1)$ có tập nghiệm $S$ là:",
+          "dap_an": [
+            "$S = \\{2\\}$",
+            "$S = \\{1\\}$",
+            "$S = \\{1; 2\\}$",
+            "$S = \\{0; 2\\}$"
+          ],
+          "diem": 2,
+          "goi_y": "Chuyển vế đặt $(x - 1)$ làm nhân tử chung: $(x - 1)(x - 2) = 0$."
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Nghiệm âm của phương trình $2x^2 - 3x - 2 = 0$ là:",
+          "dap_an": [
+            "$x = -\\frac{1}{2}$",
+            "$x = -2$",
+            "$x = -1$",
+            "$x = -\\frac{2}{3}$"
+          ],
+          "diem": 2,
+          "goi_y": "Phân tích $2x^2 - 4x + x - 2 = 0 \\Leftrightarrow (2x + 1)(x - 2) = 0$."
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{x+2}{x+1} - \\frac{x-1}{x} = \\frac{2}{x^2+x}$ sau khi khử mẫu thu được phương trình nào?",
+          "dap_an": [
+            "$2x + 1 = 2$",
+            "$2x - 1 = 2$",
+            "$x^2 + 2x = 2$",
+            "$2x + 2 = 2$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 0, x \\neq -1$. Mẫu chung $x(x+1)$. Ta có $x(x+2) - (x-1)(x+1) = 2$."
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Một mảnh đất hình chữ nhật có chiều dài lớn hơn chiều rộng $5\\text{ m}$. Nếu gọi chiều rộng là $x\\text{ (m)}$ ($x &gt; 0$) và biết diện tích mảnh đất bằng $84\\text{ m}^2$, phương trình tìm $x$ là:",
+          "dap_an": [
+            "$x(x - 5) = 84$",
+            "$x(x + 5) = 84$",
+            "$2x + 5 = 84$",
+            "$x + (x + 5) = 84$"
+          ],
+          "diem": 2,
+          "goi_y": "Chiều dài là $x + 5$. Diện tích là $x(x + 5) = 84$."
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $\\frac{x^2 - 9}{x - 3} = 0$. Tập nghiệm của phương trình là:",
+          "dap_an": [
+            "$S = \\{-3\\}$",
+            "$S = \\{3\\}$",
+            "$S = \\{-3; 3\\}$",
+            "$S = \\varnothing$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 3$. Tử thức $x^2 - 9 = 0 \\Leftrightarrow x = \\pm 3$. Loại $x = 3$."
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $(x^2 - 1) + (x + 1) = 0$. Số nghiệm của phương trình là:",
+          "dap_an": [
+            "$1$",
+            "$2$",
+            "$3$",
+            "$0$"
+          ],
+          "diem": 2,
+          "goi_y": "Phân tích $(x - 1)(x + 1) + (x + 1) = 0 \\Leftrightarrow (x + 1)(x) = 0$."
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Một xe ô tô đi quãng đường $120\\text{ km}$ với vận tốc $x\\text{ (km/h)}$. Nếu vận tốc tăng thêm $10\\text{ km/h}$ thì thời gian đi giảm đi $0,6\\text{ giờ}$. Phương trình thể hiện mối quan hệ này là:",
+          "dap_an": [
+            "$\\frac{120}{x} - \\frac{120}{x+10} = 0,6$",
+            "$\\frac{120}{x+10} - \\frac{120}{x} = 0,6$",
+            "$\\frac{120}{x} + \\frac{120}{x+10} = 0,6$",
+            "$120x - 120(x+10) = 0,6$"
+          ],
+          "diem": 2,
+          "goi_y": "Thời gian ban đầu $\\frac{120}{x}$, thời gian lúc sau $\\frac{120}{x+10}$. Phương trình: $\\frac{120}{x} - \\frac{120}{x+10} = 0,6$."
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $\\frac{x+3}{x-1} + \\frac{x-2}{x} = 2$ có tổng các nghiệm bằng:",
+          "dap_an": [
+            "$1$",
+            "$-1$",
+            "$2$",
+            "$-2$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 0, x \\neq 1$. Quy đồng: $x(x+3) + (x-1)(x-2) = 2x(x-1) \\Leftrightarrow x^2 + 3x + x^2 - 3x + 2 = 2x^2 - 2x \\Leftrightarrow 2x + 2 = 0 \\Leftrightarrow x = -1$."
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm $m$ để $x = 2$ là một nghiệm của phương trình $\\frac{x + m}{x - 1} = 4$.",
+          "dap_an": [
+            "$m = 2$",
+            "$m = -2$",
+            "$m = 4$",
+            "$m = 6$"
+          ],
+          "diem": 2,
+          "goi_y": "Thay $x = 2$ (thỏa mãn ĐKXĐ $x \\neq 1$) vào phương trình: $\\frac{2 + m}{2 - 1} = 4 \\Leftrightarrow 2 + m = 4$."
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $x^2(x - 1) - 4(x - 1) = 0$ có tập nghiệm $S$ là:",
+          "dap_an": [
+            "$S = \\{1; 2\\}$",
+            "$S = \\{-2; 1; 2\\}$",
+            "$S = \\{-2; 2\\}$",
+            "$S = \\{-1; 1; 2\\}$"
+          ],
+          "diem": 2,
+          "goi_y": "Đặt $(x - 1)$ làm nhân tử chung: $(x - 1)(x^2 - 4) = 0 \\Leftrightarrow (x - 1)(x - 2)(x + 2) = 0$."
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Cho phương trình $(x - 3)(x + 1) = 2x - 6$. Xét tính đúng/sai của các phát biểu sau:<br><b>a)</b> Phương trình có thể biến đổi về dạng $(x - 3)(x - 1) = 0$.",
+          "diem": 2.5,
+          "goi_y": "Biến đổi vế phải thành $2(x - 3)$, chuyển vế đặt $(x - 3)$ làm nhân tử chung: $(x - 3)(x + 1 - 2) = 0 \\Leftrightarrow (x - 3)(x - 1) = 0$."
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Tập nghiệm của phương trình là $S = \\{1; 3\\}$.",
+          "diem": 2.5,
+          "goi_y": "Biến đổi vế phải thành $2(x - 3)$, chuyển vế đặt $(x - 3)$ làm nhân tử chung: $(x - 3)(x + 1 - 2) = 0 \\Leftrightarrow (x - 3)(x - 1) = 0$."
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Phương trình chỉ có duy nhất một nghiệm dương.",
+          "diem": 2.5,
+          "goi_y": "Biến đổi vế phải thành $2(x - 3)$, chuyển vế đặt $(x - 3)$ làm nhân tử chung: $(x - 3)(x + 1 - 2) = 0 \\Leftrightarrow (x - 3)(x - 1) = 0$."
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Tổng tất cả các nghiệm của phương trình bằng $4$.",
+          "diem": 2.5,
+          "goi_y": "Biến đổi vế phải thành $2(x - 3)$, chuyển vế đặt $(x - 3)$ làm nhân tử chung: $(x - 3)(x + 1 - 2) = 0 \\Leftrightarrow (x - 3)(x - 1) = 0$."
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Cho phương trình chứa ẩn ở mẫu: $\\frac{x + 1}{x - 1} - \\frac{x - 1}{x + 1} = \\frac{4}{x^2 - 1}$. Xét tính đúng/sai của các phát biểu sau:<br><b>a)</b> Điều kiện xác định của phương trình là $x \\neq 1$ và $x \\neq -1$.",
+          "diem": 2.5,
+          "goi_y": "ĐKXĐ $x \\neq \\pm 1$. Quy đồng khử mẫu: $(x + 1)^2 - (x - 1)^2 = 4 \\Leftrightarrow 4x = 4 \\Leftrightarrow x = 1$. Đối chiếu ĐKXĐ."
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Sau khi quy đồng và khử mẫu, ta thu được phương trình $4x = 4$.",
+          "diem": 2.5,
+          "goi_y": "ĐKXĐ $x \\neq \\pm 1$. Quy đồng khử mẫu: $(x + 1)^2 - (x - 1)^2 = 4 \\Leftrightarrow 4x = 4 \\Leftrightarrow x = 1$. Đối chiếu ĐKXĐ."
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Giá trị $x = 1$ thỏa mãn điều kiện xác định và là nghiệm của phương trình.",
+          "diem": 2.5,
+          "goi_y": "ĐKXĐ $x \\neq \\pm 1$. Quy đồng khử mẫu: $(x + 1)^2 - (x - 1)^2 = 4 \\Leftrightarrow 4x = 4 \\Leftrightarrow x = 1$. Đối chiếu ĐKXĐ."
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Phương trình đã cho vô nghiệm.",
+          "diem": 2.5,
+          "goi_y": "ĐKXĐ $x \\neq \\pm 1$. Quy đồng khử mẫu: $(x + 1)^2 - (x - 1)^2 = 4 \\Leftrightarrow 4x = 4 \\Leftrightarrow x = 1$. Đối chiếu ĐKXĐ."
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm nghiệm lớn hơn của phương trình $x^2 - 6x + 8 = 0$.",
+          "diem": 6,
+          "goi_y": "Phân tích thành nhân tử $(x - 2)(x - 4) = 0$, hai nghiệm là $x = 2$ và $x = 4$. Lấy nghiệm lớn hơn."
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Giá trị nghiệm của phương trình $\\frac{3x - 1}{x + 2} = 2$ bằng bao nhiêu?",
+          "diem": 6,
+          "goi_y": "ĐKXĐ $x \\neq -2$. Khử mẫu: $3x - 1 = 2(x + 2) \\Leftrightarrow 3x - 1 = 2x + 4$."
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tính tổng tất cả các nghiệm phân biệt của phương trình $(x^2 - 9)(x + 1) = 0$.",
+          "diem": 6,
+          "goi_y": "Phương trình có các nghiệm $x = 3, x = -3, x = -1$. Tính tổng $3 + (-3) + (-1)$."
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một canô xuôi dòng một khúc sông dài $40\\text{ km}$ hết thời gian ít hơn khi ngược dòng khúc sông đó là $1\\text{ giờ}$. Biết vận tốc dòng nước là $2\\text{ km/h}$. Tính vận tốc thực của canô (theo $\\text{km/h}$).",
+          "diem": 6,
+          "goi_y": "Gọi vận tốc thực là $x\\text{ (km/h)}$ ($x &gt; 2$). Thời gian xuôi dòng $\\frac{40}{x+2}$, ngược dòng $\\frac{40}{x-2}$. Phương trình: $\\frac{40}{x-2} - \\frac{40}{x+2} = 1$."
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm giá trị của $x$ thỏa mãn phương trình $\\frac{x}{x-1} + \\frac{x+1}{x+2} = \\frac{2x^2}{x^2+x-2}$.",
+          "diem": 6,
+          "goi_y": "ĐKXĐ $x \\neq 1, x \\neq -2$. Mẫu chung $(x-1)(x+2) = x^2 + x - 2$. Quy đồng khử mẫu: $x(x+2) + (x+1)(x-1) = 2x^2 \\Leftrightarrow (x^2 + 2x) + (x^2 - 1) = 2x^2 \\Leftrightarrow 2x - 1 = 0$."
+        }
+      ]
+    },
+    {
+      "id": "4.4",
+      "do_kho": 2.1,
+      "ten": "Phương trình quy về phương trình bậc nhất một ẩn",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Tích tất cả các nghiệm của phương trình $(x^2 - 4)(2x + 1) = 0$ bằng bao nhiêu?",
+          "dap_an": [
+            "$-4$",
+            "$4$",
+            "$2$",
+            "$-2$"
+          ],
+          "diem": 2,
+          "goi_y": "Cho từng thừa số bằng $0$: $x^2 - 4 = 0$ và $2x + 1 = 0$. Sau đó nhân các nghiệm tìm được lại với nhau."
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Tổng tất cả các nghiệm của phương trình $(2x - 1)^2 - (x + 3)^2 = 0$ bằng:",
+          "dap_an": [
+            "$\\frac{4}{3}$",
+            "$\\frac{10}{3}$",
+            "$-\\frac{10}{3}$",
+            "$2$"
+          ],
+          "diem": 2,
+          "goi_y": "Dùng hằng đẳng thức hiệu hai bình phương $A^2 - B^2 = (A - B)(A + B) = 0$ để đưa về phương trình tích."
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình bậc ba $x^3 - 3x^2 + 2x = 0$ có bao nhiêu nghiệm phân biệt?",
+          "dap_an": [
+            "$1$",
+            "$2$",
+            "$3$",
+            "$0$"
+          ],
+          "diem": 2,
+          "goi_y": "Đặt nhân tử chung $x(x^2 - 3x + 2) = 0$, sau đó tiếp tục phân tích $x^2 - 3x + 2 = (x - 1)(x - 2)$."
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Nghiệm thực dương lớn nhất của phương trình $x^4 - 5x^2 + 4 = 0$ là:",
+          "dap_an": [
+            "$1$",
+            "$2$",
+            "$4$",
+            "$\\sqrt{2}$"
+          ],
+          "diem": 2,
+          "goi_y": "Đặt $t = x^2$ ($t \\ge 0$) đưa về phương trình bậc hai $t^2 - 5t + 4 = 0$, tìm $t$ rồi suy ra $x$."
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm tất cả các giá trị của $m$ để phương trình tích $(x - 2)(mx + 1) = 0$ có đúng 1 nghiệm duy nhất.",
+          "dap_an": [
+            "$m = 0$ hoặc $m = -\\frac{1}{2}$",
+            "$m = 0$",
+            "$m = -\\frac{1}{2}$",
+            "$m = 2$"
+          ],
+          "diem": 2,
+          "goi_y": "Phương trình có nghiệm $x = 2$. Để có đúng $1$ nghiệm duy nhất thì phương trình $mx + 1 = 0$ phải vô nghiệm ($m = 0$) hoặc có nghiệm trùng $x = 2$ ($2m + 1 = 0$)."
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Số nghiệm của phương trình chứa ẩn ở mẫu $\\frac{x}{x-1} + \\frac{1}{x+1} = \\frac{2}{x^2-1}$ là:",
+          "dap_an": [
+            "$0$",
+            "$1$",
+            "$2$",
+            "Vô số"
+          ],
+          "diem": 2,
+          "goi_y": "Tìm ĐKXĐ ($x \\neq \\pm 1$). Quy đồng khử mẫu ta được $x(x+1) + (x-1) = 2 \\Leftrightarrow x^2 + 2x - 3 = 0$. Giải ra $x$ và loại nghiệm vi phạm ĐKXĐ."
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Tập nghiệm $S$ của phương trình $\\frac{2x - 5}{x - 3} = \\frac{1}{x - 3} + 1$ là:",
+          "dap_an": [
+            "$S = \\varnothing$",
+            "$S = \\{3\\}$",
+            "$S = \\{1\\}$",
+            "$S = \\{0\\}$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 3$. Quy đồng khử mẫu $2x - 5 = 1 + (x - 3) \\Leftrightarrow x = 3$. Đối chiếu ĐKXĐ để kết luận."
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Tổng các nghiệm thực của phương trình $(x^2 + x)^2 - 8(x^2 + x) + 12 = 0$ bằng:",
+          "dap_an": [
+            "$2$",
+            "$-2$",
+            "$0$",
+            "$-4$"
+          ],
+          "diem": 2,
+          "goi_y": "Đặt ẩn phụ $t = x^2 + x$, giải phương trình $t^2 - 8t + 12 = 0$ tìm $t$, sau đó giải hai phương trình bậc hai theo $x$."
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình chứa tham số $\\frac{x + m}{x - 2} = 3$. Tìm $m$ để phương trình nhận $x = 5$ làm nghiệm.",
+          "dap_an": [
+            "$m = 1$",
+            "$m = 4$",
+            "$m = -4$",
+            "$m = 9$"
+          ],
+          "diem": 2,
+          "goi_y": "Thay $x = 5$ vào phương trình (thỏa mãn ĐKXĐ $x \\neq 2$) ta được $\\frac{5 + m}{3} = 3$."
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $\\frac{x - 1}{x + 1} = m$ (với $m$ là tham số). Tìm $m$ để phương trình đã cho vô nghiệm.",
+          "dap_an": [
+            "$m = 1$",
+            "$m = -1$",
+            "$m = 0$",
+            "$m = 2$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq -1$. Biến đổi phương trình thành $(1 - m)x = m + 1$. Phương trình vô nghiệm khi $1 - m = 0$ hoặc nghiệm $x = -1$."
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Tích các nghiệm của phương trình $x^2 - 5x + 6 = 0$ bằng:",
+          "dap_an": [
+            "$5$",
+            "$-5$",
+            "$6$",
+            "$-6$"
+          ],
+          "diem": 2,
+          "goi_y": "Phân tích thành nhân tử $(x - 2)(x - 3) = 0$ hoặc áp dụng định lý Vi-ét cho phương trình bậc hai $x_1 \\cdot x_2 = c/a$."
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Tập nghiệm của phương trình $\\frac{x+2}{x-2} - \\frac{x-2}{x+2} = \\frac{16}{x^2-4}$ là:",
+          "dap_an": [
+            "$S = \\varnothing$",
+            "$S = \\{2\\}$",
+            "$S = \\{-2\\}$",
+            "$S = \\{2; -2\\}$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq \\pm 2$. Mẫu thức chung là $(x-2)(x+2)$. Quy đồng khử mẫu thu được $8x = 16 \\Leftrightarrow x = 2$. Đối chiếu ĐKXĐ."
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $x^3 + x^2 - 4x - 4 = 0$ có tập nghiệm là:",
+          "dap_an": [
+            "$S = \\{1; 2; -2\\}$",
+            "$S = \\{-1; 2; -2\\}$",
+            "$S = \\{-1; 2\\}$",
+            "$S = \\{-2; 2\\}$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhóm hạng tử $x^2(x + 1) - 4(x + 1) = 0 \\Leftrightarrow (x + 1)(x^2 - 4) = 0$."
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Nghiệm của phương trình chứa dấu giá trị tuyệt đối $|x - 2| = 2x - 5$ là:",
+          "dap_an": [
+            "$x = 3$",
+            "$x = \\frac{7}{3}$",
+            "$x = 3$ và $x = \\frac{7}{3}$",
+            "Vô nghiệm"
+          ],
+          "diem": 2,
+          "goi_y": "Điều kiện $2x - 5 \\ge 0 \\Leftrightarrow x \\ge 2,5$. Xét hai trường hợp $x - 2 = 2x - 5$ và $x - 2 = -(2x - 5)$, đối chiếu điều kiện."
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình $\\frac{1}{x^2 - 3x + 2} + \\frac{1}{x^2 - 5x + 6} = \\frac{2}{x^2 - 4x + 3}$. Khẳng định nào sau đây là đúng?",
+          "dap_an": [
+            "Phương trình vô nghiệm",
+            "Phương trình nghiệm đúng với mọi $x \\neq 1; 2; 3$",
+            "Phương trình có duy nhất nghiệm $x = 0$",
+            "Phương trình có hai nghiệm $x = 4$ và $x = 5$"
+          ],
+          "diem": 2,
+          "goi_y": "Phân tích các mẫu thành nhân tử: $(x-1)(x-2)$, $(x-2)(x-3)$, $(x-1)(x-3)$. ĐKXĐ $x \\neq 1, 2, 3$. Quy đồng khử mẫu ta được $2x - 4 = 2x - 4$ (luôn đúng với mọi $x$ thỏa ĐKXĐ)."
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình phân thức $\\frac{x^2 - 9}{x - 3} = 0$ có nghiệm là:",
+          "dap_an": [
+            "$x = 3$ và $x = -3$",
+            "$x = -3$",
+            "$x = 3$",
+            "Vô nghiệm"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 3$. Tử thức $x^2 - 9 = 0 \\Leftrightarrow x = 3$ hoặc $x = -3$. Loại $x = 3$."
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Số nghiệm thực của phương trình $(x + 1)(x + 2)(x + 3)(x + 4) = 24$ là:",
+          "dap_an": [
+            "$2$",
+            "$4$",
+            "$1$",
+            "$0$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhóm $[(x+1)(x+4)][(x+2)(x+3)] = (x^2 + 5x + 4)(x^2 + 5x + 6) = 24$. Đặt $t = x^2 + 5x + 5$."
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Nghiệm nhỏ nhất của phương trình $\\frac{x+1}{x-1} + \\frac{x-1}{x+1} = \\frac{10}{3}$ là:",
+          "dap_an": [
+            "$x = 2$",
+            "$x = -2$",
+            "$x = 3$",
+            "$x = -3$"
+          ],
+          "diem": 2,
+          "goi_y": "Đặt $t = \\frac{x+1}{x-1}$ ($t \\neq 0$). Phương trình trở thành $t + \\frac{1}{t} = \\frac{10}{3} \\Leftrightarrow 3t^2 - 10t + 3 = 0$. Tìm $t$ rồi suy ra $x$."
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm điều kiện của $m$ để phương trình $\\frac{2x - m}{x - 1} = 1$ có nghiệm dương.",
+          "dap_an": [
+            "$m &gt; 1$ và $m \\neq 2$",
+            "$m &gt; 1$",
+            "$m \\neq 2$",
+            "$m &gt; 0$"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq 1$. Quy đồng khử mẫu $2x - m = x - 1 \\Leftrightarrow x = m - 1$. Điều kiện nghiệm dương là $x &gt; 0$ và $x \\neq 1$."
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Số nghiệm thực của phương trình $(x^2 + 1)(x^2 - 3x + 2) = 0$ là:",
+          "dap_an": [
+            "$4$",
+            "$2$",
+            "$3$",
+            "$1$"
+          ],
+          "diem": 2,
+          "goi_y": "Vì $x^2 + 1 &gt; 0$ với mọi $x$, phương trình tương đương với $x^2 - 3x + 2 = 0 \\Leftrightarrow (x-1)(x-2) = 0$."
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Một ca nô chạy xuôi dòng $30\\text{ km}$ rồi ngược dòng $30\\text{ km}$ hết tổng cộng $4,5\\text{ giờ}$. Biết vận tốc dòng nước là $3\\text{ km/h}$. Vận tốc thực của ca nô là:",
+          "dap_an": [
+            "$15\\text{ km/h}$",
+            "$12\\text{ km/h}$",
+            "$18\\text{ km/h}$",
+            "$20\\text{ km/h}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi vận tốc thực của ca nô là $v\\text{ (km/h)}$ ($v &gt; 3$). Phương trình thời gian: $\\frac{30}{v+3} + \\frac{30}{v-3} = 4,5$."
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Hai thợ cùng làm chung một công việc thì hoàn thành trong $6\\text{ giờ}$. Nếu làm riêng thì người thứ nhất hoàn thành công việc sớm hơn người thứ hai $5\\text{ giờ}$. Thời gian người thứ nhất làm riêng xong công việc là:",
+          "dap_an": [
+            "$10\\text{ giờ}$",
+            "$15\\text{ giờ}$",
+            "$12\\text{ giờ}$",
+            "$8\\text{ giờ}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi thời gian người thứ nhất làm riêng là $x\\text{ giờ}$ ($x &gt; 5$). Phương trình năng suất: $\\frac{1}{x} + \\frac{1}{x+5} = \\frac{1}{6}$."
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Tổng bình phương tất cả các nghiệm của phương trình $x^3 - 7x + 6 = 0$ bằng:",
+          "dap_an": [
+            "$10$",
+            "$14$",
+            "$12$",
+            "$16$"
+          ],
+          "diem": 2,
+          "goi_y": "Phân tích đa thức thành nhân tử $(x - 1)(x - 2)(x + 3) = 0$. Tính $1^2 + 2^2 + (-3)^2$."
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Số nghiệm của phương trình $\\frac{x}{x+1} - \\frac{2}{x-1} = \\frac{x^2 - 3}{x^2 - 1}$ là:",
+          "dap_an": [
+            "$0$",
+            "$1$",
+            "$2$",
+            "Vô số"
+          ],
+          "diem": 2,
+          "goi_y": "ĐKXĐ $x \\neq \\pm 1$. Quy đồng khử mẫu $x(x-1) - 2(x+1) = x^2 - 3 \\Leftrightarrow -3x = -1 \\Leftrightarrow x = \\frac{1}{3}$. Đối chiếu ĐKXĐ."
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình chứa tham số $m$: $\\frac{x - 1}{x - m} = 0$. Phương trình có nghiệm khi và chỉ khi:",
+          "dap_an": [
+            "$m \\neq 1$",
+            "$m = 1$",
+            "Với mọi $m$",
+            "$m &gt; 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Phương trình có nghiệm duy nhất $x = 1$. Điều kiện để $x = 1$ là nghiệm hợp lệ là $1 - m \\neq 0 \\Leftrightarrow m \\neq 1$."
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Cho phương trình phân thức $\\frac{x+2}{x-2} - \\frac{x-2}{x+2} = \\frac{8}{x^2-4}$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Điều kiện xác định của phương trình là $x \\neq 2$ và $x \\neq -2$.",
+          "diem": 2.5,
+          "goi_y": "Phân tích $x^2 - 4 = (x-2)(x+2)$, tìm ĐKXĐ, quy đồng khử mẫu $(x+2)^2 - (x-2)^2 = 8$."
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Mẫu thức chung của hai vế phương trình là $x^2 - 4$.",
+          "diem": 2.5,
+          "goi_y": "Phân tích $x^2 - 4 = (x-2)(x+2)$, tìm ĐKXĐ, quy đồng khử mẫu $(x+2)^2 - (x-2)^2 = 8$."
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Khi quy đồng và khử mẫu, ta thu được phương trình bậc nhất $8x = 8$.",
+          "diem": 2.5,
+          "goi_y": "Phân tích $x^2 - 4 = (x-2)(x+2)$, tìm ĐKXĐ, quy đồng khử mẫu $(x+2)^2 - (x-2)^2 = 8$."
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Nghiệm của phương trình đã cho là $x = 1$.",
+          "diem": 2.5,
+          "goi_y": "Phân tích $x^2 - 4 = (x-2)(x+2)$, tìm ĐKXĐ, quy đồng khử mẫu $(x+2)^2 - (x-2)^2 = 8$."
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Cho phương trình tích có chứa tham số $m$: $(x^2 - 4)(mx - 3) = 0$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Với $m = 0$, phương trình có đúng 2 nghiệm phân biệt là $x = 2$ và $x = -2$.",
+          "diem": 2.5,
+          "goi_y": "Tách phương trình thành $x^2 - 4 = 0 \\Leftrightarrow x = \\pm 2$ hoặc $mx - 3 = 0$. Kiểm tra các trường hợp nghiệm của $mx = 3$ có trùng với $\\pm 2$ hay không."
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Với $m = 1$, tập nghiệm của phương trình là $S = \\{-2; 2; 3\\}$.",
+          "diem": 2.5,
+          "goi_y": "Tách phương trình thành $x^2 - 4 = 0 \\Leftrightarrow x = \\pm 2$ hoặc $mx - 3 = 0$. Kiểm tra các trường hợp nghiệm của $mx = 3$ có trùng với $\\pm 2$ hay không."
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Với mọi $m \\neq 0$, phương trình luôn có ít nhất 2 nghiệm phân biệt.",
+          "diem": 2.5,
+          "goi_y": "Tách phương trình thành $x^2 - 4 = 0 \\Leftrightarrow x = \\pm 2$ hoặc $mx - 3 = 0$. Kiểm tra các trường hợp nghiệm của $mx = 3$ có trùng với $\\pm 2$ hay không."
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Với $m = 1,5$, phương trình có 3 nghiệm phân biệt.",
+          "diem": 2.5,
+          "goi_y": "Tách phương trình thành $x^2 - 4 = 0 \\Leftrightarrow x = \\pm 2$ hoặc $mx - 3 = 0$. Kiểm tra các trường hợp nghiệm của $mx = 3$ có trùng với $\\pm 2$ hay không."
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tính tích tất cả các nghiệm phân biệt của phương trình $(x^2 - 9)(x^2 - 4x + 3) = 0$.",
+          "diem": 6,
+          "goi_y": "Cho $x^2 - 9 = 0 \\implies x = \\pm 3$; $x^2 - 4x + 3 = 0 \\implies x = 1$ hoặc $x = 3$. Tập các nghiệm phân biệt là $\\{3; -3; 1\\}$. Tính $3 \\cdot (-3) \\cdot 1$."
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm giá trị của tham số $m$ để phương trình chứa ẩn ở mẫu $\\frac{x + 2}{x - 1} = m$ có nghiệm $x = 3$.",
+          "diem": 6,
+          "goi_y": "Thay $x = 3$ vào vế trái của phương trình (thỏa mãn ĐKXĐ $x \\neq 1$) ta được $m = \\frac{3+2}{3-1}$."
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tính tổng tất cả các nghiệm thực phân biệt của phương trình $(x^2 + 2x)^2 - 2(x^2 + 2x) - 3 = 0$.",
+          "diem": 6,
+          "goi_y": "Đặt $t = x^2 + 2x$, giải $t^2 - 2t - 3 = 0 \\implies t = 3$ hoặc $t = -1$. Với $t = 3 \\implies x = 1, -3$; với $t = -1 \\implies x = -1$. Tính tổng $1 + (-3) + (-1)$."
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm nghiệm duy nhất của phương trình $\\frac{2}{x-2} + \\frac{3}{x+2} = \\frac{x+10}{x^2-4}$.",
+          "diem": 6,
+          "goi_y": "ĐKXĐ $x \\neq \\pm 2$. Mẫu thức chung $x^2 - 4$. Quy đồng khử mẫu: $2(x+2) + 3(x-2) = x + 10 \\Leftrightarrow 5x - 2 = x + 10 \\Leftrightarrow 4x = 12 \\Leftrightarrow x = 3$."
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một đội xe cần chở $120\\text{ tấn}$ hàng. Khi sắp khởi hành, đội được bổ sung thêm $2\\text{ xe}$ nên mỗi xe chở ít hơn dự định $2\\text{ tấn}$. Hỏi ban đầu đội xe có bao nhiêu chiếc? (Biết sức chở của mỗi xe là như nhau).",
+          "diem": 6,
+          "goi_y": "Gọi số xe ban đầu là $x\\text{ (chiếc)}$ ($x \\in \\mathbb{N}^*$). Phương trình lượng hàng mỗi xe chở: $\\frac{120}{x} - \\frac{120}{x+2} = 2$."
+        }
+      ]
+    }
+  ]
+}

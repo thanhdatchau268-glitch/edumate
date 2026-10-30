@@ -1,0 +1,97 @@
+{
+  "mon": "Toán",
+  "chuong_list": [
+    {
+      "id_chuong": "chuong-1",
+      "ten_chuong": "Chương 1: Phương Trình Và Hệ Hai Phương Trình Bậc Nhất Hai Ẩn",
+      "danh_sach_bai": [
+        { "id": "01", "ten_bai": "Khái niệm phương trình và hệ phương trình bậc nhất hai ẩn", "diem": 100 },
+        { "id": "02", "ten_bai": "Giải hệ hai phương trình bậc nhất hai ẩn", "diem": 100 },
+        { "id": "03", "ten_bai": "Giải bài toán bằng cách lập hệ phương trình", "diem": 100 }
+      ]
+    },
+    {
+      "id_chuong": "chuong-2",
+      "ten_chuong": "Chương 2: Phương Trình Và Bất Phương Trình Bậc Nhất Một Ẩn",
+      "danh_sach_bai": [
+        { "id": "01", "ten_bai": "Phương tình quy về phương trình bậc nhất một ẩn", "diem": 100 },
+        { "id": "02", "ten_bai": "Bất đẳng thức và tính chất", "diem": 100 },
+        { "id": "03", "ten_bai": "Bất phương trình bậc nhất một ẩn", "diem": 100 }
+      ]
+    },
+    {
+      "id_chuong": "chuong-3",
+      "ten_chuong": "Chương 3: Căn Bậc Hai Và Căn Bậc Ba",
+      "danh_sach_bai": [
+        { "id": "01", "ten_bai": "Căn bậc hai và căn thức bậc hai", "diem": 100 },
+        { "id": "02", "ten_bai": "Khai căn bậc hai với phép nhân và phép chia", "diem": 100 },
+        { "id": "03", "ten_bai": "Biến đổi đơn giản và rút gọn biểu thức chứa căn thức bậc hai", "diem": 100 },
+        { "id": "04", "ten_bai": "Bất phương trình bậc nhất hai ẩn", "diem": 100 }
+      ]
+    },
+    {
+      "id_chuong": "chuong-4",
+      "ten_chuong": "Chương 4: Hệ Thức Lượng Trong Tam Giác Vuông",
+      "danh_sach_bai": [
+        { "id": "01", "ten_bai": "Tỉ số lượng giác của góc nhọn", "diem": 100 },
+        { "id": "02", "ten_bai": "Một số hệ thức giữa cạnh, góc trong tam giác vuông và ứng dụng", "diem": 100 }
+      ]
+    },
+    {
+      "id_chuong": "chuong-5",
+      "ten_chuong": "Chương 5: Đường Tròn",
+      "danh_sach_bai": [
+        { "id": "01", "ten_bai": "Mở đầu về đường tròn", "diem": 100 },
+        { "id": "02", "ten_bai": "Cung và dây của đường tròn", "diem": 100 },
+        { "id": "03", "ten_bai": "Độ dài của cung tròn. Diện tích hình quạt tròn và hình vành khuyên", "diem": 100 },
+        { "id": "04", "ten_bai": "Vị trí tương đối của đường thẳng và đường tròn", "diem": 100 },
+        { "id": "05", "ten_bai": "Vị trí tương đối của hai đường tròn", "diem": 100 }
+      ]
+    },
+    {
+      "id_chuong": "chuong-6",
+      "ten_chuong": "Chương 6: Hàm Số y = ax² (a≠0). Phương Trình Bậc Hai Một Ẩn",
+      "danh_sach_bai": [
+        { "id": "01", "ten_bai": "Hàm số y = ax² (a≠0)", "diem": 100 },
+        { "id": "02", "ten_bai": "Phương trình bậc hai một ẩn", "diem": 100 },
+        { "id": "03", "ten_bai": "Định lí Viète và ứng dụng", "diem": 100 },
+        { "id": "04", "ten_bai": "Giải bài toán bằng cách lập phương trình", "diem": 100 }
+      ]
+    },
+    {
+      "id_chuong": "chuong-7",
+      "ten_chuong": "Chương 7: Tần Số Tương Đối Và Tần Số Tương Đối",
+      "danh_sach_bai": [
+        { "id": "01", "ten_bai": "Bảng tần số và biểu đồ tần số", "diem": 100 },
+        { "id": "02", "ten_bai": "Bảng tần số tương đối và biểu đồ tần số tường đối", "diem": 100 },
+        { "id": "03", "ten_bai": "Bảng tần số, tần số tương đối ghép nhóm và biểu đồ", "diem": 100 }
+      ]
+    },
+    {
+      "id_chuong": "chuong-8",
+      "ten_chuong": "Chương 8: Xác Suất Của Biến Cố Trong Một Số Mô Hình Xác Suất Đơn Giản",
+      "danh_sach_bai": [
+        { "id": "01", "ten_bai": "Phép thử ngẫu nhiên và không gian mẫu", "diem": 100 },
+        { "id": "02", "ten_bai": "Xác suất của biến cố liên quan tới phép thử", "diem": 100 }
+      ]
+    },
+    {
+      "id_chuong": "chuong-9",
+      "ten_chuong": "Chương 9: Đường Tròn Ngoại Tiếp Và Đường Tròn Nội Tiếp",
+      "danh_sach_bai": [
+        { "id": "01", "ten_bai": "Góc nội tiếp", "diem": 100 },
+        { "id": "02", "ten_bai": "Đường tròn ngoại tiếp và đường tròn nội tiếp của một tam giác", "diem": 100 },
+        { "id": "03", "ten_bai": "Tứ giác nội tiếp", "diem": 100 },
+        { "id": "04", "ten_bai": "Đa giác đều", "diem": 100 }
+      ]
+    },
+    {
+      "id_chuong": "chuong-10",
+      "ten_chuong": "Chương 10: Một Số Hình Khối Trong Thực Tiễn",
+      "danh_sach_bai": [
+        { "id": "01", "ten_bai": "Hình trụ và hình nón", "diem": 100 },
+        { "id": "02", "ten_bai": "Hình cầu", "diem": 100 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "mon": "Ngữ Văn",
+  "chuong_list": [
+    {
+      "id_chuong": "chuong-1",
+      "ten_chuong": "Bài 1: Thế Giới Kì Ảo",
+      "danh_sach_bai": [
+        { "id": "01", "ten_bai": "Truyện truyền kì", "diem": 100 }
+      ]
+    },
+    {
+      "id_chuong": "chuong-2",
+      "ten_chuong": "Bài 2: Những Cung Bậc Cảm Xúc",
+      "danh_sach_bai": [
+      ]
+    },
+    {
+      "id_chuong": "chuong-3",
+      "ten_chuong": "Bài 3: Hồn Nước Nằm Trong Tiếng Mẹ Cha",
+      "danh_sach_bai": [
+      ]
+    },
+    {
+      "id_chuong": "chuong-4",
+      "ten_chuong": "Bài 4: Khám Phá Vẻ Đẹp Văn Chương",
+      "danh_sach_bai": [
+      ]
+    },
+    {
+      "id_chuong": "chuong-5",
+      "ten_chuong": "Bài 5: Đối Diện Với Nỗi Đau",
+      "danh_sach_bai": [
+      ]
+    },
+    {
+      "id_chuong": "chuong-6",
+      "ten_chuong": "Bài 6: Giải Mã Những Bí Mật",
+      "danh_sach_bai": [
+      ]
+    },
+    {
+      "id_chuong": "chuong-7",
+      "ten_chuong": "Bài 7: Hồn Thơ Muôn Diệu",
+      "danh_sach_bai": [
+      ]
+    },
+    {
+      "id_chuong": "chuong-8",
+      "ten_chuong": "Bài 8: Tiếng Nói Của Lương Tri",
+      "danh_sach_bai": [
+      ]
+    },
+    {
+      "id_chuong": "chuong-9",
+      "ten_chuong": "Bài 9: Đi Và Suy Ngẫm",
+      "danh_sach_bai": [
+      ]
+    },
+    {
+      "id_chuong": "chuong-10",
+      "ten_chuong": "Bài 10: Văn Học - Lịch Sử Tâm Hồn",
+      "danh_sach_bai": [
+      ]
+    }
+  ]
+}

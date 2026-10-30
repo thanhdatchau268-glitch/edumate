@@ -1,3 +1,2 @@
-Frontend/file_de/
-de/
-Backend/Dap_an/
+de/**/*.md
+de/*.md
