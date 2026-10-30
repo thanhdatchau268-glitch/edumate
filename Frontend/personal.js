@@ -223,14 +223,6 @@ document.addEventListener("DOMContentLoaded", () => {
     $("tabs-ngay").addEventListener("click", (e) => { if (e.target.dataset.d) { ngayChon = +e.target.dataset.d; veKeHoach(); } });
     $("btn-xep").addEventListener("click", veKeHoach); // xếp lại từ giờ hiện tại
 
-    // ---------- Chuyển giữa "Lịch học" và "Thiết lập" ----------
-    function chonTab(t) {
-        $("pn-lich").hidden = t !== "lich"; $("pn-setup").hidden = t !== "setup";
-        $("tab-lich").classList.toggle("on", t === "lich"); $("tab-setup").classList.toggle("on", t === "setup");
-    }
-    $("tab-lich").addEventListener("click", () => { veKeHoach(); chonTab("lich"); });
-    $("tab-setup").addEventListener("click", () => chonTab("setup"));
-
     // ---------- 8. Điểm các kỳ thi lớp 9 ----------
     const KT = window.KYTHI;
     const TEN_CHUYEN = { toan: "Chuyên Toán", ly: "Chuyên Vật lí", hoa: "Chuyên Hóa học" };

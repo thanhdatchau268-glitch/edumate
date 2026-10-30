@@ -59,22 +59,23 @@
             <ul id="lich-ngay" class="lich"></ul>
             <div id="canhbao"></div>
         </section>
+        <!-- ===== Điểm số các kỳ thi lớp 9 (nằm NGOÀI pn-setup) ===== -->
+        <section id="pn-diem" hidden>
+            <div class="khung">
+                <h2>Điểm các kỳ thi lớp 9</h2>
+                <p class="phu">Kỳ nào đến ngày thi thì ô nhập mới mở. Điểm lưu tự động và được dùng khi bạn làm
+                    <a href="khaosat.html" style="color:var(--nhan);font-weight:600">khảo sát gợi ý trường</a>
+                    (kỳ càng gần ngày thi tuyển sinh càng có trọng số cao).
+                </p>
+                <div class="cuon">
+                    <table id="bang-diem"></table>
+                </div>
+            </div>
+        </section>
 
         <!-- ===== Thiết lập ===== -->
         <section id="pn-setup" hidden>
-            <!-- ===== Điểm số các kỳ thi lớp 9 ===== -->
-            <section id="pn-diem" hidden>
-                <div class="khung">
-                    <h2>Điểm các kỳ thi lớp 9</h2>
-                    <p class="phu">Kỳ nào đến ngày thi thì ô nhập mới mở. Điểm lưu tự động và được dùng khi bạn làm
-                        <a href="khaosat.html" style="color:var(--nhan);font-weight:600">khảo sát gợi ý trường</a>
-                        (kỳ càng gần ngày thi tuyển sinh càng có trọng số cao).
-                    </p>
-                    <div class="cuon">
-                        <table id="bang-diem"></table>
-                    </div>
-                </div>
-            </section>
+            <!-- (xóa khối pn-diem cũ ở đây, giữ nguyên các .khung 1 đến 5) -->
             <div class="khung">
                 <h2>1. Thời khóa biểu</h2>
                 <div class="hang">
@@ -166,6 +167,7 @@
 
     <datalist id="ds-mon"></datalist>
     <script src="script.js"></script>
+    <script src="ky-thi.js"></script>
     <script src="tkb-ocr.js"></script>
     <script src="personal.js"></script>
 </body>

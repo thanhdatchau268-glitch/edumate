@@ -219,6 +219,18 @@
     });
     return ds;
   }
+  // Điểm trung bình có trọng số (kỳ càng gần thi càng nặng)
+  const trungBinh = (l) => l.reduce((s, x) => s + x.w * x.v, 0) / l.reduce((s, x) => s + x.w, 0);
+
+  // Xu hướng: so điểm kỳ đầu với kỳ cuối đã nhập
+  const xuHuong = (l) => (l.length >= 2 ? l[l.length - 1].v - l[0].v : null);
+  const textXH = (ten, l) => {
+    const x = xuHuong(l);
+    if (x === null) return "";
+    return x > 0.2 ? `${ten} đang tiến bộ (+${x.toFixed(1)}). `
+      : x < -0.2 ? `${ten} đang giảm (${x.toFixed(1)}). `
+        : `${ten} ổn định. `;
+  };
   // ---------- Nộp form ----------
   function xuLyNop(e) {
     e.preventDefault();
@@ -300,6 +312,7 @@
   function baoLoi(out, msg) {
     ST = null;
     out.innerHTML = `<p class="thong-bao">${esc(msg)}</p>`;
+    out.scrollIntoView({ behavior: "smooth", block: "center" }); // cuộn tới để người dùng thấy
   }
 
   function ganXuLyAnh(out) {
