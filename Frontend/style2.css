@@ -813,13 +813,32 @@
     font-weight: 600;
 }
 
-@media (max-width: 860px) {
-    .ky-hang {
-        grid-template-columns: 1fr repeat(var(--cot), 64px);
-        gap: 6px;
+/* ---------- Hover: thẻ đang trỏ nhích lên và rộng ra nhẹ, các thẻ khác mờ nhẹ ---------- */
+@media (hover: hover) and (min-width: 861px) {
+
+    /* Lưới 3 nguyện vọng: chênh lệch vừa phải (thẻ hover ~38%, 2 thẻ kia ~31%) */
+    .truong-grid:not(.truong-grid--mot):hover .truong-card {
+        flex-grow: 0.95;
+        opacity: 0.85;
     }
 
-    .truong-grid--mot .truong-card {
-        flex: none;
+    .truong-grid:not(.truong-grid--mot) .truong-card:hover,
+    .truong-grid:not(.truong-grid--mot) .truong-card:focus-visible {
+        flex-grow: 1.15;
+        opacity: 1;
+        transform: translateY(-4px);
+        box-shadow: var(--bong-lon);
+    }
+
+    /* Thẻ trường chuyên (chỉ 1 thẻ): KHÔNG đổi độ rộng, chỉ nhích lên + đổ bóng */
+    .truong-grid--mot .truong-card:hover,
+    .truong-grid--mot .truong-card:focus-visible {
+        transform: translateY(-4px);
+        box-shadow: var(--bong-lon);
+    }
+
+    .truong-card:hover .truong-img,
+    .truong-card:focus-visible .truong-img {
+        transform: scale(1.05);
     }
 }

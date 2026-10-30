@@ -239,3 +239,47 @@
         gap: 4px;
     }
 }
+
+/* Bảng điểm các kỳ thi */
+#bang-diem {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+#bang-diem th {
+    padding: 8px;
+    color: #fff;
+    background: var(--nhan);
+}
+
+#bang-diem th,
+#bang-diem td {
+    border: 1px solid var(--vien);
+    text-align: center;
+}
+
+#bang-diem td.nhan {
+    padding: 6px 10px;
+    font-weight: 600;
+    text-align: left;
+    background: #f4f7fc;
+}
+
+#bang-diem td input {
+    width: 100%;
+    min-width: 80px;
+    padding: 6px;
+    text-align: center;
+    border-width: 2px;
+}
+
+#bang-diem td input:disabled {
+    background: #eef1f6;
+    cursor: not-allowed;
+}
+
+#bang-diem td input.sai {
+    border-color: #d62424;
+    background: #fde4e4;
+}

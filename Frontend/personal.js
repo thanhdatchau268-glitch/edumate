@@ -231,7 +231,53 @@ document.addEventListener("DOMContentLoaded", () => {
     $("tab-lich").addEventListener("click", () => { veKeHoach(); chonTab("lich"); });
     $("tab-setup").addEventListener("click", () => chonTab("setup"));
 
+    // ---------- 8. Điểm các kỳ thi lớp 9 ----------
+    const KT = window.KYTHI;
+    const TEN_CHUYEN = { toan: "Chuyên Toán", ly: "Chuyên Vật lí", hoa: "Chuyên Hóa học" };
+
+    function veDiem() {
+        const ky = KT.capNhatKy().filter((k) => !k.luon); // 4 kỳ lớp 9
+        const luu = KT.doc();
+        const mon = localStorage.getItem("monChuyen") || "";
+        const cot = ["toan", "van"].concat(mon ? ["chuyen"] : []);
+        const ten = { toan: "Toán", van: "Văn", chuyen: TEN_CHUYEN[mon] || "Chuyên" };
+        let h = "<thead><tr><th>Kỳ thi</th>" + cot.map((m) => `<th>${ten[m]}</th>`).join("") + "</tr></thead><tbody>";
+        ky.forEach((k) => {
+            const ghi = k.mo ? `Thi ${KT.dm(k.bd[1], k.bd[0])} – ${KT.dm(k.kt[1], k.kt[0])}` : `Mở từ ${KT.dm(k.bd[1], k.bd[0])}`;
+            h += `<tr><td class="nhan">${esc(k.ten)}<br><small class="phu">${ghi}</small></td>` +
+                cot.map((m) => {
+                    const id = `d-${k.id}-${m}`;
+                    return `<td><input type="number" step="any" min="0" max="10" data-id="${id}" placeholder="${k.mo ? "0-10" : "Chưa mở"}"
+                  aria-label="${esc(k.ten)} - ${ten[m]}" value="${esc(k.mo ? luu[id] ?? "" : "")}" ${k.mo ? "" : "disabled"}></td>`;
+                }).join("") + "</tr>";
+        });
+        $("bang-diem").innerHTML = h + "</tbody>";
+    }
+    $("bang-diem").addEventListener("input", (e) => {
+        const el = e.target;
+        if (!el.dataset.id) return;
+        const v = el.value, hopLe = v === "" || (Number(v) >= 0 && Number(v) <= 10);
+        el.classList.toggle("sai", !hopLe);
+        if (!hopLe) return; // điểm sai thì chưa lưu
+        const d = KT.doc();
+        d[el.dataset.id] = v;
+        KT.luu(d);
+    });
+
+    // ---------- Chuyển giữa "Lịch học", "Thiết lập" và "Điểm số" ----------
+    function chonTab(t) {
+        ["lich", "setup", "diem"].forEach((x) => {
+            $("pn-" + x).hidden = x !== t;
+            $("tab-" + x).classList.toggle("on", x === t);
+        });
+        if (t === "diem") veDiem();
+    }
+    $("tab-lich").addEventListener("click", () => { veKeHoach(); chonTab("lich"); });
+    $("tab-setup").addEventListener("click", () => chonTab("setup"));
+    $("tab-diem").addEventListener("click", () => chonTab("diem"));
+
     // ---------- Khởi động ----------
     veBang(); capNhatUuTien(); veDanhSach(); veKeHoach();
-    chonTab(S.tkb.flat().some(Boolean) || S.viec.length ? "lich" : "setup"); // lần đầu vào thì mở phần thiết lập
+    chonTab(location.hash === "#diem" ? "diem"
+        : S.tkb.flat().some(Boolean) || S.viec.length ? "lich" : "setup");
 });

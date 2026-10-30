@@ -21,39 +21,15 @@
   };
   const DUOI_ANH = ["webp"];
 
-  // ---------- Đi lại ----------
-  const HESO_DUONG = 1.3; // đường thật ≈ 1,3 lần đường chim bay
-  const TOC_DO = { xedap: 12, xemay: 30, xebuyt: 22 }; // km/giờ
-  const TEN_PT = { xedap: "xe đạp", xemay: "xe máy", xebuyt: "xe buýt" };
-  const GIOI_HAN_PHUT = 45; // không ở ký túc xá thì chỉ xét trường đi được trong ngần này phút
+  const HESO_DUONG = 1.3;
+  const TOC_DO = { xedap: 12, xemay: 30, xebuyt: 22, giadinh: 30 }; // km/giờ (gia đình chở = tốc độ xe máy)
+  const TEN_PT = { xedap: "xe đạp", xemay: "xe máy", xebuyt: "xe buýt", giadinh: "xe (gia đình chở)" };
+  // Giới hạn phút đi khi KHÔNG ở ký túc xá. Xe đạp chậm nên ràng buộc "gần nhà" chặt hơn.
+  const GIOI_HAN_PHUT = { xedap: 30, xemay: 45, xebuyt: 45, giadinh: 45 };
 
   // ---------- Kỳ thi (bd/kt = [tháng, ngày]) ----------
-  // Kỳ chỉ nhập được khi hôm nay >= ngày bắt đầu. w = trọng số khi tính điểm TB (kỳ càng gần thi càng nặng)
-  const KY_THI = [
-    { id: "l8", ten: "Cả năm lớp 8", luon: true, w: 1 },
-    { id: "gk1", ten: "Giữa kỳ 1", bd: [10, 25], kt: [11, 15], namSau: false, w: 2 },
-    { id: "ck1", ten: "Cuối kỳ 1", bd: [12, 15], kt: [12, 31], namSau: false, w: 3 },
-    { id: "gk2", ten: "Giữa kỳ 2", bd: [3, 15], kt: [3, 31], namSau: true, w: 4 },
-    { id: "ck2", ten: "Cuối kỳ 2", bd: [4, 25], kt: [5, 15], namSau: true, w: 5 },
-  ];
-  const dm = (d, m) => String(d).padStart(2, "0") + "/" + String(m).padStart(2, "0");
-
-  // Năm học bắt đầu từ tháng 8
-  function capNhatKy() {
-    const now = new Date();
-    const nam = now.getMonth() >= 7 ? now.getFullYear() : now.getFullYear() - 1;
-    return KY_THI.map((k) => {
-      if (k.luon) return { ...k, mo: true };
-      const ngayMo = new Date(k.namSau ? nam + 1 : nam, k.bd[0] - 1, k.bd[1]);
-      return { ...k, mo: now >= ngayMo };
-    });
-  }
-
-  // ---------- Lưu điểm đã nhập (theo tài khoản) ----------
-  const KHOA_LUU = "edumate_diem_" + (localStorage.getItem("userId") || "khach");
-  const docDiem = () => {
-    try { return JSON.parse(localStorage.getItem(KHOA_LUU) || "{}"); } catch (e) { return {}; }
-  };
+  const { dm, capNhatKy, khoa: tenKhoa, doc: docDiem } = window.KYTHI;
+  const KHOA_LUU = tenKhoa();
 
   // ---------- Công thức ----------
   function tinhKhoangCach(lat1, lon1, lat2, lon2) {
@@ -205,46 +181,44 @@
     const tenCot = { toan: "Toán", van: "Văn", chuyen: thiC ? TEN_MON[mon] : "" };
 
     let h = `<div class="ky-hang ky-dau"><span>Kỳ</span>${cot.map((m) => `<span>${esc(tenCot[m])}</span>`).join("")}</div>`;
-    KY.forEach((k) => {
-      const ghi = k.luon ? "Luôn nhập được (dùng khi chưa có điểm lớp 9)"
-        : k.mo ? `Đã mở · thi ${dm(k.bd[1], k.bd[0])} – ${dm(k.kt[1], k.kt[0])}`
-          : `Chưa mở · từ ${dm(k.bd[1], k.bd[0])}`;
-      h += `<div class="ky-hang${k.mo ? "" : " khoa"}">
-        <div class="ky-ten"><b>${k.ten}</b><small>${ghi}</small></div>
-        ${cot.map((m) => {
+    // Chỉ còn dòng "Cả năm lớp 8" trong khảo sát
+    KY.filter((k) => k.luon).forEach((k) => {
+      h += `<div class="ky-hang">
+      <div class="ky-ten"><b>${k.ten}</b><small>Luôn nhập được (dùng khi chưa có điểm lớp 9)</small></div>
+      ${cot.map((m) => {
         const id = `d-${k.id}-${m}`;
         return `<input type="number" step="any" min="0" max="10" id="${id}" placeholder="0-10"
-                   aria-label="${k.ten} - ${esc(tenCot[m])}" ${k.mo ? "" : "disabled"}
-                   value="${esc(k.mo ? luu[id] ?? "" : "")}">`;
+                 aria-label="${k.ten} - ${esc(tenCot[m])}" value="${esc(luu[id] ?? "")}">`;
       }).join("")}
-      </div>`;
+    </div>`;
     });
+
+    // Báo các kỳ lớp 9 đã nhập ở trang Học tập cá nhân hoá
+    const daCo = KY.filter((k) => !k.luon && k.mo &&
+      ["toan", "van", "chuyen"].some((m) => (luu[`d-${k.id}-${m}`] ?? "") !== ""));
+    h += `<p class="form-ghi-chu">${daCo.length ? "Đã có điểm: " + daCo.map((k) => k.ten).join(", ") + ". Hệ thống tự dùng các điểm này. " : ""}
+    Điểm các kỳ lớp 9 nhập tại <a href="personal.html#diem" style="color:var(--nhan);font-weight:600">Học tập cá nhân hoá → Điểm số</a>.</p>`;
     box.innerHTML = h;
   }
 
-  // Đọc điểm đã nhập: { toan:[{w,v}], van:[...], chuyen:[...] }
+  // Đọc điểm: { toan:[{w,v}], van:[...], chuyen:[...] }. Ô nào không có trên form thì lấy từ bộ nhớ đã lưu.
   function layDiem() {
     const ds = { toan: [], van: [], chuyen: [] };
+    const luu = docDiem();
     KY.forEach((k) => {
       if (!k.mo) return;
       Object.keys(ds).forEach((m) => {
-        const el = $(`d-${k.id}-${m}`);
-        if (!el || el.value === "") return;
-        const v = Number(el.value);
+        const id = `d-${k.id}-${m}`;
+        const el = $(id);
+        const raw = el ? el.value : (luu[id] ?? "");
+        if (raw === "") return;
+        const v = Number(raw);
         if (!hopLeDiem(v)) throw new Error(`Điểm "${k.ten}" phải nằm trong khoảng 0 đến 10.`);
         ds[m].push({ w: k.w, v });
       });
     });
     return ds;
   }
-  const trungBinh = (l) => l.reduce((s, x) => s + x.w * x.v, 0) / l.reduce((s, x) => s + x.w, 0);
-  const xuHuong = (l) => (l.length >= 2 ? l[l.length - 1].v - l[0].v : null);
-  const textXH = (ten, l) => {
-    const x = xuHuong(l);
-    if (x === null) return "";
-    return x > 0.2 ? `${ten} đang tiến bộ (+${x.toFixed(1)}). ` : x < -0.2 ? `${ten} đang giảm (${x.toFixed(1)}). ` : `${ten} ổn định. `;
-  };
-
   // ---------- Nộp form ----------
   function xuLyNop(e) {
     e.preventDefault();
@@ -277,7 +251,7 @@
       return { ...t, km, phut: phutDi(km), dub, xs: dub ? phi((diem - dub.du) / dub.sigma) : null };
     }).filter((c) => c.xs !== null).sort((a, b) => a.km - b.km);
 
-    let ungVien = dorm ? tatCa : tatCa.filter((c) => c.phut <= GIOI_HAN_PHUT);
+    let ungVien = dorm ? tatCa : tatCa.filter((c) => c.phut <= GIOI_HAN_PHUT[pt]);
     if (ungVien.length < 3) ungVien = tatCa.slice(0, 8); // vùng thưa trường: lấy các trường gần nhất
 
     const key = khoaUuTien(uuTien);
@@ -423,7 +397,7 @@
         <b>Điểm xét tuyển ước tính: ${S.diem}</b>
         (Toán TB ${S.toan.toFixed(1)}, Văn TB ${S.van.toFixed(1)}${S.diemChuyen !== null ? `, điểm xét chuyên ${S.diemChuyen}` : ""}).
         ${esc(xh)}Ưu tiên của bạn: <b>${{ gan: "gần nhà", chatluong: "chất lượng", antoan: "chắc đỗ" }[S.uuTien]}</b>
-        · ${S.dorm ? "có thể ở ký túc xá nên xét cả trường xa" : `chỉ xét trường đi được trong ${GIOI_HAN_PHUT} phút`}.
+        · ${S.dorm ? "có thể ở ký túc xá nên xét cả trường xa" : `chỉ xét trường đi được trong ${GIOI_HAN_PHUT[S.pt]} phút`}.
       </div>`;
 
     const off = S.chuyen ? 1 : 0;
@@ -563,11 +537,13 @@
     });
 
     $("input-survey").addEventListener("reset", () => {
-      localStorage.removeItem(KHOA_LUU);
+      const d = docDiem();
+      Object.keys(d).forEach((k) => { if (k.startsWith("d-l8-")) delete d[k]; }); // chỉ xóa điểm lớp 8
+      localStorage.setItem(KHOA_LUU, JSON.stringify(d));
       section.hidden = true;
       $("ketqua").innerHTML = "";
       ST = null;
-      setTimeout(veKyThi, 0); // đợi trình duyệt reset xong rồi vẽ lại bảng
+      setTimeout(veKyThi, 0);
     });
   }
 
