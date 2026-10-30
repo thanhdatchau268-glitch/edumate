@@ -1,4 +1,17 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  // Vẽ công thức KaTeX (không có KaTeX thì bỏ qua)
+  const veCongThuc = window.veCongThuc || function (el) {
+    if (!el || !window.renderMathInElement) return;
+    try {
+      window.renderMathInElement(el, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+        ],
+        throwOnError: false,
+      });
+    } catch (e) { console.warn("Không vẽ được công thức:", e); }
+  };
   // Lấy thông tin bài từ địa chỉ trang
   const params = new URLSearchParams(location.search);
   const subject = params.get("subject");

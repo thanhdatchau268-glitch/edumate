@@ -14,7 +14,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from md_to_json import ROOT, chuan_chuong, doc_de, luu
+from md_to_json import ROOT, chuan_chuong, doc_de, luu, doc_file_md
 
 
 def main():
@@ -47,7 +47,7 @@ def main():
             for f in sorted(chuong_dir.glob("*.md")):
                 nhan = f"{mon}/{chuong}/{f.name}"
                 try:
-                    bai_tap, dap_an, canh_bao = doc_de(f.read_text("utf-8-sig"), f.name)
+                    bai_tap, dap_an, canh_bao = doc_de(doc_file_md(f), f.name)
                     if not a.dry:
                         luu(ROOT, mon, chuong, bai_tap, dap_an)
                     print(f"OK  {nhan} -> đề {bai_tap['id']} ({len(bai_tap['cau_hoi'])} mục)")

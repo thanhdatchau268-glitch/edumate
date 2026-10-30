@@ -1,0 +1,1968 @@
+{
+  "ly_thuyet": "<p>Chưa có lý thuyết.</p>",
+  "bai_tap": [
+    {
+      "id": "3.1",
+      "do_kho": 1,
+      "ten": "Giải bài toán bằng cách lập hệ phương trình",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Quy trình giải bài toán bằng cách lập hệ phương trình gồm mấy bước chính?",
+          "dap_an": [
+            "2 bước",
+            "3 bước",
+            "4 bước",
+            "5 bước"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Bước đầu tiên trong quy trình giải bài toán bằng cách lập hệ phương trình là gì?",
+          "dap_an": [
+            "Lập hệ phương trình (chọn ẩn, đặt điều kiện, biểu diễn đại lượng và lập hệ)",
+            "Giải hệ phương trình vừa lập được",
+            "Kiểm tra các nghiệm tìm được có thỏa mãn điều kiện hay không và kết luận",
+            "Thử lại nghiệm vào bài toán"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Cho bài toán: \"Tổng của hai số bằng 45 và hiệu của hai số đó bằng 15\". Nếu gọi số lớn là $x$ và số nhỏ là $y$, hệ phương trình lập được là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 45 \\\\ x - y = 15 \\end{cases}$",
+            "$\\begin{cases} x + y = 15 \\\\ x - y = 45 \\end{cases}$",
+            "$\\begin{cases} x - y = 45 \\\\ x + y = 15 \\end{cases}$",
+            "$\\begin{cases} 2x + y = 45 \\\\ x - 2y = 15 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Biết hai lần số thứ nhất cộng với ba lần số thứ hai bằng 24. Biểu thức đại số thể hiện mối quan hệ này giữa hai số $x$ và $y$ là:",
+          "dap_an": [
+            "$3x + 2y = 24$",
+            "$2x + 3y = 24$",
+            "$2x - 3y = 24$",
+            "$x + y = 24$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Gọi $x$ (km/h) là vận tốc của một ô tô và $y$ (giờ) là thời gian ô tô đó di chuyển. Quãng đường $S$ (km) mà ô tô đi được tính theo $x$ và $y$ là:",
+          "dap_an": [
+            "$S = x + y$",
+            "$S = x \\cdot y$",
+            "$S = \\frac{x}{y}$",
+            "$S = \\frac{y}{x}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Một hình chữ nhật có chiều dài là $x$ (cm) và chiều rộng là $y$ (cm). Nửa chu vi của hình chữ nhật đó được biểu diễn bằng biểu thức nào?",
+          "dap_an": [
+            "$x + y$",
+            "$2(x + y)$",
+            "$x \\cdot y$",
+            "$2x + y$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Một hình chữ nhật có chiều dài $x$ (cm) lớn hơn chiều rộng $y$ (cm) là 5 cm. Phương trình biểu diễn mối quan hệ này là:",
+          "dap_an": [
+            "$x + y = 5$",
+            "$x - y = 5$",
+            "$y - x = 5$",
+            "$x = 5y$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Số thứ nhất gấp 3 lần số thứ hai. Nếu gọi số thứ nhất là $x$ và số thứ hai là $y$, phương trình biểu diễn mối quan hệ này là:",
+          "dap_an": [
+            "$x = 3y$",
+            "$y = 3x$",
+            "$x + y = 3$",
+            "$x - y = 3$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Một mảnh vườn hình chữ nhật có chu vi là 60 m. Gọi chiều dài là $x$ (m) và chiều rộng là $y$ (m). Phương trình biểu diễn chu vi mảnh vườn là:",
+          "dap_an": [
+            "$x + y = 60$",
+            "$2(x + y) = 60$",
+            "$x \\cdot y = 60$",
+            "$x - y = 60$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Một ô tô đi từ A đến B với vận tốc $x$ (km/h) hết 3 giờ. Quãng đường AB dài bao nhiêu km?",
+          "dap_an": [
+            "$x + 3$ (km)",
+            "$\\frac{x}{3}$ (km)",
+            "$3x$ (km)",
+            "$\\frac{3}{x}$ (km)"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Gọi $x$ là số học sinh nam và $y$ là số học sinh nữ của một lớp học. Biết lớp học có tổng cộng 42 học sinh. Phương trình biểu diễn sĩ số lớp học là:",
+          "dap_an": [
+            "$x + y = 42$",
+            "$x - y = 42$",
+            "$xy = 42$",
+            "$2x + y = 42$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Trong bài toán chọn ẩn là số người hoặc số vật (như số học sinh, số xe, số con vật), điều kiện cơ bản của ẩn $x$ thường là:",
+          "dap_an": [
+            "$x \\in \\mathbb{R}$",
+            "$x &lt; 0$",
+            "$x \\in \\mathbb{N}^*$ (hoặc $x$ là số nguyên dương)",
+            "$x \\le 0$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Mua 3 quyển vở giá $x$ đồng/quyển và 2 chiếc bút giá $y$ đồng/chiếc hết tổng cộng 35 000 đồng. Phương trình biểu diễn số tiền mua hàng là:",
+          "dap_an": [
+            "$2x + 3y = 35\\,000$",
+            "$3x + 2y = 35\\,000$",
+            "$x + y = 35\\,000$",
+            "$3x - 2y = 35\\,000$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Cho hai số có tổng bằng 20. Nếu gọi số thứ nhất là $x$, số thứ hai biểu diễn theo $x$ là:",
+          "dap_an": [
+            "$x - 20$",
+            "$20 - x$",
+            "$20x$",
+            "$\\frac{20}{x}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Gọi $x$ là chữ số hàng chục và $y$ là chữ số hàng đơn vị của một số tự nhiên có hai chữ số ($0 &lt; x \\le 9; 0 \\le y \\le 9$). Giá trị của số tự nhiên đó được biểu diễn là:",
+          "dap_an": [
+            "$x + y$",
+            "$xy$",
+            "$10x + y$",
+            "$10y + x$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Năm nay tuổi mẹ gấp 3 lần tuổi con. Nếu gọi tuổi con hiện nay là $x$ (tuổi) và tuổi mẹ hiện nay là $y$ (tuổi), phương trình biểu diễn mối quan hệ tuổi hiện nay là:",
+          "dap_an": [
+            "$y = 3x$",
+            "$x = 3y$",
+            "$y - x = 3$",
+            "$x + y = 3$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Nếu tuổi con hiện nay là $x$ (tuổi) thì sau 5 năm nữa tuổi con sẽ là:",
+          "dap_an": [
+            "$5x$ (tuổi)",
+            "$x + 5$ (tuổi)",
+            "$x - 5$ (tuổi)",
+            "$\\frac{x}{5}$ (tuổi)"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Lớp 9A có $x$ học sinh, lớp 9B có $y$ học sinh. Hai lớp quyên góp được tổng cộng 180 quyển sách. Biết mỗi học sinh lớp 9A ủng hộ 2 quyển, mỗi học sinh lớp 9B ủng hộ 3 quyển. Phương trình thể hiện tổng số sách ủng hộ là:",
+          "dap_an": [
+            "$3x + 2y = 180$",
+            "$2x + 3y = 180$",
+            "$x + y = 180$",
+            "$2x + 2y = 180$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Hai công nhân cùng làm một công việc. Gọi $x$ là số ngày công nhân thứ nhất hoàn thành công việc một mình. Trong 1 ngày, công nhân thứ nhất làm được bao nhiêu phần công việc?",
+          "dap_an": [
+            "$x$ (phần công việc)",
+            "$\\frac{1}{x}$ (phần công việc)",
+            "$1 - x$ (phần công việc)",
+            "$x - 1$ (phần công việc)"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Một canô đi xuôi dòng với vận tốc canô khi nước yên lặng là $x$ (km/h) và vận tốc dòng nước là $y$ (km/h) ($x &gt; y &gt; 0$). Vận tốc thực tế của canô khi đi xuôi dòng là:",
+          "dap_an": [
+            "$x + y$ (km/h)",
+            "$x - y$ (km/h)",
+            "$x \\cdot y$ (km/h)",
+            "$\\frac{x}{y}$ (km/h)"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Một canô đi ngược dòng với vận tốc canô khi nước yên lặng là $x$ (km/h) và vận tốc dòng nước là $y$ (km/h) ($x &gt; y &gt; 0$). Vận tốc thực tế của canô khi đi ngược dòng là:",
+          "dap_an": [
+            "$x + y$ (km/h)",
+            "$x - y$ (km/h)",
+            "$y - x$ (km/h)",
+            "$x \\cdot y$ (km/h)"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Tổng hai số là 100, số này lớn hơn số kia 20 đơn vị. Nếu gọi hai số đó là $x$ và $y$ ($x &gt; y$), hệ phương trình biểu diễn bài toán là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 100 \\\\ x - y = 20 \\end{cases}$",
+            "$\\begin{cases} x + y = 20 \\\\ x - y = 100 \\end{cases}$",
+            "$\\begin{cases} x + y = 100 \\\\ y - x = 20 \\end{cases}$",
+            "$\\begin{cases} x = 20y \\\\ x + y = 100 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Trong bước cuối cùng của giải bài toán bằng cách lập hệ phương trình, ta phải làm gì?",
+          "dap_an": [
+            "Chọn ẩn và đặt điều kiện cho ẩn",
+            "Lập hệ hai phương trình",
+            "Đối chiếu giá trị tìm được của các ẩn với điều kiện xem có thỏa mãn hay không rồi trả lời",
+            "Biến đổi phương trình về dạng $ax + by = c$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Bạn Nam mua $x$ kg cam giá 30 000 đồng/kg và $y$ kg táo giá 50 000 đồng/kg. Tổng số tiền Nam phải trả là 190 000 đồng. Phương trình biểu diễn tổng số tiền Nam trả là:",
+          "dap_an": [
+            "$50\\,000x + 30\\,000y = 190\\,000$",
+            "$30\\,000x + 50\\,000y = 190\\,000$",
+            "$x + y = 190\\,000$",
+            "$30x + 50y = 190$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Một bãi đỗ xe có $x$ xe máy (mỗi xe có 2 bánh) và $y$ ô tô (mỗi xe có 4 bánh). Biểu thức tính tổng số bánh xe trong bãi đỗ là:",
+          "dap_an": [
+            "$x + y$",
+            "$4x + 2y$",
+            "$2x + 4y$",
+            "$6(x + y)$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Cho bài toán: \"Một hình chữ nhật có chu vi bằng 28 cm. Chiều dài hơn chiều rộng 4 cm. Tính chiều dài và chiều rộng của hình chữ nhật đó.\" Gọi $x$ (cm) là chiều dài và $y$ (cm) là chiều rộng. Xét tính đúng/sai của các phát biểu sau:<br><b>a)</b> Điều kiện đúng cho các ẩn là $x &gt; y &gt; 0$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Phương trình biểu diễn nửa chu vi của hình chữ nhật là $x + y = 14$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Phương trình biểu diễn mối quan hệ về kích thước là $y - x = 4$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Hệ phương trình lập được từ bài toán là $\\begin{cases} x + y = 14 \\\\ x - y = 4 \\end{cases}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Cho bài toán: \"Tổng của hai số tự nhiên bằng 50. Biết số lớn gấp 4 lần số nhỏ.\" Gọi $x$ là số lớn và $y$ là số nhỏ ($x, y \\in \\mathbb{N}^*$). Xét tính đúng/sai của các phát biểu sau:<br><b>a)</b> Phương trình biểu diễn tổng của hai số là $x + y = 50$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Phương trình biểu diễn mối quan hệ gấp lần là $y = 4x$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Hệ phương trình tương ứng với bài toán là $\\begin{cases} x + y = 50 \\\\ x - 4y = 0 \\end{cases}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Giải hệ phương trình ta tìm được $x = 40$ và $y = 10$.",
+          "diem": 2.5
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm số lớn trong hai số, biết tổng của chúng bằng 30 và hiệu của chúng bằng 10.",
+          "diem": 6
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một thửa ruộng hình chữ nhật có nửa chu vi là 25 m và chiều dài hơn chiều rộng 5 m. Tính chiều dài của thửa ruộng đó (theo đơn vị mét).",
+          "diem": 6
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "An mua 2 quyển vở và 1 chiếc bút hết 20 nghìn đồng. Bích mua 1 quyển vở và 1 chiếc bút hết 13 nghìn đồng (giá mỗi quyển vở, chiếc bút của hai bạn là như nhau). Hỏi giá tiền của 1 quyển vở là bao nhiêu nghìn đồng?",
+          "diem": 6
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm một số tự nhiên có hai chữ số, biết rằng tổng hai chữ số bằng 9 và chữ số hàng chục gấp 2 lần chữ số hàng đơn vị.",
+          "diem": 6
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Trong một bãi giữ xe có tổng cộng 10 phương tiện gồm xe máy (2 bánh) và ô tô (4 bánh). Kiểm tra thấy tổng số bánh xe là 28 bánh. Hỏi trong bãi có bao nhiêu chiếc ô tô?",
+          "diem": 6
+        }
+      ]
+    },
+    {
+      "id": "3.2",
+      "do_kho": 1.5,
+      "ten": "Giải bài toán bằng cách lập hệ phương trình",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm hai số biết tổng của chúng bằng $28$ và hiệu của chúng bằng $6$. Gọi $x$ là số lớn, $y$ là số nhỏ. Hệ phương trình tìm $x, y$ là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 28 \\\\ x - y = 6 \\end{cases}$",
+            "$\\begin{cases} x + y = 28 \\\\ y - x = 6 \\end{cases}$",
+            "$\\begin{cases} x - y = 28 \\\\ x + y = 6 \\end{cases}$",
+            "$\\begin{cases} x + 2y = 28 \\\\ x - y = 6 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Hai số tự nhiên có tổng bằng $45$. Nếu lấy số lớn chia cho số nhỏ thì được thương là $3$ và dư $5$. Gọi số lớn là $x$, số nhỏ là $y$ ($x, y \\in \\mathbb{N}^*, x &gt; 5, y &gt; 5$). Hệ phương trình lập được là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 45 \\\\ x = 5y + 3 \\end{cases}$",
+            "$\\begin{cases} x + y = 45 \\\\ x = 3y + 5 \\end{cases}$",
+            "$\\begin{cases} x + y = 45 \\\\ y = 3x + 5 \\end{cases}$",
+            "$\\begin{cases} x + y = 45 \\\\ 3x + y = 5 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Một mảnh vườn hình chữ nhật có chu vi $50\\text{ m}$. Nếu tăng chiều dài thêm $3\\text{ m}$ và giảm chiều rộng đi $2\\text{ m}$ thì diện tích không đổi. Gọi $x\\text{ (m)}$ là chiều dài, $y\\text{ (m)}$ là chiều rộng ($x &gt; y &gt; 2$). Hệ phương trình lập được là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 25 \\\\ (x + 3)(y - 2) = xy \\end{cases}$",
+            "$\\begin{cases} 2x + 2y = 25 \\\\ (x + 3)(y - 2) = xy \\end{cases}$",
+            "$\\begin{cases} x + y = 50 \\\\ (x + 3)(y - 2) = xy \\end{cases}$",
+            "$\\begin{cases} x + y = 25 \\\\ (x - 2)(y + 3) = xy \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Một ô tô và một xe máy cùng khởi hành từ hai địa điểm A và B cách nhau $120\\text{ km}$, đi ngược chiều nhau và gặp nhau sau $1,5\\text{ giờ}$. Gọi $x\\text{ (km/h)}$ là vận tốc ô tô, $y\\text{ (km/h)}$ là vận tốc xe máy ($x, y &gt; 0$). Phương trình biểu thị tổng quãng đường hai xe đi được là:",
+          "dap_an": [
+            "$x + y = 120$",
+            "$1,5x + 1,5y = 120$",
+            "$1,5x - 1,5y = 120$",
+            "$x - y = 1,5$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Một ca nô chạy trên sông, vận tốc dòng nước là $3\\text{ km/h}$. Nếu gọi $v\\text{ (km/h)}$ là vận tốc thực của ca nô ($v &gt; 3$), vận tốc của ca nô khi đi xuôi dòng $v_{\\text{xuôi}}$ và đi ngược dòng $v_{\\text{ngược}}$ lần lượt là:",
+          "dap_an": [
+            "$v_{\\text{xuôi}} = v - 3$; $v_{\\text{ngược}} = v + 3$",
+            "$v_{\\text{xuôi}} = v + 3$; $v_{\\text{ngược}} = v - 3$",
+            "$v_{\\text{xuôi}} = 3v$; $v_{\\text{ngược}} = \\frac{v}{3}$",
+            "$v_{\\text{xuôi}} = v + 3$; $v_{\\text{ngược}} = 3 - v$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Hai công nhân cùng làm chung một công việc thì sau $6$ giờ hoàn thành. Nếu gọi $x\\text{ (giờ)}$ là thời gian người thứ nhất làm một mình xong công việc, $y\\text{ (giờ)}$ là thời gian người thứ hai làm một mình xong công việc ($x, y &gt; 6$). Trong $1$ giờ, cả hai người làm được bao nhiêu phần công việc?",
+          "dap_an": [
+            "$6$ phần công việc",
+            "$\\frac{1}{6}$ phần công việc",
+            "$\\frac{1}{x} - \\frac{1}{y}$ phần công việc",
+            "$x + y$ phần công việc"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Năm ngoái, hai đơn vị sản xuất nông nghiệp thu hoạch được tổng cộng $700\\text{ tấn}$ lúa. Năm nay, đơn vị I vượt mức $15\\%$, đơn vị II vượt mức $10\\%$ nên cả hai đơn vị thu hoạch được $785\\text{ tấn}$ lúa. Nếu gọi $x, y$ (tấn) lần lượt là số tấn lúa đơn vị I và đơn vị II thu hoạch được năm ngoái ($x, y &gt; 0$), hệ phương trình lập được là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 700 \\\\ 1,15x + 1,10y = 785 \\end{cases}$",
+            "$\\begin{cases} x + y = 700 \\\\ 0,15x + 0,10y = 785 \\end{cases}$",
+            "$\\begin{cases} x + y = 785 \\\\ 1,15x + 1,10y = 700 \\end{cases}$",
+            "$\\begin{cases} x + y = 700 \\\\ 15x + 10y = 785 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Một phân số có tử số bé hơn mẫu số $5$ đơn vị. Nếu tăng tử số thêm $2$ đơn vị và giảm mẫu số đi $3$ đơn vị thì được phân số mới bằng $\\frac{3}{4}$. Gọi tử số là $x$, mẫu số là $y$ ($y \\neq 0, y \\neq 3$). Hệ phương trình đúng là:",
+          "dap_an": [
+            "$\\begin{cases} y - x = 5 \\\\ \\frac{x - 2}{y + 3} = \\frac{3}{4} \\end{cases}$",
+            "$\\begin{cases} y - x = 5 \\\\ \\frac{x + 2}{y - 3} = \\frac{3}{4} \\end{cases}$",
+            "$\\begin{cases} x - y = 5 \\\\ \\frac{x + 2}{y - 3} = \\frac{3}{4} \\end{cases}$",
+            "$\\begin{cases} y - x = 5 \\\\ 4(x - 2) = 3(y + 3) \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Hai năm trước, tuổi mẹ gấp $4$ lần tuổi con. Mấy năm nữa tuổi mẹ sẽ gấp $3$ lần tuổi con? Biết hiện nay tổng số tuổi của hai mẹ con là $44$ tuổi. Gọi tuổi mẹ hiện nay là $x$, tuổi con hiện nay là $y$ ($x &gt; y &gt; 2$). Hệ phương trình biểu thị mối quan hệ tuổi hai năm trước là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 44 \\\\ x - 2 = 4(y - 2) \\end{cases}$",
+            "$\\begin{cases} x + y = 44 \\\\ x = 4y \\end{cases}$",
+            "$\\begin{cases} x + y = 44 \\\\ x + 2 = 4(y + 2) \\end{cases}$",
+            "$\\begin{cases} x - y = 44 \\\\ x - 2 = 4(y - 2) \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm một số có hai chữ số, biết rằng chữ số hàng chục lớn hơn chữ số hàng đơn vị là $3$. Nếu đổi chỗ hai chữ số cho nhau thì được số mới nhỏ hơn số ban đầu $27$ đơn vị. Gọi chữ số hàng chục là $x$, chữ số hàng đơn vị là $y$ ($x, y \\in \\mathbb{N}^*, 1 \\le x \\le 9, 0 \\le y \\le 9$). Hệ phương trình lập được là:",
+          "dap_an": [
+            "$\\begin{cases} x - y = 3 \\\\ (10y + x) - (10x + y) = 27 \\end{cases}$",
+            "$\\begin{cases} x - y = 3 \\\\ (10x + y) - (10y + x) = 27 \\end{cases}$",
+            "$\\begin{cases} y - x = 3 \\\\ (10x + y) - (10y + x) = 27 \\end{cases}$",
+            "$\\begin{cases} x - y = 3 \\\\ 10x + y = 27 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Hai lớp 9A và 9B có tổng cộng $82$ học sinh. Trong đợt quyên góp sách, trung bình mỗi học sinh lớp 9A quyên góp $6$ quyển, mỗi học sinh lớp 9B quyên góp $5$ quyển. Cả hai lớp quyên góp được $452$ quyển sách. Số học sinh lớp 9A ($x$) và lớp 9B ($y$) thỏa mãn hệ phương trình nào?",
+          "dap_an": [
+            "$\\begin{cases} x + y = 82 \\\\ 6x + 5y = 452 \\end{cases}$",
+            "$\\begin{cases} x + y = 452 \\\\ 6x + 5y = 82 \\end{cases}$",
+            "$\\begin{cases} x + y = 82 \\\\ 5x + 6y = 452 \\end{cases}$",
+            "$\\begin{cases} 6x + 5y = 82 \\\\ x - y = 2 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Cho bài toán: \"Một ca nô đi xuôi dòng $44\\text{ km}$ và ngược dòng $27\\text{ km}$ hết tất cả $9$ giờ. Biết vận tốc xuôi dòng lớn hơn vận tốc ngược dòng là $4\\text{ km/h}$.\" Gọi vận tốc xuôi dòng là $x\\text{ (km/h)}$, vận tốc ngược dòng là $y\\text{ (km/h)}$ ($x &gt; y &gt; 0$). Hệ phương trình thu được là:",
+          "dap_an": [
+            "$\\begin{cases} \\frac{44}{x} + \\frac{27}{y} = 9 \\\\ y - x = 4 \\end{cases}$",
+            "$\\begin{cases} \\frac{44}{x} + \\frac{27}{y} = 9 \\\\ x - y = 4 \\end{cases}$",
+            "$\\begin{cases} 44x + 27y = 9 \\\\ x - y = 4 \\end{cases}$",
+            "$\\begin{cases} \\frac{27}{x} + \\frac{44}{y} = 9 \\\\ x - y = 4 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Một hình chữ nhật có chiều dài gấp $3$ lần chiều rộng. Nếu tăng chiều rộng thêm $2\\text{ m}$ và giảm chiều dài đi $10\\text{ m}$ thì ta được một hình vuông. Chiều dài $x\\text{ (m)}$ và chiều rộng $y\\text{ (m)}$ của hình chữ nhật ban đầu thỏa mãn hệ phương trình:",
+          "dap_an": [
+            "$\\begin{cases} x = 3y \\\\ x - 10 = y + 2 \\end{cases}$",
+            "$\\begin{cases} y = 3x \\\\ x - 10 = y + 2 \\end{cases}$",
+            "$\\begin{cases} x = 3y \\\\ x + 2 = y - 10 \\end{cases}$",
+            "$\\begin{cases} x + y = 3 \\\\ x - y = 12 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Có hai loại dung dịch muối: loại I chứa $10\\%$ muối và loại II chứa $30\\%$ muối. Cần trộn bao nhiêu gam dung dịch loại I ($x\\text{ g}$) và loại II ($y\\text{ g}$) để được $200\\text{ g}$ dung dịch chứa $20\\%$ muối? Hệ phương trình lập được là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 200 \\\\ 10x + 30y = 200 \\end{cases}$",
+            "$\\begin{cases} x + y = 200 \\\\ 0,1x + 0,3y = 40 \\end{cases}$",
+            "$\\begin{cases} x + y = 200 \\\\ 0,1x + 0,3y = 20 \\end{cases}$",
+            "$\\begin{cases} x + y = 40 \\\\ 0,1x + 0,3y = 200 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Giải hệ phương trình $\\begin{cases} x + y = 28 \\\\ x - y = 6 \\end{cases}$ ta tìm được hai số $x, y$ lần lượt là:",
+          "dap_an": [
+            "$x = 16, y = 12$",
+            "$x = 17, y = 11$",
+            "$x = 18, y = 10$",
+            "$x = 20, y = 8$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Giải hệ phương trình $\\begin{cases} x + y = 36 \\\\ 2x + 4y = 100 \\end{cases}$ (bài toán vừa gà vừa chó) ta tìm được số gà ($x$) và số chó ($y$) là:",
+          "dap_an": [
+            "$x = 22, y = 14$",
+            "$x = 14, y = 22$",
+            "$x = 20, y = 16$",
+            "$x = 24, y = 12$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Một xe tải đi từ A đến B với vận tốc $x\\text{ (km/h)}$, một xe con đi từ B về A với vận tốc $y\\text{ (km/h)}$. Biết quãng đường AB dài $180\\text{ km}$, hai xe khởi hành cùng một lúc và gặp nhau sau $2$ giờ. Xe con đi nhanh hơn xe tải $10\\text{ km/h}$. Vận tốc xe tải và xe con lần lượt là:",
+          "dap_an": [
+            "$x = 35\\text{ km/h}, y = 45\\text{ km/h}$",
+            "$x = 40\\text{ km/h}, y = 50\\text{ km/h}$",
+            "$x = 45\\text{ km/h}, y = 55\\text{ km/h}$",
+            "$x = 50\\text{ km/h}, y = 60\\text{ km/h}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm hai số có tổng bằng $100$. Biết rằng $2$ lần số thứ nhất bằng $3$ lần số thứ hai. Gọi số thứ nhất là $x$, số thứ hai là $y$. Khẳng định nào sau đây là đúng?",
+          "dap_an": [
+            "$x = 60, y = 40$",
+            "$x = 40, y = 60$",
+            "$x = 70, y = 30$",
+            "$x = 50, y = 50$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Hai vòi nước cùng chảy vào một bể không có nước thì sau $4$ giờ đầy bể. Nếu vòi I chảy trong $2$ giờ và vòi II chảy trong $3$ giờ thì được $\\frac{7}{12}$ bể. Gọi $x, y$ (giờ) lần lượt là thời gian vòi I, vòi II chảy một mình đầy bể ($x, y &gt; 4$). Hệ phương trình lập được là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 4 \\\\ 2x + 3y = \\frac{7}{12} \\end{cases}$",
+            "$\\begin{cases} \\frac{1}{x} + \\frac{1}{y} = \\frac{1}{4} \\\\ \\frac{2}{x} + \\frac{3}{y} = \\frac{7}{12} \\end{cases}$",
+            "$\\begin{cases} \\frac{1}{x} + \\frac{1}{y} = 4 \\\\ \\frac{2}{x} + \\frac{3}{y} = \\frac{7}{12} \\end{cases}$",
+            "$\\begin{cases} \\frac{1}{x} + \\frac{1}{y} = \\frac{1}{4} \\\\ 2x + 3y = 7 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Một khu vườn hình chữ nhật có chu vi $72\\text{ m}$. Nếu giảm chiều dài $4\\text{ m}$ và tăng chiều rộng $4\\text{ m}$ thì khu vườn trở thành hình vuông. Diện tích khu vườn ban đầu bằng:",
+          "dap_an": [
+            "$320\\text{ m}^2$",
+            "$308\\text{ m}^2$",
+            "$324\\text{ m}^2$",
+            "$300\\text{ m}^2$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Hai bạn An và Bình đi mua dụng cụ học tập. An mua $3$ quyển vở và $2$ chiếc bút hết $34.000$ đồng. Bình mua $2$ quyển vở và $4$ chiếc bút hết $36.000$ đồng. Giá tiền của mỗi quyển vở ($x$ đồng) và mỗi chiếc bút ($y$ đồng) lần lượt là:",
+          "dap_an": [
+            "Vở: $6.000$ đồng; Bút: $8.000$ đồng",
+            "Vở: $8.000$ đồng; Bút: $5.000$ đồng",
+            "Vở: $5.000$ đồng; Bút: $7.000$ đồng",
+            "Vở: $7.000$ đồng; Bút: $5.000$ đồng"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Cho phương trình biểu diễn số tiền mua hàng: $5x + 3y = 105$ (với $x$ là giá tiền $1\\text{ kg}$ táo, $y$ là giá tiền $1\\text{ kg}$ cam, đơn vị: nghìn đồng). Nếu giá $1\\text{ kg}$ cam là $15$ nghìn đồng thì giá $1\\text{ kg}$ táo là:",
+          "dap_an": [
+            "$10$ nghìn đồng",
+            "$12$ nghìn đồng",
+            "$15$ nghìn đồng",
+            "$18$ nghìn đồng"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Tổng hai số bằng $80$. Số thứ nhất bằng $\\frac{3}{5}$ số thứ hai. Hai số đó là:",
+          "dap_an": [
+            "$30$ và $50$",
+            "$25$ và $55$",
+            "$35$ và $45$",
+            "$20$ và $60$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Khi giải bài toán \"Tìm vận tốc của xuồng khi nước yên lặng ($v$) và vận tốc dòng nước ($v_n$)\", biết vận tốc xuôi dòng là $25\\text{ km/h}$ và vận tốc ngược dòng là $15\\text{ km/h}$. Kết quả tìm được là:",
+          "dap_an": [
+            "$v = 22\\text{ km/h}, v_n = 3\\text{ km/h}$",
+            "$v = 20\\text{ km/h}, v_n = 5\\text{ km/h}$",
+            "$v = 18\\text{ km/h}, v_n = 7\\text{ km/h}$",
+            "$v = 21\\text{ km/h}, v_n = 4\\text{ km/h}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Một tổ sản xuất phải làm $600$ sản phẩm trong một thời hạn nhất định. Nhờ cải tiến kỹ thuật, mỗi ngày tổ làm thêm được $10$ sản phẩm nên đã hoàn thành sớm hơn kế hoạch $2$ ngày. Nếu gọi $x$ là số ngày làm theo kế hoạch, $y$ là số sản phẩm làm mỗi ngày theo kế hoạch ($x, y \\in \\mathbb{N}^*$), hệ phương trình lập được là:",
+          "dap_an": [
+            "$\\begin{cases} xy = 600 \\\\ (x - 2)(y + 10) = 600 \\end{cases}$",
+            "$\\begin{cases} xy = 600 \\\\ (x + 2)(y - 10) = 600 \\end{cases}$",
+            "$\\begin{cases} x + y = 600 \\\\ (x - 2)(y + 10) = 600 \\end{cases}$",
+            "$\\begin{cases} xy = 600 \\\\ (x - 10)(y + 2) = 600 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Một thửa ruộng hình chữ nhật có chu vi $100\\text{ m}$. Nếu tăng chiều rộng thêm $5\\text{ m}$ và giảm chiều dài đi $5\\text{ m}$ thì diện tích thửa ruộng tăng thêm $50\\text{ m}^2$. Gọi chiều dài thửa ruộng ban đầu là $x\\text{ (m)}$, chiều rộng ban đầu là $y\\text{ (m)}$ ($x &gt; y &gt; 0$). Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Nửa chu vi của thửa ruộng hình chữ nhật là $50\\text{ m}$, ta có phương trình $x + y = 50$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Diện tích thửa ruộng sau khi thay đổi kích thước là $(x - 5)(y + 5)\\text{ m}^2$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Phương trình biểu thị sự thay đổi diện tích là $(x - 5)(y + 5) - xy = 50$, thu gọn được $5x - 5y = 75$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Chiều dài thửa ruộng ban đầu là $35\\text{ m}$ và chiều rộng ban đầu là $15\\text{ m}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Hai ô tô cùng xuất phát từ A đến B dài $150\\text{ km}$. Xe thứ nhất đi nhanh hơn xe thứ hai $10\\text{ km/h}$ nên đến B sớm hơn xe thứ hai $45$ phút ($\\frac{3}{4}$ giờ). Gọi vận tốc xe thứ nhất là $x\\text{ (km/h)}$, vận tốc xe thứ hai là $y\\text{ (km/h)}$ ($x &gt; y &gt; 0$). Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Thời gian xe thứ nhất đi hết quãng đường AB là $\\frac{150}{x}$ (giờ).",
+          "diem": 2.5
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Phương trình biểu thị mối quan hệ giữa vận tốc hai xe là $x - y = 10$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Phương trình biểu thị mối quan hệ thời gian hai xe là $\\frac{150}{y} - \\frac{150}{x} = \\frac{3}{4}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Vận tốc của xe thứ nhất là $40\\text{ km/h}$ và xe thứ hai là $30\\text{ km/h}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm số tự nhiên có hai chữ số, biết rằng tổng hai chữ số bằng $12$ và nếu viết hai chữ số đó theo thứ tự ngược lại thì được số mới lớn hơn số cũ $18$ đơn vị.",
+          "diem": 6
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một ca nô đi xuôi dòng quãng đường $30\\text{ km}$ hết $1$ giờ và đi ngược dòng quãng đường đó hết $1,5$ giờ. Tính vận tốc của dòng nước (theo đơn vị km/h).",
+          "diem": 6
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Hai người thợ cùng làm một công việc trong $16$ giờ thì xong. Nếu người thứ nhất làm trong $3$ giờ và người thứ hai làm trong $6$ giờ thì chỉ hoàn thành được $25\\%$ ($\\frac{1}{4}$) công việc. Hỏi nếu người thứ hai làm một mình thì sau bao nhiêu giờ sẽ xong toàn bộ công việc?",
+          "diem": 6
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một mảnh vườn hình chữ nhật có chu vi $60\\text{ m}$. Biết rằng $2$ lần chiều dài lớn hơn $3$ lần chiều rộng là $10\\text{ m}$. Tính diện tích mảnh vườn hình chữ nhật đó (theo đơn vị $\\text{m}^2$).",
+          "diem": 6
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Trong đợt phát động kế hoạch nhỏ, hai lớp 9A và 9B thu gom được tổng cộng $220\\text{ kg}$ giấy vụn. Biết rằng $\\frac{2}{3}$ số giấy vụn của lớp 9A bằng $\\frac{4}{5}$ số giấy vụn của lớp 9B. Tính số kilôgam giấy vụn mà lớp 9A thu gom được.",
+          "diem": 6
+        }
+      ]
+    },
+    {
+      "id": "3.3",
+      "do_kho": 1.5,
+      "ten": "Giải bài toán bằng cách lập hệ phương trình",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm hai số biết tổng của chúng bằng $45$ và hiệu của chúng bằng $15$. Hai số đó là:",
+          "dap_an": [
+            "$30$ và $15$",
+            "$25$ và $20$",
+            "$35$ và $10$",
+            "$28$ và $17$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Hai số có tổng bằng $60$, biết số lớn gấp $3$ lần số nhỏ. Hệ phương trình mô tả bài toán trên là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 60 \\\\ x = 3y \\end{cases}$",
+            "$\\begin{cases} x + y = 60 \\\\ y = 3x \\end{cases}$",
+            "$\\begin{cases} x - y = 60 \\\\ x = 3y \\end{cases}$",
+            "$\\begin{cases} x + y = 30 \\\\ x = 3y \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Một số tự nhiên có hai chữ số, biết tổng hai chữ số bằng $11$. Nếu đổi chỗ hai chữ số cho nhau thì được số mới lớn hơn số cũ $27$ đơn vị. Số tự nhiên ban đầu là:",
+          "dap_an": [
+            "$74$",
+            "$47$",
+            "$38$",
+            "$29$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Bố hơn con $30$ tuổi. Sau $5$ năm nữa, tuổi bố gấp $3$ lần tuổi con. Tuổi của con hiện nay là:",
+          "dap_an": [
+            "$10$ tuổi",
+            "$12$ tuổi",
+            "$8$ tuổi",
+            "$15$ tuổi"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Một hình chữ nhật có chu vi bằng $36$ m. Biết chiều dài hơn chiều rộng $4$ m. Diện tích của hình chữ nhật đó là:",
+          "dap_an": [
+            "$80\\text{ m}^2$",
+            "$77\\text{ m}^2$",
+            "$72\\text{ m}^2$",
+            "$96\\text{ m}^2$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Một thửa ruộng hình chữ nhật có nửa chu vi là $18$ m. Nếu tăng chiều dài thêm $2$ m và giảm chiều rộng đi $1$ m thì diện tích giảm $2\\text{ m}^2$. Chiều dài và chiều rộng ban đầu của thửa ruộng lần lượt là:",
+          "dap_an": [
+            "$12$ m và $6$ m",
+            "$10$ m và $8$ m",
+            "$11$ m và $7$ m",
+            "$13$ m và $5$ m"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Một ca nô đi xuôi dòng quãng đường $30$ km mất $1$ giờ $15$ phút ($1,25$ giờ) và đi ngược dòng quãng đường đó mất $1$ giờ $40$ phút ($\\frac{5}{3}$ giờ). Vận tốc của dòng nước là:",
+          "dap_an": [
+            "$2$ km/h",
+            "$3$ km/h",
+            "$4$ km/h",
+            "$2,5$ km/h"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Hai ô tô khởi hành cùng một lúc từ hai tỉnh A và B cách nhau $180$ km, đi ngược chiều nhau và gặp nhau sau $2$ giờ. Biết vận tốc ô tô đi từ A lớn hơn vận tốc ô tô đi từ B là $10$ km/h. Vận tốc ô tô đi từ A là:",
+          "dap_an": [
+            "$50$ km/h",
+            "$40$ km/h",
+            "$60$ km/h",
+            "$55$ km/h"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Hai địa điểm A và B cách nhau $40$ km. Nếu hai xe đi cùng chiều thì xe đi từ A đuổi kịp xe đi từ B sau $2$ giờ. Nếu đi ngược chiều thì hai xe gặp nhau sau $0,5$ giờ. Vận tốc của hai xe lần lượt là:",
+          "dap_an": [
+            "$60$ km/h và $20$ km/h",
+            "$50$ km/h và $30$ km/h",
+            "$45$ km/h và $25$ km/h",
+            "$55$ km/h và $35$ km/h"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Hai công nhân làm chung một công việc thì trong $6$ ngày xong. Nếu người thứ nhất làm trong $3$ ngày và người thứ hai làm trong $6$ ngày thì làm được $\\frac{3}{4}$ công việc. Hỏi nếu làm một mình thì người thứ nhất hoàn thành công việc trong bao nhiêu ngày?",
+          "dap_an": [
+            "$12$ ngày",
+            "$18$ ngày",
+            "$24$ ngày",
+            "$15$ ngày"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Hai vòi nước cùng chảy vào một bể không có nước thì sau $6$ giờ đầy bể. Nếu mở vòi 1 chảy trong $2$ giờ và vòi 2 chảy trong $5$ giờ thì đầy $\\frac{1}{2}$ bể. Thời gian vòi 1 chảy một mình đầy bể là:",
+          "dap_an": [
+            "$12$ giờ",
+            "$9$ giờ",
+            "$18$ giờ",
+            "$15$ giờ"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Hai tổ sản xuất theo kế hoạch phải làm tổng cộng $700$ sản phẩm. Nhờ cải tiến kỹ thuật, tổ 1 vượt mức $10\\%$, tổ 2 vượt mức $15\\%$ nên cả hai tổ làm được $790$ sản phẩm. Số sản phẩm tổ 1 phải làm theo kế hoạch là:",
+          "dap_an": [
+            "$300$ sản phẩm",
+            "$400$ sản phẩm",
+            "$350$ sản phẩm",
+            "$250$ sản phẩm"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Bạn Nam mua $3$ quyển vở và $2$ chiếc bút hết $45$ nghìn đồng. Bạn Bắc mua $2$ quyển vở và $4$ chiếc bút cùng loại hết $50$ nghìn đồng. Giá tiền một quyển vở là:",
+          "dap_an": [
+            "$8$ nghìn đồng",
+            "$10$ nghìn đồng",
+            "$7,5$ nghìn đồng",
+            "$12$ nghìn đồng"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Trộn $x$ gram dung dịch axit $10\\%$ với $y$ gram dung dịch axit $30\\%$ để thu được $100$ gram dung dịch axit $18\\%$. Khối lượng dung dịch $10\\%$ cần dùng là:",
+          "dap_an": [
+            "$40$ gram",
+            "$60$ gram",
+            "$50$ gram",
+            "$70$ gram"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm một phân số $\\frac{x}{y}$, biết nếu tăng tử số thêm $1$ và giảm mẫu số đi $1$ thì được phân số bằng $1$; nếu giảm tử số đi $1$ và tăng mẫu số thêm $3$ thì được phân số bằng $\\frac{1}{2}$. Phân số đó là:",
+          "dap_an": [
+            "$\\frac{5}{7}$",
+            "$\\frac{7}{9}$",
+            "$\\frac{3}{5}$",
+            "$\\frac{9}{11}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Một tam giác vuông có hiệu độ dài hai cạnh góc vuông là $2$ cm. Biết rằng nếu tăng cạnh góc vuông nhỏ thêm $1$ cm và tăng cạnh góc vuông lớn thêm $1$ cm thì diện tích tam giác tăng thêm $4,5\\text{ cm}^2$. Độ dài hai cạnh góc vuông ban đầu là:",
+          "dap_an": [
+            "$3$ cm và $5$ cm",
+            "$4$ cm và $6$ cm",
+            "$2$ cm và $4$ cm",
+            "$5$ cm và $7$ cm"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Giá vé vào cửa một khu vui chơi là $50$ nghìn đồng cho người lớn và $30$ nghìn đồng cho học sinh. Một đoàn gồm $15$ người đã mua vé với tổng số tiền $570$ nghìn đồng. Số vé học sinh đoàn đó đã mua là:",
+          "dap_an": [
+            "$6$ vé",
+            "$9$ vé",
+            "$8$ vé",
+            "$10$ vé"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm một số tự nhiên có hai chữ số, biết chữ số hàng chục gấp $2$ lần chữ số hàng đơn vị. Nếu lấy số đó trừ đi $18$ thì được số có hai chữ số viết theo thứ tự ngược lại. Số đó là:",
+          "dap_an": [
+            "$42$",
+            "$63$",
+            "$84$",
+            "$21$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Bác An gửi tổng cộng $200$ triệu đồng vào hai ngân hàng A và B. Lãi suất ngân hàng A là $6\\%$/năm, ngân hàng B là $7\\%$/năm. Sau $1$ năm, bác An nhận được tổng số tiền lãi là $13$ triệu đồng. Số tiền bác An gửi ở ngân hàng A là:",
+          "dap_an": [
+            "$100$ triệu đồng",
+            "$120$ triệu đồng",
+            "$80$ triệu đồng",
+            "$150$ triệu đồng"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Trong một trang trại có gà và lợn. Đếm được tất cả $20$ cái đầu và $56$ cái chân. Số con gà và số con lợn lần lượt là:",
+          "dap_an": [
+            "$8$ con gà và $12$ con lợn",
+            "$12$ con gà và $8$ con lợn",
+            "$10$ con gà và $10$ con lợn",
+            "$14$ con gà và $6$ con lợn"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Một xe tải nhỏ chở được $x$ tấn và xe tải lớn chở được $y$ tấn. Biết $2$ xe tải nhỏ và $3$ xe tải lớn chở được $18$ tấn hàng; $4$ xe tải nhỏ và $1$ xe tải lớn chở được $16$ tấn hàng. Trọng tải của xe lớn là:",
+          "dap_an": [
+            "$4$ tấn",
+            "$3$ tấn",
+            "$5$ tấn",
+            "$6$ tấn"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Một tam giác cân có chu vi bằng $20$ cm. Biết cạnh bên dài hơn cạnh đáy $1$ cm. Độ dài cạnh bên của tam giác cân đó là:",
+          "dap_an": [
+            "$6$ cm",
+            "$7$ cm",
+            "$8$ cm",
+            "$6,5$ cm"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Tổng số học sinh của trường THCS A là $800$ học sinh. Số học sinh nam nhiều hơn số học sinh nữ là $40$ em. Số học sinh nữ của trường là:",
+          "dap_an": [
+            "$380$ em",
+            "$420$ em",
+            "$360$ em",
+            "$400$ em"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Một chuyến xe buýt chở $36$ hành khách gồm người lớn và trẻ em. Tại bến tiếp theo, có $3$ người lớn xuống xe và $3$ trẻ em lên xe thì khi đó số người lớn gấp $2$ lần số trẻ em. Số trẻ em ban đầu trên xe là:",
+          "dap_an": [
+            "$9$ em",
+            "$12$ em",
+            "$8$ em",
+            "$10$ em"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Hai vận động viên chạy trên một đường tròn chu vi $400$ m. Nếu chạy ngược chiều nhau thì sau $40$ giây họ gặp nhau. Nếu chạy cùng chiều nhau thì sau $200$ giây họ gặp nhau (người nhanh vượt người chậm đúng $1$ vòng). Vận tốc của người chạy nhanh hơn là:",
+          "dap_an": [
+            "$6$ m/s",
+            "$5$ m/s",
+            "$4$ m/s",
+            "$7$ m/s"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Hai đội công nhân cùng làm chung một công việc thì sau $12$ ngày hoàn thành. Nếu Đội 1 làm riêng trong $4$ ngày rồi Đội 2 làm tiếp một mình trong $9$ ngày thì cả hai đội hoàn thành được $\\frac{1}{2}$ công việc. Gọi $x, y$ (ngày) lần lượt là thời gian Đội 1 và Đội 2 làm riêng để xong công việc ($x, y &gt; 0$). Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Hệ phương trình biểu thị bài toán là $\\begin{cases} \\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12} \\\\ \\frac{4}{x} + \\frac{9}{y} = \\frac{1}{2} \\end{cases}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Bằng cách đặt ẩn phụ $u = \\frac{1}{x}, v = \\frac{1}{y}$, ta đưa về hệ phương trình bậc nhất hai ẩn $\\begin{cases} u + v = \\frac{1}{12} \\\\ 4u + 9v = \\frac{1}{2} \\end{cases}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Giải hệ phương trình thu được nghiệm $u = \\frac{1}{15}$ và $v = \\frac{1}{60}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Nếu làm riêng một mình, Đội 1 hoàn thành công việc trong $20$ ngày và Đội 2 hoàn thành trong $30$ ngày.",
+          "diem": 2.5
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Một ca nô đi xuôi dòng $40$ km và ngược dòng $30$ km hết tổng cộng $4$ giờ. Ở một lần khác, ca nô đó đi xuôi dòng $20$ km và ngược dòng $45$ km cũng hết $4$ giờ. Gọi $x$ (km/h) là vận tốc thực của ca nô và $y$ (km/h) là vận tốc dòng nước ($x &gt; y &gt; 0$). Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Vận tốc ca nô khi xuôi dòng là $x + y$ (km/h) và khi ngược dòng là $x - y$ (km/h).",
+          "diem": 2.5
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Hệ phương trình mô tả bài toán là $\\begin{cases} \\frac{40}{x+y} + \\frac{30}{x-y} = 4 \\\\ \\frac{20}{x+y} + \\frac{45}{x-y} = 4 \\end{cases}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Đặt $u = \\frac{1}{x+y}$ và $v = \\frac{1}{x-y}$, giải hệ tìm được $u = \\frac{1}{20}$ và $v = \\frac{1}{15}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Vận tốc thực của ca nô là $17,5$ km/h và vận tốc dòng nước là $2,5$ km/h.",
+          "diem": 2.5
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Hai lớp 9A và 9B có tổng cộng $82$ học sinh. Lớp 9A quyên góp trung bình mỗi bạn $3$ quyển sách, lớp 9B quyên góp trung bình mỗi bạn $4$ quyển sách. Cả hai lớp quyên góp được tổng cộng $272$ quyển sách. Hỏi lớp 9A có bao nhiêu học sinh?",
+          "diem": 6
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một thửa đất hình chữ nhật có chu vi $60$ m. Nếu tăng chiều dài $2$ m và giảm chiều rộng $1$ m thì diện tích thửa đất giảm $5\\text{ m}^2$. Tính chiều dài ban đầu của thửa đất (tính bằng mét).",
+          "diem": 6
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Quãng đường AB dài $120$ km. Một ô tô khởi hành từ A đến B và một xe máy khởi hành từ B đến A cùng một lúc. Sau $1,5$ giờ thì hai xe gặp nhau. Biết vận tốc ô tô lớn hơn vận tốc xe máy là $20$ km/h. Tính vận tốc của ô tô (km/h).",
+          "diem": 6
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Hai vòi nước cùng chảy vào một bể không có nước thì sau $4$ giờ $48$ phút ($\\frac{24}{5}$ giờ) bể đầy. Nếu mở vòi I trong $3$ giờ và vòi II trong $4$ giờ thì cả hai vòi chảy được $\\frac{3}{4}$ bể. Hỏi nếu chảy riêng một mình thì vòi I chảy đầy bể trong bao nhiêu giờ?",
+          "diem": 6
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Hai tổ công nhân cùng sản xuất một loại sản phẩm. Tổ I làm trong $5$ ngày và Tổ II làm trong $4$ ngày thì cả hai tổ làm được tổng cộng $110$ sản phẩm. Biết rằng mỗi ngày Tổ I làm được nhiều hơn Tổ II là $4$ sản phẩm. Hỏi trong một ngày Tổ I làm được bao nhiêu sản phẩm?",
+          "diem": 6
+        }
+      ]
+    },
+    {
+      "id": "3.4",
+      "do_kho": 1.5,
+      "ten": "Giải bài toán bằng cách lập hệ phương trình",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm hai số tự nhiên biết tổng của chúng bằng $100$ và hiệu của chúng bằng $24$. Hệ phương trình bậc nhất hai ẩn lập được là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 100 \\\\ x - y = 24 \\end{cases}$",
+            "$\\begin{cases} x + y = 24 \\\\ x - y = 100 \\end{cases}$",
+            "$\\begin{cases} x + 2y = 100 \\\\ x - y = 24 \\end{cases}$",
+            "$\\begin{cases} x + y = 100 \\\\ 2x - y = 24 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Mới đầu năm học, một lớp học mua $35$ quyển vở gồm hai loại: loại $100$ trang và loại $200$ trang. Giá tiền vở $100$ trang là $8$ nghìn đồng/quyển, giá tiền vở $200$ trang là $15$ nghìn đồng/quyển. Tổng số tiền mua vở là $350$ nghìn đồng. Gọi $x, y$ lần lượt là số vở loại $100$ trang và $200$ trang ($x, y \\in \\mathbb{N}^*$). Hệ phương trình đúng là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 350 \\\\ 8x + 15y = 35 \\end{cases}$",
+            "$\\begin{cases} x + y = 35 \\\\ 8x + 15y = 350 \\end{cases}$",
+            "$\\begin{cases} x + y = 35 \\\\ 15x + 8y = 350 \\end{cases}$",
+            "$\\begin{cases} 8x + y = 35 \\\\ x + 15y = 350 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Một hình chữ nhật có chu vi $48\\text{ m}$. Nếu tăng chiều rộng thêm $2\\text{ m}$ và giảm chiều dài đi $3\\text{ m}$ thì chu vi không đổi. Gọi $x\\text{ (m)}$ là chiều dài và $y\\text{ (m)}$ là chiều rộng ($x &gt; y &gt; 0$). Phương trình biểu diễn nửa chu vi ban đầu là:",
+          "dap_an": [
+            "$x + y = 24$",
+            "$x + y = 48$",
+            "$2x + 2y = 24$",
+            "$x - y = 24$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Hai xe máy khởi hành cùng một lúc từ hai tỉnh A và B cách nhau $120\\text{ km}$, đi ngược chiều nhau và gặp nhau sau $1,5$ giờ. Gọi $x\\text{ (km/h)}$ là vận tốc xe từ A và $y\\text{ (km/h)}$ là vận tốc xe từ B. Phương trình thể hiện tổng quãng đường hai xe đi được đến khi gặp nhau là:",
+          "dap_an": [
+            "$x + y = 120$",
+            "$1,5x + 1,5y = 120$",
+            "$1,5x - 1,5y = 120$",
+            "$x - y = 80$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Một ca nô chạy xuôi dòng một quãng sông dài $60\\text{ km}$ hết $2$ giờ và chạy ngược dòng quãng sông đó hết $3$ giờ. Nếu gọi $x\\text{ (km/h)}$ là vận tốc thực của ca nô và $y\\text{ (km/h)}$ là vận tốc dòng nước ($x &gt; y &gt; 0$), vận tốc xuôi dòng và vận tốc ngược dòng lần lượt là:",
+          "dap_an": [
+            "$x + y$ và $x - y$",
+            "$x - y$ và $x + y$",
+            "$2x$ và $3y$",
+            "$x + 2y$ và $x - 3y$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Lớp 9A và 9B có tổng cộng $82$ học sinh. Trong đợt quyên góp sách, trung bình mỗi học sinh lớp 9A góp $3$ quyển, mỗi học sinh lớp 9B góp $4$ quyển, cả hai lớp góp được $280$ quyển sách. Số học sinh lớp 9A ($x$) và lớp 9B ($y$) thỏa mãn hệ phương trình:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 280 \\\\ 3x + 4y = 82 \\end{cases}$",
+            "$\\begin{cases} x + y = 82 \\\\ 3x + 4y = 280 \\end{cases}$",
+            "$\\begin{cases} x + y = 82 \\\\ 4x + 3y = 280 \\end{cases}$",
+            "$\\begin{cases} 3x + y = 82 \\\\ x + 4y = 280 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Một phân số có tử số bé hơn mẫu số $5$ đơn vị. Nếu tăng tử số thêm $2$ đơn vị và giảm mẫu số đi $3$ đơn vị thì được phân số mới bằng $1$. Gọi tử số là $x$ và mẫu số là $y$ ($y \\neq 0, y \\neq 3$). Hệ phương trình lập được là:",
+          "dap_an": [
+            "$\\begin{cases} y - x = 5 \\\\ \\frac{x+2}{y-3} = 1 \\end{cases}$",
+            "$\\begin{cases} x - y = 5 \\\\ \\frac{x+2}{y-3} = 1 \\end{cases}$",
+            "$\\begin{cases} y - x = 5 \\\\ \\frac{x-3}{y+2} = 1 \\end{cases}$",
+            "$\\begin{cases} x + y = 5 \\\\ x + 2 = y - 3 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Hai vòi nước cùng chảy vào một bể rỗng thì sau $6$ giờ bể đầy. Nếu chảy một mình thì vòi I cần $x$ giờ, vòi II cần $y$ giờ để đầy bể ($x, y &gt; 6$). Trong $1$ giờ, cả hai vòi cùng chảy được bao nhiêu phần bể?",
+          "dap_an": [
+            "$6$ bể",
+            "$\\frac{1}{6}$ bể",
+            "$\\frac{1}{x+y}$ bể",
+            "$x + y$ bể"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Năm ngoái, tổng số dân của hai tỉnh A và B là $4$ triệu người. Năm nay, dân số tỉnh A tăng $1,2\\%$, dân số tỉnh B tăng $1,1\\%$. Tổng dân số hai tỉnh năm nay tăng thêm $45$ nghìn người (tức $0,045$ triệu người). Gọi $x, y$ (triệu người) là dân số năm ngoái của tỉnh A và B. Hệ phương trình đúng là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 4 \\\\ 1,2x + 1,1y = 0,045 \\end{cases}$",
+            "$\\begin{cases} x + y = 4 \\\\ 0,012x + 0,011y = 0,045 \\end{cases}$",
+            "$\\begin{cases} x + y = 4 \\\\ 0,12x + 0,11y = 0,045 \\end{cases}$",
+            "$\\begin{cases} x + y = 0,045 \\\\ 0,012x + 0,011y = 4 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm số tự nhiên có hai chữ số, biết rằng tổng hai chữ số bằng $12$. Nếu đổi chỗ hai chữ số cho nhau thì được số mới lớn hơn số ban đầu $18$ đơn vị. Gọi chữ số hàng chục là $x$, chữ số hàng đơn vị là $y$ ($x, y \\in \\mathbb{N}^*, x, y \\le 9$). Hệ phương trình lập được là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 12 \\\\ (10y + x) - (10x + y) = 18 \\end{cases}$",
+            "$\\begin{cases} x + y = 12 \\\\ (10x + y) - (10y + x) = 18 \\end{cases}$",
+            "$\\begin{cases} x + y = 18 \\\\ 10y + x = 12 \\end{cases}$",
+            "$\\begin{cases} x - y = 18 \\\\ 10x + y = 12 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Hai ô tô cùng khởi hành từ A để đi đến B dài $150\\text{ km}$. Xe thứ nhất chạy nhanh hơn xe thứ hai $10\\text{ km/h}$ nên đến B sớm hơn xe thứ hai $30$ phút ($0,5$ giờ). Gọi $x, y\\text{ (km/h)}$ lần lượt là vận tốc xe thứ nhất và xe thứ hai ($x &gt; y &gt; 0$). Hệ phương trình thể hiện mối quan hệ giữa vận tốc và thời gian là:",
+          "dap_an": [
+            "$\\begin{cases} x - y = 10 \\\\ \\frac{150}{x} - \\frac{150}{y} = 0,5 \\end{cases}$",
+            "$\\begin{cases} x - y = 10 \\\\ \\frac{150}{y} - \\frac{150}{x} = 0,5 \\end{cases}$",
+            "$\\begin{cases} y - x = 10 \\\\ \\frac{150}{y} - \\frac{150}{x} = 0,5 \\end{cases}$",
+            "$\\begin{cases} x + y = 10 \\\\ \\frac{150}{x} + \\frac{150}{y} = 0,5 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Bố hơn con $30$ tuổi. Sau $5$ năm nữa, tuổi bố gấp $3$ lần tuổi con. Gọi tuổi bố hiện nay là $x$, tuổi con hiện nay là $y$ ($x &gt; y &gt; 0$). Hệ phương trình biểu diễn bài toán là:",
+          "dap_an": [
+            "$\\begin{cases} x - y = 30 \\\\ x + 5 = 3(y + 5) \\end{cases}$",
+            "$\\begin{cases} x - y = 30 \\\\ x + 5 = 3y + 5 \\end{cases}$",
+            "$\\begin{cases} x + y = 30 \\\\ x = 3y \\end{cases}$",
+            "$\\begin{cases} x - y = 30 \\\\ 3(x + 5) = y + 5 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Hai người thợ cùng làm chung một công việc trong $12$ ngày thì hoàn thành. Nếu người thứ nhất làm trong $4$ ngày rồi nghỉ, người thứ hai làm tiếp trong $9$ ngày thì hoàn thành được $\\frac{7}{12}$ công việc. Hệ phương trình biểu diễn năng suất $x, y$ (phần công việc làm trong $1$ ngày của người I và người II) là:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 12 \\\\ 4x + 9y = \\frac{7}{12} \\end{cases}$",
+            "$\\begin{cases} x + y = \\frac{1}{12} \\\\ 4x + 9y = \\frac{7}{12} \\end{cases}$",
+            "$\\begin{cases} x + y = \\frac{1}{12} \\\\ 9x + 4y = \\frac{7}{12} \\end{cases}$",
+            "$\\begin{cases} 12(x + y) = 1 \\\\ 4x + 9y = 7 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Một mảnh vườn hình chữ nhật có diện tích $300\\text{ m}^2$. Nếu tăng chiều rộng thêm $5\\text{ m}$ và giảm chiều dài đi $10\\text{ m}$ thì diện tích không đổi. Chiều dài $x\\text{ (m)}$ và chiều rộng $y\\text{ (m)}$ của mảnh vườn thỏa mãn hệ phương trình:",
+          "dap_an": [
+            "$\\begin{cases} xy = 300 \\\\ (x - 10)(y + 5) = 300 \\end{cases}$",
+            "$\\begin{cases} x + y = 300 \\\\ (x + 5)(y - 10) = 300 \\end{cases}$",
+            "$\\begin{cases} xy = 300 \\\\ (x + 10)(y - 5) = 300 \\end{cases}$",
+            "$\\begin{cases} 2(x + y) = 300 \\\\ (x - 10)(y + 5) = 300 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Tháng trước hai tổ sản xuất làm được $800$ chi tiết máy. Tháng này nhờ cải tiến kỹ thuật, tổ I vượt mức $15\\%$, tổ II vượt mức $20\\%$ nên cả hai tổ làm được $945$ chi tiết máy. Số chi tiết máy vượt mức của cả hai tổ tháng này là:",
+          "dap_an": [
+            "$800$ chi tiết",
+            "$145$ chi tiết",
+            "$150$ chi tiết",
+            "$945$ chi tiết"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Có hai loại dung dịch muối: loại I chứa $10\\%$ muối, loại II chứa $30\\%$ muối. Muốn pha chế thành $200\\text{ g}$ dung dịch chứa $18\\%$ muối thì cần lấy $x\\text{ (g)}$ dung dịch loại I và $y\\text{ (g)}$ dung dịch loại II. Phương trình thể hiện khối lượng muối thu được là:",
+          "dap_an": [
+            "$10x + 30y = 18$",
+            "$0,1x + 0,3y = 36$",
+            "$0,1x + 0,3y = 18$",
+            "$x + y = 36$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Một tam giác vuông có cạnh huyền bằng $13\\text{ cm}$ và hai cạnh góc vuông hơn kém nhau $7\\text{ cm}$. Gọi độ dài hai cạnh góc vuông là $x, y\\text{ (cm)}$ với $x &gt; y &gt; 0$. Hệ phương trình biểu diễn bài toán là:",
+          "dap_an": [
+            "$\\begin{cases} x - y = 7 \\\\ x^2 + y^2 = 169 \\end{cases}$",
+            "$\\begin{cases} x - y = 7 \\\\ x + y = 13 \\end{cases}$",
+            "$\\begin{cases} x + y = 7 \\\\ x^2 + y^2 = 13 \\end{cases}$",
+            "$\\begin{cases} x - y = 7 \\\\ x^2 - y^2 = 169 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Một nhóm học sinh tham gia lao động trồng cây. Nếu mỗi bạn trồng $3$ cây thì thừa $5$ cây. Nếu mỗi bạn trồng $4$ cây thì thiếu $3$ cây. Gọi $x$ là số học sinh và $y$ là số cây cần trồng ($x, y \\in \\mathbb{N}^*$). Hệ phương trình lập được là:",
+          "dap_an": [
+            "$\\begin{cases} y = 3x - 5 \\\\ y = 4x + 3 \\end{cases}$",
+            "$\\begin{cases} 3x + 5 = y \\\\ 4x - 3 = y \\end{cases}$",
+            "$\\begin{cases} 3x - 5 = y \\\\ 4x - 3 = y \\end{cases}$",
+            "$\\begin{cases} x = 3y + 5 \\\\ x = 4y - 3 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Một xe tải đi từ A đến B với vận tốc $40\\text{ km/h}$. Sau đó $30$ phút ($0,5$ giờ), một xe con cũng đi từ A đến B với vận tốc $50\\text{ km/h}$ và đuổi kịp xe tải tại B. Gọi $t_1, t_2\\text{ (giờ)}$ lần lượt là thời gian đi của xe tải và xe con. Phương trình biểu diễn mối quan hệ giữa thời gian của hai xe là:",
+          "dap_an": [
+            "$t_1 - t_2 = 0,5$",
+            "$t_2 - t_1 = 0,5$",
+            "$t_1 + t_2 = 0,5$",
+            "$40t_1 = 50t_2 + 0,5$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Giải bài toán dân gian: \"Vừa gà vừa chó / Bó lại cho tròn / Khai ba mươi sáu con / Một trăm chân chẵn\". Số con gà ($x$) và số con chó ($y$) lần lượt là:",
+          "dap_an": [
+            "$x = 14, y = 22$",
+            "$x = 22, y = 14$",
+            "$x = 20, y = 16$",
+            "$x = 18, y = 18$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm hai số biết tổng của chúng bằng $17$ và số lớn chia cho số nhỏ được thương là $3$ dư $1$. Hai số đó là:",
+          "dap_an": [
+            "$13$ và $4$",
+            "$12$ và $5$",
+            "$14$ và $3$",
+            "$15$ và $2$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Giá tiền mua $2$ kg cam và $3$ kg táo là $160$ nghìn đồng. Giá tiền mua $4$ kg cam và $1$ kg táo cùng loại là $170$ nghìn đồng. Giá $1$ kg cam và $1$ kg táo lần lượt là:",
+          "dap_an": [
+            "$30$ nghìn và $35$ nghìn",
+            "$35$ nghìn và $30$ nghìn",
+            "$40$ nghìn và $25$ nghìn",
+            "$25$ nghìn và $40$ nghìn"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Một chiếc sà xà lan chạy xuôi dòng $44\\text{ km}$ và ngược dòng $27\\text{ km}$ hết tất cả $3$ giờ. Biết vận tốc dòng nước là $2\\text{ km/h}$. Vận tốc thực của sà lan ($x\\text{ km/h}, x &gt; 2$) thỏa mãn phương trình:",
+          "dap_an": [
+            "$\\frac{44}{x+2} + \\frac{27}{x-2} = 3$",
+            "$\\frac{44}{x-2} + \\frac{27}{x+2} = 3$",
+            "$\\frac{44+27}{x} = 3$",
+            "$44(x+2) + 27(x-2) = 3$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Hai trường THCS A và B có tổng cộng $300$ học sinh thi đỗ vào lớp 10, đạt tỷ lệ trúng tuyển chung là $75\\%$. Biết tỷ lệ trúng tuyển của trường A là $80\\%$, trường B là $70\\%$. Số học sinh dự thi của trường A ($x$) và trường B ($y$) thỏa mãn hệ phương trình:",
+          "dap_an": [
+            "$\\begin{cases} x + y = 300 \\\\ 0,8x + 0,7y = 0,75 \\end{cases}$",
+            "$\\begin{cases} 0,8x + 0,7y = 300 \\\\ 0,8x + 0,7y = 0,75(x + y) \\end{cases}$",
+            "$\\begin{cases} x + y = 400 \\\\ 0,8x + 0,7y = 300 \\end{cases}$",
+            "$\\begin{cases} x + y = 300 \\\\ 80x + 70y = 75 \\end{cases}$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Khoảng cách giữa hai tỉnh A và B là $180\\text{ km}$. Một ô tô đi từ A đến B rồi quay trở về A ngay. Thời gian về nhiều hơn thời gian đi là $36$ phút ($0,6$ giờ) vì vận tốc lúc về kém vận tốc lúc đi $10\\text{ km/h}$. Gọi $v\\text{ (km/h)}$ là vận tốc lúc đi. Phương trình lập được là:",
+          "dap_an": [
+            "$\\frac{180}{v-10} - \\frac{180}{v} = 0,6$",
+            "$\\frac{180}{v} - \\frac{180}{v-10} = 0,6$",
+            "$\\frac{180}{v+10} - \\frac{180}{v} = 0,6$",
+            "$\\frac{180}{v-10} + \\frac{180}{v} = 0,6$"
+          ],
+          "diem": 2
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Một mảnh vườn hình chữ nhật có chu vi $100\\text{ m}$. Nếu giảm chiều dài đi $10\\text{ m}$ và tăng chiều rộng thêm $5\\text{ m}$ thì diện tích mảnh vườn tăng thêm $50\\text{ m}^2$. Gọi $x\\text{ (m)}$ là chiều dài và $y\\text{ (m)}$ là chiều rộng ban đầu ($x &gt; y &gt; 0$). Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Nửa chu vi của mảnh vườn ban đầu là $50\\text{ m}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Hệ phương trình lập được từ bài toán là $\\begin{cases} x + y = 50 \\\\ (x - 10)(y + 5) - xy = 50 \\end{cases}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Phương trình thứ hai sau khi thu gọn là $-x + 2y = 20$.",
+          "diem": 2.5
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Chiều dài ban đầu của mảnh vườn là $30\\text{ m}$ và chiều rộng ban đầu là $20\\text{ m}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Hai vòi nước cùng chảy vào một bể rỗng trong $4$ giờ $48$ phút (tức $\\frac{24}{5}$ giờ) thì đầy bể. Nếu chảy riêng một mình, vòi I chảy đầy bể nhanh hơn vòi II là $4$ giờ. Gọi $x\\text{ (giờ)}$ là thời gian vòi I chảy riêng đầy bể, $y\\text{ (giờ)}$ là thời gian vòi II chảy riêng đầy bể ($x, y &gt; \\frac{24}{5}$). Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> Trong $1$ giờ cả hai vòi cùng chảy được $\\frac{5}{24}$ bể.",
+          "diem": 2.5
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Phương trình biểu diễn mối quan hệ về thời gian giữa hai vòi là $y - x = 4$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Hệ phương trình lập được là $\\begin{cases} y - x = 4 \\\\ \\frac{1}{x} + \\frac{1}{y} = \\frac{5}{24} \\end{cases}$.",
+          "diem": 2.5
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Thời gian vòi I chảy riêng đầy bể là $12$ giờ và vòi II là $16$ giờ.",
+          "diem": 2.5
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm hai số tự nhiên có tổng bằng $85$, biết rằng số lớn chia cho số nhỏ được thương là $3$ và dư $5$. Tìm số lớn.",
+          "diem": 6
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một ô tô và một xe máy cùng khởi hành từ hai địa điểm A và B cách nhau $200\\text{ km}$, đi ngược chiều nhau và gặp nhau sau $2$ giờ. Biết vận tốc ô tô lớn hơn vận tốc xe máy là $20\\text{ km/h}$. Tính vận tốc của xe máy (theo đơn vị km/h).",
+          "diem": 6
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Hai đội công nhân làm chung một con đường trong $8$ ngày thì xong. Nếu đội thứ nhất làm một mình trong $3$ ngày rồi nghỉ, đội thứ hai làm tiếp trong $6$ ngày thì cả hai đội làm được $\\frac{1}{2}$ con đường. Hỏi nếu làm riêng một mình thì đội thứ nhất cần bao nhiêu ngày để hoàn thành con đường?",
+          "diem": 6
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một khu vườn hình chữ nhật có chu vi $72\\text{ m}$. Nếu tăng chiều rộng thêm $2\\text{ m}$ và giảm chiều dài đi $2\\text{ m}$ thì diện tích tăng thêm $16\\text{ m}^2$. Tính diện tích mảnh vườn ban đầu (theo đơn vị $\\text{m}^2$).",
+          "diem": 6
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Nhân dịp khai trương, một cửa hàng điện máy giảm giá $10\\%$ cho mặt hàng tủ lạnh và $15\\%$ cho mặt hàng máy giặt. Bác An mua $1$ chiếc tủ lạnh và $1$ chiếc máy giặt có tổng giá niêm yết là $20$ triệu đồng, tổng số tiền bác An thực tế phải trả là $17,4$ triệu đồng. Hỏi giá niêm yết của chiếc máy giặt là bao nhiêu triệu đồng?",
+          "diem": 6
+        }
+      ]
+    },
+    {
+      "id": "3.5",
+      "do_kho": 2,
+      "ten": "Giải bài toán bằng cách lập hệ phương trình",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm hai số tự nhiên biết rằng tổng của chúng bằng $108$ và nếu chia số lớn cho số nhỏ thì được thương là $3$ và số dư là $8$.",
+          "dap_an": [
+            "$83$ và $25$",
+            "$80$ và $28$",
+            "$75$ và $33$",
+            "$85$ và $23$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi số lớn là $x$, số nhỏ là $y$ ($x, y \\in \\mathbb{N}^*; x &gt; y, y &gt; 8$). Biểu diễn phép chia có dư theo công thức $x = 3y + 8$ kết hợp với tổng $x + y = 108$."
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Một phân số có tử số bé hơn mẫu số $11$ đơn vị. Nếu tăng tử số lên $3$ đơn vị và giảm mẫu số đi $4$ đơn vị thì được phân số mới bằng $\\frac{3}{4}$. Tìm phân số ban đầu.",
+          "dap_an": [
+            "$\\frac{7}{18}$",
+            "$\\frac{5}{16}$",
+            "$\\frac{3}{14}$",
+            "$\\frac{9}{20}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi tử số là $x$, mẫu số là $y$ ($y \\neq 0, y \\neq 4$). Lập hệ phương trình $y - x = 11$ và $\\frac{x + 3}{y - 4} = \\frac{3}{4}$."
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Một mảnh vườn hình chữ nhật có chu vi $100\\text{ m}$. Nếu tăng chiều rộng thêm $5\\text{ m}$ và giảm chiều dài đi $10\\text{ m}$ thì diện tích mảnh vườn giảm $100\\text{ m}^2$. Tính chiều dài ban đầu của mảnh vườn.",
+          "dap_an": [
+            "$20\\text{ m}$",
+            "$25\\text{ m}$",
+            "$35\\text{ m}$",
+            "$30\\text{ m}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi chiều dài là $x\\text{ (m)}$, chiều rộng là $y\\text{ (m)}$ ($x &gt; y &gt; 0$). Nửa chu vi $x + y = 50$. Diện tích mới $(x - 10)(y + 5) = xy - 100$."
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Quãng đường $AB$ dài $120\\text{ km}$. Hai ô tô khởi hành cùng một lúc từ $A$ đến $B$. Ô tô thứ nhất chạy nhanh hơn ô tô thứ hai $10\\text{ km/h}$ nên đến $B$ sớm hơn ô tô thứ hai $36\\text{ phút}$ ($0,6\\text{ giờ}$). Tính vận tốc của ô tô thứ nhất.",
+          "dap_an": [
+            "$50\\text{ km/h}$",
+            "$40\\text{ km/h}$",
+            "$60\\text{ km/h}$",
+            "$45\\text{ km/h}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi vận tốc ô tô thứ nhất là $x\\text{ (km/h)}$, ô tô thứ hai là $y\\text{ (km/h)}$ ($x &gt; y &gt; 0$). Có $x - y = 10$ và thời gian chênh lệch $\\frac{120}{y} - \\frac{120}{x} = 0,6$."
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Một ca nô xuôi dòng một khúc sông dài $90\\text{ km}$ rồi ngược dòng khúc sông đó mất tổng cộng $7,5\\text{ giờ}$. Biết vận tốc dòng nước là $3\\text{ km/h}$. Tính vận tốc thực của ca nô khi nước yên lặng.",
+          "dap_an": [
+            "$21\\text{ km/h}$",
+            "$25\\text{ km/h}$",
+            "$27\\text{ km/h}$",
+            "$18\\text{ km/h}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi vận tốc thực của ca nô là $x\\text{ (km/h)}$ ($x &gt; 3$). Vận tốc xuôi dòng là $x + 3$, ngược dòng là $x - 3$. Lập phương trình thời gian $\\frac{90}{x+3} + \\frac{90}{x-3} = 7,5$."
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Hai công nhân cùng làm chung một công việc thì sau $12$ ngày sẽ hoàn thành. Nếu người thứ nhất làm một mình trong $4$ ngày rồi người thứ hai làm tiếp một mình trong $9$ ngày thì cả hai làm được $\\frac{7}{12}$ công việc. Hỏi nếu làm một mình thì người thứ nhất hoàn thành công việc trong bao lâu?",
+          "dap_an": [
+            "$20\\text{ ngày}$",
+            "$30\\text{ ngày}$",
+            "$24\\text{ ngày}$",
+            "$16\\text{ ngày}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi thời gian làm riêng xong công việc của người thứ nhất và thứ hai lần lượt là $x, y\\text{ (ngày)}$. Năng suất 1 ngày là $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12}$ và $\\frac{4}{x} + \\frac{9}{y} = \\frac{7}{12}$."
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Hai vòi nước cùng chảy vào một bể không có nước thì sau $4\\text{ giờ } 48\\text{ phút}$ ($4,8\\text{ giờ}$) đầy bể. Nếu mở vòi I trong $3\\text{ giờ}$ và vòi II trong $4\\text{ giờ}$ thì chảy được $\\frac{3}{4}$ bể. Hỏi nếu chảy riêng thì vòi I đầy bể trong bao lâu?",
+          "dap_an": [
+            "$12\\text{ giờ}$",
+            "$8\\text{ giờ}$",
+            "$10\\text{ giờ}$",
+            "$16\\text{ giờ}$"
+          ],
+          "diem": 2,
+          "goi_y": "Đổi $4\\text{ giờ } 48\\text{ phút} = \\frac{24}{5}\\text{ giờ}$. Gọi thời gian chảy đầy bể của vòi I, II lần lượt là $x, y\\text{ (giờ)}$. Hệ phương trình: $\\frac{1}{x} + \\frac{1}{y} = \\frac{5}{24}$ và $\\frac{3}{x} + \\frac{4}{y} = \\frac{3}{4}$."
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Người ta hòa tan $200\\text{ g}$ dung dịch axit nồng độ $30\\%$ vào $300\\text{ g}$ dung dịch axit cùng loại thu được dung dịch mới có nồng độ $42\\%$. Hỏi nồng độ phần trăm của dung dịch axit $300\\text{ g}$ ban đầu là bao nhiêu?",
+          "dap_an": [
+            "$45\\%$",
+            "$48\\%$",
+            "$50\\%$",
+            "$52\\%$"
+          ],
+          "diem": 2,
+          "goi_y": "Khối lượng axit nguyên chất trong dung dịch $200\\text{ g}$ là $200 \\cdot 30\\% = 60\\text{ g}$. Gọi nồng độ dung dịch $300\\text{ g}$ là $x\\%$. Tổng khối lượng axit sau khi pha là $60 + 300 \\cdot x\\% = (200 + 300) \\cdot 42\\%$."
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Bác An gửi tổng cộng $200\\text{ triệu đồng}$ vào hai ngân hàng A và B. Ngân hàng A trả lãi suất $6\\%/\\text{năm}$, ngân hàng B trả lãi suất $7\\%/\\text{năm}$. Sau một năm, tổng số tiền lãi bác An nhận được từ cả hai ngân hàng là $13\\text{ triệu đồng}$. Hỏi bác An đã gửi vào ngân hàng A bao nhiêu tiền?",
+          "dap_an": [
+            "$100\\text{ triệu đồng}$",
+            "$80\\text{ triệu đồng}$",
+            "$120\\text{ triệu đồng}$",
+            "$90\\text{ triệu đồng}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi số tiền gửi ngân hàng A là $x\\text{ (triệu)}$, ngân hàng B là $y\\text{ (triệu)}$ ($x &gt; 0, y &gt; 0$). Hệ phương trình: $x + y = 200$ và $0,06x + 0,07y = 13$."
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Một chiếc xe tải và một chiếc xe con cùng khởi hành từ tỉnh $A$ đến tỉnh $B$ cách nhau $180\\text{ km}$. Do vận tốc xe con lớn hơn vận tốc xe tải là $15\\text{ km/h}$ nên xe con đến $B$ sớm hơn xe tải $1\\text{ giờ}$. Tính vận tốc của xe tải.",
+          "dap_an": [
+            "$30\\text{ km/h}$",
+            "$45\\text{ km/h}$",
+            "$50\\text{ km/h}$",
+            "$60\\text{ km/h}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi vận tốc xe tải là $x\\text{ (km/h)}$, xe con là $y\\text{ (km/h)}$ ($y - x = 15$). Phương trình thời gian: $\\frac{180}{x} - \\frac{180}{y} = 1$."
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Một tam giác vuông có cạnh huyền dài $13\\text{ cm}$. Hai cạnh góc vuông hơn kém nhau $7\\text{ cm}$. Tính chu vi của tam giác vuông đó.",
+          "dap_an": [
+            "$24\\text{ cm}$",
+            "$30\\text{ cm}$",
+            "$28\\text{ cm}$",
+            "$32\\text{ cm}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi độ dài hai cạnh góc vuông là $x, y\\text{ (cm)}$ ($x &gt; y &gt; 0$). Ta có $x - y = 7$ và định lý Pitago $x^2 + y^2 = 13^2 = 169$. Tìm $x, y$ rồi tính chu vi $x + y + 13$."
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Trong kỳ thi Tuyển sinh vào lớp 10, hai trường A và B có tổng cộng $450$ học sinh dự thi. Kết quả là trường A có $80\\%$ học sinh trúng tuyển, trường B có $90\\%$ học sinh trúng tuyển. Tổng số học sinh trúng tuyển của cả hai trường là $380$ em. Hỏi trường A có bao nhiêu học sinh dự thi?",
+          "dap_an": [
+            "$250\\text{ học sinh}$",
+            "$200\\text{ học sinh}$",
+            "$300\\text{ học sinh}$",
+            "$180\\text{ học sinh}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi số học sinh dự thi trường A là $x$, trường B là $y$ ($x, y \\in \\mathbb{N}^*$). Ta có hệ $x + y = 450$ và $0,8x + 0,9y = 380$."
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Năm ngoái, hai đơn vị sản xuất nông nghiệp thu hoạch được tổng cộng $720\\text{ tấn}$ thóc. Năm nay, nhờ áp dụng kỹ thuật mới, đơn vị I tăng sản lượng $15\\%$, đơn vị II tăng sản lượng $12\\%$, nên cả hai đơn vị thu hoạch được $813\\text{ tấn}$ thóc. Hỏi năm ngoái đơn vị I thu hoạch được bao nhiêu tấn thóc?",
+          "dap_an": [
+            "$320\\text{ tấn}$",
+            "$400\\text{ tấn}$",
+            "$420\\text{ tấn}$",
+            "$300\\text{ tấn}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi sản lượng năm ngoái của đơn vị I và II lần lượt là $x, y\\text{ (tấn)}$. Hệ phương trình: $x + y = 720$ và $0,15x + 0,12y = 813 - 720 = 93$."
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Hai người đi xe đạp khởi hành cùng một lúc từ hai địa điểm A và B cách nhau $36\\text{ km}$, đi ngược chiều nhau và gặp nhau sau $1\\text{ giờ } 12\\text{ phút}$ ($1,2\\text{ giờ}$). Tính vận tốc của người đi từ A, biết rằng vận tốc người đi từ A lớn hơn vận tốc người đi từ B là $3\\text{ km/h}$.",
+          "dap_an": [
+            "$16,5\\text{ km/h}$",
+            "$13,5\\text{ km/h}$",
+            "$15\\text{ km/h}$",
+            "$18\\text{ km/h}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi vận tốc người đi từ A là $x\\text{ (km/h)}$, đi từ B là $y\\text{ (km/h)}$ ($x - y = 3$). Tổng quãng đường đi được trong $1,2\\text{ giờ}$ là $1,2x + 1,2y = 36$."
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Tìm một số tự nhiên có hai chữ số, biết rằng chữ số hàng chục lớn hơn chữ số hàng đơn vị là $2$. Nếu viết thêm chữ số $0$ vào giữa hai chữ số đó thì thu được số mới lớn hơn số ban đầu $630$ đơn vị.",
+          "dap_an": [
+            "$53$",
+            "$75$",
+            "$64$",
+            "$86$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi số ban đầu là $\\overline{ab} = 10a + b$ ($a, b \\in \\mathbb{N}, 1 \\le a \\le 9, 0 \\le b \\le 9$). Ta có $a - b = 2$ và số mới $\\overline{a0b} = 100a + b$. Phương trình: $(100a + b) - (10a + b) = 630$."
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Cho hợp kim gồm đồng và kẽm có tổng khối lượng $124\\text{ g}$ và thể tích $15\\text{ cm}^3$. Biết khối lượng riêng của đồng là $8,9\\text{ g/cm}^3$ và kẽm là $7\\text{ g/cm}^3$. Tính khối lượng đồng trong hợp kim (làm tròn đến hàng đơn vị).",
+          "dap_an": [
+            "$35\\text{ g}$",
+            "$42\\text{ g}$",
+            "$89\\text{ g}$",
+            "$65\\text{ g}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi thể tích đồng là $x\\text{ (cm}^3\\text{)}$, kẽm là $y\\text{ (cm}^3\\text{)}$. Ta có hệ $x + y = 15$ và $8,9x + 7y = 124$. Tính $x$ rồi suy ra khối lượng đồng $m = 8,9x$."
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Một tổ máy theo kế hoạch phải sản xuất $300$ chi tiết máy trong một thời gian quy định. Nhờ cải tiến kỹ thuật, mỗi ngày tổ sản xuất vượt mức $10$ chi tiết máy nên chẳng những hoàn thành kế hoạch sớm $1$ ngày mà còn vượt mức $20$ chi tiết máy. Hỏi theo kế hoạch, mỗi ngày tổ phải sản xuất bao nhiêu chi tiết máy?",
+          "dap_an": [
+            "$50\\text{ chi tiết}$",
+            "$40\\text{ chi tiết}$",
+            "$60\\text{ chi tiết}$",
+            "$30\\text{ chi tiết}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi số chi tiết máy sản xuất theo kế hoạch mỗi ngày là $x$ (chi tiết/ngày), thời gian kế hoạch là $y$ (ngày). Ta có $xy = 300$ và thực tế $(x + 10)(y - 1) = 320$."
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Một hội trường có $120$ chỗ ngồi được xếp thành các dãy ghế với số chỗ ngồi ở mỗi dãy như nhau. Nếu xếp thêm $2$ dãy ghế và mỗi dãy xếp thêm $1$ chỗ ngồi thì hội trường có $156$ chỗ ngồi. Hỏi ban đầu hội trường có bao nhiêu dãy ghế?",
+          "dap_an": [
+            "$8\\text{ dãy}$",
+            "$10\\text{ dãy}$",
+            "$12\\text{ dãy}$",
+            "$15\\text{ dãy}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi số dãy ghế ban đầu là $x$, số ghế mỗi dãy là $y$ ($x, y \\in \\mathbb{N}^*$). Ta có hệ $xy = 120$ và $(x + 2)(y + 1) = 156$."
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Một người mua hai loại hàng và phải trả tổng cộng $2,1\\text{ triệu đồng}$ bao gồm $10\\%$ thuế giá trị gia tăng (VAT) cho loại hàng thứ nhất và $8\\%$ thuế VAT cho loại hàng thứ hai. Nếu thuế VAT là $9\\%$ cho cả hai loại hàng thì người đó phải trả $2,181\\text{ triệu đồng}$. Hỏi giá tiền chưa thuế của loại hàng thứ nhất là bao nhiêu?",
+          "dap_an": [
+            "$1,5\\text{ triệu đồng}$",
+            "$0,5\\text{ triệu đồng}$",
+            "$1,2\\text{ triệu đồng}$",
+            "$0,8\\text{ triệu đồng}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi giá chưa thuế của hàng thứ nhất là $x$, hàng thứ hai là $y\\text{ (triệu đồng)}$. Ta có $1,1x + 1,08y = 2,1$ và $1,09(x + y) = 2,181 \\Rightarrow x + y = 2$."
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Khoảng cách giữa hai bến sông A và B là $60\\text{ km}$. Một ca nô đi xuôi dòng từ A đến B rồi ngược dòng ngay từ B về A hết tổng cộng $5\\text{ giờ}$. Biết vận tốc dòng nước là $5\\text{ km/h}$. Tính vận tốc thực của ca nô.",
+          "dap_an": [
+            "$20\\text{ km/h}$",
+            "$25\\text{ km/h}$",
+            "$30\\text{ km/h}$",
+            "$15\\text{ km/h}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi vận tốc thực của ca nô là $x\\text{ (km/h)}$ ($x &gt; 5$). Thời gian xuôi dòng $\\frac{60}{x+5}$, thời gian ngược dòng $\\frac{60}{x-5}$. Lập phương trình $\\frac{60}{x+5} + \\frac{60}{x-5} = 5$."
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Hai đội công nhân cùng xây dựng một đường ống dẫn nước. Nếu làm chung thì sau $6$ ngày sẽ xong. Nếu làm riêng thì đội I hoàn thành công việc nhanh hơn đội II là $5$ ngày. Hỏi nếu làm một mình thì đội I hoàn thành công việc trong bao lâu?",
+          "dap_an": [
+            "$10\\text{ ngày}$",
+            "$15\\text{ ngày}$",
+            "$12\\text{ ngày}$",
+            "$8\\text{ ngày}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi thời gian hoàn thành công việc một mình của đội I là $x\\text{ (ngày)}$, đội II là $y\\text{ (ngày)}$ ($y - x = 5$). Hệ phương trình: $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{6}$ và $y = x + 5$."
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Hai xe ô tô khởi hành cùng một lúc từ hai tỉnh A và B cách nhau $160\\text{ km}$, đi ngược chiều nhau và gặp nhau sau $2\\text{ giờ}$. Nếu xe thứ nhất khởi hành trước xe thứ hai $1\\text{ giờ } 30\\text{ phút}$ ($1,5\\text{ giờ}$) thì hai xe gặp nhau sau khi xe thứ hai đi được $1\\text{ giờ } 30\\text{ phút}$. Tính vận tốc của xe thứ nhất.",
+          "dap_an": [
+            "$30\\text{ km/h}$",
+            "$40\\text{ km/h}$",
+            "$50\\text{ km/h}$",
+            "$45\\text{ km/h}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi vận tốc xe thứ nhất là $x$, xe thứ hai là $y\\text{ (km/h)}$. Ta có $2x + 2y = 160 \\Rightarrow x + y = 80$. Khi xe thứ nhất đi $3\\text{ giờ}$ và xe thứ hai đi $1,5\\text{ giờ}$ thì $3x + 1,5y = 160$."
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Một hình chữ nhật có chu vi $72\\text{ cm}$. Nếu giảm chiều dài đi $\\frac{1}{5}$ chiều dài ban đầu và tăng chiều rộng lên $\\frac{1}{4}$ chiều rộng ban đầu thì chu vi hình chữ nhật không đổi. Tính chiều dài ban đầu của hình chữ nhật.",
+          "dap_an": [
+            "$20\\text{ cm}$",
+            "$16\\text{ cm}$",
+            "$24\\text{ cm}$",
+            "$18\\text{ cm}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi chiều dài là $x$, chiều rộng là $y\\text{ (cm)}$. Ta có $x + y = 36$. Sự giảm độ dài chiều dài bằng sự tăng độ dài chiều rộng: $\\frac{1}{5}x = \\frac{1}{4}y \\Rightarrow 4x - 5y = 0$."
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Hai trường THCS A và B có tổng cộng $300$ học sinh khối 9. Trong đợt kiểm tra thể lực, trường A có $90\\%$ học sinh đạt yêu cầu, trường B có $80\\%$ học sinh đạt yêu cầu, tổng số học sinh đạt yêu cầu của cả hai trường là $256$ em. Hỏi trường A có bao nhiêu học sinh khối 9?",
+          "dap_an": [
+            "$140\\text{ học sinh}$",
+            "$160\\text{ học sinh}$",
+            "$180\\text{ học sinh}$",
+            "$150\\text{ học sinh}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi số học sinh khối 9 trường A là $x$, trường B là $y$ ($x, y \\in \\mathbb{N}^*$). Ta có hệ $x + y = 300$ và $0,9x + 0,8y = 256$."
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Một xe tải đi từ A đến B với vận tốc $40\\text{ km/h}$. Sau đó $45\\text{ phút}$ ($0,75\\text{ giờ}$), một xe con cũng đi từ A đến B với vận tốc $60\\text{ km/h}$ và đuổi kịp xe tải tại B. Tính quãng đường AB.",
+          "dap_an": [
+            "$90\\text{ km}$",
+            "$120\\text{ km}$",
+            "$80\\text{ km}$",
+            "$100\\text{ km}$"
+          ],
+          "diem": 2,
+          "goi_y": "Gọi thời gian đi của xe tải là $x\\text{ (giờ)}$, xe con là $y\\text{ (giờ)}$. Quãng đường $AB = 40x = 60y$. Thời gian xe tải nhiều hơn xe con $x - y = 0,75$."
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Một mảnh đất hình chữ nhật có chu vi $80\\text{ m}$. Nếu tăng chiều rộng thêm $3\\text{ m}$ và giảm chiều dài đi $5\\text{ m}$ thì diện tích mảnh đất tăng thêm $15\\text{ m}^2$. Xét tính đúng/sai của các phát biểu sau:<br><b>a)</b> Nửa chu vi của mảnh đất bằng $40\\text{ m}$.",
+          "diem": 2.5,
+          "goi_y": "Gọi chiều dài là $x\\text{ (m)}$, chiều rộng là $y\\text{ (m)}$ ($x &gt; y &gt; 0$). a) Nửa chu vi mảnh đất là $x + y = 40\\text{ m}$. b) Diện tích mảnh đất lúc sau là $(x - 5)(y + 3)\\text{ m}^2$. c) Hệ phương trình lập được là $\\begin{cases} x + y = 40 \\\\ 3x - 5y = 30 \\end{cases}$. d) Chiều dài ban đầu của mảnh đất là $25\\text{ m}$."
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Phương trình diện tích biểu diễn sự thay đổi là $(x - 5)(y + 3) = xy + 15$.",
+          "diem": 2.5,
+          "goi_y": "Gọi chiều dài là $x\\text{ (m)}$, chiều rộng là $y\\text{ (m)}$ ($x &gt; y &gt; 0$). a) Nửa chu vi mảnh đất là $x + y = 40\\text{ m}$. b) Diện tích mảnh đất lúc sau là $(x - 5)(y + 3)\\text{ m}^2$. c) Hệ phương trình lập được là $\\begin{cases} x + y = 40 \\\\ 3x - 5y = 30 \\end{cases}$. d) Chiều dài ban đầu của mảnh đất là $25\\text{ m}$."
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Hệ phương trình thu gọn biểu diễn bài toán là $\\begin{cases} x + y = 40 \\\\ 3x - 5y = 30 \\end{cases}$.",
+          "diem": 2.5,
+          "goi_y": "Gọi chiều dài là $x\\text{ (m)}$, chiều rộng là $y\\text{ (m)}$ ($x &gt; y &gt; 0$). a) Nửa chu vi mảnh đất là $x + y = 40\\text{ m}$. b) Diện tích mảnh đất lúc sau là $(x - 5)(y + 3)\\text{ m}^2$. c) Hệ phương trình lập được là $\\begin{cases} x + y = 40 \\\\ 3x - 5y = 30 \\end{cases}$. d) Chiều dài ban đầu của mảnh đất là $25\\text{ m}$."
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Chiều dài ban đầu của mảnh đất bằng $25\\text{ m}$.",
+          "diem": 2.5,
+          "goi_y": "Gọi chiều dài là $x\\text{ (m)}$, chiều rộng là $y\\text{ (m)}$ ($x &gt; y &gt; 0$). a) Nửa chu vi mảnh đất là $x + y = 40\\text{ m}$. b) Diện tích mảnh đất lúc sau là $(x - 5)(y + 3)\\text{ m}^2$. c) Hệ phương trình lập được là $\\begin{cases} x + y = 40 \\\\ 3x - 5y = 30 \\end{cases}$. d) Chiều dài ban đầu của mảnh đất là $25\\text{ m}$."
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Hai vòi nước cùng chảy vào một bể trống thì sau $6\\text{ giờ}$ đầy bể. Nếu mở vòi I trong $2\\text{ giờ}$ rồi khóa lại và mở vòi II chảy tiếp trong $3\\text{ giờ}$ thì cả hai vòi chảy được $\\frac{2}{5}$ bể. Xét tính đúng/sai của các phát biểu sau:<br><b>a)</b> Trong $1\\text{ giờ}$, cả hai vòi cùng chảy được $\\frac{1}{6}$ bể.",
+          "diem": 2.5,
+          "goi_y": "Gọi thời gian chảy riêng đầy bể của vòi I là $x\\text{ (giờ)}$, vòi II là $y\\text{ (giờ)}$ ($x, y &gt; 6$). a) Mỗi giờ hai vòi cùng chảy được $\\frac{1}{6}$ bể. b) Phương trình biểu thị lượng nước chảy sau $2\\text{ giờ}$ và $3\\text{ giờ}$ là $\\frac{2}{x} + \\frac{3}{y} = \\frac{2}{5}$. c) Vòi I chảy một mình đầy bể trong $10\\text{ giờ}$. d) Vòi II chảy một mình đầy bể trong $15\\text{ giờ}$."
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Hệ phương trình của bài toán là $\\begin{cases} \\frac{1}{x} + \\frac{1}{y} = \\frac{1}{6} \\\\ \\frac{2}{x} + \\frac{3}{y} = \\frac{2}{5} \\end{cases}$.",
+          "diem": 2.5,
+          "goi_y": "Gọi thời gian chảy riêng đầy bể của vòi I là $x\\text{ (giờ)}$, vòi II là $y\\text{ (giờ)}$ ($x, y &gt; 6$). a) Mỗi giờ hai vòi cùng chảy được $\\frac{1}{6}$ bể. b) Phương trình biểu thị lượng nước chảy sau $2\\text{ giờ}$ và $3\\text{ giờ}$ là $\\frac{2}{x} + \\frac{3}{y} = \\frac{2}{5}$. c) Vòi I chảy một mình đầy bể trong $10\\text{ giờ}$. d) Vòi II chảy một mình đầy bể trong $15\\text{ giờ}$."
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Vòi I chảy riêng một mình thì sau $10\\text{ giờ}$ sẽ đầy bể.",
+          "diem": 2.5,
+          "goi_y": "Gọi thời gian chảy riêng đầy bể của vòi I là $x\\text{ (giờ)}$, vòi II là $y\\text{ (giờ)}$ ($x, y &gt; 6$). a) Mỗi giờ hai vòi cùng chảy được $\\frac{1}{6}$ bể. b) Phương trình biểu thị lượng nước chảy sau $2\\text{ giờ}$ và $3\\text{ giờ}$ là $\\frac{2}{x} + \\frac{3}{y} = \\frac{2}{5}$. c) Vòi I chảy một mình đầy bể trong $10\\text{ giờ}$. d) Vòi II chảy một mình đầy bể trong $15\\text{ giờ}$."
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Vòi II chảy riêng một mình thì sau $15\\text{ giờ}$ sẽ đầy bể.",
+          "diem": 2.5,
+          "goi_y": "Gọi thời gian chảy riêng đầy bể của vòi I là $x\\text{ (giờ)}$, vòi II là $y\\text{ (giờ)}$ ($x, y &gt; 6$). a) Mỗi giờ hai vòi cùng chảy được $\\frac{1}{6}$ bể. b) Phương trình biểu thị lượng nước chảy sau $2\\text{ giờ}$ và $3\\text{ giờ}$ là $\\frac{2}{x} + \\frac{3}{y} = \\frac{2}{5}$. c) Vòi I chảy một mình đầy bể trong $10\\text{ giờ}$. d) Vòi II chảy một mình đầy bể trong $15\\text{ giờ}$."
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm một số tự nhiên có hai chữ số, biết rằng chữ số hàng đơn vị gấp đôi chữ số hàng chục. Nếu đổi chỗ hai chữ số cho nhau thì được số mới lớn hơn số cũ $27$ đơn vị.",
+          "diem": 6,
+          "goi_y": "Gọi chữ số hàng chục là $x$, hàng đơn vị là $y$ ($1 \\le x \\le 9, 1 \\le y \\le 9$). Hệ phương trình: $y = 2x$ và $(10y + x) - (10x + y) = 27 \\Rightarrow 9y - 9x = 27$."
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một ca nô chạy trên sông xuôi dòng $84\\text{ km}$ và ngược dòng $44\\text{ km}$ mất tổng cộng $5\\text{ giờ}$. Biết vận tốc dòng nước là $4\\text{ km/h}$. Tính vận tốc thực của ca nô (theo đơn vị $\\text{km/h}$).",
+          "diem": 6,
+          "goi_y": "Gọi vận tốc thực của ca nô là $x\\text{ (km/h)}$ ($x &gt; 4$). Lập phương trình thời gian $\\frac{84}{x+4} + \\frac{44}{x-4} = 5$. Giải phương trình tìm $x$."
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Hai tổ công nhân cùng may một loại áo. Nếu tổ I may trong $3\\text{ ngày}$ và tổ II may trong $5\\text{ ngày}$ thì cả hai tổ may được $1310$ chiếc áo. Biết rằng mỗi ngày tổ I may được nhiều hơn tổ II là $10$ chiếc áo. Hỏi trong một ngày tổ I may được bao nhiêu chiếc áo?",
+          "diem": 6,
+          "goi_y": "Gọi số áo may trong một ngày của tổ I là $x$, tổ II là $y$ (chiếc áo). Ta có hệ $x - y = 10$ và $3x + 5y = 1310$."
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một mảnh vườn hình chữ nhật có diện tích $300\\text{ m}^2$. Nếu tăng chiều rộng thêm $5\\text{ m}$ và giảm chiều dài đi $5\\text{ m}$ thì diện tích mảnh vườn không đổi. Tính chu vi ban đầu của mảnh vườn hình chữ nhật (theo đơn vị $\\text{m}$).",
+          "diem": 6,
+          "goi_y": "Gọi chiều dài là $x\\text{ (m)}$, chiều rộng là $y\\text{ (m)}$ ($x &gt; y &gt; 0$). Ta có $xy = 300$ và $(x - 5)(y + 5) = 300 \\Rightarrow x - y = 5$. Giải tìm $x, y$ rồi tính chu vi $2(x + y)$."
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tháng trước, hai tổ sản xuất được $800$ chi tiết máy. Tháng này, tổ I vượt mức $15\\%$, tổ II vượt mức $20\\%$ nên cả hai tổ đã sản xuất được $945$ chi tiết máy. Hỏi tháng này tổ I sản xuất được bao nhiêu chi tiết máy?",
+          "diem": 6,
+          "goi_y": "Gọi số chi tiết máy tháng trước của tổ I là $x$, tổ II là $y$. Hệ phương trình: $x + y = 800$ và $0,15x + 0,20y = 945 - 800 = 145$. Tìm $x$ tháng trước rồi tính số chi tiết máy tháng này của tổ I là $1,15x$."
+        }
+      ]
+    }
+  ]
+}

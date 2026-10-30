@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // =========================================================================
   // 1. TRANG PROBLEMS.HTML (DANH SÁCH CHƯƠNG VÀ BÀI TẬP)
   // =========================================================================
-  function renderTableProblems(chuongObj, subjectCode) {
+  function renderTableProblems(chuongObj, subjectCode, soBatDau = 0) {
     problemList.innerHTML = "";
 
     if (!chuongObj.danh_sach_bai || chuongObj.danh_sach_bai.length === 0) {
@@ -47,10 +47,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    chuongObj.danh_sach_bai.forEach((bai) => {
+    chuongObj.danh_sach_bai.forEach((bai, i) => {
+      // số hiển thị: nối tiếp qua các chương (01, 02, 03, 04...)
+      const soHienThi = String(soBatDau + i + 1).padStart(2, "0");
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${bai.id}</td>
+        <td>${soHienThi}</td>
         <td>
           <a href="lesson.html?subject=${subjectCode}&chapter=${chuongObj.id_chuong}&article=bai-${bai.id}">
             ${bai.ten_bai}
@@ -72,6 +74,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       chapterSidebar.innerHTML = `<h3>Chương bài học</h3>`;
 
       (data.chuong_list || []).forEach((chuongItem, index) => {
+        // số bài của tất cả các chương đứng trước = số bắt đầu của chương này
+        const soBatDau = data.chuong_list
+          .slice(0, index)
+          .reduce((tong, c) => tong + (c.danh_sach_bai || []).length, 0);
+
         const p = document.createElement("p");
         p.textContent = chuongItem.ten_chuong;
         p.style.cursor = "pointer";
@@ -79,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         p.addEventListener("click", () => {
           document.querySelectorAll(".chapter-sidebar p").forEach((el) => el.classList.remove("active"));
           p.classList.add("active");
-          renderTableProblems(chuongItem, subject);
+          renderTableProblems(chuongItem, subject, soBatDau);
         });
 
         chapterSidebar.appendChild(p);
@@ -87,7 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Mặc định chọn chương đầu tiên
         if (index === 0) {
           p.classList.add("active");
-          renderTableProblems(chuongItem, subject);
+          renderTableProblems(chuongItem, subject, soBatDau);
         }
       });
     } catch (error) {
