@@ -1,0 +1,441 @@
+/* ==========================================================
+   form.css - giao diện trang làm bài tập (form.html)
+   Dùng lại biến màu của style.css: --nen, --chu, --nhat, --nhan, --vien
+   Nhớ nạp SAU style3.css để các kiểu ở đây đè lên kiểu cũ.
+   ========================================================== */
+
+/* ---------- Khung chung: chữ to hơn, rộng rãi hơn ---------- */
+#quiz-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 8px 16px 80px;
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--chu);
+}
+
+.bai-tap-khung {
+    max-width: none;
+    margin: 28px 0 0;
+}
+
+/* Tiêu đề bài: dải màu xanh nổi bật */
+.bai-tap-tieu-de {
+    margin: 0 0 20px;
+    padding: 16px 22px;
+    font-size: 1.35rem;
+    line-height: 1.4;
+    color: #fff;
+    background: linear-gradient(120deg, #2457d6 0%, #5b7cf0 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 22px rgba(36, 87, 214, 0.25);
+}
+
+/* Tiêu đề từng phần: Trắc nghiệm / Đúng sai / Trả lời ngắn */
+.phan-tieu-de {
+    display: inline-block;
+    margin: 36px 0 16px;
+    padding: 8px 18px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: var(--nhan);
+    background: #e8eefc;
+    border-radius: 999px;
+}
+
+/* Hộp tác phẩm (bài đọc hiểu) */
+.tac-pham-box {
+    max-width: none;
+    margin: 0 0 24px;
+    padding: 22px 26px;
+    font-size: 1.05rem;
+    background: #fffdf5;
+    border: 1px solid #f1e6bf;
+    border-left: 5px solid #e0a82e;
+    border-radius: 16px;
+}
+
+.tac-pham-hinh {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 12px auto;
+    border-radius: 12px;
+}
+
+/* ---------- Thẻ câu hỏi: cách xa nhau, có bóng, viền màu theo dạng câu ---------- */
+.question-card {
+    --mau: var(--nhan);
+    margin: 0 0 28px !important;
+    /* đè margin inline cũ nếu còn */
+    padding: 22px 24px;
+    background: #fff;
+    border: 1px solid var(--vien);
+    border-left: 6px solid var(--mau);
+    border-radius: 16px;
+    box-shadow: 0 2px 4px rgba(27, 42, 65, 0.05), 0 10px 26px rgba(27, 42, 65, 0.07);
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.question-card.q-trac-nghiem {
+    --mau: #2457d6;
+    /* xanh dương */
+}
+
+.question-card.q-dung-sai {
+    --mau: #7b4bd8;
+    /* tím */
+}
+
+.question-card.q-tra-loi-ngan {
+    --mau: #e07a1f;
+    /* cam */
+}
+
+/* Dòng đầu: "Câu N" + số điểm */
+.cau-dau {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.cau-so {
+    display: inline-block;
+    padding: 4px 14px;
+    font-size: 1rem;
+    color: #fff;
+    background: var(--mau);
+    border-radius: 999px;
+}
+
+.cau-diem {
+    padding: 4px 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #b7791f;
+    background: #fff4d6;
+    border-radius: 999px;
+}
+
+/* Đề bài */
+.cau-de {
+    margin-bottom: 18px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.8;
+}
+
+.question-card .katex {
+    font-size: 1.1em;
+}
+
+/* ---------- Các lựa chọn: xa nhau, to, dễ bấm ---------- */
+.cau-lua-chon {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.lua-chon {
+    --lc: var(--nhan);
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    cursor: pointer;
+    background: #f8fafc;
+    border: 2px solid #e3e9f3;
+    border-radius: 14px;
+    transition: transform 0.12s, border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+/* Mỗi đáp án A B C D một màu */
+.cau-lua-chon:not(.cau-dung-sai) .lua-chon:nth-child(1) {
+    --lc: #2457d6;
+}
+
+.cau-lua-chon:not(.cau-dung-sai) .lua-chon:nth-child(2) {
+    --lc: #178a5a;
+}
+
+.cau-lua-chon:not(.cau-dung-sai) .lua-chon:nth-child(3) {
+    --lc: #e07a1f;
+}
+
+.cau-lua-chon:not(.cau-dung-sai) .lua-chon:nth-child(4) {
+    --lc: #7b4bd8;
+}
+
+.lua-chon:hover {
+    transform: translateX(4px);
+    background: #fff;
+    border-color: var(--lc);
+    box-shadow: 0 4px 14px rgba(27, 42, 65, 0.08);
+}
+
+/* Ẩn nút tròn gốc nhưng vẫn bấm và dùng bàn phím được */
+.lua-chon input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+}
+
+/* Chữ cái A B C D trong vòng tròn */
+.lua-chon-ky-hieu {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    font-weight: 800;
+    color: var(--lc);
+    background: #fff;
+    border: 2px solid var(--lc);
+    border-radius: 50%;
+    transition: background 0.15s, color 0.15s;
+}
+
+.lua-chon-chu {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 1.05rem;
+}
+
+/* Đáp án đang chọn: tô đậm màu của chính nó */
+.lua-chon:has(input:checked) {
+    background: color-mix(in srgb, var(--lc) 12%, #fff);
+    border-color: var(--lc);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--lc) 22%, transparent);
+}
+
+.lua-chon:has(input:checked) .lua-chon-ky-hieu {
+    color: #fff;
+    background: var(--lc);
+}
+
+.lua-chon:has(input:checked) .lua-chon-chu {
+    font-weight: 700;
+}
+
+.lua-chon:has(input:focus-visible) {
+    outline: 3px solid rgba(36, 87, 214, 0.45);
+    outline-offset: 2px;
+}
+
+/* ---------- Đúng / Sai: hai nút to nằm cạnh nhau ---------- */
+.cau-dung-sai {
+    flex-direction: row;
+    gap: 16px;
+}
+
+.cau-dung-sai .lua-chon {
+    flex: 1 1 0;
+    justify-content: center;
+    padding: 16px 12px;
+    text-align: center;
+}
+
+.cau-dung-sai .lua-chon-chu {
+    flex: 0 1 auto;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.cau-dung-sai .lua-chon:nth-child(1) {
+    --lc: #178a5a;
+    /* Đúng: xanh lá */
+}
+
+.cau-dung-sai .lua-chon:nth-child(2) {
+    --lc: #d93a3a;
+    /* Sai: đỏ */
+}
+
+/* Sau khi nộp thì khoá lựa chọn */
+.lua-chon:has(input:disabled) {
+    cursor: default;
+    transform: none;
+}
+
+.lua-chon:has(input:disabled):not(:has(input:checked)) {
+    opacity: 0.55;
+}
+
+/* ---------- Ô trả lời ngắn ---------- */
+.o-tra-loi {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    padding: 14px 18px;
+    font: inherit;
+    font-size: 1.15rem;
+    color: var(--chu);
+    background: #fffaf3;
+    border: 2px solid #f0d2ac;
+    border-radius: 14px;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.o-tra-loi::placeholder {
+    color: #b59a78;
+}
+
+.o-tra-loi:focus {
+    outline: none;
+    background: #fff;
+    border-color: #e07a1f;
+    box-shadow: 0 0 0 4px rgba(224, 122, 31, 0.2);
+}
+
+.o-tra-loi:disabled {
+    background: #f4f4f4;
+    color: #666;
+}
+
+/* ---------- Kết quả sau khi nộp ---------- */
+.ket-qua-cau:empty {
+    display: none;
+}
+
+.ket-qua-cau {
+    margin-top: 18px;
+}
+
+.kq {
+    padding: 12px 16px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border-radius: 12px;
+}
+
+.kq-dung {
+    color: #0f6b44;
+    background: #dff5e9;
+}
+
+.kq-sai {
+    color: #b42323;
+    background: #fde4e4;
+}
+
+.kq-chua {
+    color: #96600f;
+    background: #fdf1d8;
+}
+
+.kq-loi-giai {
+    margin-top: 12px;
+    padding: 14px 18px;
+    font-size: 1.02rem;
+    color: #2c3e5a;
+    background: #eef3ff;
+    border-left: 5px solid var(--nhan);
+    border-radius: 0 12px 12px 0;
+}
+
+/* Tô cả thẻ theo kết quả */
+.question-card.dung {
+    --mau: #178a5a;
+    background: #f6fcf9;
+}
+
+.question-card.sai {
+    --mau: #d93a3a;
+    background: #fffafa;
+}
+
+.question-card.chua-lam {
+    --mau: #e0a82e;
+    background: #fffcf4;
+}
+
+/* ---------- Nút nộp bài + tổng điểm ---------- */
+#btn-nop-bai {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    margin: 36px auto 0;
+    padding: 16px 28px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(120deg, #2457d6 0%, #5b7cf0 100%);
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 10px 24px rgba(36, 87, 214, 0.35);
+}
+
+#btn-nop-bai:hover:not(:disabled) {
+    color: #fff;
+    background: linear-gradient(120deg, #1d49b8 0%, #4a6be0 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(36, 87, 214, 0.4);
+}
+
+#btn-nop-bai:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
+#tong-ket {
+    max-width: 560px;
+    margin: 20px auto 0 !important;
+    padding: 16px 22px;
+    font-size: 1.15rem;
+    text-align: center;
+    color: var(--chu);
+    background: #e8f0ff;
+    border: 1px solid #c8d8fa;
+    border-radius: 14px;
+}
+
+#tong-ket:empty {
+    display: none;
+}
+
+/* ---------- Điện thoại ---------- */
+@media (max-width: 640px) {
+    #quiz-container {
+        font-size: 17px;
+        padding: 4px 12px 60px;
+    }
+
+    .question-card {
+        padding: 18px 16px;
+        margin-bottom: 22px !important;
+    }
+
+    .lua-chon {
+        padding: 12px 14px;
+    }
+
+    .cau-dung-sai {
+        gap: 12px;
+    }
+
+    .bai-tap-tieu-de {
+        padding: 14px 16px;
+        font-size: 1.2rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .lua-chon,
+    .question-card,
+    #btn-nop-bai {
+        transition: none;
+    }
+
+    .lua-chon:hover {
+        transform: none;
+    }
+}

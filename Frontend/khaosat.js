@@ -1,142 +1,169 @@
 (function () {
   const $ = (id) => document.getElementById(id);
-  let viTri = { lat: null, lng: null };
+  const esc = (s) => {
+    const d = document.createElement("div");
+    d.textContent = s ?? "";
+    return d.innerHTML;
+  };
+
+  const viTri = { lat: null, lng: null };
   let truong = [];
   let truongChuyenData = {};
-  let monChuyenHienTai = ""; // "", "toan", "ly" hoặc "hoa"
+  let monChuyenHienTai = "";
+  let ST = null; // trạng thái kết quả (để đổi / ghim trường mà không tính lại từ đầu)
+  let KY = []; // danh sách kỳ thi + trạng thái mở/khóa
 
-  // value của <select> -> key trong JSON
   const KEY_MON = { toan: "Toan", ly: "Ly", hoa: "Hoa" };
   const TEN_MON = { toan: "Toán", ly: "Vật Lý", hoa: "Hóa Học" };
-
-  // Ảnh: trường thường = <id>.webp, trường chuyên = chuyen_<id>.webp
-  // Đường dẫn tính từ file HTML (HTML nằm trong Frontend/, ảnh ở Frontend/img/school/)
   const ANH = {
     thuong: { thuMuc: "img/school/", tienTo: "" },
     chuyen: { thuMuc: "img/school/", tienTo: "chuyen_" },
   };
-  // Chỉ dùng .webp; không có file thì hiện "null"
   const DUOI_ANH = ["webp"];
 
-  // ---------- Công thức tính khoảng cách (km, đường chim bay) ----------
+  // ---------- Đi lại ----------
+  const HESO_DUONG = 1.3; // đường thật ≈ 1,3 lần đường chim bay
+  const TOC_DO = { xedap: 12, xemay: 30, xebuyt: 22 }; // km/giờ
+  const TEN_PT = { xedap: "xe đạp", xemay: "xe máy", xebuyt: "xe buýt" };
+  const GIOI_HAN_PHUT = 45; // không ở ký túc xá thì chỉ xét trường đi được trong ngần này phút
+
+  // ---------- Kỳ thi (bd/kt = [tháng, ngày]) ----------
+  // Kỳ chỉ nhập được khi hôm nay >= ngày bắt đầu. w = trọng số khi tính điểm TB (kỳ càng gần thi càng nặng)
+  const KY_THI = [
+    { id: "l8", ten: "Cả năm lớp 8", luon: true, w: 1 },
+    { id: "gk1", ten: "Giữa kỳ 1", bd: [10, 25], kt: [11, 15], namSau: false, w: 2 },
+    { id: "ck1", ten: "Cuối kỳ 1", bd: [12, 15], kt: [12, 31], namSau: false, w: 3 },
+    { id: "gk2", ten: "Giữa kỳ 2", bd: [3, 15], kt: [3, 31], namSau: true, w: 4 },
+    { id: "ck2", ten: "Cuối kỳ 2", bd: [4, 25], kt: [5, 15], namSau: true, w: 5 },
+  ];
+  const dm = (d, m) => String(d).padStart(2, "0") + "/" + String(m).padStart(2, "0");
+
+  // Năm học bắt đầu từ tháng 8
+  function capNhatKy() {
+    const now = new Date();
+    const nam = now.getMonth() >= 7 ? now.getFullYear() : now.getFullYear() - 1;
+    return KY_THI.map((k) => {
+      if (k.luon) return { ...k, mo: true };
+      const ngayMo = new Date(k.namSau ? nam + 1 : nam, k.bd[0] - 1, k.bd[1]);
+      return { ...k, mo: now >= ngayMo };
+    });
+  }
+
+  // ---------- Lưu điểm đã nhập (theo tài khoản) ----------
+  const KHOA_LUU = "edumate_diem_" + (localStorage.getItem("userId") || "khach");
+  const docDiem = () => {
+    try { return JSON.parse(localStorage.getItem(KHOA_LUU) || "{}"); } catch (e) { return {}; }
+  };
+
+  // ---------- Công thức ----------
   function tinhKhoangCach(lat1, lon1, lat2, lon2) {
     const R = 6371;
     const rad = (d) => (d * Math.PI) / 180;
     const dlat = rad(lat2 - lat1);
     const dlon = rad(lon2 - lon1);
-    const a =
-      Math.sin(dlat / 2) ** 2 +
-      Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dlon / 2) ** 2;
+    const a = Math.sin(dlat / 2) ** 2 + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dlon / 2) ** 2;
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
-
-  function escapeHtml(s) {
-    const d = document.createElement("div");
-    d.textContent = s ?? "";
-    return d.innerHTML;
-  }
-
   const coToaDo = (t) => t.vi_do !== null && t.kinh_do !== null;
+  const laGDTX = (t) => /^(GDTX|Giáo Dục Thường Xuyên)/i.test(t.ten_truong);
+  const hopLeDiem = (x) => Number.isFinite(x) && x >= 0 && x <= 10;
+  const fmtGio = (p) => (p < 60 ? `${p} phút` : `${Math.floor(p / 60)}g${p % 60 ? String(p % 60).padStart(2, "0") : ""}`);
 
-  // ---------- Logic chọn trường ----------
-  // Ngưỡng chênh lệch giữa điểm học sinh và điểm chuẩn (chỉnh ở đây)
-  const NGUONG_AN_TOAN = 1.5; // điểm HS >= chuẩn + 1.5  -> An toàn
-  const NGUONG_THU_SUC = 1.5; // điểm HS >= chuẩn - 1.5  -> Thử sức (thấp hơn là loại)
+  // Hàm phân phối chuẩn: dùng để đổi "chênh lệch điểm" thành "xác suất đỗ"
+  function erf(x) {
+    const s = Math.sign(x);
+    x = Math.abs(x);
+    const t = 1 / (1 + 0.3275911 * x);
+    const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+    return s * y;
+  }
+  const phi = (z) => 0.5 * (1 + erf(z / Math.SQRT2));
 
-  // Lấy điểm chuẩn tham khảo: lấy năm CAO hơn trong 2 năm (thận trọng)
-  function diemChuan(t) {
-    const v = [t.diem_2026, t.diem_2025].filter((x) => Number.isFinite(x));
-    return v.length ? Math.max(...v) : null;
+  // Dự đoán điểm chuẩn kỳ tuyển sinh sắp tới: trung bình có trọng số 2 năm + độ lệch (sigma)
+  function duBao(t, chuyen) {
+    const a = t.diem_2026, b = t.diem_2025;
+    const coA = Number.isFinite(a), coB = Number.isFinite(b);
+    const sMin = chuyen ? 2.5 : 1.5;      // độ lệch tối thiểu
+    const sDon = chuyen ? 3.5 : 2.5;      // chỉ có 1 năm dữ liệu -> kém chắc chắn hơn
+    const nguongBD = chuyen ? 5 : 3;      // chênh 2 năm từ ngưỡng này = biến động mạnh
+    if (coA && coB) {
+      const lech = Math.abs(a - b);
+      return { du: 0.65 * a + 0.35 * b, sigma: Math.max(sMin, lech * 0.6), nam: 2, bienDong: lech >= nguongBD, a, b };
+    }
+    if (coA || coB) return { du: coA ? a : b, sigma: sDon, nam: 1, bienDong: false };
+    return null;
   }
 
-  function phanLoai(diem, t) {
-    const c = diemChuan(t);
-    if (c === null) return "chuaco";
-    const d = diem - c;
-    if (d >= NGUONG_AN_TOAN) return "antoan";
-    if (d >= 0) return "vuasuc";
-    if (d >= -NGUONG_THU_SUC) return "thusuc";
-    return "xa";
+  function nhanXs(p) {
+    if (p >= 0.8) return { ten: "Cao", lop: "cao" };
+    if (p >= 0.5) return { ten: "Khá", lop: "kha" };
+    if (p >= 0.25) return { ten: "Trung bình", lop: "tb" };
+    return { ten: "Thấp", lop: "thap" };
   }
 
-  const NHAN = {
-    vuasuc: "Vừa sức",
-    antoan: "An toàn",
-    thusuc: "Thử sức",
-    chuaco: "Chưa có điểm chuẩn",
-    xa: "Điểm chuẩn cao hơn nhiều so với điểm của bạn",
-  };
-  const THU_TU = { vuasuc: 0, antoan: 1, thusuc: 2, chuaco: 3, xa: 4 };
-
-  function lyDoTruong(loai, diem, t) {
-    const c = diemChuan(t);
-    const km = t.km.toFixed(1);
-    if (loai === "chuaco")
-      return `Gần nhà bạn (${km} km) nhưng chưa có dữ liệu điểm chuẩn để so sánh.`;
-    const so = `điểm ước tính của bạn ${diem}, điểm chuẩn tham khảo ${c}`;
-    if (loai === "antoan") return `An toàn: ${so}. Cách nhà ${km} km.`;
-    if (loai === "vuasuc") return `Vừa sức: ${so}. Cách nhà ${km} km.`;
-    if (loai === "thusuc")
-      return `Thử sức: ${so}, thấp hơn một chút nên cần cố gắng thêm. Cách nhà ${km} km.`;
-    return `Cách nhà ${km} km nhưng ${so}, chênh lệch khá lớn.`;
+  function canhBao(c) {
+    const r = [], d = c.dub;
+    if (!d) return r;
+    if (d.bienDong) r.push(`Điểm chuẩn trường này biến động mạnh (2025: ${d.b} → 2026: ${d.a}), dự đoán kém chắc chắn.`);
+    if (d.nam === 1) r.push("Mới có dữ liệu 1 năm nên độ tin cậy thấp.");
+    if (c.phut > 60) r.push("Khá xa nhà, cần tính phương án ở trọ / ký túc xá.");
+    return r;
   }
 
-  // ungVien phải đã được sắp xếp theo km tăng dần
-  function chonTruong(ungVien, diem, n) {
-    const ds = ungVien.map((t) => ({ t, loai: phanLoai(diem, t) }));
-    const chon = [];
-    const them = (x) => {
-      if (x && !chon.includes(x) && chon.length < n) chon.push(x);
-    };
-    const hopLe = ["vuasuc", "antoan", "thusuc"];
+  // ---------- 3 nguyện vọng ----------
+  // min/max: khoảng xác suất đỗ của vai trò; dich: xác suất lý tưởng (dùng khi không có trường nào lọt khoảng)
+  const VAI_TRO = [
+    { ten: "NV1", nhan: "Thử sức", loai: "thusuc", min: 0.25, max: 0.65, dich: 0.45, mota: "Trường mơ ước, cao hơn mức bạn đang đạt một chút." },
+    { ten: "NV2", nhan: "Vừa sức", loai: "vuasuc", min: 0.55, max: 0.9, dich: 0.72, mota: "Sát với năng lực hiện tại của bạn." },
+    { ten: "NV3", nhan: "An toàn", loai: "antoan", min: 0.85, max: 1.01, dich: 0.95, mota: "Phương án dự phòng chắc chắn." },
+  ];
 
-    // 1) mỗi nhóm lấy 1 trường gần nhất để có lựa chọn đa dạng
-    hopLe.forEach((l) => them(ds.find((x) => x.loai === l)));
-    // 2) chưa đủ thì bù bằng các trường hợp lệ gần nhất còn lại
-    ds.filter((x) => hopLe.includes(x.loai)).forEach(them);
-    // 3) vẫn thiếu thì bù trường chưa có điểm chuẩn
-    ds.filter((x) => x.loai === "chuaco").forEach(them);
-    // 4) không có trường nào phù hợp: hiện các trường gần nhất kèm cảnh báo
-    if (chon.length === 0) ds.forEach(them);
-
-    chon.sort((a, b) => THU_TU[a.loai] - THU_TU[b.loai] || a.t.km - b.t.km);
-    return chon.map((x) => ({
-      t: x.t,
-      loai: x.loai,
-      nhan: NHAN[x.loai],
-      lyDo: lyDoTruong(x.loai, diem, x.t),
-    }));
+  function khoaUuTien(uuTien) {
+    if (uuTien === "gan") return (c) => c.km;
+    if (uuTien === "chatluong") return (c) => -c.dub.du;
+    return (c) => -c.xs;
   }
 
-  function danhGiaChuyen(t, diemChuyen) {
-    if (diemChuyen === null) return "";
-    const c = diemChuan(t);
-    if (c === null)
-      return ` Điểm xét chuyên ước tính của bạn: ${diemChuyen} (trường chưa có điểm chuẩn để so sánh).`;
-    const d = diemChuyen - c;
-    const so = `Điểm xét chuyên ước tính của bạn ${diemChuyen}, điểm chuẩn tham khảo ${c}.`;
-    if (d >= NGUONG_AN_TOAN) return ` ${so} Khả năng đỗ tốt.`;
-    if (d >= 0) return ` ${so} Sát điểm chuẩn, cạnh tranh cao.`;
-    if (d >= -NGUONG_THU_SUC)
-      return ` ${so} Thấp hơn một chút, cần cố gắng thêm.`;
-    return ` ${so} Thấp hơn khá nhiều, rất khó.`;
+  function xepHang(ds, vt, key) {
+    const trong = ds.filter((c) => c.xs >= vt.min && c.xs < vt.max).sort((a, b) => key(a) - key(b));
+    const ngoai = ds.filter((c) => !(c.xs >= vt.min && c.xs < vt.max))
+      .sort((a, b) => Math.abs(a.xs - vt.dich) - Math.abs(b.xs - vt.dich));
+    return [...trong, ...ngoai].slice(0, 15);
+  }
+
+  // Xếp lại các nguyện vọng chưa ghim (nguyện vọng đã ghim giữ nguyên)
+  function xepLai() {
+    const dung = new Set(ST.slots.filter((s) => s.ghim && s.t).map((s) => s.t.id));
+    ST.slots.forEach((s) => {
+      if (s.ghim && s.t) return;
+      const t = s.ds.find((c) => !dung.has(c.id));
+      if (t) { s.t = t; dung.add(t.id); }
+    });
+  }
+
+  // Đổi sang ứng viên kế tiếp trong danh sách của nguyện vọng đó
+  function doi(i) {
+    const s = ST.slots[i];
+    if (!s || s.ghim) return;
+    const dung = new Set(ST.slots.filter((_, j) => j !== i).map((x) => x.t.id));
+    const pos = s.ds.findIndex((c) => c.id === s.t.id);
+    for (let k = 1; k <= s.ds.length; k++) {
+      const c = s.ds[(pos + k) % s.ds.length];
+      if (!dung.has(c.id) && c.id !== s.t.id) { s.t = c; break; }
+    }
   }
 
   // ---------- Lưu môn chuyên ----------
-  // Luôn lưu trên trình duyệt; có đăng nhập thì lưu cả lên server
   async function luuMonChuyen(mon) {
     localStorage.setItem("monChuyen", mon);
     const userId = localStorage.getItem("userId");
     if (!userId) return "local";
     try {
-      const res = await fetch(
-        `http://127.0.0.1:5000/api/users/${userId}/mon-chuyen`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mon_chuyen: mon }),
-        },
-      );
+      const res = await fetch(`http://127.0.0.1:5000/api/users/${userId}/mon-chuyen`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mon_chuyen: mon }),
+      });
       const kq = await res.json();
       return kq.success ? "server" : "loi";
     } catch (err) {
@@ -144,73 +171,320 @@
     }
   }
 
-  // Bấm vào 1 thẻ trường = chọn trường đó, lưu xong thì về trang chủ
-  async function chonMotTruong(card, out) {
-    // tránh bấm nhiều lần khi đang lưu / đang chuyển trang
+  async function chot() {
+    const out = $("ketqua");
     if (out.dataset.dangLuu === "1") return;
     out.dataset.dangLuu = "1";
 
-    out
-      .querySelectorAll(".truong-card")
-      .forEach((c) => c.classList.toggle("da-chon", c === card));
+    localStorage.setItem("nguyenVong", JSON.stringify(ST.slots.map((s) => ({ id: s.t.id, ten: s.t.ten_truong }))));
+    if (ST.chuyen) localStorage.setItem("truongChuyen", JSON.stringify({ id: ST.chuyen.chon.id, ten: ST.chuyen.chon.ten_truong }));
 
     const tb = $("chon-thong-bao");
-    const ten = card.querySelector("h3").textContent;
-    const mon = monChuyenHienTai
-      ? ` Môn chuyên: ${TEN_MON[monChuyenHienTai]}.`
-      : "";
-
     tb.hidden = false;
     tb.textContent = "Đang lưu lựa chọn...";
     tb.scrollIntoView({ behavior: "smooth", block: "center" });
 
     const kq = await luuMonChuyen(monChuyenHienTai);
-    if (kq === "server")
-      tb.textContent = `Đã chọn ${ten}.${mon} Đã lưu vào tài khoản. Đang về trang chủ...`;
-    else if (kq === "local")
-      tb.textContent = `Đã chọn ${ten}.${mon} Hãy đăng nhập để lưu vào tài khoản. Đang về trang chủ...`;
-    else
-      tb.textContent = `Đã chọn ${ten}.${mon} Nhưng chưa lưu được lên server. Đang về trang chủ...`;
-
-    // chờ 1,5 giây cho người dùng đọc thông báo rồi chuyển trang
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 1500);
+    const hau = kq === "server" ? "Đã lưu vào tài khoản."
+      : kq === "local" ? "Hãy đăng nhập để lưu vào tài khoản."
+        : "Chưa lưu được lên server.";
+    tb.textContent = `Đã chốt 3 nguyện vọng. ${hau} Đang về trang chủ...`;
+    setTimeout(() => { window.location.href = "index.html"; }, 1500);
   }
 
-  function ganChonTruong(out) {
-    out.querySelectorAll(".truong-card").forEach((card) => {
-      card.addEventListener("click", () => chonMotTruong(card, out));
-      card.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          chonMotTruong(card, out);
+  // ---------- Bảng điểm các kỳ thi ----------
+  function veKyThi() {
+    KY = capNhatKy();
+    const luu = docDiem();
+    const mon = $("mon-chuyen").value;
+    const thiC = $("survey-3-specialized_high_school").checked && mon;
+    const box = $("ky-thi");
+    box.classList.toggle("co-chuyen", !!thiC);
+
+    const cot = ["toan", "van"].concat(thiC ? ["chuyen"] : []);
+    const tenCot = { toan: "Toán", van: "Văn", chuyen: thiC ? TEN_MON[mon] : "" };
+
+    let h = `<div class="ky-hang ky-dau"><span>Kỳ</span>${cot.map((m) => `<span>${esc(tenCot[m])}</span>`).join("")}</div>`;
+    KY.forEach((k) => {
+      const ghi = k.luon ? "Luôn nhập được (dùng khi chưa có điểm lớp 9)"
+        : k.mo ? `Đã mở · thi ${dm(k.bd[1], k.bd[0])} – ${dm(k.kt[1], k.kt[0])}`
+          : `Chưa mở · từ ${dm(k.bd[1], k.bd[0])}`;
+      h += `<div class="ky-hang${k.mo ? "" : " khoa"}">
+        <div class="ky-ten"><b>${k.ten}</b><small>${ghi}</small></div>
+        ${cot.map((m) => {
+        const id = `d-${k.id}-${m}`;
+        return `<input type="number" step="any" min="0" max="10" id="${id}" placeholder="0-10"
+                   aria-label="${k.ten} - ${esc(tenCot[m])}" ${k.mo ? "" : "disabled"}
+                   value="${esc(k.mo ? luu[id] ?? "" : "")}">`;
+      }).join("")}
+      </div>`;
+    });
+    box.innerHTML = h;
+  }
+
+  // Đọc điểm đã nhập: { toan:[{w,v}], van:[...], chuyen:[...] }
+  function layDiem() {
+    const ds = { toan: [], van: [], chuyen: [] };
+    KY.forEach((k) => {
+      if (!k.mo) return;
+      Object.keys(ds).forEach((m) => {
+        const el = $(`d-${k.id}-${m}`);
+        if (!el || el.value === "") return;
+        const v = Number(el.value);
+        if (!hopLeDiem(v)) throw new Error(`Điểm "${k.ten}" phải nằm trong khoảng 0 đến 10.`);
+        ds[m].push({ w: k.w, v });
+      });
+    });
+    return ds;
+  }
+  const trungBinh = (l) => l.reduce((s, x) => s + x.w * x.v, 0) / l.reduce((s, x) => s + x.w, 0);
+  const xuHuong = (l) => (l.length >= 2 ? l[l.length - 1].v - l[0].v : null);
+  const textXH = (ten, l) => {
+    const x = xuHuong(l);
+    if (x === null) return "";
+    return x > 0.2 ? `${ten} đang tiến bộ (+${x.toFixed(1)}). ` : x < -0.2 ? `${ten} đang giảm (${x.toFixed(1)}). ` : `${ten} ổn định. `;
+  };
+
+  // ---------- Nộp form ----------
+  function xuLyNop(e) {
+    e.preventDefault();
+    const out = $("ketqua");
+
+    if (viTri.lat === null) return baoLoi(out, "Cần cho phép lấy vị trí trước khi nộp.");
+    if (!truong.length) return baoLoi(out, "Chưa tải được dữ liệu trường.");
+
+    let ds;
+    try { ds = layDiem(); } catch (err) { return baoLoi(out, err.message); }
+    if (!ds.toan.length || !ds.van.length)
+      return baoLoi(out, "Hãy nhập điểm Toán và Văn của ít nhất một kỳ.");
+
+    const toan = trungBinh(ds.toan), van = trungBinh(ds.van);
+    const diem = +(toan + van + (toan + van) / 2).toFixed(1);
+
+    const thiChuyen = $("survey-3-specialized_high_school").checked;
+    const mon = $("mon-chuyen").value;
+    monChuyenHienTai = thiChuyen ? mon : "";
+    const dorm = $("survey-4-dorm").checked;
+    const chuyenXa = $("chuyen-xa").checked;
+    const uuTien = $("uu-tien").value;
+    const pt = $("phuong-tien").value;
+    const phutDi = (km) => Math.round((km * HESO_DUONG / TOC_DO[pt]) * 60);
+
+    // ----- ứng viên trường thường -----
+    const tatCa = truong.map((t) => {
+      const km = tinhKhoangCach(viTri.lat, viTri.lng, t.vi_do, t.kinh_do);
+      const dub = duBao(t, false);
+      return { ...t, km, phut: phutDi(km), dub, xs: dub ? phi((diem - dub.du) / dub.sigma) : null };
+    }).filter((c) => c.xs !== null).sort((a, b) => a.km - b.km);
+
+    let ungVien = dorm ? tatCa : tatCa.filter((c) => c.phut <= GIOI_HAN_PHUT);
+    if (ungVien.length < 3) ungVien = tatCa.slice(0, 8); // vùng thưa trường: lấy các trường gần nhất
+
+    const key = khoaUuTien(uuTien);
+    const slots = VAI_TRO.map((vt, vi) => ({ vt: vi, ds: xepHang(ungVien, vt, key), t: null, ghim: false }));
+    ST = {
+      slots, diem, uuTien, pt, dorm, chuyenXa, toan, van, ds,
+      gannhatId: (ungVien.filter((c) => c.xs >= 0.5)[0] || {}).id,
+      chuyen: null, thongBaoChuyen: "", diemChuyen: null,
+    };
+    xepLai();
+    ST.slots = ST.slots.filter((s) => s.t);
+
+    // ----- trường chuyên -----
+    if (thiChuyen) {
+      if (!mon) ST.thongBaoChuyen = "Bạn chưa chọn môn chuyên nên chưa gợi ý trường chuyên.";
+      else if (!ds.chuyen.length) ST.thongBaoChuyen = `Hãy nhập điểm môn ${TEN_MON[mon]} để gợi ý trường chuyên.`;
+      else {
+        const ch = trungBinh(ds.chuyen);
+        // điểm chuyên = (toán-1) + (văn-1) + (toán+văn)/2 + chuyên*2 - 3
+        ST.diemChuyen = +(toan - 1 + (van - 1) + (toan + van) / 2 + ch * 2 - 3).toFixed(1);
+        const dsC = (truongChuyenData[KEY_MON[mon]] || []).filter(coToaDo).map((t) => {
+          const km = tinhKhoangCach(viTri.lat, viTri.lng, t.vi_do, t.kinh_do);
+          const dub = duBao(t, true);
+          return { ...t, km, phut: phutDi(km), dub, xs: dub ? phi((ST.diemChuyen - dub.du) / dub.sigma) : null };
+        }).sort((a, b) => a.km - b.km);
+
+        if (dsC.length) {
+          const gan = dsC[0];
+          const tot = [...dsC].sort((a, b) => (b.xs ?? -1) - (a.xs ?? -1))[0];
+          // chấp nhận xa: chọn trường dễ đỗ nhất, trừ khi chỉ hơn trường gần nhất rất ít
+          const chon = chuyenXa && tot.id !== gan.id && (tot.xs ?? -1) - (gan.xs ?? -1) >= 0.08 ? tot : gan;
+          let lyDo = `Điểm xét chuyên ước tính ${ST.diemChuyen}. `;
+          if (chon.id === gan.id) lyDo += "Trường chuyên gần nhà bạn nhất.";
+          else lyDo += `Khả năng đỗ cao hơn trường gần nhất (${gan.ten_truong}) khoảng ${Math.round((chon.xs - (gan.xs ?? 0)) * 100)}%, đổi lại cách nhà ${chon.km.toFixed(1)} km nên cần ở trọ / ký túc xá.`;
+          const goiY = (!chuyenXa && tot.id !== chon.id && (tot.xs ?? -1) - (chon.xs ?? 0) >= 0.15)
+            ? `${tot.ten_truong} dễ vào hơn (khả năng đỗ ~${Math.round(tot.xs * 100)}%) nhưng cách nhà ${tot.km.toFixed(1)} km. Nếu bạn chấp nhận học xa, hãy tích ô "chấp nhận học chuyên ở trường xa" rồi nộp lại.` : "";
+          ST.chuyen = { ds: dsC, chon, tot, lyDo, goiY };
+        }
+      }
+    }
+
+    ve(true);
+  }
+
+  // ---------- Hiển thị ----------
+  function baoLoi(out, msg) {
+    ST = null;
+    out.innerHTML = `<p class="thong-bao">${esc(msg)}</p>`;
+  }
+
+  function ganXuLyAnh(out) {
+    out.querySelectorAll("img.truong-img").forEach((img) => {
+      img.addEventListener("error", () => {
+        const i = Number(img.dataset.i) + 1;
+        if (i < DUOI_ANH.length) {
+          img.dataset.i = i;
+          img.src = `${img.dataset.base}.${DUOI_ANH[i]}`;
+        } else {
+          img.replaceWith(Object.assign(document.createElement("div"), { className: "truong-null", textContent: "null" }));
         }
       });
     });
   }
 
-  // ---------- Chuẩn bị giao diện bằng JS ----------
+  function lyDoTruong(c, vt) {
+    let s = `${VAI_TRO[vt].mota} Điểm chuẩn dự đoán ${c.dub.du.toFixed(1)}, điểm ước tính của bạn ${ST.diem}.`;
+    if (c.id === ST.gannhatId) s += " Gần nhất trong các trường bạn có khả năng đỗ.";
+    return s;
+  }
+
+  function theHtml(c, o) {
+    const ten = esc(c.ten_truong);
+    const base = `${o.cfg.thuMuc}${o.cfg.tienTo}${c.id}`;
+    const co = c.xs !== null && c.xs !== undefined;
+    const n = co ? nhanXs(c.xs) : null;
+    const p = co ? Math.round(c.xs * 100) : 0;
+    const xs = co
+      ? `<div class="truong-xs xs-${n.lop}">
+           <div class="xs-nhan"><span>Khả năng đỗ: <b>${n.ten}</b></span><span>~${p}%</span></div>
+           <div class="xs-thanh"><i style="width:${p}%"></i></div>
+         </div>`
+      : `<p class="truong-lydo">Chưa có điểm chuẩn để ước tính khả năng đỗ.</p>`;
+    const du = c.dub ? c.dub.du.toFixed(1) : "chưa có";
+    return `
+      <article class="truong-card truong-card--${o.loai}${o.ghim ? " da-ghim" : ""}" style="--i:${o.i}" tabindex="0">
+        <div class="truong-anh">
+          <img class="truong-img" src="${base}.${DUOI_ANH[0]}" data-base="${base}" data-i="0" alt="Ảnh ${ten}" loading="lazy">
+          <span class="truong-nhan">${esc(o.nhan)}</span>
+        </div>
+        <div class="truong-noidung">
+          <h3>${ten}</h3>
+          <p class="truong-km"><i class="fa-solid fa-location-dot"></i>
+            Cách nhà <b>${c.km.toFixed(1)} km</b> · khoảng <b>${fmtGio(c.phut)}</b> bằng ${TEN_PT[ST.pt]}</p>
+          ${xs}
+          <p class="truong-diem">
+            <span>Dự đoán <b>${du}</b></span>
+            <span>2026 <b>${c.diem_2026 ?? "chưa có"}</b></span>
+            <span>2025 <b>${c.diem_2025 ?? "chưa có"}</b></span>
+          </p>
+          <p class="truong-lydo">${esc(o.lyDo)}</p>
+          ${canhBao(c).map((w) => `<p class="canh-bao">⚠ ${esc(w)}</p>`).join("")}
+          ${o.hanhDong || ""}
+        </div>
+      </article>`;
+  }
+
+  function chuyenHtml() {
+    if (ST.thongBaoChuyen) return `<p class="thong-bao">${esc(ST.thongBaoChuyen)}</p>`;
+    const C = ST.chuyen;
+    if (!C) return "";
+    const xa = C.chon.km > 40
+      ? `<p class="canh-bao khoi-canh-bao">⚠ Trường ở xa / có thể khác tỉnh: hãy kiểm tra điều kiện đăng ký dự thi (hộ khẩu, học bạ, hạn nộp hồ sơ) trước khi quyết định.</p>` : "";
+    const hang = C.ds.map((c) => {
+      const ghiChu = c.id === C.chon.id ? "Đang chọn" : c.id === C.tot.id ? "Dễ vào hơn" : "";
+      return `<tr class="${c.id === C.chon.id ? "dang-chon" : ""}">
+        <td>${esc(c.ten_truong)}</td>
+        <td>${c.km.toFixed(1)} km · ${fmtGio(c.phut)}</td>
+        <td>${c.dub ? c.dub.du.toFixed(1) : "—"}</td>
+        <td>${c.xs === null ? "—" : `${nhanXs(c.xs).ten} (~${Math.round(c.xs * 100)}%)`}</td>
+        <td>${ghiChu}</td></tr>`;
+    }).join("");
+    return `
+      <h2 class="ketqua-tieu-de nho">Trường chuyên môn ${esc(TEN_MON[monChuyenHienTai] || "")}</h2>
+      <div class="truong-grid truong-grid--mot">
+        ${theHtml(C.chon, { nhan: "Trường chuyên", loai: "chuyen", cfg: ANH.chuyen, i: 0, lyDo: C.lyDo })}
+      </div>
+      ${xa}
+      ${C.goiY ? `<p class="thong-bao">${esc(C.goiY)}</p>` : ""}
+      <div class="bang-cuon">
+        <table class="so-sanh">
+          <thead><tr><th>Trường chuyên</th><th>Đi lại</th><th>Điểm chuẩn dự đoán</th><th>Khả năng đỗ</th><th></th></tr></thead>
+          <tbody>${hang}</tbody>
+        </table>
+      </div>`;
+  }
+
+  function ve(animate) {
+    const out = $("ketqua");
+    const S = ST;
+    const xh = textXH("Toán", S.ds.toan) + textXH("Văn", S.ds.van);
+    const tomTat = `
+      <div class="tom-tat">
+        <b>Điểm xét tuyển ước tính: ${S.diem}</b>
+        (Toán TB ${S.toan.toFixed(1)}, Văn TB ${S.van.toFixed(1)}${S.diemChuyen !== null ? `, điểm xét chuyên ${S.diemChuyen}` : ""}).
+        ${esc(xh)}Ưu tiên của bạn: <b>${{ gan: "gần nhà", chatluong: "chất lượng", antoan: "chắc đỗ" }[S.uuTien]}</b>
+        · ${S.dorm ? "có thể ở ký túc xá nên xét cả trường xa" : `chỉ xét trường đi được trong ${GIOI_HAN_PHUT} phút`}.
+      </div>`;
+
+    const off = S.chuyen ? 1 : 0;
+    const cards = S.slots.map((s, i) => {
+      const vt = VAI_TRO[s.vt];
+      return theHtml(s.t, {
+        nhan: `${vt.ten} · ${vt.nhan}`, loai: vt.loai, cfg: ANH.thuong, i: i + off,
+        lyDo: lyDoTruong(s.t, s.vt), ghim: s.ghim,
+        hanhDong: `<div class="truong-hanhdong">
+          <button type="button" data-act="doi" data-i="${i}" ${s.ghim ? "disabled" : ""}>Đổi trường này</button>
+          <button type="button" data-act="ghim" data-i="${i}">${s.ghim ? "Bỏ ghim" : "Ghim"}</button>
+        </div>`,
+      });
+    }).join("");
+
+    const hang = S.slots.map((s) => `
+      <tr><td><b>${VAI_TRO[s.vt].ten}</b></td><td>${esc(s.t.ten_truong)}</td>
+      <td>${s.t.km.toFixed(1)} km · ${fmtGio(s.t.phut)}</td><td>${s.t.dub.du.toFixed(1)}</td>
+      <td>${nhanXs(s.t.xs).ten} (~${Math.round(s.t.xs * 100)}%)</td></tr>`).join("");
+
+    out.dataset.dangLuu = "0";
+    out.innerHTML = `
+      <div class="ket-qua-khoi${animate ? "" : " khong-anim"}">
+        <h2 class="ketqua-tieu-de">Gợi ý dành cho bạn</h2>
+        ${tomTat}
+        ${chuyenHtml()}
+        <h2 class="ketqua-tieu-de nho">3 nguyện vọng trường thường</h2>
+        <p class="chon-goi-y">Bấm "Đổi trường này" để xem trường thay thế, "Ghim" để giữ lại trường bạn thích.</p>
+        <div class="truong-grid">${cards}</div>
+        <div class="bang-cuon">
+          <table class="so-sanh">
+            <thead><tr><th>NV</th><th>Trường</th><th>Đi lại</th><th>Điểm chuẩn dự đoán</th><th>Khả năng đỗ</th></tr></thead>
+            <tbody>${hang}</tbody>
+          </table>
+        </div>
+        <p class="luu-y-nho">Khả năng đỗ chỉ là ước tính từ điểm chuẩn 2 năm gần nhất, không phải cam kết.</p>
+        <div class="chot-khung">
+          <button type="button" data-act="xep-lai" class="nut-phu">Xếp lại các NV chưa ghim</button>
+          <button type="button" data-act="chot" class="nut-chot">Chốt 3 nguyện vọng này</button>
+        </div>
+        <p id="chon-thong-bao" class="thong-bao" hidden></p>
+      </div>`;
+    ganXuLyAnh(out);
+    if (animate) out.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function xuLyBam(e) {
+    const nut = e.target.closest("[data-act]");
+    if (!nut || !ST) return;
+    const act = nut.dataset.act, i = Number(nut.dataset.i);
+    if (act === "doi") { doi(i); ve(false); }
+    else if (act === "ghim") { ST.slots[i].ghim = !ST.slots[i].ghim; ve(false); }
+    else if (act === "xep-lai") { xepLai(); ve(false); }
+    else if (act === "chot") chot();
+  }
+
+  // ---------- Chuẩn bị giao diện ----------
   function chuanBiGiaoDien() {
     const form = $("input-survey");
+    form.querySelectorAll('input[type="checkbox"], select').forEach((el) => (el.required = false));
 
-    document.querySelector('button[onclick="layViTri()"]')?.remove();
-    $("btn-vitri")?.remove();
-
-    form
-      .querySelectorAll('input[type="checkbox"], select')
-      .forEach((el) => (el.required = false));
-
-    // cho phép nhập điểm lẻ (vd 8.5), nếu không trình duyệt chỉ nhận số nguyên
-    ["survey-1-math", "survey-2-literature", "diem-chuyen"].forEach((id) => {
-      const el = $(id);
-      if (!el) return;
-      el.step = "any";
-      el.min = "0";
-      el.max = "10";
-    });
-
-    // nút quay lại + lưu ý nằm trên cùng trang
     if (!document.querySelector(".survey-dau")) {
       const dau = document.createElement("div");
       dau.className = "survey-dau";
@@ -220,8 +494,8 @@
         </a>
         <p class="luu-y" role="note">
           <i class="fa-solid fa-circle-info"></i>
-          <span><b>Lưu ý:</b> Kết quả chỉ mang tính tham khảo. Khoảng cách tính theo đường chim bay,
-          điểm ước tính từ điểm lớp 8 và điểm chuẩn lấy theo năm cao hơn trong hai năm gần nhất.</span>
+          <span><b>Lưu ý:</b> Kết quả chỉ mang tính tham khảo. Khoảng cách tính theo đường chim bay
+          rồi quy ra thời gian đi lại. Điểm chuẩn dự đoán là trung bình có trọng số của hai năm gần nhất.</span>
         </p>`;
       form.parentElement.insertBefore(dau, form);
     }
@@ -240,23 +514,20 @@
       ketqua.setAttribute("aria-live", "polite");
       form.insertAdjacentElement("afterend", ketqua);
     }
+    ketqua.addEventListener("click", xuLyBam);
   }
 
-  // ---------- Đọc dữ liệu ----------
   async function taiDuLieu() {
     const res = await fetch("diem_chuan_2026.json");
     const data = await res.json();
-    truong = data["Dong Thap"].filter(coToaDo);
+    // bỏ trường không có tọa độ và trường GDTX (điểm chuẩn ảo ~1,1)
+    truong = data["Dong Thap"].filter(coToaDo).filter((t) => !laGDTX(t));
     truongChuyenData = data["Dong Thap Chuyen"] || {};
   }
 
-  // ---------- Xin vị trí ----------
   function layViTri() {
     const kq = $("kq");
-    if (!navigator.geolocation) {
-      kq.textContent = "Trình duyệt không hỗ trợ định vị.";
-      return;
-    }
+    if (!navigator.geolocation) { kq.textContent = "Trình duyệt không hỗ trợ định vị."; return; }
     kq.textContent = "Đang lấy vị trí...";
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -265,235 +536,50 @@
         kq.textContent = "Đã lấy được vị trí của bạn.";
       },
       (err) => {
-        kq.textContent =
-          "Chưa lấy được vị trí (" +
-          err.message +
-          "). Hãy cho phép định vị rồi tải lại trang.";
+        kq.textContent = "Chưa lấy được vị trí (" + err.message + "). Hãy cho phép định vị rồi tải lại trang.";
       },
     );
   }
 
-  // ---------- Nộp form ----------
-  function xuLyNop(e) {
-    e.preventDefault();
-    const out = $("ketqua");
+  // ---------- Hiện/ẩn phần chuyên + lưu điểm ----------
+  function ganSuKien() {
+    const chk = $("survey-3-specialized_high_school");
+    const section = $("chuyen-section");
+    const mon = $("mon-chuyen");
 
-    if (viTri.lat === null) {
-      baoLoi(out, "Cần cho phép lấy vị trí trước khi nộp.");
-      return;
-    }
-    if (truong.length === 0) {
-      baoLoi(out, "Chưa tải được dữ liệu trường.");
-      return;
-    }
+    chk.addEventListener("change", () => {
+      section.hidden = !chk.checked;
+      if (!chk.checked) { mon.value = ""; $("chuyen-xa").checked = false; }
+      veKyThi();
+    });
+    mon.addEventListener("change", veKyThi);
 
-    const hs = {
-      toan: Number($("survey-1-math").value),
-      van: Number($("survey-2-literature").value),
-      thiChuyen: $("survey-3-specialized_high_school").checked,
-      tuDi: $("survey-4-live-independently")?.checked ?? false,
-      monChuyen: $("mon-chuyen").value,
-      diemChuyen: Number($("diem-chuyen").value),
-    };
+    // mỗi lần gõ điểm là lưu lại ngay (đổi môn chuyên cũng không mất)
+    $("ky-thi").addEventListener("input", (e) => {
+      if (!e.target.id || !e.target.id.startsWith("d-")) return;
+      const d = docDiem();
+      d[e.target.id] = e.target.value;
+      localStorage.setItem(KHOA_LUU, JSON.stringify(d));
+    });
 
-    // nhớ môn chuyên để lát bấm chọn trường thì lưu
-    monChuyenHienTai = hs.thiChuyen ? hs.monChuyen : "";
-
-    const hopLeDiem = (x) => Number.isFinite(x) && x >= 0 && x <= 10;
-    if (!hopLeDiem(hs.toan) || !hopLeDiem(hs.van)) {
-      baoLoi(out, "Điểm Toán và Văn phải nằm trong khoảng 0 đến 10.");
-      return;
-    }
-
-    // điểm thường = toán + văn + (toán + văn)/2
-    const diemUocTinh = +(hs.toan + hs.van + (hs.toan + hs.van) / 2).toFixed(1);
-
-    // điểm chuyên = (toán-1) + (văn-1) + (toán+văn)/2 + chuyên*2 - 3
-    const coDiemChuyen =
-      hs.thiChuyen &&
-      hs.monChuyen &&
-      $("diem-chuyen").value !== "" &&
-      hopLeDiem(hs.diemChuyen);
-    const diemThiChuyen = coDiemChuyen
-      ? +(
-          hs.toan -
-          1 +
-          (hs.van - 1) +
-          (hs.toan + hs.van) / 2 +
-          hs.diemChuyen * 2 -
-          3
-        ).toFixed(1)
-      : null;
-
-    // ----- trường thường: tính km, sắp xếp từ gần đến xa -----
-    const tatCa = truong
-      .map((t) => ({
-        ...t,
-        km: tinhKhoangCach(viTri.lat, viTri.lng, t.vi_do, t.kinh_do),
-      }))
-      .sort((a, b) => a.km - b.km);
-
-    // ----- trường chuyên gần nhất của môn đã chọn -----
-    const dsChuyen = hs.thiChuyen
-      ? truongChuyenData[KEY_MON[hs.monChuyen]] || []
-      : [];
-    const truongChuyen =
-      dsChuyen
-        .filter(coToaDo)
-        .map((t) => ({
-          ...t,
-          km: tinhKhoangCach(viTri.lat, viTri.lng, t.vi_do, t.kinh_do),
-        }))
-        .sort((a, b) => a.km - b.km)[0] || null;
-
-    const soTruong = truongChuyen ? 2 : 3;
-    // tự đi được thì xét rộng hơn (30 trường gần nhất), không thì 12
-    const ungVien = tatCa.slice(0, hs.tuDi ? 30 : 12);
-
-    const goiY = chonTruong(ungVien, diemUocTinh, soTruong);
-
-    hienKetQua(out, goiY, truongChuyen, hs.thiChuyen, diemThiChuyen);
-  }
-
-  // ---------- Hiển thị ----------
-  function baoLoi(out, msg) {
-    out.innerHTML = `<p class="thong-bao">${escapeHtml(msg)}</p>`;
-  }
-
-  // Ảnh: thử từng đuôi file, hết đuôi mà vẫn lỗi thì hiện chữ "null"
-  function ganXuLyAnh(out) {
-    out.querySelectorAll("img.truong-img").forEach((img) => {
-      img.addEventListener("error", () => {
-        const i = Number(img.dataset.i) + 1;
-        if (i < DUOI_ANH.length) {
-          img.dataset.i = i;
-          img.src = `${img.dataset.base}.${DUOI_ANH[i]}`;
-        } else {
-          img.replaceWith(
-            Object.assign(document.createElement("div"), {
-              className: "truong-null",
-              textContent: "null",
-            }),
-          );
-        }
-      });
+    $("input-survey").addEventListener("reset", () => {
+      localStorage.removeItem(KHOA_LUU);
+      section.hidden = true;
+      $("ketqua").innerHTML = "";
+      ST = null;
+      setTimeout(veKyThi, 0); // đợi trình duyệt reset xong rồi vẽ lại bảng
     });
   }
 
-  function hienKetQua(out, goiY, truongChuyen, thiChuyen, diemThiChuyen) {
-    const theTruong = (t, nhan, lyDo, loai, cfg, i) => {
-      const ten = escapeHtml(t.ten_truong);
-      // vd: img/school/48  hoặc  img/school/chuyen_1
-      const base = `${cfg.thuMuc}${cfg.tienTo}${t.id}`;
-      return `
-        <article class="truong-card truong-card--${loai}" style="--i:${i}" tabindex="0">
-          <div class="truong-anh">
-            <img class="truong-img" src="${base}.${DUOI_ANH[0]}"
-                 data-base="${base}" data-i="0" alt="Ảnh ${ten}" loading="lazy">
-            <span class="truong-nhan">${escapeHtml(nhan)}</span>
-          </div>
-          <div class="truong-noidung">
-            <h3>${ten}</h3>
-            <p class="truong-km"><i class="fa-solid fa-location-dot"></i>
-              Cách nhà bạn khoảng <b>${t.km.toFixed(1)} km</b></p>
-            <p class="truong-diem">
-              <span>Điểm chuẩn 2026 <b>${t.diem_2026 ?? "chưa có"}</b></span>
-              <span>2025 <b>${t.diem_2025 ?? "chưa có"}</b></span>
-            </p>
-            <p class="truong-lydo">${escapeHtml(lyDo)}</p>
-          </div>
-        </article>`;
-    };
-
-    const the = [];
-    if (truongChuyen) {
-      const lyDo =
-        "Trường chuyên gần nhà bạn nhất." +
-        danhGiaChuyen(truongChuyen, diemThiChuyen);
-      the.push(
-        theTruong(
-          truongChuyen,
-          "Trường chuyên",
-          lyDo,
-          "chuyen",
-          ANH.chuyen,
-          the.length,
-        ),
-      );
-    }
-    goiY.forEach((g) =>
-      the.push(theTruong(g.t, g.nhan, g.lyDo, g.loai, ANH.thuong, the.length)),
-    );
-
-    let html = "";
-    if (!truongChuyen && thiChuyen)
-      html += `<p class="thong-bao">Chưa tìm được trường chuyên. Hãy chọn môn chuyên.</p>`;
-    if (the.length) {
-      html += `<h2 class="ketqua-tieu-de">Gợi ý trường dành cho bạn</h2>
-               <p class="chon-goi-y">Bấm vào trường bạn muốn chọn.</p>
-               <p id="chon-thong-bao" class="thong-bao" hidden></p>
-               <div class="truong-grid">${the.join("")}</div>`;
-    }
-    out.dataset.dangLuu = "0";
-    out.innerHTML =
-      html || `<p class="thong-bao">Không tìm được trường phù hợp.</p>`;
-    ganXuLyAnh(out);
-    ganChonTruong(out);
-    out.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  // ---------- Khởi động ----------
   function khoiDong() {
     chuanBiGiaoDien();
-    taiDuLieu().catch((e) => {
-      $("kq").textContent = "Không đọc được diem_chuan_2026.json: " + e.message;
-    });
+    veKyThi();
+    ganSuKien();
+    taiDuLieu().catch((e) => { $("kq").textContent = "Không đọc được diem_chuan_2026.json: " + e.message; });
     layViTri();
     $("input-survey").addEventListener("submit", xuLyNop);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", khoiDong);
-  } else {
-    khoiDong();
-  }
-})();
-
-// ---------- Hiện/ẩn phần thi chuyên ----------
-(function () {
-  const chk = document.getElementById("survey-3-specialized_high_school");
-  const section = document.getElementById("chuyen-section");
-  const mon = document.getElementById("mon-chuyen");
-  const wrap = document.getElementById("diem-chuyen-wrap");
-  const label = document.getElementById("diem-chuyen-label");
-  const diem = document.getElementById("diem-chuyen");
-  const tenMon = { toan: "Toán", ly: "Vật Lý", hoa: "Hóa Học" };
-
-  function resetChuyen() {
-    mon.value = "";
-    wrap.hidden = true;
-    diem.value = "";
-    diem.required = false;
-  }
-
-  chk.addEventListener("change", () => {
-    section.hidden = !chk.checked;
-    if (!chk.checked) resetChuyen();
-  });
-
-  mon.addEventListener("change", () => {
-    if (mon.value) {
-      label.textContent =
-        "Nhập điểm môn " + tenMon[mon.value] + " lớp 8 của bạn:";
-      wrap.hidden = false;
-      diem.required = true;
-    } else {
-      resetChuyen();
-    }
-  });
-
-  document.getElementById("input-survey").addEventListener("reset", () => {
-    section.hidden = true;
-    resetChuyen();
-  });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", khoiDong);
+  else khoiDong();
 })();

@@ -1,96 +1,95 @@
 <!doctype html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css"
-    />
-    <title>EduMate</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="style2.css" />
-    <link rel="stylesheet" href="style3.css" />
-  </head>
 
-  <body>
-    <header id="header">
-      <div id="header-inner">
-        <section class="right">
-          <a href="index.html" id="logo">
-            <img src="img/logo.webp" alt="Logo" />
-           <span>Edu<span id="logo-span">Mate</span></span>
-          </a>
-        </section>
-        <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">
-          ☰
-        </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
+  <title>SaoLaEdu</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style2.css" />
+  <link rel="stylesheet" href="style3.css" />
+</head>
 
-        <ul id="nav" class="center">
-          <li id="nav-gioi-thieu">
-            <a href="index.html" id="link-gioi-thieu">Giới thiệu</a>
-          </li>
-          <li id="nav-bai-tap">
-            <a href="subjects.html" id="link-bai-tap" class="active">Bài tập</a>
-          </li>
-          <li id="nav-cuoc-thi">
-            <a href="contest.html" id="link-cuoc-thi">Cuộc thi</a>
-          </li>
-          <li id="nav-xep-hang">
-            <a href="ranking.html" id="link-xep-hang">Xếp hạng</a>
-          </li>
-        </ul>
+<body>
+  <header id="header">
+    <div id="header-inner">
+      <section class="right">
+        <a href="index.html" id="logo">
+          <img src="img/logo.webp" alt="Logo" />
+          <span>SaoLa<span id="logo-span">Edu</span></span>
+        </a>
+      </section>
+      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">
+        ☰
+      </button>
 
-        <div class="user-account-area">
-          <div id="auth-buttons">
-            <a href="login.html" class="auth-link">Đăng nhập</a>
-            <a href="register.html" class="auth-link">Đăng ký</a>
-          </div>
-          <!-- 2. Khi đã đăng nhập (mặc định thêm class hidden) -->
-          <div id="user-profile" class="hidden">
-            <div class="streak-box">🔥 <span>0</span></div>
-            <span class="username">Username</span>
-           <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
-          </div>
+      <ul id="nav" class="center">
+        <li id="nav-gioi-thieu">
+          <a href="index.html" id="link-gioi-thieu">Giới thiệu</a>
+        </li>
+        <li id="nav-bai-tap">
+          <a href="subjects.html" id="link-bai-tap" class="active">Bài tập</a>
+        </li>
+        <li id="nav-cuoc-thi">
+          <a href="contest.html" id="link-cuoc-thi">Cuộc thi</a>
+        </li>
+        <li id="nav-xep-hang">
+          <a href="ranking.html" id="link-xep-hang">Xếp hạng</a>
+        </li>
+      </ul>
+
+      <div class="user-account-area">
+        <div id="auth-buttons">
+          <a href="login.html" class="auth-link">Đăng nhập</a>
+          <a href="register.html" class="auth-link">Đăng ký</a>
         </div>
-      </div> 
-    </header>
-    
-    <h1>Danh sách bài tập</h1>
-
-
-    <div class="problem-container">
-      <!-- Thanh công cụ trên cùng -->
-      <div class="problem-toolbar">
-        <h2 class="title">Danh sách bài tập</h2>
-      </div>
-
-      <!-- Layout chính chia làm 2 phần (Bảng + Ô chương bài học) -->
-      <div class="main-layout">
-        <!-- Phần 1: Bảng bài tập (Chiếm 75% chiều ngang) -->
-        <div class="table-section">
-          <table class="problem-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Bài</th>
-                <th>Điểm</th>
-              </tr>
-            </thead>
-            <tbody id="problem-list">
-              
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Phần 2: Ô vuông chương bài học (Chiếm 25% chiều ngang) -->
-        <div class="chapter-sidebar">
-          <h3>Chương bài học</h3>
-          
+        <!-- 2. Khi đã đăng nhập (mặc định thêm class hidden) -->
+        <div id="user-profile" class="hidden">
+          <div class="streak-box">🔥 <span>0</span></div>
+          <span class="username">Username</span>
+          <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
         </div>
       </div>
     </div>
-    <script src="script.js"></script>
-    <script src="bai-tap.js"></script>
-  </body>
+  </header>
+
+  <h1>Danh sách bài tập</h1>
+
+
+  <div class="problem-container">
+    <!-- Thanh công cụ trên cùng -->
+    <div class="problem-toolbar">
+      <h2 class="title">Danh sách bài tập</h2>
+    </div>
+
+    <!-- Layout chính chia làm 2 phần (Bảng + Ô chương bài học) -->
+    <div class="main-layout">
+      <!-- Phần 1: Bảng bài tập (Chiếm 75% chiều ngang) -->
+      <div class="table-section">
+        <table class="problem-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Bài</th>
+              <th>Điểm</th>
+            </tr>
+          </thead>
+          <tbody id="problem-list">
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Phần 2: Ô vuông chương bài học (Chiếm 25% chiều ngang) -->
+      <div class="chapter-sidebar">
+        <h3>Chương bài học</h3>
+
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+  <script src="bai-tap.js"></script>
+</body>
+
 </html>

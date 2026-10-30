@@ -176,9 +176,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     return null;
                 }
             };
-            // d) Giờ cho EduMate: ưu tiên khoảng trống muộn nhất trong ngày
+            // d) Giờ cho SaoLaEdu: ưu tiên khoảng trống muộn nhất trong ngày
             const wEd = [...win].reverse().find((w) => w[1] - w[0] >= ed);
-            if (wEd) { muc.push({ s: wEd[0], e: wEd[0] + ed, loai: "edumate", ten: "Luyện tập trên EduMate" }); wEd[0] += ed + 10; }
+            if (wEd) { muc.push({ s: wEd[0], e: wEd[0] + ed, loai: "edumate", ten: "Luyện tập trên SaoLaEdu" }); wEd[0] += ed + 10; }
             ngay.push(x);
         }
 

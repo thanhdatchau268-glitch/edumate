@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-md_to_json.py - Chuyển file đề (.md) sang JSON cho web EduMate
+md_to_json.py - Chuyển file đề (.md) sang JSON cho web SaoLaEdu
 
 Mỗi file .md = 1 đề (vd: đề 1.1, đề 1.2) và được tách thành 2 file JSON:
   - Frontend/file_de/<môn>/chuong-N/bai-NN.json   : đề (KHÔNG có đáp án, trình duyệt đọc được)
@@ -279,7 +279,7 @@ def luu(root, mon, chuong, bai_tap, dap_an):
 
 # ======================================================================
 def main():
-    ap = argparse.ArgumentParser(description="Chuyển file đề .md sang JSON cho EduMate")
+    ap = argparse.ArgumentParser(description="Chuyển file đề .md sang JSON cho SaoLaEdu")
     ap.add_argument("files", nargs="+", help="file .md (nhận cả dấu * kiểu de/*.md)")
     ap.add_argument("-s", "--subject", default="toan", help="thư mục môn: toan, chuyen_toan, vat_ly... (mặc định toan)")
     ap.add_argument("-c", "--chapter", required=True, help="số chương, vd: 1 hoặc chuong-1")

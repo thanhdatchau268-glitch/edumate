@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Phần 1: lý thuyết
     noiDung.innerHTML = data.ly_thuyet || "<p>Bài này chưa có lý thuyết.</p>";
+    veCongThuc(noiDung);
     nutMo.disabled = false;
 
     // Phần 1b: mô phỏng (nếu bài có)

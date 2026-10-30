@@ -1,74 +1,73 @@
 <!doctype html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css"
-    />
-    <title>EduMate</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="style2.css" />
-    <link rel="stylesheet" href="style3.css" />
-  </head>
 
-  <body>
-    <header id="header">
-      <div id="header-inner">
-        <section class="right">
-          <a href="index.html" id="logo">
-            <img src="img/logo.webp" alt="Logo" />
-           <span>Edu<span id="logo-span">Mate</span></span>
-          </a>
-        </section>
-        <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">
-          ☰
-        </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
+  <title>SaoLaEdu</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style2.css" />
+  <link rel="stylesheet" href="style3.css" />
+</head>
 
-        <ul id="nav" class="center">
-          <li id="nav-gioi-thieu">
-            <a href="index.html" id="link-gioi-thieu">Giới thiệu</a>
-          </li>
-          <li id="nav-bai-tap">
-            <a href="subjects.html" id="link-bai-tap">Bài tập</a>
-          </li>
-          <li id="nav-cuoc-thi">
-            <a href="contest.html" id="link-cuoc-thi">Cuộc thi</a>
-          </li>
-          <li id="nav-xep-hang">
-            <a href="ranking.html" id="link-xep-hang">Xếp hạng</a>
-          </li>
-        </ul>
+<body>
+  <header id="header">
+    <div id="header-inner">
+      <section class="right">
+        <a href="index.html" id="logo">
+          <img src="img/logo.webp" alt="Logo" />
+          <span>SaoLa<span id="logo-span">Edu</span></span>
+        </a>
+      </section>
+      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">
+        ☰
+      </button>
 
-        <div class="user-account-area">
-          <div id="auth-buttons">
-            <a href="login.html" class="auth-link">Đăng nhập</a>
-            <a href="register.html" class="auth-link">Đăng ký</a>
-          </div>
-          <!-- 2. Khi đã đăng nhập (mặc định thêm class hidden) -->
-          <div id="user-profile" class="hidden">
-            <div class="streak-box">🔥 <span>0</span></div>
-            <span class="username">Username</span>
-           <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
-          </div>
+      <ul id="nav" class="center">
+        <li id="nav-gioi-thieu">
+          <a href="index.html" id="link-gioi-thieu">Giới thiệu</a>
+        </li>
+        <li id="nav-bai-tap">
+          <a href="subjects.html" id="link-bai-tap">Bài tập</a>
+        </li>
+        <li id="nav-cuoc-thi">
+          <a href="contest.html" id="link-cuoc-thi">Cuộc thi</a>
+        </li>
+        <li id="nav-xep-hang">
+          <a href="ranking.html" id="link-xep-hang">Xếp hạng</a>
+        </li>
+      </ul>
+
+      <div class="user-account-area">
+        <div id="auth-buttons">
+          <a href="login.html" class="auth-link">Đăng nhập</a>
+          <a href="register.html" class="auth-link">Đăng ký</a>
         </div>
-      </div> 
-    </header>
-
-    <div id="login">
-      <form id="input-login" onsubmit="handleLoginSubmit(event)">
-        <label for="login-email">Email:</label><br>
-        <input type="email" id="login-email" placeholder="Nhập email..." required><br>
-
-        <label for="login-password">Mật khẩu:</label><br>
-        <input type="password" id="login-password" placeholder="Nhập mật khẩu..." required><br>
-        <a href="#">Quên mật khẩu</a><br>
-
-        <button type="submit">Đăng nhập</button>
-        <button type="reset">Xóa tất cả</button>
-      </form>
-      <script src="script.js"></script>
+        <!-- 2. Khi đã đăng nhập (mặc định thêm class hidden) -->
+        <div id="user-profile" class="hidden">
+          <div class="streak-box">🔥 <span>0</span></div>
+          <span class="username">Username</span>
+          <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
+        </div>
+      </div>
     </div>
-  </body>
+  </header>
+
+  <div id="login">
+    <form id="input-login" onsubmit="handleLoginSubmit(event)">
+      <label for="login-email">Email:</label><br>
+      <input type="email" id="login-email" placeholder="Nhập email..." required><br>
+
+      <label for="login-password">Mật khẩu:</label><br>
+      <input type="password" id="login-password" placeholder="Nhập mật khẩu..." required><br>
+      <a href="#">Quên mật khẩu</a><br>
+
+      <button type="submit">Đăng nhập</button>
+      <button type="reset">Xóa tất cả</button>
+    </form>
+    <script src="script.js"></script>
+  </div>
+</body>
+
 </html>

@@ -1,102 +1,101 @@
 <!doctype html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css"
-    />
-    <title>EduMate</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="style2.css" />
-    <link rel="stylesheet" href="style3.css" />
-    <!-- Kiểu riêng cho trang cuộc thi -->
-    <link rel="stylesheet" href="contest.css" />
-  </head>
 
-  <body>
-    <header id="header">
-      <div id="header-inner">
-        <section class="right">
-          <a href="index.html" id="logo">
-            <img src="img/logo.webp" alt="Logo" />
-            <span>Edu<span id="logo-span">Mate</span></span>
-          </a>
-        </section>
-        <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">
-          ☰
-        </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
+  <title>SaoLaEdu</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style2.css" />
+  <link rel="stylesheet" href="style3.css" />
+  <!-- Kiểu riêng cho trang cuộc thi -->
+  <link rel="stylesheet" href="contest.css" />
+</head>
 
-        <ul id="nav" class="center">
-          <li id="nav-gioi-thieu">
-            <a href="index.html" id="link-gioi-thieu">Giới thiệu</a>
-          </li>
-          <li id="nav-bai-tap">
-            <a href="subjects.html" id="link-bai-tap">Bài tập</a>
-          </li>
-          <li id="nav-cuoc-thi">
-            <a href="contest.html" id="link-cuoc-thi" class="active">Cuộc thi</a>
-          </li>
-          <li id="nav-xep-hang">
-            <a href="ranking.html" id="link-xep-hang">Xếp hạng</a>
-          </li>
-        </ul>
+<body>
+  <header id="header">
+    <div id="header-inner">
+      <section class="right">
+        <a href="index.html" id="logo">
+          <img src="img/logo.webp" alt="Logo" />
+          <span>SaoLa<span id="logo-span">Edu</span></span>
+        </a>
+      </section>
+      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">
+        ☰
+      </button>
 
-        <div class="user-account-area">
-          <div id="auth-buttons">
-            <a href="login.html" class="auth-link">Đăng nhập</a>
-            <a href="register.html" class="auth-link">Đăng ký</a>
-          </div>
-          <!-- Khi đã đăng nhập (mặc định thêm class hidden) -->
-          <div id="user-profile" class="hidden">
-            <div class="streak-box">🔥 <span>0</span></div>
-            <span class="username">Username</span>
-            <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
-          </div>
+      <ul id="nav" class="center">
+        <li id="nav-gioi-thieu">
+          <a href="index.html" id="link-gioi-thieu">Giới thiệu</a>
+        </li>
+        <li id="nav-bai-tap">
+          <a href="subjects.html" id="link-bai-tap">Bài tập</a>
+        </li>
+        <li id="nav-cuoc-thi">
+          <a href="contest.html" id="link-cuoc-thi" class="active">Cuộc thi</a>
+        </li>
+        <li id="nav-xep-hang">
+          <a href="ranking.html" id="link-xep-hang">Xếp hạng</a>
+        </li>
+      </ul>
+
+      <div class="user-account-area">
+        <div id="auth-buttons">
+          <a href="login.html" class="auth-link">Đăng nhập</a>
+          <a href="register.html" class="auth-link">Đăng ký</a>
+        </div>
+        <!-- Khi đã đăng nhập (mặc định thêm class hidden) -->
+        <div id="user-profile" class="hidden">
+          <div class="streak-box">🔥 <span>0</span></div>
+          <span class="username">Username</span>
+          <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
         </div>
       </div>
-    </header>
-
-    <!-- Phần tiêu đề trang -->
-    <div class="contest-head">
-      <i class="fa-solid fa-trophy"></i>
-      <h1>Cuộc thi</h1>
-      <p>Chọn một cuộc thi để cùng tranh tài với các bạn khác</p>
     </div>
+  </header>
 
-    <!-- Bảng danh sách cuộc thi: contest.js sẽ tự điền các dòng vào #contest-list -->
-    <div class="contest-container">
-      <table class="contest-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Tên cuộc thi</th>
-            <th>Thời gian làm bài</th>
-          </tr>
-        </thead>
-        <tbody id="contest-list"></tbody>
-      </table>
-    </div>
+  <!-- Phần tiêu đề trang -->
+  <div class="contest-head">
+    <i class="fa-solid fa-trophy"></i>
+    <h1>Cuộc thi</h1>
+    <p>Chọn một cuộc thi để cùng tranh tài với các bạn khác</p>
+  </div>
 
-    <!-- Ô cuộc thi: ẩn sẵn, bấm vào 1 dòng trong bảng thì contest.js mới hiện ra -->
-    <div id="contest-nen" class="modal-nen hidden">
-      <div class="modal-hop contest-hop" role="dialog" aria-modal="true">
-        <!-- Hàng trên cùng: 3 tab nằm bên trái, nút đóng bên phải -->
-        <div class="modal-dau">
-          <div class="contest-tabs">
-            <button type="button" class="contest-tab active" data-tab="thong-tin">Thông tin</button>
-            <button type="button" class="contest-tab" data-tab="bai-tap">Bài tập</button>
-            <button type="button" class="contest-tab" data-tab="xep-hang">Bảng xếp hạng</button>
-          </div>
-          <button type="button" id="btn-dong-contest" class="modal-dong" aria-label="Đóng">✕</button>
+  <!-- Bảng danh sách cuộc thi: contest.js sẽ tự điền các dòng vào #contest-list -->
+  <div class="contest-container">
+    <table class="contest-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên cuộc thi</th>
+          <th>Thời gian làm bài</th>
+        </tr>
+      </thead>
+      <tbody id="contest-list"></tbody>
+    </table>
+  </div>
+
+  <!-- Ô cuộc thi: ẩn sẵn, bấm vào 1 dòng trong bảng thì contest.js mới hiện ra -->
+  <div id="contest-nen" class="modal-nen hidden">
+    <div class="modal-hop contest-hop" role="dialog" aria-modal="true">
+      <!-- Hàng trên cùng: 3 tab nằm bên trái, nút đóng bên phải -->
+      <div class="modal-dau">
+        <div class="contest-tabs">
+          <button type="button" class="contest-tab active" data-tab="thong-tin">Thông tin</button>
+          <button type="button" class="contest-tab" data-tab="bai-tap">Bài tập</button>
+          <button type="button" class="contest-tab" data-tab="xep-hang">Bảng xếp hạng</button>
         </div>
-        <!-- Nội dung của tab đang chọn được đổ vào đây -->
-        <div id="contest-noi-dung" class="contest-noi-dung"></div>
+        <button type="button" id="btn-dong-contest" class="modal-dong" aria-label="Đóng">✕</button>
       </div>
+      <!-- Nội dung của tab đang chọn được đổ vào đây -->
+      <div id="contest-noi-dung" class="contest-noi-dung"></div>
     </div>
+  </div>
 
-    <script src="script.js"></script>
-    <script src="contest.js"></script>
-  </body>
+  <script src="script.js"></script>
+  <script src="contest.js"></script>
+</body>
+
 </html>

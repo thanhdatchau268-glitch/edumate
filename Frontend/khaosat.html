@@ -22,16 +22,17 @@
       </section>
     </div>
   </header>
+
   <div id="survey">
     <form id="input-survey">
-      <label for="survey-1-math">Nhập điểm toán lớp 8 của bạn:</label><br>
-      <input type="number" id="survey-1-math" placeholder="Nhập điểm toán..." required><br>
-
-      <label for="survey-2-literature">Nhập điểm văn lớp 8 của bạn:</label><br>
-      <input type="number" id="survey-2-literature" placeholder="Nhập điểm văn..." required><br>
+      <h2 class="form-muc">1. Điểm số của bạn</h2>
+      <p class="form-ghi-chu">
+        Nhập điểm theo từng kỳ thi. Kỳ nào chưa tới ngày thì chưa nhập được.
+        Nhập càng nhiều kỳ, dự đoán càng sát.
+      </p>
 
       <input type="checkbox" id="survey-3-specialized_high_school">
-      <label for="survey-3-specialized_high_school">Bạn có nhu cầu thi chuyên không?</label><br>
+      <label for="survey-3-specialized_high_school">Bạn có nhu cầu thi chuyên không?</label>
 
       <!-- Chỉ hiện khi tick thi chuyên -->
       <div id="chuyen-section" hidden>
@@ -39,35 +40,47 @@
         <select id="mon-chuyen" name="mon_chuyen">
           <option value="">-- Chọn môn chuyên --</option>
           <option value="toan">Chuyên Toán</option>
-          <!-- <option value="tin">Chuyên Tin</option>-->
-          <!-- <option value="anh">Chuyên Tiếng Anh</option>-->
           <option value="ly">Chuyên Vật Lý</option>
           <option value="hoa">Chuyên Hóa Học</option>
-          <!-- <option value="van">Chuyên Ngữ Văn</option>-->
         </select>
-        <br>
 
-        <!-- Chỉ hiện khi đã chọn môn -->
-        <div id="diem-chuyen-wrap" hidden>
-          <label for="diem-chuyen" id="diem-chuyen-label"></label><br>
-          <input type="number" id="diem-chuyen" placeholder="Nhập điểm...">
-          <br>
+        <div class="chk">
+          <input type="checkbox" id="chuyen-xa">
+          <label for="chuyen-xa">
+            Mình chấp nhận học chuyên ở trường xa (ở ký túc xá / ở trọ) nếu dễ đỗ hơn
+          </label>
         </div>
       </div>
 
-      <input type="checkbox" id="survey-4-live-independently">
-      <label for="survey-4-live-independently">Bạn có thể sống xa nhà không?</label><br>
+      <!-- JS tự vẽ bảng điểm các kỳ thi vào đây -->
+      <div id="ky-thi" class="ky-thi"></div>
+
+      <h2 class="form-muc">2. Mong muốn của bạn</h2>
+
+      <label for="uu-tien">Bạn ưu tiên điều gì nhất?</label>
+      <select id="uu-tien">
+        <option value="gan">Gần nhà</option>
+        <option value="chatluong">Chất lượng (điểm chuẩn cao)</option>
+        <option value="antoan">Chắc đỗ (an toàn)</option>
+      </select>
+
+      <label for="phuong-tien">Phương tiện đi học:</label>
+      <select id="phuong-tien">
+        <option value="xedap">Xe đạp</option>
+        <option value="xemay" selected>Xe máy</option>
+        <option value="xebuyt">Xe buýt</option>
+      </select>
+
+      <input type="checkbox" id="survey-4-dorm">
+      <label for="survey-4-dorm">Mình có thể ở ký túc xá / ở trọ gần trường</label>
 
       <button type="submit">Nộp</button>
-      <button type="reset"> Xóa tất cả</button>
+      <button type="reset">Xóa tất cả</button>
     </form>
   </div>
 
   <script src="khaosat.js"></script>
   <script src="script.js"></script>
-  <script>
-  
-  </script>
 </body>
 
 </html>
