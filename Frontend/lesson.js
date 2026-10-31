@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const API = "http://127.0.0.1:5000";
+  const userId = localStorage.getItem("userId");
+
   // Vẽ công thức KaTeX (không có KaTeX thì bỏ qua)
   const veCongThuc = window.veCongThuc || function (el) {
     if (!el || !window.renderMathInElement) return;
@@ -12,6 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     } catch (e) { console.warn("Không vẽ được công thức:", e); }
   };
+
   // Lấy thông tin bài từ địa chỉ trang
   const params = new URLSearchParams(location.search);
   const subject = params.get("subject");
@@ -19,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const article = params.get("article");
 
   // Tên thư mục dùng gạch dưới (ngu-van -> ngu_van), giống bai-tap.js
-  const folder = (subject || "").replace("-", "_");
+  const folder = (subject || "").replace(/-/g, "_");
 
   // ----- Các phần tử: lý thuyết -----
   const nutMo = document.getElementById("btn-ly-thuyet");
@@ -37,17 +41,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let moPhong = null; // thông tin mô phỏng của bài (null = bài không có)
 
+  // Nút "Về ..." quay đúng chương trong trang danh sách bài
+  document.getElementById("quay-lai").href =
+    `problems.html?subject=${subject}&chuong=${chapter}`;
+
+  // Bảng giải thích 5 hạng ở cuối trang
+  document.getElementById("chu-giai").innerHTML = HANG.map((h) => `
+    <div class="cg" style="--c:${h.c}">
+      <span class="hang-mini"><i class="fa-solid ${h.icon}"></i></span>
+      <div><b>${h.ten}</b><small>${h.nhan} điểm</small></div>
+    </div>`).join("");
+
   // ----- Mở / đóng ô lý thuyết -----
   function moLyThuyet() {
     nen.classList.remove("hidden");
     document.body.style.overflow = "hidden"; // khoá cuộn trang phía sau
   }
-
   function dongLyThuyet() {
     nen.classList.add("hidden");
     document.body.style.overflow = "";
   }
-
   nutMo.addEventListener("click", moLyThuyet);
   nutDong.addEventListener("click", dongLyThuyet);
   nen.addEventListener("click", (e) => {
@@ -65,12 +78,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     nenMoPhong.classList.remove("hidden");
     document.body.style.overflow = "hidden";
   }
-
   function dongMoPhong() {
     nenMoPhong.classList.add("hidden");
     document.body.style.overflow = "";
   }
-
   nutMoPhong.addEventListener("click", moMoPhong);
   nutDongMoPhong.addEventListener("click", dongMoPhong);
   nenMoPhong.addEventListener("click", (e) => {
@@ -91,12 +102,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!mp) return null;
     const o = typeof mp === "string" ? { url: mp } : mp;
     if (!/^https:\/\//i.test(o.url || "")) return null;
-    return {
-      url: o.url,
-      ten: o.ten || "Mô phỏng",
-      nguon: o.nguon || "",
-    };
+    return { url: o.url, ten: o.ten || "Mô phỏng", nguon: o.nguon || "" };
   }
+
+  // ----- Tên chương + tên bài học (lấy từ tong-hop.json, lỗi thì bỏ qua) -----
+  async function layTenBai() {
+    try {
+      const res = await fetch(`./file_de/${folder}/tong-hop.json`);
+      const tong = JSON.parse(await res.text());
+      const ch = (tong.chuong_list || []).find((c) => c.id_chuong === chapter);
+      const bai = ch && (ch.danh_sach_bai || []).find((b) => `bai-${b.id}` === article);
+      return { chuong: ch ? ch.ten_chuong : "", bai: bai ? bai.ten_bai : "" };
+    } catch (e) {
+      return { chuong: "", bai: "" };
+    }
+  }
+
+  // ----- % điểm cao nhất của từng bài tập trong bài học này: { "1.1": 86, ... } -----
+  async function layTienDo() {
+    try {
+      let url = `${API}/api/tien-do/${folder}?chuong=${chapter}&bai=${article}`;
+      if (userId) url += `&user_id=${userId}`;
+      const kq = await (await fetch(url)).json();
+      return (kq.success && kq.data[chapter] && kq.data[chapter][article]) || {};
+    } catch (e) {
+      return {}; // không kết nối được server thì coi như chưa làm gì
+    }
+  }
+
+  const doKho = (d) => (d <= 1 ? "Dễ" : d < 2 ? "Vừa" : "Khó");
 
   // ----- Đọc file JSON của bài -----
   try {
@@ -128,21 +162,63 @@ document.addEventListener("DOMContentLoaded", async () => {
       ? data.bai_tap
       : (data.cau_hoi || []).map((c) => ({ id: c.id, do_kho: c.do_kho, cau_hoi: [c] }));
 
-    const ds = document.getElementById("ds-cau");
     const baiSapXep = [...dsBai].sort((a, b) => a.do_kho - b.do_kho);
+    const [ten, tienDo] = await Promise.all([layTenBai(), layTienDo()]);
 
+    // Tiêu đề trang
+    const tong = baiSapXep.reduce((s, b) => s + (tienDo[b.id] || 0), 0);
+    document.getElementById("bai-tieu-de").textContent = ten.bai || "Bài học";
+    document.getElementById("bai-phu").textContent =
+      `${ten.chuong ? ten.chuong + " · " : ""}${baiSapXep.length} bài tập · ${tong}/${baiSapXep.length * 100} điểm`;
+    if (ten.bai) document.title = ten.bai + " - SaoLaEdu";
+
+    // Thẻ từng bài tập
+    const ds = document.getElementById("ds-cau");
+    ds.innerHTML = "";
     baiSapXep.forEach((bai) => {
-      const a = document.createElement("a");
-      a.className = "btn";
-      // Hiện "Bài 1.1 (3 câu)"
+      const p = tienDo[bai.id] || 0;            // % điểm cao nhất
+      const h = hangCua(p);                     // hạng hiện tại (null = chưa làm)
+      const len = hangTren(h);                  // hạng kế tiếp (null = đã cao nhất)
       const soCau = (bai.cau_hoi || []).length;
-      a.textContent = `Bài ${bai.id} (${soCau} câu)`;
-      a.href = `form.html?subject=${subject}&chapter=${chapter}&article=${article}&q=${bai.id}`;
-      ds.appendChild(a);
+      const link = `form.html?subject=${subject}&chapter=${chapter}&article=${article}&q=${bai.id}`;
+
+      const ghi = !h ? "Chưa làm. Đạt từ 1% để nhận hạng đầu tiên."
+        : !len ? "Hoàn thành xuất sắc!"
+          : `Còn ${len.min - p}% để lên ${len.ten}.`;
+      const nut = !h ? `<a class="nut dac" href="${link}"><i class="fa-solid fa-play"></i> Làm bài</a>`
+        : !len ? `<a class="nut" href="${link}"><i class="fa-solid fa-rotate-right"></i> Ôn lại</a>`
+          : `<a class="nut" href="${link}"><i class="fa-solid fa-arrow-up"></i> Làm lại</a>`;
+
+      const the = document.createElement("div");
+      the.className = "bt-the";
+      if (h) the.style.setProperty("--c", h.c);
+      the.innerHTML = `
+        <div class="hang-lon ${h ? h.id : "chua"}">
+          <i class="fa-solid ${h ? h.icon : "fa-lock-open"}"></i>
+        </div>
+        <div class="giua">
+          <h3>Bài ${bai.id}
+            <span class="chip">${doKho(bai.do_kho)}</span>
+            <span class="chip">${soCau} câu</span>
+            ${h ? `<span class="hang-ten">${h.ten}</span>` : ""}
+          </h3>
+          <div class="tien-do"><i style="width:${p}%"></i></div>
+          <div class="ghi">${ghi}</div>
+        </div>
+        <div class="bt-phai">
+          <div class="phantram">${p}%<small>${p} / 100 điểm</small></div>
+          ${nut}
+        </div>`;
+      ds.appendChild(the);
     });
+
+    if (!userId) {
+      document.getElementById("ds-ghi").textContent = "Đăng nhập để hạng và điểm của bạn được lưu lại nhé!";
+    }
   } catch (err) {
     // Lỗi thì vẫn cho bấm nút, trong ô sẽ hiện thông báo lỗi
     noiDung.textContent = "Lỗi: " + err.message;
     nutMo.disabled = false;
+    document.getElementById("ds-cau").innerHTML = `<p class="ghi">${err.message}</p>`;
   }
 });

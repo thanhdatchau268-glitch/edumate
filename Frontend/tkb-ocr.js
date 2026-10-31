@@ -358,6 +358,13 @@ window.TKB_OCR = (() => {
 
         return { days: Array.from({ length: nDay }, (_, j) => lech + j), rows, gallery };
     }
+    // Xuất ra ngoài để personal.js dùng
+    return {
+        docAnh,
+        timMon,
+        TEN_MON: [...new Set(MON.map((m) => m[0]))], // danh sách gợi ý cho ô nhập môn
+    };
+
 
 
 })();

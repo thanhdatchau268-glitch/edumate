@@ -7,9 +7,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const chapter = params.get("chapter");
   const article = params.get("article");
   const q = params.get("q"); // bài muốn làm, ví dụ "1.1" (không có thì hiện cả bài học)
+  const userId = localStorage.getItem("userId");
 
   const problemList = document.getElementById("problem-list");
-  const chapterSidebar = document.querySelector(".chapter-sidebar");
+  const chuongDs = document.getElementById("chuong-ds");
+  const plTong = document.getElementById("pl-tong");
+
+  // Chống chạy code lạ khi đưa chữ vào innerHTML
+  const esc = (s) =>
+    String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
   // Vẽ công thức KaTeX trong 1 phần tử (không có KaTeX thì bỏ qua, không báo lỗi)
   function veCongThuc(el) {
@@ -37,69 +43,137 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // =========================================================================
-  // 1. TRANG PROBLEMS.HTML (DANH SÁCH CHƯƠNG VÀ BÀI TẬP)
+  // 1. TRANG PROBLEMS.HTML: chọn chương -> thấy các bài học (kèm điểm, hạng)
   // =========================================================================
-  function renderTableProblems(chuongObj, subjectCode, soBatDau = 0) {
-    problemList.innerHTML = "";
 
-    if (!chuongObj.danh_sach_bai || chuongObj.danh_sach_bai.length === 0) {
-      problemList.innerHTML = `<tr><td colspan="3">Chương này chưa có bài tập nào.</td></tr>`;
-      return;
+  // Lấy điểm cao nhất của mọi bài tập trong môn. null = không kết nối được server
+  // Dạng: { "chuong-1": { "bai-01": { "1.1": 86, "1.2": 0 } } }
+  async function layTienDo() {
+    try {
+      const url = `${API}/api/tien-do/${subject}` + (userId ? `?user_id=${userId}` : "");
+      const res = await fetch(url);
+      const kq = await res.json();
+      return kq.success ? kq.data : null;
+    } catch (e) {
+      return null;
     }
-
-    chuongObj.danh_sach_bai.forEach((bai, i) => {
-      // số hiển thị: nối tiếp qua các chương (01, 02, 03, 04...)
-      const soHienThi = String(soBatDau + i + 1).padStart(2, "0");
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${soHienThi}</td>
-        <td>
-          <a href="lesson.html?subject=${subjectCode}&chapter=${chuongObj.id_chuong}&article=bai-${bai.id}">
-            ${bai.ten_bai}
-          </a>
-        </td>
-        <td>${bai.diem}</td>
-      `;
-      problemList.appendChild(tr);
-    });
   }
 
-  if (problemList && chapterSidebar) {
+  // Sắp id bài tập theo số: 1.2 đứng trước 1.10
+  const soSanhId = (a, b) => {
+    const x = String(a).split(".").map(Number), y = String(b).split(".").map(Number);
+    return (x[0] - y[0]) || ((x[1] || 0) - (y[1] || 0));
+  };
+  const tong = (ds) => Object.values(ds).reduce((a, b) => a + b, 0);
+
+  if (problemList && chuongDs) {
     try {
-      const data = await docJson(
-        `./file_de/${subject}/tong-hop.json`,
-        "Không tìm thấy danh sách bài của môn này."
+      const [data, tienDo] = await Promise.all([
+        docJson(`./file_de/${subject}/tong-hop.json`, "Không tìm thấy danh sách bài của môn này."),
+        layTienDo(),
+      ]);
+      const dsChuong = data.chuong_list || [];
+
+      const tenMon = document.getElementById("ten-mon");
+      if (tenMon && data.mon) tenMon.textContent = "Bài tập " + data.mon;
+
+      // lưu thầm số lượng từng hạng để sau này làm danh hiệu
+      if (tienDo && window.luuThongKeHang) luuThongKeHang(subject, tienDo);
+
+      // các bài tập (id -> %) của 1 bài học
+      const dsBaiTap = (chuong, bai) => (((tienDo || {})[chuong.id_chuong] || {})[`bai-${bai.id}`]) || {};
+
+      // tổng điểm / điểm tối đa của cả chương
+      const thongKeChuong = (chuong) => {
+        let dd = 0, mx = 0;
+        (chuong.danh_sach_bai || []).forEach((bai) => {
+          const ds = dsBaiTap(chuong, bai);
+          dd += tong(ds);
+          mx += Object.keys(ds).length * 100;
+        });
+        return { dd, mx, pt: mx ? Math.round((dd / mx) * 100) : 0 };
+      };
+
+      // số bắt đầu của mỗi chương (đánh số nối tiếp qua các chương: 01, 02, 03...)
+      const soBatDau = dsChuong.map((_, i) =>
+        dsChuong.slice(0, i).reduce((t, c) => t + (c.danh_sach_bai || []).length, 0)
       );
 
-      chapterSidebar.innerHTML = `<h3>Chương bài học</h3>`;
+      // chương đang chọn: lấy từ &chuong=... trên địa chỉ (quay lại từ trang bài học), không có thì chương đầu
+      let chon = Math.max(0, dsChuong.findIndex((c) => c.id_chuong === params.get("chuong")));
 
-      (data.chuong_list || []).forEach((chuongItem, index) => {
-        // số bài của tất cả các chương đứng trước = số bắt đầu của chương này
-        const soBatDau = data.chuong_list
-          .slice(0, index)
-          .reduce((tong, c) => tong + (c.danh_sach_bai || []).length, 0);
+      // ----- Cột chương bên phải -----
+      function veChuong() {
+        chuongDs.innerHTML = dsChuong.map((c, i) => {
+          const [nhan, ...conLai] = String(c.ten_chuong).split(":");
+          const k = thongKeChuong(c);
+          return `<button type="button" class="pl-chap${i === chon ? " on" : ""}" data-i="${i}">
+            <b>${esc(nhan.trim())}<span>${tienDo ? `${k.dd}/${k.mx} điểm` : ""}</span></b>
+            <small>${esc(conLai.join(":").trim())}</small>
+            <div class="mini-bar"><i style="width:${k.pt}%"></i></div>
+          </button>`;
+        }).join("");
+      }
 
-        const p = document.createElement("p");
-        p.textContent = chuongItem.ten_chuong;
-        p.style.cursor = "pointer";
+      // ----- Khối tổng điểm + danh sách bài học của chương đang chọn -----
+      function veBai() {
+        const c = dsChuong[chon];
+        if (!c) { problemList.innerHTML = `<p class="pl-rong">Môn này chưa có chương nào.</p>`; return; }
 
-        p.addEventListener("click", () => {
-          document.querySelectorAll(".chapter-sidebar p").forEach((el) => el.classList.remove("active"));
-          p.classList.add("active");
-          renderTableProblems(chuongItem, subject, soBatDau);
-        });
-
-        chapterSidebar.appendChild(p);
-
-        // Mặc định chọn chương đầu tiên
-        if (index === 0) {
-          p.classList.add("active");
-          renderTableProblems(chuongItem, subject, soBatDau);
+        // tổng điểm của chương
+        const k = thongKeChuong(c);
+        if (tienDo) {
+          plTong.className = "pl-tong";
+          plTong.innerHTML = `
+            <div><div class="so">${k.dd}<small> / ${k.mx}</small></div>
+            <div class="nhan">điểm bài tập đã đạt trong chương này</div></div>
+            <div class="bar"><i style="width:${k.pt}%"></i></div><b>${k.pt}%</b>`;
+        } else {
+          plTong.className = "pl-tong im";
+          plTong.textContent = "Chưa kết nối được server nên chưa hiện điểm. Bật app.py nhé!";
         }
+
+        if (!c.danh_sach_bai || c.danh_sach_bai.length === 0) {
+          problemList.innerHTML = `<p class="pl-rong">Chương này chưa có bài tập nào.</p>`;
+          return;
+        }
+
+        problemList.innerHTML = "";
+        c.danh_sach_bai.forEach((bai, i) => {
+          const so = String(soBatDau[chon] + i + 1).padStart(2, "0");
+          const ds = dsBaiTap(c, bai);
+          const ids = Object.keys(ds).sort(soSanhId);
+          const dd = tong(ds), mx = ids.length * 100;
+
+          const a = document.createElement("a");
+          a.className = "bh-the";
+          a.href = `lesson.html?subject=${subject}&chapter=${c.id_chuong}&article=bai-${bai.id}`;
+          a.innerHTML = `
+            <span class="bh-so">${so}</span>
+            <span class="bh-giua">
+              <span class="bh-ten">${esc(bai.ten_bai)}</span>
+              <span class="bh-icons">${ids.map((id) => iconHang(ds[id])).join("")}</span>
+            </span>
+            <span class="bh-diem">${mx ? dd : "—"}<small>${!tienDo ? "chưa tải được" : mx ? `/ ${mx} điểm` : "chưa có đề"
+            }</small></span>
+            <i class="fa-solid fa-arrow-right"></i>`;
+          problemList.appendChild(a);
+        });
+      }
+
+      chuongDs.addEventListener("click", (e) => {
+        const nut = e.target.closest(".pl-chap");
+        if (!nut) return;
+        chon = Number(nut.dataset.i);
+        veChuong();
+        veBai();
       });
+
+      veChuong();
+      veBai();
     } catch (error) {
       console.error("Lỗi tải danh sách chương:", error);
-      problemList.innerHTML = `<tr><td colspan="3">Lỗi: ${error.message}</td></tr>`;
+      problemList.innerHTML = `<p class="pl-rong">Lỗi: ${esc(error.message)}</p>`;
     }
   }
 
@@ -247,7 +321,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       quizContainer.appendChild(khungBai);
     });
 
-    // ----- Nút Nộp bài và khung hiện tổng điểm (chỉ tạo 1 lần, sau khi vẽ xong mọi bài) -----
+    // ----- Nút Nộp bài, khung tổng điểm, khung hạng (chỉ tạo 1 lần) -----
     const btnNop = document.createElement("button");
     btnNop.type = "button";
     btnNop.id = "btn-nop-bai";
@@ -258,8 +332,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     tongKet.id = "tong-ket";
     tongKet.style.cssText = "margin-top:12px; font-weight:600;";
 
+    const hangBox = document.createElement("div"); // MỚI: nơi hiện hạng sau khi nộp
+    hangBox.className = "hang-ket-qua";
+
     quizContainer.appendChild(btnNop);
     quizContainer.appendChild(tongKet);
+    quizContainer.appendChild(hangBox);
     veCongThuc(quizContainer);
 
     // Lấy câu trả lời người dùng đã chọn / nhập của 1 nhóm câu
@@ -284,6 +362,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     btnNop.addEventListener("click", async () => {
       btnNop.disabled = true; // tránh bấm nhiều lần
       tongKet.textContent = "Đang nộp bài...";
+      hangBox.innerHTML = "";
       const userId = localStorage.getItem("userId");
 
       try {
@@ -309,6 +388,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         let daLuu = false;
         let diemCong = 0; // điểm thật sự được cộng (đã nhân thưởng)
         let heSo = 1;
+        let bestPct = 0;  // MỚI: % điểm cao nhất của bài (để hiện hạng)
 
         const theoBai = {};
         dsCau.forEach((x) => (theoBai[x.baiId] ||= []).push(x));
@@ -331,6 +411,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (kq.da_luu) daLuu = true;
           diemCong += kq.diem_cong || 0;
           heSo = Math.max(heSo, kq.he_so || 1);
+          if (typeof kq.best_pct === "number") bestPct = Math.max(bestPct, kq.best_pct);
 
           // cập nhật streak trên thanh trên cùng
           if (kq.streak !== null && kq.streak !== undefined) {
@@ -364,6 +445,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         if (!userId) tongKet.textContent += " (Đăng nhập để điểm được lưu nhé!)";
         else if (diemDat > 0 && !daLuu) tongKet.textContent += " (Bài này bạn đã được cộng điểm trước đó)";
+
+        // MỚI: hiện hạng cao nhất của bài sau khi nộp
+        const hang = window.hangCua ? hangCua(bestPct) : null;
+        if (userId && hang) {
+          hangBox.innerHTML = `
+            <span class="hang-mini" style="--c:${hang.c}"><i class="fa-solid ${hang.icon}"></i></span>
+            <span>Hạng cao nhất của bài này: <b style="color:${hang.c}">${hang.ten}</b> (${bestPct}%)</span>`;
+        }
         khoaOnhap();
       } catch (err) {
         btnNop.disabled = false; // lỗi thì cho nộp lại

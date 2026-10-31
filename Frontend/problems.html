@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="style2.css" />
   <link rel="stylesheet" href="style3.css" />
+  <link rel="stylesheet" href="tien-do.css" />
 </head>
 
 <body>
@@ -20,9 +21,7 @@
           <span>SaoLa<span id="logo-span">Edu</span></span>
         </a>
       </section>
-      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">
-        ☰
-      </button>
+      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">☰</button>
 
       <ul id="nav" class="center">
         <li id="nav-gioi-thieu">
@@ -31,7 +30,7 @@
           </a>
         </li>
         <li id="nav-bai-tap">
-          <a href="subjects.html" id="link-bai-tap" title="Bài tập" aria-label="Bài tập">
+          <a href="subjects.html" id="link-bai-tap" class="active" title="Bài tập" aria-label="Bài tập">
             <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
           </a>
         </li>
@@ -52,7 +51,6 @@
           <a href="login.html" class="auth-link">Đăng nhập</a>
           <a href="register.html" class="auth-link">Đăng ký</a>
         </div>
-        <!-- 2. Khi đã đăng nhập (mặc định thêm class hidden) -->
         <div id="user-profile" class="hidden">
           <div class="streak-box">🔥 <span>0</span></div>
           <span class="username">Username</span>
@@ -62,41 +60,28 @@
     </div>
   </header>
 
-  <h1>Danh sách bài tập</h1>
-
-
-  <div class="problem-container">
-    <!-- Thanh công cụ trên cùng -->
-    <div class="problem-toolbar">
-      <h2 class="title">Danh sách bài tập</h2>
+  <main class="pl-wrap">
+    <div class="pl-hero">
+      <h1 id="ten-mon">Bài tập</h1>
+      <p>Chọn chương ở bên phải, rồi chọn bài học. Mỗi bài học có nhiều bài tập nhỏ để luyện.</p>
     </div>
 
-    <!-- Layout chính chia làm 2 phần (Bảng + Ô chương bài học) -->
-    <div class="main-layout">
-      <!-- Phần 1: Bảng bài tập (Chiếm 75% chiều ngang) -->
-      <div class="table-section">
-        <table class="problem-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Bài</th>
-              <th>Điểm</th>
-            </tr>
-          </thead>
-          <tbody id="problem-list">
-
-          </tbody>
-        </table>
+    <div class="pl-layout">
+      <div class="pl-main">
+        <!-- bai-tap.js đổ tổng điểm của chương và danh sách bài học vào 2 chỗ này -->
+        <div class="pl-tong" id="pl-tong"></div>
+        <div class="pl-ds" id="problem-list"></div>
       </div>
 
-      <!-- Phần 2: Ô vuông chương bài học (Chiếm 25% chiều ngang) -->
-      <div class="chapter-sidebar">
+      <aside class="pl-side">
         <h3>Chương bài học</h3>
-
-      </div>
+        <div id="chuong-ds"></div>
+      </aside>
     </div>
-  </div>
+  </main>
+
   <script src="script.js"></script>
+  <script src="hang.js"></script>
   <script src="bai-tap.js"></script>
 </body>
 

@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="style2.css" />
   <link rel="stylesheet" href="style3.css" />
+  <link rel="stylesheet" href="tien-do.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
@@ -24,9 +25,7 @@
           <span>SaoLa<span id="logo-span">Edu</span></span>
         </a>
       </section>
-      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">
-        ☰
-      </button>
+      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">☰</button>
 
       <ul id="nav" class="center">
         <li id="nav-gioi-thieu">
@@ -35,7 +34,7 @@
           </a>
         </li>
         <li id="nav-bai-tap">
-          <a href="subjects.html" id="link-bai-tap" title="Bài tập" aria-label="Bài tập">
+          <a href="subjects.html" id="link-bai-tap" class="active" title="Bài tập" aria-label="Bài tập">
             <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
           </a>
         </li>
@@ -56,7 +55,6 @@
           <a href="login.html" class="auth-link">Đăng nhập</a>
           <a href="register.html" class="auth-link">Đăng ký</a>
         </div>
-        <!-- Khi đã đăng nhập (mặc định thêm class hidden) -->
         <div id="user-profile" class="hidden">
           <div class="streak-box">🔥 <span>0</span></div>
           <span class="username">Username</span>
@@ -66,23 +64,38 @@
     </div>
   </header>
 
-  <div class="container">
-    <h2>Lý thuyết</h2>
+  <main class="ls-wrap">
+    <!-- lesson.js gắn link quay về đúng chương trong trang danh sách bài -->
+    <a id="quay-lai" class="crumb" href="subjects.html"><i class="fa-solid fa-arrow-left"></i> Về danh sách bài</a>
 
-    <!-- Hai nút nằm cạnh nhau. Nút mô phỏng chỉ hiện khi file JSON của bài có "mo_phong" -->
-    <div class="nhom-nut-bai">
-      <button type="button" id="btn-ly-thuyet" class="btn" disabled>
-        📖 Xem lý thuyết
-      </button>
-      <button type="button" id="btn-mo-phong" class="btn hidden">
-        🔬 Thực hành mô phỏng
-      </button>
+    <div class="ls-hero">
+      <h1 id="bai-tieu-de">Bài học</h1>
+      <p id="bai-phu"></p>
     </div>
 
-    <br /><br />
-    <h2>Luyện tập</h2>
-    <div id="ds-cau"></div>
-  </div>
+    <div class="khoi">
+      <h2>Lý thuyết</h2>
+      <!-- Nút mô phỏng chỉ hiện khi file JSON của bài có "mo_phong" -->
+      <div class="nhom-nut-bai">
+        <button type="button" id="btn-ly-thuyet" class="nut" disabled>📖 Xem lý thuyết</button>
+        <button type="button" id="btn-mo-phong" class="nut hidden">🔬 Thực hành mô phỏng</button>
+      </div>
+    </div>
+
+    <div class="khoi">
+      <h2>Luyện tập</h2>
+      <div id="ds-cau" class="bt-ds"></div>
+      <p id="ds-ghi" class="ghi" style="margin-top:12px"></p>
+    </div>
+
+    <div class="khoi">
+      <h2>Bảng hạng thành tích</h2>
+      <p class="ghi" style="margin-bottom:12px">
+        Hạng của mỗi bài tập tính theo % điểm cao nhất bạn từng đạt. Làm lại để nâng hạng.
+      </p>
+      <div id="chu-giai" class="chu-giai"></div>
+    </div>
+  </main>
 
   <!-- Ô lý thuyết -->
   <div id="ly-thuyet-nen" class="modal-nen hidden">
@@ -110,6 +123,7 @@
   </div>
 
   <script src="script.js"></script>
+  <script src="hang.js"></script>
   <script src="lesson.js"></script>
 </body>
 

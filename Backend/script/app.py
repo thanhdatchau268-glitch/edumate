@@ -14,6 +14,7 @@ from db_ops import (
 )
 from qua_tang import qua_bp, he_so_x15   # điểm danh + vòng quay + buff x1,5
 
+
 DIEM_MO_KHOA_SUA = 500      # điểm để mở khóa "Sửa hồ sơ"
 DIEM_MO_KHOA_AVATAR = 500   # điểm để mở khóa "Tải ảnh avatar riêng"
 
@@ -24,6 +25,8 @@ DIEM_BUFF = 500
 app = Flask(__name__)
 CORS(app)  # Cho phép Frontend kết nối tới Backend
 app.register_blueprint(qua_bp)
+from tien_do import tien_do_bp, ghi_diem_cao_nhat   # hạng thành tích
+app.register_blueprint(tien_do_bp)
 
 # Giới hạn dung lượng 1 request là 3MB (ảnh đã được trình duyệt thu nhỏ nên rất nhẹ)
 app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024
@@ -233,6 +236,8 @@ def submit():
     streak = None
     diem_cong = 0   # điểm thật sự cộng vào tài khoản (đã nhân thưởng streak)
     he_so = 1.0
+    pct = int(diem_dat * 100 // diem_toi_da) if diem_toi_da else 0   # % điểm lần này (làm tròn xuống)
+    best_pct = None
     if user_id and diem_dat > 0:
         conn = sqlite3.connect(DB_PATH)
         cur = conn.cursor()
@@ -243,6 +248,7 @@ def submit():
             cur.execute("INSERT OR IGNORE INTO da_lam (user_id, bai_key) VALUES (?, ?)",
                         (user_id, bai_key))
             da_luu = (cur.rowcount == 1)
+            best_pct = ghi_diem_cao_nhat(cur, user_id, bai_key, pct)
         conn.commit()
         conn.close()
 
@@ -258,7 +264,7 @@ def submit():
                 diem_cong = round(diem_dat * he_so)
                 update_user_score(user_id, diem_cong)
 
-    return jsonify({"success": True, "diem_dat": diem_dat, "diem_toi_da": diem_toi_da, "ket_qua": ket_qua, "da_luu": da_luu, "streak": streak, "diem_cong": diem_cong, "he_so": he_so}), 200
+    return jsonify({"success": True, "diem_dat": diem_dat, "diem_toi_da": diem_toi_da, "ket_qua": ket_qua, "da_luu": da_luu, "streak": streak, "diem_cong": diem_cong, "he_so": he_so, "pct": pct, "best_pct": best_pct}), 200
 
 # 7. API bảng xếp hạng
 @app.route('/api/ranking', methods=['GET'])
