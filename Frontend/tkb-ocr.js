@@ -5,11 +5,19 @@ window.TKB_OCR = (() => {
     let tienDo = () => { };
     // ===================== 1. DANH SÁCH MÔN =====================
     // Mỗi dòng: [tên hiển thị, các cách viết đã bỏ dấu/viết liền để so khớp...]
+    // ===================== 1. DANH SÁCH MÔN =====================
+    // [tên hiển thị, các cách viết đã bỏ dấu/viết liền...]
+    // "Tiếng Anh" đã được gộp vào "Ngoại ngữ" (mọi cách viết đều ra "Ngoại ngữ")
     const MON = [
-        ["Toán", "toan"], ["Ngữ văn", "nguvan", "van"], ["Ngoại ngữ", "ngoaingu"],
-        ["Tiếng Anh", "tienganh", "anh", "av", "ta"], ["Vật lí", "vatli", "vatly", "ly", "li"],
-        ["Hóa học", "hoahoc", "hoa"], ["Sinh học", "sinhhoc", "sinh"], ["Lịch sử", "lichsu", "su"],
-        ["Địa lí", "diali", "dialy", "dia"], ["Sử-Địa", "sudia"],
+        ["Toán", "toan"],
+        ["Ngữ văn", "nguvan", "van", "nv"],
+        ["Ngoại ngữ", "ngoaingu", "ngoaingu1", "tienganh", "anh", "av", "ta", "english", "nn"],
+        ["Vật lí", "vatli", "vatly", "ly", "li"],
+        ["Hóa học", "hoahoc", "hoa"],
+        ["Sinh học", "sinhhoc", "sinh"],
+        ["Lịch sử", "lichsu", "su"],
+        ["Địa lí", "diali", "dialy", "dia"],
+        ["Sử-Địa", "sudia"],
         ["Lịch sử và Địa lí", "lichsuvadiali", "lichsuvadialy", "lsvdl", "lsdl"],
         ["GDCD", "gdcd"], ["Giáo dục công dân", "giaoduccongdan"],
         ["GDTC", "gdtc"], ["Giáo dục thể chất", "giaoducthechat", "theduc", "thechat"],
@@ -18,14 +26,24 @@ window.TKB_OCR = (() => {
         ["Âm nhạc", "amnhac", "nhac"], ["Mĩ thuật", "mithuat", "mythuat", "mt"],
         ["NT(MT)", "ntmt"], ["NT(AN)", "ntan"], ["Nghệ thuật", "nghethuat"],
         ["Nghệ thuật (Âm nhạc)", "nghethuatamnhac"], ["Nghệ thuật (Mĩ thuật)", "nghethuatmithuat", "nghethuatmythuat"],
-        ["HĐTN", "hdtn", "hdtnhn"], ["Hoạt động trải nghiệm - hướng nghiệp", "hoatdongtrainghiemhuongnghiep", "hoatdongtrainghiem"],
+        ["HĐTN", "hdtn", "hdtnhn", "hdtnhuongnghiep"],
+        ["Hoạt động trải nghiệm - hướng nghiệp", "hoatdongtrainghiemhuongnghiep", "hoatdongtrainghiem"],
         ["SHL", "shl", "sinhhoatlop", "sinhhoat"], ["Chào cờ", "chaoco"],
         ["KHTN", "khtn"], ["Khoa học tự nhiên", "khoahoctunhien"], ["Tự chọn", "tuchon"],
+        ["Chuyên đề", "chuyende"], ["Ôn tập", "ontap"],
     ];
 
     // bỏ dấu, chữ thường, chỉ giữ chữ + số
     const chuanHoa = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/đ/gi, "d").toLowerCase().replace(/[^a-z0-9]/g, "");
+        .replace(/[đðĐÐ]/g, "d").toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    // Gộp các ký tự OCR hay đọc nhầm về cùng 1 dạng (dùng cho CẢ chữ đọc được lẫn alias)
+    const canon = (s) => s.replace(/rn/g, "m").replace(/vv/g, "w")
+        .replace(/[ij1!|]/g, "l").replace(/0/g, "o").replace(/5/g, "s").replace(/8/g, "b");
+
+    // Chuẩn bị sẵn alias đã canon (làm 1 lần)
+    const ALIAS = [];
+    MON.forEach((m) => m.slice(1).forEach((k) => ALIAS.push({ ten: m[0], k: canon(k), goc: k })));
 
     // khoảng cách chỉnh sửa giữa 2 chuỗi (Levenshtein)
     function lev(a, b) {
@@ -39,20 +57,30 @@ window.TKB_OCR = (() => {
         return prev[b.length];
     }
 
-    // Tìm môn khớp nhất trong chữ OCR của 1 ô. Thử mọi cụm 1-6 từ liền nhau
-    function timMon(raw) {
-        const tu = raw.split(/\s+/).filter(Boolean), cs = new Set();
+    // Tìm môn khớp nhất trong chữ OCR của 1 ô.
+    // Thử mọi cụm 1-6 từ liền nhau; ưu tiên cụm ở đầu ô, tên dài, ít lỗi.
+    function timMon(raw, opt) {
+        const chiTen = opt && opt.chiTen, them = (opt && opt.them) || 0;
+        const tu = (raw || "").split(/\s+/).filter(Boolean), cs = [];
         for (let i = 0; i < tu.length; i++)
             for (let n = 1; n <= 6 && i + n <= tu.length; n++) {
-                const c = chuanHoa(tu.slice(i, i + n).join(""));
-                if (c.length >= 2 && !/^\d+$/.test(c)) cs.add(c);
+                const c0 = chuanHoa(tu.slice(i, i + n).join(""));
+                if (c0.length < 2 || /^\d+$/.test(c0)) continue;
+                cs.push({ c: canon(c0), i, tron: tu.length === n });
+                const c1 = c0.replace(/\d+/g, "");
+                if (c1.length >= 2 && c1 !== c0) cs.push({ c: canon(c1), i, tron: tu.length === n });
             }
         let tot = null;
-        for (const c of cs) for (const m of MON) for (const k of m.slice(1)) {
-            const cho = k.length <= 3 ? 0 : k.length <= 6 ? 1 : k.length <= 12 ? 2 : 3; // số lỗi cho phép
-            if (Math.abs(c.length - k.length) > cho) continue;
-            const d = lev(c, k);
-            if (d <= cho && (!tot || d < tot.d || (d === tot.d && k.length > tot.dai))) tot = { d, dai: k.length, ten: m[0] };
+        for (const x of cs) for (const a of ALIAS) {
+            if (chiTen && !chiTen.has(a.ten)) continue;
+            const L = a.k.length;
+            const cho = (L <= 3 ? 0 : L <= 6 ? 1 : L <= 12 ? 2 : 3) + (L <= 3 ? 0 : them);
+            if (Math.abs(x.c.length - L) > cho) continue;
+            if (L <= 3 && !(x.i === 0 || x.tron)) continue;
+            const d = lev(x.c, a.k);
+            if (d > cho) continue;
+            const diem = d * 10 - L + x.i * 1.5;
+            if (!tot || diem < tot.diem) tot = { diem, d, ten: a.ten };
         }
         return tot ? { ten: tot.ten, kieu: tot.d === 0 ? "chuan" : "gan" } : { ten: raw, kieu: "la" };
     }
@@ -240,13 +268,21 @@ window.TKB_OCR = (() => {
     }
 
     // Đọc 1 ô môn học: nếu không nhận ra môn thì thử lại với chế độ một dòng
+    const rong = (b, m) => ({ x0: b.x0 - m, x1: b.x1 + m, y0: b.y0 - m, y1: b.y1 + m });
+    const HANG = { chuan: 0, gan: 1, la: 2 };
+
     async function docMon(b, tag) {
-        let o = await docO(b, tag, "6");
-        if (o.raw && timMon(o.raw).kieu === "la") {
-            const o2 = await docO(b, tag + " (thử lại)", "7");
-            if (o2.raw && timMon(o2.raw).kieu !== "la") o = o2;
+        const cach = [[b, "6"], [b, "7"], [rong(b, 2), "7"], [rong(b, 2), "6"]];
+        let tot = "", tk = 9;
+        for (let i = 0; i < cach.length; i++) {
+            const o = await docO(cach[i][0], tag, cach[i][1]);
+            if (i === 0 && !o.c) return "";                 // ô trống thật sự
+            if (!o.raw) continue;
+            const k = timMon(o.raw).kieu;
+            if (HANG[k] < tk) { tot = o.raw; tk = HANG[k]; }
+            if (k === "chuan") break;
         }
-        return o.raw;
+        return tot;
     }
 
     // Đọc 1 hàng tiêu đề giả định -> số Thứ mỗi cột + độ lệch phổ biến nhất
@@ -282,6 +318,7 @@ window.TKB_OCR = (() => {
         gallery = []; oDaDoc = []; soO = 0;
         await nap(blob);
         let L = null;
+
         for (const n of [6, 5, 7]) { // thử 6 cột (T2-T7), rồi 5, rồi 7
             for (const d of [0, 30, -25, 60, -45]) { L = timLuoi(110 + d, n); if (L) break; } // thử nhiều độ đậm
             if (L) break;
@@ -296,16 +333,31 @@ window.TKB_OCR = (() => {
         const td = tren ? A : B, moc = tren ? HL : HL.slice(1);
         const lech = td.so >= 2 ? td.lech : 2;
         const rows = [], nhan = [];
+        const cuoi = moc[moc.length - 1], conLai = H - cuoi.c;
+        if (conLai > pitch * 0.5 && conLai < pitch * 1.05) moc.push({ c: Math.min(cuoi.c + pitch, H - 2), t: 0 });
         for (let r = 0; r + 1 < moc.length; r++) {
             nhan.push(lab ? (await docO(hop(lab[0], lab[1], moc[r], moc[r + 1]), "nhãn", "7")).raw : "");
             const cells = [];
             for (let j = 0; j < nDay; j++) cells.push(await docMon(hop(Vw[j], Vw[j + 1], moc[r], moc[r + 1]), "ô"));
             rows.push({ nhan: nhan[r], cells });
         }
+        const dem = {};
+        rows.forEach((r) => r.cells.forEach((c) => {
+            if (!c) return; const m = timMon(c);
+            if (m.kieu === "chuan") dem[m.ten] = (dem[m.ten] || 0) + 1;
+        }));
+        const daThay = new Set(Object.keys(dem));
+        if (daThay.size) rows.forEach((r) => (r.cells = r.cells.map((c) => {
+            if (!c || timMon(c).kieu !== "la") return c;
+            const m = timMon(c, { chiTen: daThay, them: 1 });
+            return m.kieu === "la" ? c : m.ten;
+        })));
+
         const buoi = chiaBuoi(nhan, 0);
         rows.forEach((r, i) => (r.buoi = buoi[i]));
-        return { days: Array.from({ length: nDay }, (_, j) => lech + j), rows };
+
+        return { days: Array.from({ length: nDay }, (_, j) => lech + j), rows, gallery };
     }
 
-    return { docAnh, timMon, TEN_MON: MON.map((m) => m[0]) };
+
 })();

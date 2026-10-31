@@ -65,7 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!f) return;
         const tt = $("ocr-tt");
         try {
-            if (!window.TKB_OCR || !window.Tesseract) throw new Error("Chưa tải được thư viện OCR, hãy kiểm tra mạng.");
+            if (!window.TKB_OCR) throw new Error("Không nạp được tkb-ocr.js (kiểm tra file có nằm cùng thư mục personal.html không).");
+            if (!window.Tesseract) throw new Error("Không tải được thư viện Tesseract từ mạng (jsdelivr bị chặn?).");
             const kq = await TKB_OCR.docAnh(f, (m, p) => { tt.textContent = m; if (p != null) $("thanh").style.width = p + "%"; });
             const t = MAC_DINH().tkb, dem = { S: 0, C: 0 };
             kq.rows.forEach((r) => {

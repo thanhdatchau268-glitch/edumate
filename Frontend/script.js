@@ -69,8 +69,17 @@ function showLoggedInUI() {
   // đã đăng nhập thì "Giới thiệu" được thay bằng "Học tập cá nhân hoá"
   const linkGt = document.getElementById("link-gioi-thieu");
   if (linkGt) {
-    linkGt.textContent = "Học tập cá nhân hoá";
-    linkGt.href = "personal.html";
+    // đã đăng nhập thì "Giới thiệu" được thay bằng "Học tập cá nhân hoá"
+    const linkGt = document.getElementById("link-gioi-thieu");
+    if (linkGt) {
+      const icon = linkGt.querySelector("i");
+      const chu = linkGt.querySelector(".nav-chu");
+      if (icon) icon.className = "fa-solid fa-graduation-cap"; // đổi icon nhà -> mũ tốt nghiệp
+      if (chu) chu.textContent = "Học tập cá nhân hoá";
+      linkGt.title = "Học tập cá nhân hoá";
+      linkGt.setAttribute("aria-label", "Học tập cá nhân hoá");
+      linkGt.href = "personal.html";
+    }
   }
 
   // bấm vào avatar hoặc tên thì mở trang hồ sơ

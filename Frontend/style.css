@@ -619,3 +619,50 @@ header {
   color: #ffffff;
   background: var(--nhan);
 }
+
+/* ===== Menu dạng biểu tượng: rê chuột mới hiện chữ ===== */
+#nav a {
+  display: flex;
+  align-items: center;
+}
+
+#nav a i {
+  width: 22px;
+  font-size: 1.15rem;
+  text-align: center;
+}
+
+/* Chữ mặc định ẩn (rộng 0), rê chuột / focus bàn phím thì trượt ra */
+#nav .nav-chu {
+  max-width: 0;
+  margin-left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transition: max-width 0.3s ease, margin-left 0.3s ease, opacity 0.2s ease;
+}
+
+#nav a:hover .nav-chu,
+#nav a:focus-visible .nav-chu {
+  max-width: 180px;
+  margin-left: 8px;
+  opacity: 1;
+}
+
+/* Biểu tượng nhích lên nhẹ khi rê chuột */
+#nav a i {
+  transition: transform 0.2s ease;
+}
+
+#nav a:hover i {
+  transform: scale(1.15);
+}
+
+/* Điện thoại: menu xổ dọc nên luôn hiện chữ (không có chuột để rê) */
+@media (max-width: 640px) {
+  #nav .nav-chu {
+    max-width: none;
+    margin-left: 10px;
+    opacity: 1;
+  }
+}
