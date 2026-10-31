@@ -9,7 +9,7 @@ def init_db():
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
-    # Tạo bảng users (có thêm cột avatar: tên file ảnh trong Frontend/img/avatar/, '' = ảnh mặc định)
+    # Bảng users (avatar: tên file ảnh trong Frontend/img/avatar/, '' = ảnh mặc định)
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,7 +23,6 @@ def init_db():
         mon_chuyen TEXT DEFAULT '',
         da_khao_sat INTEGER DEFAULT 0,
         avatar TEXT DEFAULT '',
-                avatar TEXT DEFAULT '',
         dd_tong INTEGER DEFAULT 0,
         dd_last TEXT DEFAULT '',
         the_bao_ho INTEGER DEFAULT 0,
@@ -32,26 +31,28 @@ def init_db():
     )
     ''')
 
-    # bảng nhớ bài nào user đã được cộng điểm, để mỗi bài chỉ cộng 1 lần
+    # Nhớ bài nào user đã được cộng điểm, để mỗi bài chỉ cộng 1 lần
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS da_lam (
         user_id INTEGER,
         bai_key TEXT,
+        best_pct INTEGER DEFAULT 0,
         PRIMARY KEY (user_id, bai_key)
     )
     ''')
 
-    # Bảng ghi các cuộc thi (admin thêm vào)
+    # Các cuộc thi (admin thêm vào)
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS contests (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         ten TEXT NOT NULL,
         bat_dau TEXT NOT NULL,   -- vd: 2026-11-01 19:00
-        ket_thuc TEXT NOT NULL   -- vd: 2026-11-01 20:00
+        ket_thuc TEXT NOT NULL,  -- vd: 2026-11-01 20:00
+        noi_dung TEXT DEFAULT ''
     )
     ''')
 
-    # Bảng ghi ai đã thi và được bao nhiêu điểm
+    # Ai đã thi và được bao nhiêu điểm
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS contest_ket_qua (
         user_id INTEGER,
@@ -62,8 +63,7 @@ def init_db():
     ''')
 
     # DB cũ thiếu cột nào thì thêm vào (không mất dữ liệu)
-    cursor.execute("PRAGMA table_info(users)")
-    cac_cot = [c[1] for c in cursor.fetchall()]
+    cac_cot = [c[1] for c in cursor.execute("PRAGMA table_info(users)")]
     if 'mon_chuyen' not in cac_cot:
         cursor.execute("ALTER TABLE users ADD COLUMN mon_chuyen TEXT DEFAULT ''")
     if 'da_khao_sat' not in cac_cot:
@@ -72,9 +72,13 @@ def init_db():
     if 'avatar' not in cac_cot:
         cursor.execute("ALTER TABLE users ADD COLUMN avatar TEXT DEFAULT ''")
 
+    cot_contest = [c[1] for c in cursor.execute("PRAGMA table_info(contests)")]
+    if 'noi_dung' not in cot_contest:
+        cursor.execute("ALTER TABLE contests ADD COLUMN noi_dung TEXT DEFAULT ''")
+
     conn.commit()
     conn.close()
-    print("Tạo Database và bảng users thành công!")
+    print("Tạo Database thành công!")
 
 if __name__ == '__main__':
     init_db()

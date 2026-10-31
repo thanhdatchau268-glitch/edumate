@@ -209,3 +209,23 @@ function toggleModal() {
 
 if (btnLogin) btnLogin.addEventListener("click", toggleModal);
 if (btnClose) btnClose.addEventListener("click", toggleModal);
+// Tự đánh dấu mục menu của trang hiện tại
+function danhDauMenu() {
+  const trang = location.pathname.split("/").pop() || "index.html";
+  // các trang con thuộc nhóm "Bài tập"
+  const NHOM = {
+    "problems.html": "subjects.html",
+    "lesson.html": "subjects.html",
+    "form.html": "subjects.html",
+  };
+  const dich = NHOM[trang] || trang;
+  document.querySelectorAll("#nav a").forEach((a) => {
+    a.classList.toggle("active", a.getAttribute("href") === dich);
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", danhDauMenu);
+} else {
+  danhDauMenu();
+}

@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const tt = $("ocr-tt");
         try {
             if (!window.TKB_OCR) throw new Error("Không nạp được tkb-ocr.js (kiểm tra file có nằm cùng thư mục personal.html không).");
-            if (!window.Tesseract) throw new Error("Không tải được thư viện Tesseract từ mạng (jsdelivr bị chặn?).");
+            await napTesseract();
             const kq = await TKB_OCR.docAnh(f, (m, p) => { tt.textContent = m; if (p != null) $("thanh").style.width = p + "%"; });
             const t = MAC_DINH().tkb, dem = { S: 0, C: 0 };
             kq.rows.forEach((r) => {
@@ -274,3 +274,13 @@ document.addEventListener("DOMContentLoaded", () => {
     chonTab(location.hash === "#diem" ? "diem"
         : S.tkb.flat().some(Boolean) || S.viec.length ? "lich" : "setup");
 });
+function napTesseract() {
+    if (window.Tesseract) return Promise.resolve();
+    return new Promise((ok, loi) => {
+        const s = document.createElement("script");
+        s.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js";
+        s.onload = ok;
+        s.onerror = () => loi(new Error("Không tải được thư viện Tesseract từ mạng."));
+        document.head.appendChild(s);
+    });
+}
