@@ -10,8 +10,10 @@ from db_ops import (
     DB_PATH,
     add_user, get_all_users, update_user, delete_user,
     update_streak, update_user_score, get_ranking, update_mon_chuyen,
-      get_user, update_avatar, streak_hien_thi
+    get_user, update_avatar, streak_hien_thi,
+    BANG_XEP_HANG, KY_XEP_HANG, MON_CHUYEN_HOP_LE, thang_hien_tai
 )
+
 from qua_tang import qua_bp, he_so_x15   # điểm danh + vòng quay + buff x1,5
 
 
@@ -27,6 +29,10 @@ CORS(app)  # Cho phép Frontend kết nối tới Backend
 app.register_blueprint(qua_bp)
 from tien_do import tien_do_bp, ghi_diem_cao_nhat   # hạng thành tích
 app.register_blueprint(tien_do_bp)
+from so_loi import so_loi_bp, ghi_ket_qua_nop_bai          # Sổ lỗi sai
+from nhiem_vu import nhiem_vu_bp, ghi_su_kien_nop_bai      # Nhiệm vụ hằng ngày
+app.register_blueprint(so_loi_bp)
+app.register_blueprint(nhiem_vu_bp)
 
 # Giới hạn dung lượng 1 request là 3MB (ảnh đã được trình duyệt thu nhỏ nên rất nhẹ)
 app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024
@@ -238,6 +244,7 @@ def submit():
     he_so = 1.0
     pct = int(diem_dat * 100 // diem_toi_da) if diem_toi_da else 0   # % điểm lần này (làm tròn xuống)
     best_pct = None
+    best_cu = None
     if user_id and diem_dat > 0:
         conn = sqlite3.connect(DB_PATH)
         cur = conn.cursor()
@@ -245,6 +252,10 @@ def submit():
         if co_user:
             # INSERT OR IGNORE: bài này làm rồi thì không thêm được nữa -> rowcount = 0
             bai_key = f"{subject}/{chapter}/{article}/{bai_id}"
+            # MỚI: đọc điểm cũ TRƯỚC khi ghi đè
+            row_cu = cur.execute("SELECT COALESCE(best_pct, 0) FROM da_lam WHERE user_id = ? AND bai_key = ?",
+                                 (user_id, bai_key)).fetchone()
+            best_cu = row_cu[0] if row_cu else None
             cur.execute("INSERT OR IGNORE INTO da_lam (user_id, bai_key) VALUES (?, ?)",
                         (user_id, bai_key))
             da_luu = (cur.rowcount == 1)
@@ -263,13 +274,33 @@ def submit():
                 he_so = 1 + min(streak // 3, 5) * 0.1 + he_so_x15(user_id)
                 diem_cong = round(diem_dat * he_so)
                 update_user_score(user_id, diem_cong)
+        # ---- Sổ lỗi sai + nhiệm vụ hằng ngày ----
+    so_loi_ghi = []
+    if user_id:
+        bai_key = f"{subject}/{chapter}/{article}/{bai_id}"
+        so_loi_ghi = ghi_ket_qua_nop_bai(user_id, bai_key, ket_qua)    # ghi câu sai, giấu lời giải câu sai
+        ghi_su_kien_nop_bai(user_id, subject, bai_key, ket_qua, pct, best_cu)
+    return jsonify({"success": True, "diem_dat": diem_dat, "diem_toi_da": diem_toi_da, "ket_qua": ket_qua, "da_luu": da_luu, "streak": streak, "diem_cong": diem_cong, "he_so": he_so, "pct": pct, "best_pct": best_pct,"so_loi_ghi": so_loi_ghi}), 200
 
-    return jsonify({"success": True, "diem_dat": diem_dat, "diem_toi_da": diem_toi_da, "ket_qua": ket_qua, "da_luu": da_luu, "streak": streak, "diem_cong": diem_cong, "he_so": he_so, "pct": pct, "best_pct": best_pct}), 200
-
-# 7. API bảng xếp hạng
+# 7. API bảng xếp hạng: /api/ranking?bang=toan&ky=thang
 @app.route('/api/ranking', methods=['GET'])
 def ranking():
-    return jsonify({"success": True, "data": get_ranking()}), 200
+    bang = request.args.get('bang', 'khong-chuyen')
+    ky = request.args.get('ky', 'tong')
+    if bang not in BANG_XEP_HANG or ky not in KY_XEP_HANG:
+        return jsonify({"success": False, "message": "Bảng xếp hạng không hợp lệ!"}), 400
+    return jsonify({"success": True, "bang": bang, "ky": ky,
+                    "data": get_ranking(bang, ky)}), 200
+
+# 7b. Danh sách bảng + kỳ để giao diện tự vẽ tab
+@app.route('/api/ranking/cau-hinh', methods=['GET'])
+def ranking_cau_hinh():
+    return jsonify({
+        "success": True,
+        "bang": [{"id": k, "ten": v[0], "mon": v[1]} for k, v in BANG_XEP_HANG.items()],
+        "ky": [{"id": k, "ten": v} for k, v in KY_XEP_HANG.items()],
+        "thang": thang_hien_tai(),
+    }), 200
 
 # 8. API lưu môn chuyên
 @app.route('/api/users/<int:user_id>/mon-chuyen', methods=['PUT'])
@@ -277,7 +308,7 @@ def save_mon_chuyen(user_id):
     data = request.get_json()
     mon = data.get('mon_chuyen', '')
 
-    if mon not in ('', 'toan', 'ly', 'hoa'):
+    if mon not in MON_CHUYEN_HOP_LE:
         return jsonify({"success": False, "message": "Môn chuyên không hợp lệ!"}), 400
 
     update_mon_chuyen(user_id, mon)

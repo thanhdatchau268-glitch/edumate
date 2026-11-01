@@ -217,6 +217,7 @@ function danhDauMenu() {
     "problems.html": "subjects.html",
     "lesson.html": "subjects.html",
     "form.html": "subjects.html",
+    "so-loi.html": "subjects.html",
   };
   const dich = NHOM[trang] || trang;
   document.querySelectorAll("#nav a").forEach((a) => {

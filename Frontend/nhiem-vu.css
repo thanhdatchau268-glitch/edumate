@@ -1,0 +1,220 @@
+/* nhiem-vu.css - thanh "Nhiệm vụ hôm nay" (dùng lại --nen, --chu, --nhat, --nhan, --vien của style.css) */
+.nv-khung {
+    margin: 12px 0 18px;
+    padding: 16px 20px;
+    background: var(--nen);
+    border: 1px solid var(--vien);
+    border-radius: 14px;
+}
+
+.nv-dau {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.nv-dau h2 {
+    font-size: 1.1rem;
+    color: var(--chu);
+}
+
+.nv-dem {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--nhat);
+}
+
+.nv-ds {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+}
+
+/* mỗi nhiệm vụ có màu theo độ khó: dễ xanh lá, vừa xanh dương, khó cam */
+.nv-the {
+    --c: var(--nhan);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid var(--vien);
+    border-left: 5px solid var(--c);
+    border-radius: 12px;
+}
+
+.nv-the.kho-de {
+    --c: #178a5a;
+}
+
+.nv-the.kho-vua {
+    --c: #2457d6;
+}
+
+.nv-the.kho-kho {
+    --c: #d9480f;
+}
+
+.nv-the.da-nhan {
+    opacity: 0.6;
+}
+
+.nv-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) 13%, #fff);
+    border-radius: 50%;
+}
+
+.nv-giua {
+    flex: 1;
+    min-width: 0;
+}
+
+.nv-giua b {
+    color: var(--chu);
+}
+
+.nv-kho {
+    margin-left: 8px;
+    padding: 1px 9px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) 12%, #fff);
+    border-radius: 999px;
+}
+
+.nv-giua small {
+    display: block;
+    font-size: 0.83rem;
+    line-height: 1.4;
+    color: var(--nhat);
+}
+
+.nv-tien {
+    height: 6px;
+    margin-top: 6px;
+    overflow: hidden;
+    background: #edf1f8;
+    border-radius: 9px;
+}
+
+.nv-tien i {
+    display: block;
+    height: 100%;
+    background: var(--c);
+    border-radius: 9px;
+    transition: width 0.4s;
+}
+
+.nv-so {
+    font-size: 0.78rem;
+    color: var(--nhat);
+}
+
+.nv-phai {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.nv-qua {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #b7791f;
+}
+
+.nv-nut {
+    display: inline-block;
+    padding: 7px 14px;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--nhan);
+    background: #fff;
+    border: 1px solid var(--nhan);
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.nv-nut:hover {
+    color: #fff;
+    background: var(--nhan);
+}
+
+.nv-nut.dac {
+    color: #fff;
+    background: var(--c, var(--nhan));
+    border-color: var(--c, var(--nhan));
+}
+
+.nv-nut:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+.nv-nut:focus-visible {
+    outline: 3px solid rgba(36, 87, 214, 0.4);
+    outline-offset: 2px;
+}
+
+.nv-da-nhan {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #178a5a;
+}
+
+.nv-du3 {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: var(--nhat);
+}
+
+.nv-du3.xong {
+    color: #178a5a;
+}
+
+.nv-tb {
+    min-height: 1.3em;
+    margin-top: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.nv-tb.ok {
+    color: #178a5a;
+}
+
+.nv-tb.loi,
+.nv-loi {
+    color: #c62828;
+}
+
+@media (max-width: 560px) {
+    .nv-the {
+        flex-wrap: wrap;
+    }
+
+    .nv-phai {
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nv-tien i {
+        transition: none;
+    }
+}

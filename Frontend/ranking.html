@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="style2.css" />
   <link rel="stylesheet" href="style3.css" />
+  <link rel="stylesheet" href="ranking.css" />
 </head>
 
 <body>
@@ -63,24 +64,24 @@
   </header>
 
   <div class="leaderboard-container">
-    <!-- Phần Bục Tuyên Dương (Podium) -->
-    <!-- Bục tuyên dương: ranking.js sẽ điền tên và điểm vào -->
+    <!-- Thanh chọn: bảng nào + kỳ nào (JS tự vẽ nút từ server) -->
+    <div class="rk-bar">
+      <div id="rk-bang" class="rk-chips" role="tablist" aria-label="Chọn bảng xếp hạng"></div>
+      <div id="rk-ky" class="rk-seg" role="tablist" aria-label="Chọn kỳ xếp hạng"></div>
+    </div>
+    <p id="rk-ghi" class="rk-ghi"></p>
+
     <div class="podium-section">
-      <!-- Hạng 2 (bạc) nằm bên trái -->
       <div class="podium-card silver" id="podium-2">
         <img class="avatar" src="img/avartar.webp" alt="Avatar Top 2">
         <span class="podium-name"></span>
         <div class="step">2</div>
       </div>
-
-      <!-- Hạng 1 (vàng, cao nhất) nằm giữa -->
       <div class="podium-card gold" id="podium-1">
         <img class="avatar" src="img/avartar.webp" alt="Avatar Top 1">
         <span class="podium-name"></span>
         <div class="step">1</div>
       </div>
-
-      <!-- Hạng 3 (đồng) nằm bên phải -->
       <div class="podium-card bronze" id="podium-3">
         <img class="avatar" src="img/avartar.webp" alt="Avatar Top 3">
         <span class="podium-name"></span>
@@ -88,21 +89,38 @@
       </div>
     </div>
 
-    <!-- Phần Bảng Người Dùng (Màu xanh) -->
     <div class="table-section">
-      <table class="user-table">
+      <table class="user-table rk-table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Bio</th>
+            <th>Hạng</th>
             <th>Username</th>
+            <th class="rk-bio">Giới thiệu</th>
             <th>Điểm</th>
           </tr>
         </thead>
-        <tbody id="ranking-list">
-        </tbody>
+        <tbody id="ranking-list"></tbody>
       </table>
     </div>
+  </div>
+
+
+
+  <!-- Phần Bảng Người Dùng (Màu xanh) -->
+  <div class="table-section">
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Bio</th>
+          <th>Username</th>
+          <th>Điểm</th>
+        </tr>
+      </thead>
+      <tbody id="ranking-list">
+      </tbody>
+    </table>
+  </div>
   </div>
 
   <script src="script.js"></script>

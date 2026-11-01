@@ -52,12 +52,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       <div><b>${h.ten}</b><small>${h.nhan} điểm</small></div>
     </div>`).join("");
 
-  // ----- Mở / đóng ô lý thuyết -----
+  let henGio = null;
   function moLyThuyet() {
     nen.classList.remove("hidden");
-    document.body.style.overflow = "hidden"; // khoá cuộn trang phía sau
+    document.body.style.overflow = "hidden";
+    if (userId && !henGio) {
+      henGio = setTimeout(() => {
+        fetch(`${API}/api/nhiem-vu/su-kien`, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: Number(userId), loai: "ly_thuyet" }),
+        }).catch(() => { });
+      }, 20000);
+    }
   }
   function dongLyThuyet() {
+    clearTimeout(henGio); henGio = null;
     nen.classList.add("hidden");
     document.body.style.overflow = "";
   }

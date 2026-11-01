@@ -12,7 +12,7 @@ from datetime import date, datetime, timedelta
 
 from flask import Blueprint, jsonify, request
 
-from db_ops import DB_PATH, streak_hien_thi
+from db_ops import DB_PATH, streak_hien_thi, cong_diem_thang
 
 qua_bp = Blueprint('qua', __name__)
 
@@ -142,6 +142,7 @@ def _cong_bao_ho(conn, user_id):
 
 def _cong_diem(conn, user_id, diem):
     conn.execute("UPDATE users SET score = score + ? WHERE id = ?", (diem, user_id))
+    cong_diem_thang(conn, user_id, diem)
 
 def _lay_user_id():
     data = request.get_json(silent=True) or {}

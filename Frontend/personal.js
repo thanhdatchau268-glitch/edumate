@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const x = kh.ngay.find((n) => n.d === ngayChon);
         $("lich-ngay").innerHTML = x.muc.slice().sort((a, b) => a.s - b.s).map((m) =>
             `<li class="m-${m.loai}"><time>${gioStr(m.s)}–${gioStr(m.e)}</time><span>${esc(m.ten)}</span>` +
-            (m.loai === "edumate" ? ' <a class="btn" href="subjects.html">Vào luyện tập</a>' : "") + "</li>").join("");
+            (m.loai === "edumate" ? ' <a class="btn" href="subjects.html">Vào luyện tập</a> <a class="btn" href="so-loi.html">Ôn lỗi sai</a>' : "") + "</li>").join("");
         $("canhbao").innerHTML = kh.canhbao.map((c) => `<p class="canhbao">⚠ ${esc(c)}</p>`).join("");
     }
     $("tabs-ngay").addEventListener("click", (e) => { if (e.target.dataset.d) { ngayChon = +e.target.dataset.d; veKeHoach(); } });
@@ -300,6 +300,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
     veBannerThongBao();
+    fetch(`http://127.0.0.1:5000/api/so-loi/${uid}/ky-nang`).then((r) => r.json()).then((k) => {
+        const n = k.success ? k.data.tom_tat.den_han : 0;
+        if (n > 0) $("btn-so-loi").textContent = `Sổ lỗi sai (${n} đến hạn)`;
+    }).catch(() => { });
 
     // ---------- Khởi động ----------
     veBang(); capNhatUuTien(); veDanhSach(); veKeHoach();

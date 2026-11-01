@@ -384,6 +384,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // ===== Bài tập thường: mỗi bài gửi lên server 1 lần =====
         let diemDat = 0;
+        let soLoiMoi = 0; // số câu sai vừa vào Sổ lỗi sai
         let diemToiDa = 0;
         let daLuu = false;
         let diemCong = 0; // điểm thật sự được cộng (đã nhân thưởng)
@@ -409,6 +410,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           diemDat += kq.diem_dat;
           diemToiDa += kq.diem_toi_da;
           if (kq.da_luu) daLuu = true;
+          soLoiMoi += (kq.so_loi_ghi || []).length;
           diemCong += kq.diem_cong || 0;
           heSo = Math.max(heSo, kq.he_so || 1);
           if (typeof kq.best_pct === "number") bestPct = Math.max(bestPct, kq.best_pct);
@@ -435,6 +437,14 @@ document.addEventListener("DOMContentLoaded", async () => {
               ? `<div class="kq kq-dung">✔ Đúng! +${r.diem} điểm</div>`
               : `<div class="kq kq-sai">✘ Chưa đúng.${cau.goi_y ? " Gợi ý: " + cau.goi_y : ""}</div>`;
             if (r.loi_giai) o.innerHTML += `<div class="kq-loi-giai"><b>Lời giải:</b> ${r.loi_giai}</div>`;
+            // MỚI: câu sai đã vào Sổ lỗi sai -> hỏi vì sao sai, lời giải mở khi sửa lỗi
+            if (r.dung === false && (kq.so_loi_ghi || []).includes(String(cau.id)) && window.SOLOI) {
+              const hop = document.createElement("div");
+              o.appendChild(hop);
+              SOLOI.veChanDoan(hop, { bai_key: `${subject}/${chapter}/${article}/${baiId}`, cau_id: String(cau.id) });
+              o.insertAdjacentHTML("beforeend",
+                `<p class="sl-ghi-chu">Lời giải sẽ mở khi bạn <a href="so-loi.html">sửa lỗi trong Sổ lỗi sai</a>.</p>`);
+            }
             veCongThuc(o); // vẽ công thức trong lời giải vừa hiện ra
           });
         }
@@ -445,7 +455,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         if (!userId) tongKet.textContent += " (Đăng nhập để điểm được lưu nhé!)";
         else if (diemDat > 0 && !daLuu) tongKet.textContent += " (Bài này bạn đã được cộng điểm trước đó)";
-
+        if (soLoiMoi > 0) tongKet.innerHTML += ` <a href="so-loi.html" style="color:var(--nhan)">${soLoiMoi} câu sai đã vào Sổ lỗi sai. Sửa ngay</a>`;
         // MỚI: hiện hạng cao nhất của bài sau khi nộp
         const hang = window.hangCua ? hangCua(bestPct) : null;
         if (userId && hang) {

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
+    <title>SaoLaEdu - Sổ lỗi sai</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style3.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+    <link rel="stylesheet" href="form.css" />
+    <link rel="stylesheet" href="so-loi.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+    <script defer src="math.js"></script>
+</head>
+
+<body>
+    <header id="header">
+        <div id="header-inner">
+            <section class="right">
+                <a href="index.html" id="logo">
+                    <img src="img/logo.webp" alt="Logo" />
+                    <span>SaoLa<span id="logo-span">Edu</span></span>
+                </a>
+            </section>
+            <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">☰</button>
+
+            <ul id="nav" class="center">
+                <li id="nav-gioi-thieu">
+                    <a href="index.html" id="link-gioi-thieu" title="Giới thiệu" aria-label="Giới thiệu">
+                        <i class="fa-solid fa-house"></i><span class="nav-chu">Giới thiệu</span>
+                    </a>
+                </li>
+                <li id="nav-bai-tap">
+                    <a href="subjects.html" id="link-bai-tap" class="active" title="Bài tập" aria-label="Bài tập">
+                        <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
+                    </a>
+                </li>
+                <li id="nav-cuoc-thi">
+                    <a href="contest.html" id="link-cuoc-thi" title="Tranh tài" aria-label="Tranh tài">
+                        <i class="fa-solid fa-trophy"></i><span class="nav-chu">Tranh tài</span>
+                    </a>
+                </li>
+                <li id="nav-xep-hang">
+                    <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
+                        <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-account-area">
+                <div id="auth-buttons">
+                    <a href="login.html" class="auth-link">Đăng nhập</a>
+                    <a href="register.html" class="auth-link">Đăng ký</a>
+                </div>
+                <div id="user-profile" class="hidden">
+                    <div class="streak-box">🔥 <span>0</span></div>
+                    <span class="username">Username</span>
+                    <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="sl-wrap">
+        <!-- ===== Bản đồ kỹ năng ===== -->
+        <section id="sl-ban-do">
+            <div class="sl-hero">
+                <h1>Sổ lỗi sai</h1>
+                <p>Mỗi kỹ năng bạn từng làm sai nằm ở đây. Sửa lỗi, rồi chứng minh bằng câu mới, cách nhau 1, 3 và 7
+                    ngày để nhớ thật.</p>
+            </div>
+            <div id="sl-tom-tat" class="sl-tom-tat"></div>
+            <div id="sl-ds"></div>
+        </section>
+
+        <!-- ===== Thẻ ôn (sửa lỗi / chứng minh) ===== -->
+        <section id="sl-the" class="hidden" aria-live="polite"></section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="so-loi-chung.js"></script>
+    <script src="so-loi.js"></script>
+</body>
+
+</html>

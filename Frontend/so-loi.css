@@ -1,0 +1,423 @@
+/* ==========================================================
+   so-loi.css - Sổ lỗi sai (so-loi.html) + hàng chẩn đoán ở form.html
+   Dùng lại biến màu của style.css: --nen, --chu, --nhat, --nhan, --vien
+   Nạp SAU form.css. Thẻ câu hỏi dùng lại .question-card / .lua-chon của form.css.
+   ========================================================== */
+
+.sl-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 28px 16px 70px;
+}
+
+.sl-hero h1 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    color: var(--chu);
+}
+
+.sl-hero p {
+    max-width: 62ch;
+    margin-top: 4px;
+    color: var(--nhat);
+}
+
+/* ---------- Nút ---------- */
+.sl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    font: inherit;
+    font-weight: 600;
+    color: var(--nhan);
+    background: var(--nen);
+    border: 1px solid var(--nhan);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.sl-btn:hover {
+    color: #fff;
+    background: var(--nhan);
+}
+
+.sl-btn.dac {
+    color: #fff;
+    background: var(--nhan);
+}
+
+.sl-btn.dac:hover {
+    background: #1d49b8;
+}
+
+.sl-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.sl-btn:focus-visible,
+.sl-gy:focus-visible,
+.sl-cd-chip button:focus-visible {
+    outline: 3px solid rgba(36, 87, 214, 0.4);
+    outline-offset: 2px;
+}
+
+/* ---------- Số liệu tóm tắt ---------- */
+.sl-tom-tat {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 22px 0 6px;
+}
+
+.sl-so {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px;
+    background: var(--nen);
+    border: 1px solid var(--vien);
+    border-radius: 14px;
+}
+
+.sl-so b {
+    font-size: 1.6rem;
+    line-height: 1.2;
+    color: var(--chu);
+}
+
+.sl-so span {
+    font-size: 0.85rem;
+    color: var(--nhat);
+}
+
+/* ---------- Danh sách kỹ năng ---------- */
+.sl-mon {
+    margin: 26px 0 12px;
+    font-size: 1.15rem;
+    color: var(--chu);
+}
+
+.sl-luoi {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.sl-the-kn {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 18px;
+    background: var(--nen);
+    border: 1px solid var(--vien);
+    border-radius: 14px;
+}
+
+/* kỹ năng cần làm hôm nay: viền xanh để dễ thấy */
+.sl-the-kn.can-lam {
+    border-color: var(--nhan);
+    box-shadow: 0 0 0 3px rgba(36, 87, 214, 0.1);
+}
+
+.sl-the-kn h3 {
+    font-size: 1rem;
+    line-height: 1.35;
+    color: var(--chu);
+}
+
+.sl-phu,
+.sl-ghi {
+    font-size: 0.85rem;
+    color: var(--nhat);
+}
+
+.sl-bac {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.sl-bac span {
+    height: 6px;
+    background: #e8eefc;
+    border-radius: 9px;
+}
+
+.sl-bac span.on {
+    background: var(--c);
+}
+
+.sl-muc {
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.sl-tag {
+    align-self: flex-start;
+    padding: 2px 10px;
+    font-size: 0.78rem;
+    color: var(--nhat);
+    background: #f4f7fc;
+    border-radius: 999px;
+}
+
+.sl-the-kn .sl-btn {
+    align-self: flex-start;
+    margin-top: 6px;
+}
+
+.sl-rong {
+    padding: 28px 20px;
+    text-align: center;
+    line-height: 2;
+    color: var(--nhat);
+    background: var(--nen);
+    border: 1px dashed var(--vien);
+    border-radius: 14px;
+}
+
+/* ---------- Thẻ ôn ---------- */
+.sl-tren {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.sl-kn {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.sl-kn b {
+    color: var(--chu);
+}
+
+.sl-kn span {
+    font-size: 0.85rem;
+    color: var(--nhat);
+}
+
+.sl-kn em {
+    font-style: normal;
+    font-weight: 700;
+}
+
+.sl-banner {
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    line-height: 1.6;
+    color: var(--chu);
+    border-left: 5px solid var(--nhan);
+    border-radius: 0 12px 12px 0;
+    background: #eef3ff;
+}
+
+.sl-banner.sua {
+    background: #fff4e0;
+    border-left-color: #c27410;
+}
+
+.sl-banner.cm {
+    background: #e8f6ef;
+    border-left-color: #178a5a;
+}
+
+.sl-tp {
+    margin: 0 0 16px;
+}
+
+.sl-tp summary {
+    cursor: pointer;
+    font-weight: 700;
+}
+
+/* thẻ câu hỏi nằm ngoài #quiz-container nên cần tự cỡ chữ */
+#sl-card {
+    font-size: 18px;
+    line-height: 1.75;
+}
+
+/* ---------- Gợi ý 3 tầng ---------- */
+.sl-thang-goi-y {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.sl-gy {
+    padding: 7px 14px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--nhan);
+    background: #fff;
+    border: 1.5px solid var(--vien);
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.sl-gy:hover:not(:disabled) {
+    background: #eaf0ff;
+    border-color: var(--nhan);
+}
+
+.sl-gy:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.sl-gy.da-mo {
+    color: var(--nhat);
+    background: #f4f7fc;
+    opacity: 1;
+}
+
+.sl-gy.nhac {
+    border-color: var(--nhan);
+    box-shadow: 0 0 0 3px rgba(36, 87, 214, 0.25);
+}
+
+.sl-goi-y {
+    margin-top: 14px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    background: #f5f8ff;
+    border: 1px solid var(--vien);
+    border-radius: 12px;
+}
+
+.sl-goi-y.t3 {
+    background: #fffdf5;
+    border-color: #f1e6bf;
+}
+
+.sl-goi-y>b {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--nhan);
+}
+
+.sl-ly-thuyet {
+    max-height: 320px;
+    margin: 0;
+    padding: 8px 0 0;
+    overflow-y: auto;
+    border-top: 1px solid var(--vien);
+}
+
+.sl-dap-an {
+    margin-top: 10px;
+}
+
+.sl-hanh-dong {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+#sl-kq .sl-hanh-dong {
+    margin-top: 14px;
+}
+
+/* ---------- Đáp án đã loại ---------- */
+.lua-chon.da-loai {
+    opacity: 0.4 !important;
+    text-decoration: line-through;
+    pointer-events: none;
+}
+
+/* ---------- Hàng chẩn đoán "Vì sao sai?" (dùng cả ở form.html) ---------- */
+.sl-chan-doan {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid var(--vien);
+    border-radius: 12px;
+}
+
+.sl-cd-hoi {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--chu);
+}
+
+.sl-cd-chip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.sl-cd-chip button {
+    padding: 6px 14px;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--chu);
+    background: #f4f7fc;
+    border: 1.5px solid transparent;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.sl-cd-chip button:hover {
+    border-color: var(--nhan);
+}
+
+.sl-cd-chip button.on {
+    color: #fff;
+    background: var(--nhan);
+}
+
+.sl-cd-khuyen {
+    margin-top: 8px;
+    font-size: 0.92rem;
+    color: var(--nhat);
+}
+
+.sl-cd-khuyen:empty {
+    display: none;
+}
+
+.sl-ghi-chu {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: var(--nhat);
+}
+
+.sl-ghi-chu a {
+    color: var(--nhan);
+    font-weight: 600;
+}
+
+/* ---------- Điện thoại ---------- */
+@media (max-width: 640px) {
+    .sl-tom-tat {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sl-kn {
+        text-align: left;
+    }
+
+    #sl-card {
+        font-size: 17px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .sl-btn,
+    .sl-gy {
+        transition: none;
+    }
+}

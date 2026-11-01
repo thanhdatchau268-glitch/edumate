@@ -5,6 +5,45 @@ from datetime import date, timedelta
 # __file__ là vị trí file db_ops.py, từ đó đi lùi ra rồi vào thư mục Database
 # nên chạy lệnh ở thư mục nào cũng tìm đúng file edumate.db
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'Database', 'edumate.db')
+# ====================== CẤU HÌNH BẢNG XẾP HẠNG ======================
+# Thêm môn chuyên mới: thêm 1 dòng vào BANG_XEP_HANG (id -> (tên hiển thị, giá trị mon_chuyen))
+BANG_XEP_HANG = {
+    "khong-chuyen": ("Không chuyên", ""),
+    "toan":         ("Chuyên Toán", "toan"),
+    "ly":           ("Chuyên Vật Lý", "ly"),
+    "hoa":          ("Chuyên Hóa Học", "hoa"),
+}
+# Thêm kỳ xếp hạng mới (vd "tuan") thì thêm ở đây và xử lý trong get_ranking
+KY_XEP_HANG = {"tong": "Tổng", "thang": "Tháng này"}
+
+# Các giá trị mon_chuyen hợp lệ (app.py dùng lại để kiểm tra)
+MON_CHUYEN_HOP_LE = {mon for _, mon in BANG_XEP_HANG.values()}
+
+def thang_hien_tai():
+    return date.today().strftime("%Y-%m")   # vd "2026-11"
+
+def dam_bao_bang_thang():
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS diem_thang (
+            user_id INTEGER,
+            thang TEXT,
+            diem INTEGER DEFAULT 0,
+            PRIMARY KEY (user_id, thang)
+        )''')
+    conn.commit()
+    conn.close()
+
+def cong_diem_thang(conn, user_id, diem):
+    """Cộng điểm vào bảng tháng (dùng chung connection, người gọi tự commit)."""
+    if diem <= 0:
+        return
+    conn.execute(
+        "INSERT INTO diem_thang (user_id, thang, diem) VALUES (?, ?, ?) "
+        "ON CONFLICT(user_id, thang) DO UPDATE SET diem = diem + excluded.diem",
+        (user_id, thang_hien_tai(), diem))
+
+dam_bao_bang_thang()
 
 # 1. Thêm tài khoản mới (Create)
 def add_user(username, email, mk, bio=""):
@@ -58,11 +97,8 @@ def delete_user(user_id):
 def update_user_score(user_id, points):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute('''
-        UPDATE users 
-        SET score = score + ? 
-        WHERE id = ?
-    ''', (points, user_id))
+    cursor.execute('UPDATE users SET score = score + ? WHERE id = ?', (points, user_id))
+    cong_diem_thang(conn, user_id, points)   # cộng luôn vào bảng tháng
     conn.commit()
     conn.close()
     print(f"Đã cộng thêm {points} điểm cho user ID {user_id}!")
@@ -123,16 +159,22 @@ def update_streak(user_id):
     conn.close()
 
 # 7. Lấy bảng xếp hạng: điểm cao nhất đứng trên cùng (kèm avatar)
-def get_ranking(limit=50):
+def get_ranking(bang="khong-chuyen", ky="tong", limit=50):
+    mon = BANG_XEP_HANG[bang][1]
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT id, username, bio, score, streak, mon_chuyen, last_active_date, avatar, the_bao_ho "
-        "FROM users ORDER BY score DESC LIMIT ?",
-        (limit,)
-    )
-    rows = [dict(r) for r in cursor.fetchall()]
+    if ky == "thang":
+        sql = ("SELECT u.id, u.username, u.bio, u.avatar, u.streak, t.diem AS score "
+               "FROM users u JOIN diem_thang t ON t.user_id = u.id AND t.thang = ? "
+               "WHERE COALESCE(u.mon_chuyen, '') = ? AND t.diem > 0 "
+               "ORDER BY t.diem DESC, u.id ASC LIMIT ?")
+        args = (thang_hien_tai(), mon, limit)
+    else:
+        sql = ("SELECT u.id, u.username, u.bio, u.avatar, u.streak, u.score AS score "
+               "FROM users u WHERE COALESCE(u.mon_chuyen, '') = ? "
+               "ORDER BY u.score DESC, u.id ASC LIMIT ?")
+        args = (mon, limit)
+    rows = [dict(r) for r in conn.execute(sql, args).fetchall()]
     conn.close()
     return rows
 
