@@ -5,10 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
-  <title>SaoLaEdu</title>
+  <title>Đăng nhập - SaoLaEdu</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="style2.css" />
   <link rel="stylesheet" href="style3.css" />
+  <link rel="stylesheet" href="auth.css" />
 </head>
 
 <body>
@@ -20,9 +21,7 @@
           <span>SaoLa<span id="logo-span">Edu</span></span>
         </a>
       </section>
-      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">
-        ☰
-      </button>
+      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">☰</button>
 
       <ul id="nav" class="center">
         <li id="nav-gioi-thieu">
@@ -52,7 +51,6 @@
           <a href="login.html" class="auth-link">Đăng nhập</a>
           <a href="register.html" class="auth-link">Đăng ký</a>
         </div>
-        <!-- 2. Khi đã đăng nhập (mặc định thêm class hidden) -->
         <div id="user-profile" class="hidden">
           <div class="streak-box">🔥 <span>0</span></div>
           <span class="username">Username</span>
@@ -62,20 +60,73 @@
     </div>
   </header>
 
-  <div id="login">
-    <form id="input-login" onsubmit="handleLoginSubmit(event)">
-      <label for="login-email">Email:</label><br>
-      <input type="email" id="login-email" placeholder="Nhập email..." required><br>
+  <main class="auth-page">
+    <div class="auth-card">
 
-      <label for="login-password">Mật khẩu:</label><br>
-      <input type="password" id="login-password" placeholder="Nhập mật khẩu..." required><br>
-      <a href="#">Quên mật khẩu</a><br>
+      <!-- Cột trái: giới thiệu -->
+      <aside class="auth-side">
+        <div>
+          <h2>Chào mừng bạn quay lại!</h2>
+          <p>Tiếp tục hành trình ôn thi vào lớp 10 cùng SaoLaEdu.</p>
+        </div>
+        <ul class="auth-loi-ich">
+          <li><i class="fa-solid fa-book-open"></i>
+            <div><b>Kho đề bám sát đề thi thật</b><span>Luyện từng bài, xem lời giải chi tiết.</span></div>
+          </li>
+          <li><i class="fa-solid fa-school"></i>
+            <div><b>Gợi ý trường phù hợp</b><span>Dựa trên điểm số và khoảng cách từ nhà.</span></div>
+          </li>
+          <li><i class="fa-solid fa-fire"></i>
+            <div><b>Giữ chuỗi ngày học</b><span>Điểm danh, nhiệm vụ và xếp hạng mỗi ngày.</span></div>
+          </li>
+        </ul>
+        <small>© SaoLaEdu</small>
+      </aside>
 
-      <button type="submit">Đăng nhập</button>
-      <button type="reset">Xóa tất cả</button>
-    </form>
-    <script src="script.js"></script>
-  </div>
+      <!-- Cột phải: form -->
+      <section class="auth-main">
+        <h1>Đăng nhập</h1>
+        <p class="auth-sub">Nhập email và mật khẩu để tiếp tục.</p>
+
+        <div id="auth-alert" class="auth-alert" role="alert" aria-live="polite"></div>
+
+        <form id="form-login" class="auth-form" novalidate>
+          <div class="field">
+            <label for="login-email">Email</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-envelope ico"></i>
+              <input type="email" id="login-email" placeholder="ban@gmail.com" autocomplete="email" required />
+            </div>
+            <p class="field-msg"></p>
+          </div>
+
+          <div class="field">
+            <label for="login-password">Mật khẩu</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-lock ico"></i>
+              <input type="password" id="login-password" placeholder="Nhập mật khẩu" autocomplete="current-password"
+                required />
+              <button type="button" class="toggle-mk" data-for="login-password" aria-label="Hiện mật khẩu">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+            <p class="field-msg"></p>
+          </div>
+
+          <div class="auth-phu">
+            <button type="button" id="btn-quen-mk" class="auth-link-nho">Quên mật khẩu?</button>
+          </div>
+
+          <button type="submit" id="btn-login" class="auth-btn">Đăng nhập</button>
+        </form>
+
+        <p class="auth-chuyen">Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a></p>
+      </section>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
 </body>
 
 </html>

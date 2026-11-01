@@ -1,0 +1,484 @@
+/* ==========================================================
+   gate.css - giao diện giới thiệu cho khách (chưa đăng nhập)
+   ở trang Bài tập (subjects.html) và Cuộc thi (contest.html)
+   Dùng lại biến màu: --nen, --chu, --nhat, --nhan, --vien
+   ========================================================== */
+
+.gt-trang {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 28px 16px 70px;
+    color: var(--chu);
+}
+
+/* ---------- Phần đầu trang ---------- */
+.gt-hero {
+    padding: 44px 20px 36px;
+    text-align: center;
+    background:
+        radial-gradient(circle at 10% 0%, rgba(91, 124, 240, 0.16), transparent 45%),
+        radial-gradient(circle at 95% 100%, rgba(123, 75, 216, 0.1), transparent 40%),
+        var(--nen);
+    border: 1px solid var(--vien);
+    border-radius: 24px;
+    box-shadow: 0 1px 2px rgba(27, 42, 65, 0.05), 0 12px 34px rgba(27, 42, 65, 0.07);
+}
+
+.gt-nhan {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--nhan);
+    background: #e8eefc;
+    border-radius: 999px;
+}
+
+.gt-hero h1 {
+    max-width: 22ch;
+    margin: 14px auto 8px;
+    font-size: clamp(1.7rem, 4vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.gt-hero>p {
+    max-width: 60ch;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    color: var(--nhat);
+}
+
+.gt-cta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.gt-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font: inherit;
+    font-weight: 700;
+    color: var(--nhan);
+    background: var(--nen);
+    border: 1.5px solid var(--nhan);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s, box-shadow 0.2s;
+}
+
+.gt-btn:hover {
+    background: #eaf0ff;
+}
+
+.gt-btn:focus-visible {
+    outline: 3px solid rgba(36, 87, 214, 0.4);
+    outline-offset: 2px;
+}
+
+.gt-btn.dac {
+    color: #fff;
+    background: linear-gradient(120deg, #2457d6, #5b7cf0);
+    border-color: transparent;
+    box-shadow: 0 8px 20px rgba(36, 87, 214, 0.28);
+}
+
+.gt-btn.dac:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(36, 87, 214, 0.36);
+}
+
+/* dải ý chính dưới nút */
+.gt-chip-dong {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 24px;
+    list-style: none;
+}
+
+.gt-chip-dong li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--nhat);
+    background: #f4f7fc;
+    border: 1px solid var(--vien);
+    border-radius: 999px;
+}
+
+.gt-chip-dong i {
+    color: #178a5a;
+}
+
+/* ---------- Từng khối nội dung ---------- */
+.gt-khoi {
+    margin-top: 48px;
+}
+
+.gt-khoi>h2 {
+    font-size: 1.45rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+.gt-khoi>.gt-sub {
+    margin: 4px 0 22px;
+    text-align: center;
+    color: var(--nhat);
+}
+
+.gt-khoi h3 {
+    margin: 24px 0 12px;
+    font-size: 1.05rem;
+    text-align: center;
+}
+
+/* ---------- Các bước ---------- */
+.gt-buoc {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    list-style: none;
+}
+
+.gt-buoc li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 20px 14px;
+    text-align: center;
+    background: var(--nen);
+    border: 1px solid var(--vien);
+    border-radius: 16px;
+}
+
+.gt-buoc li small {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--nhat);
+}
+
+/* mũi tên nối giữa các bước */
+.gt-buoc li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 42px;
+    right: -12px;
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid #9aa6b8;
+    border-right: 2px solid #9aa6b8;
+    transform: rotate(45deg);
+}
+
+.gt-buoc-so {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    font-size: 1.15rem;
+    color: var(--nhan);
+    background: #e8eefc;
+    border-radius: 50%;
+}
+
+/* ---------- Ô môn học ---------- */
+.gt-trang .subject-grid {
+    margin: 24px auto 0;
+}
+
+.gt-the-mon {
+    cursor: pointer;
+}
+
+.gt-phu {
+    margin-top: -8px;
+    font-size: 0.85rem;
+    color: var(--nhat);
+}
+
+.subject-badge i {
+    margin-right: 4px;
+}
+
+/* ---------- Khung "cửa sổ" xem trước ---------- */
+.gt-xem {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.gt-cua-so {
+    overflow: hidden;
+    background: var(--nen);
+    border: 1px solid var(--vien);
+    border-radius: 18px;
+    box-shadow: 0 2px 4px rgba(27, 42, 65, 0.06), 0 18px 44px rgba(27, 42, 65, 0.1);
+}
+
+.gt-cua-so-dau {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #f5f8ff;
+    border-bottom: 1px solid var(--vien);
+}
+
+.gt-cham {
+    display: inline-flex;
+    gap: 6px;
+}
+
+.gt-cham i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d4dbe8;
+}
+
+.gt-cham i:nth-child(1) {
+    background: #f0a3a3;
+}
+
+.gt-cham i:nth-child(2) {
+    background: #f1d28a;
+}
+
+.gt-cham i:nth-child(3) {
+    background: #9fd8b9;
+}
+
+.gt-cua-so-ten {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--nhat);
+}
+
+.gt-ribbon {
+    margin-left: auto;
+    padding: 2px 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #c27410;
+    background: #fdf1de;
+    border-radius: 999px;
+}
+
+.gt-cua-so-than {
+    padding: 16px;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.gt-cua-so-than .pl-tong {
+    margin-bottom: 12px;
+}
+
+.gt-cua-so .question-card {
+    margin: 0 !important;
+    box-shadow: none;
+}
+
+/* bài học mẫu: bấm vào thì hiện hộp mời đăng nhập */
+.gt-cua-so .bh-the {
+    cursor: pointer;
+}
+
+/* câu hỏi dùng thử */
+.gt-demo-nut {
+    margin-top: 16px;
+}
+
+.gt-demo-moi {
+    margin-top: 14px;
+    font-weight: 600;
+}
+
+.gt-demo-moi .gt-cta {
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+/* ---------- Tính năng ---------- */
+.gt-tn {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.gt-tn article {
+    padding: 20px 18px;
+    background: var(--nen);
+    border: 1px solid var(--vien);
+    border-top: 4px solid var(--c);
+    border-radius: 16px;
+}
+
+.gt-tn article i {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 10px;
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) 13%, #fff);
+    border-radius: 50%;
+}
+
+.gt-tn article b {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.gt-tn article p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--nhat);
+}
+
+/* ---------- Dải kêu gọi cuối trang ---------- */
+.gt-cuoi {
+    margin-top: 48px;
+    padding: 38px 20px;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(140deg, #1d49b8, #2457d6 50%, #6a8bf5);
+    border-radius: 22px;
+    box-shadow: 0 18px 40px rgba(36, 87, 214, 0.28);
+}
+
+.gt-cuoi h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.gt-cuoi p {
+    margin-top: 6px;
+    opacity: 0.9;
+}
+
+.gt-cuoi .gt-btn.dac {
+    color: var(--nhan);
+    background: #fff;
+    box-shadow: none;
+}
+
+.gt-cuoi .gt-btn:not(.dac) {
+    color: #fff;
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+.gt-cuoi .gt-btn:not(.dac):hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+/* ---------- Trang cuộc thi ---------- */
+.gt-cuon {
+    overflow-x: auto;
+}
+
+.gt-ghi {
+    margin-top: 10px;
+    font-size: 0.88rem;
+    text-align: center;
+    color: var(--nhat);
+}
+
+.gt-tab-nd {
+    height: 380px;
+    overflow-y: auto;
+}
+
+.gt-cua-so .contest-tabs {
+    flex: 1;
+}
+
+.gt-cua-so .contest-table {
+    box-shadow: none;
+}
+
+.gt-o-khoa {
+    margin-left: 8px;
+    font-size: 0.8rem;
+    color: #9aa6b8;
+}
+
+/* ---------- Hộp mời đăng nhập ---------- */
+.gt-modal-nd {
+    padding: 26px 24px 28px;
+    text-align: center;
+}
+
+.gt-khoa-icon {
+    display: grid;
+    place-items: center;
+    width: 62px;
+    height: 62px;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    color: var(--nhan);
+    background: #e8eefc;
+    border-radius: 50%;
+}
+
+.gt-modal-nd p {
+    margin: 14px 0 4px;
+    color: var(--nhat);
+}
+
+/* ---------- Màn hình nhỏ ---------- */
+@media (max-width: 860px) {
+    .gt-xem {
+        grid-template-columns: 1fr;
+    }
+
+    .gt-buoc,
+    .gt-tn {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gt-buoc li:not(:last-child)::after {
+        display: none;
+    }
+}
+
+@media (max-width: 520px) {
+
+    .gt-buoc,
+    .gt-tn {
+        grid-template-columns: 1fr;
+    }
+
+    .gt-hero {
+        padding: 32px 14px 28px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gt-btn {
+        transition: none;
+    }
+
+    .gt-btn.dac:hover {
+        transform: none;
+    }
+}

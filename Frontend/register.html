@@ -5,10 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
-  <title>SaoLaEdu</title>
+  <title>Đăng ký - SaoLaEdu</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="style2.css" />
   <link rel="stylesheet" href="style3.css" />
+  <link rel="stylesheet" href="auth.css" />
 </head>
 
 <body>
@@ -20,9 +21,7 @@
           <span>SaoLa<span id="logo-span">Edu</span></span>
         </a>
       </section>
-      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">
-        ☰
-      </button>
+      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">☰</button>
 
       <ul id="nav" class="center">
         <li id="nav-gioi-thieu">
@@ -52,7 +51,6 @@
           <a href="login.html" class="auth-link">Đăng nhập</a>
           <a href="register.html" class="auth-link">Đăng ký</a>
         </div>
-        <!-- 2. Khi đã đăng nhập (mặc định thêm class hidden) -->
         <div id="user-profile" class="hidden">
           <div class="streak-box">🔥 <span>0</span></div>
           <span class="username">Username</span>
@@ -62,26 +60,98 @@
     </div>
   </header>
 
-  <div id="register">
-    <form id="input-register" onsubmit="handleRegisterSubmit(event)">
-      <label for="reg-email">Email:</label><br>
-      <input type="email" id="reg-email" placeholder="Nhập email..." required><br>
+  <main class="auth-page">
+    <div class="auth-card">
 
-      <label for="reg-username">Username:</label><br>
-      <input type="text" id="reg-username" placeholder="Nhập username..." required><br>
+      <!-- Cột trái: giới thiệu -->
+      <aside class="auth-side">
+        <div>
+          <h2>Bắt đầu hành trình cùng SaoLaEdu</h2>
+          <p>Tạo tài khoản miễn phí chỉ trong chưa đầy 1 phút.</p>
+        </div>
+        <ul class="auth-loi-ich">
+          <li><i class="fa-solid fa-graduation-cap"></i>
+            <div><b>Lịch học cá nhân hoá</b><span>Tự xếp giờ ôn bài theo thời khóa biểu của bạn.</span></div>
+          </li>
+          <li><i class="fa-solid fa-book-bookmark"></i>
+            <div><b>Sổ lỗi sai thông minh</b><span>Ôn đúng chỗ hổng, nhớ lâu hơn.</span></div>
+          </li>
+          <li><i class="fa-solid fa-ranking-star"></i>
+            <div><b>Đua top cùng bạn bè</b><span>Tích điểm, nhận quà, leo bảng xếp hạng.</span></div>
+          </li>
+        </ul>
+        <small>© SaoLaEdu</small>
+      </aside>
 
-      <label for="reg-password">Mật khẩu:</label><br>
-      <input type="password" id="reg-password" placeholder="Nhập mật khẩu..." required><br>
+      <!-- Cột phải: form -->
+      <section class="auth-main">
+        <h1>Tạo tài khoản</h1>
+        <p class="auth-sub">Điền thông tin bên dưới để đăng ký.</p>
 
-      <label for="reg-confirm-password">Nhập lại mật khẩu:</label><br>
-      <input type="password" id="reg-confirm-password" placeholder="Nhập lại mật khẩu..." required><br>
+        <div id="auth-alert" class="auth-alert" role="alert" aria-live="polite"></div>
 
-      <button type="submit">Đăng Ký</button>
-      <button type="reset">Xóa tất cả</button>
-    </form>
-    <script src="script.js"></script>
-  </div>
+        <form id="form-register" class="auth-form" novalidate>
+          <div class="field">
+            <label for="reg-email">Email</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-envelope ico"></i>
+              <input type="email" id="reg-email" placeholder="ban@gmail.com" autocomplete="email" required />
+            </div>
+            <p class="field-msg"></p>
+          </div>
 
+          <div class="field">
+            <label for="reg-username">Username</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-user ico"></i>
+              <input type="text" id="reg-username" placeholder="Tên hiển thị trên bảng xếp hạng" maxlength="30"
+                autocomplete="username" required />
+            </div>
+            <p class="field-msg"></p>
+          </div>
+
+          <div class="field">
+            <label for="reg-password">Mật khẩu</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-lock ico"></i>
+              <input type="password" id="reg-password" placeholder="Ít nhất 6 ký tự" autocomplete="new-password"
+                required />
+              <button type="button" class="toggle-mk" data-for="reg-password" aria-label="Hiện mật khẩu">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+            <p class="field-msg"></p>
+          </div>
+
+          <!-- Thanh độ mạnh mật khẩu (auth.js cập nhật data-m từ 0 đến 4) -->
+          <div id="mk-manh" class="mk-manh" data-m="0">
+            <div class="mk-thanh"><span></span><span></span><span></span><span></span></div>
+            <p id="mk-chu" class="mk-chu"></p>
+          </div>
+
+          <div class="field">
+            <label for="reg-confirm-password">Nhập lại mật khẩu</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-shield-halved ico"></i>
+              <input type="password" id="reg-confirm-password" placeholder="Nhập lại mật khẩu"
+                autocomplete="new-password" required />
+              <button type="button" class="toggle-mk" data-for="reg-confirm-password" aria-label="Hiện mật khẩu">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+            <p class="field-msg"></p>
+          </div>
+
+          <button type="submit" id="btn-register" class="auth-btn">Đăng ký</button>
+        </form>
+
+        <p class="auth-chuyen">Đã có tài khoản? <a href="login.html">Đăng nhập</a></p>
+      </section>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
 </body>
 
 </html>
