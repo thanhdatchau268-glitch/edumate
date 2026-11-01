@@ -159,7 +159,7 @@ def update_streak(user_id):
     conn.close()
 
 # 7. Lấy bảng xếp hạng: điểm cao nhất đứng trên cùng (kèm avatar)
-def get_ranking(bang="khong-chuyen", ky="tong", limit=50):
+def get_ranking(bang="khong-chuyen", ky="tong", limit=20):
     mon = BANG_XEP_HANG[bang][1]
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -177,6 +177,41 @@ def get_ranking(bang="khong-chuyen", ky="tong", limit=50):
     rows = [dict(r) for r in conn.execute(sql, args).fetchall()]
     conn.close()
     return rows
+def get_my_rank(user_id, bang="khong-chuyen", ky="tong"):
+    """Trả về {hang, username, bio, avatar, score} của user, hoặc None nếu không có trên bảng."""
+    mon = BANG_XEP_HANG[bang][1]
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    if ky == "thang":
+        thang = thang_hien_tai()
+        me = conn.execute(
+            "SELECT u.id, u.username, u.bio, u.avatar, t.diem AS score "
+            "FROM users u JOIN diem_thang t ON t.user_id = u.id AND t.thang = ? "
+            "WHERE u.id = ? AND COALESCE(u.mon_chuyen, '') = ? AND t.diem > 0",
+            (thang, user_id, mon)).fetchone()
+        if not me:
+            conn.close()
+            return None
+        truoc = conn.execute(
+            "SELECT COUNT(*) FROM users u JOIN diem_thang t ON t.user_id = u.id AND t.thang = ? "
+            "WHERE COALESCE(u.mon_chuyen, '') = ? AND t.diem > 0 "
+            "AND (t.diem > ? OR (t.diem = ? AND u.id < ?))",
+            (thang, mon, me['score'], me['score'], me['id'])).fetchone()[0]
+    else:
+        me = conn.execute(
+            "SELECT id, username, bio, avatar, score FROM users "
+            "WHERE id = ? AND COALESCE(mon_chuyen, '') = ?", (user_id, mon)).fetchone()
+        if not me:
+            conn.close()
+            return None
+        truoc = conn.execute(
+            "SELECT COUNT(*) FROM users WHERE COALESCE(mon_chuyen, '') = ? "
+            "AND (score > ? OR (score = ? AND id < ?))",
+            (mon, me['score'], me['score'], me['id'])).fetchone()[0]
+    conn.close()
+    kq = dict(me)
+    kq['hang'] = truoc + 1
+    return kq
 
 # 8. Lưu môn chuyên của người dùng ('' = không thi chuyên)
 def update_mon_chuyen(user_id, mon):

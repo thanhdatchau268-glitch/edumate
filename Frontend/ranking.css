@@ -138,3 +138,11 @@
         display: none;
     }
 }
+
+.rk-table td.rk-cach {
+    padding: 2px 16px;
+    text-align: center;
+    letter-spacing: 4px;
+    color: var(--nhat);
+    border-bottom: none;
+}

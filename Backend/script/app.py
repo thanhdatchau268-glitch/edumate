@@ -11,7 +11,8 @@ from db_ops import (
     add_user, get_all_users, update_user, delete_user,
     update_streak, update_user_score, get_ranking, update_mon_chuyen,
     get_user, update_avatar, streak_hien_thi,
-    BANG_XEP_HANG, KY_XEP_HANG, MON_CHUYEN_HOP_LE, thang_hien_tai
+    BANG_XEP_HANG, KY_XEP_HANG, MON_CHUYEN_HOP_LE, thang_hien_tai, get_my_rank
+    
 )
 
 from qua_tang import qua_bp, he_so_x15   # điểm danh + vòng quay + buff x1,5
@@ -287,10 +288,15 @@ def submit():
 def ranking():
     bang = request.args.get('bang', 'khong-chuyen')
     ky = request.args.get('ky', 'tong')
+    user_id = request.args.get('user_id', type=int)
     if bang not in BANG_XEP_HANG or ky not in KY_XEP_HANG:
         return jsonify({"success": False, "message": "Bảng xếp hạng không hợp lệ!"}), 400
-    return jsonify({"success": True, "bang": bang, "ky": ky,
-                    "data": get_ranking(bang, ky)}), 200
+
+    ds = get_ranking(bang, ky)   # top 20
+    me = None
+    if user_id and not any(u['id'] == user_id for u in ds):   # chỉ gửi khi nằm ngoài top 20
+        me = get_my_rank(user_id, bang, ky)
+    return jsonify({"success": True, "bang": bang, "ky": ky, "data": ds, "me": me}), 200
 
 # 7b. Danh sách bảng + kỳ để giao diện tự vẽ tab
 @app.route('/api/ranking/cau-hinh', methods=['GET'])

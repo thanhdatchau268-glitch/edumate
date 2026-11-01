@@ -96,6 +96,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
         tbody.appendChild(tr);
       });
+      // Bạn nằm ngoài top 20: hiện thêm dòng của bạn ngay dưới bảng
+      if (kq.me) {
+        const cach = document.createElement("tr");
+        cach.innerHTML = `<td colspan="4" class="rk-cach">⋯</td>`;
+        tbody.appendChild(cach);
+
+        const tr = document.createElement("tr");
+        tr.className = "rk-toi";
+        [kq.me.hang, kq.me.username, kq.me.bio || "", kq.me.score].forEach((chu) => {
+          const td = document.createElement("td");
+          td.textContent = chu;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      }
     } catch (err) {
       if (l !== luot) return;
       baoDong("Không kết nối được server. Bật app.py nhé!");
@@ -104,7 +119,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // ----- Khởi động: lấy danh sách bảng từ server -----
   try {
-    const res = await fetch(`${API}/api/ranking/cau-hinh`);
+    const uq = userId ? `&user_id=${encodeURIComponent(userId)}` : "";
+    const res = await fetch(`${API}/api/ranking?bang=${encodeURIComponent(bang)}&ky=${encodeURIComponent(ky)}${uq}`);
     const kq = await res.json();
     if (!kq.success) throw new Error(kq.message);
     cauHinh = kq;
