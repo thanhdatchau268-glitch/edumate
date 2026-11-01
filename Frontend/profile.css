@@ -1,0 +1,435 @@
+/* ==========================================================
+   profile.css - giao diện trang hồ sơ (profile.html)
+   Nạp SAU style3.css. Dùng lại biến màu: --nen, --chu, --nhat, --nhan, --vien
+   ========================================================== */
+
+.pf-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 24px 16px 70px;
+}
+
+/* ---------- Thẻ chung ---------- */
+.pf-card {
+    padding: 22px 24px;
+    background: var(--nen);
+    border: 1px solid var(--vien);
+    border-radius: 18px;
+    box-shadow: 0 1px 2px rgba(27, 42, 65, 0.05), 0 8px 24px rgba(27, 42, 65, 0.06);
+}
+
+.pf-card h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    color: var(--chu);
+}
+
+.pf-card h2 i {
+    color: var(--nhan);
+}
+
+.pf-card-dau {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.pf-ghi {
+    margin-top: 4px;
+    font-size: 0.88rem;
+    color: var(--nhat);
+}
+
+.pf-ghi.nho {
+    margin-top: 14px;
+    font-size: 0.8rem;
+}
+
+/* ---------- Thẻ hồ sơ (hero) ---------- */
+/* ghi đè .profile-card cũ trong style3.css */
+.pf-wrap .profile-card {
+    position: relative;
+    max-width: none;
+    padding: 0;
+    text-align: left;
+    background: var(--nen);
+    border: 1px solid var(--vien);
+    border-radius: 20px;
+    box-shadow: 0 1px 2px rgba(27, 42, 65, 0.06), 0 10px 30px rgba(27, 42, 65, 0.08);
+}
+
+.pf-cover {
+    height: 110px;
+    background:
+        radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.28), transparent 45%),
+        linear-gradient(120deg, #2457d6, #7b9cf5);
+    border-radius: 19px 19px 0 0;
+}
+
+.pf-hero-body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 18px;
+    margin-top: -56px;
+    padding: 0 28px 24px;
+}
+
+.pf-avatar {
+    flex: none;
+    width: 112px;
+    height: 112px;
+    object-fit: cover;
+    background: #e8eefc;
+    border: 5px solid var(--nen);
+    border-radius: 50%;
+    box-shadow: 0 8px 20px rgba(36, 87, 214, 0.25);
+}
+
+.pf-info {
+    flex: 1 1 220px;
+    min-width: 0;
+    padding-top: 62px;
+    /* để chữ nằm dưới dải màu, không đè lên */
+}
+
+.pf-info h1 {
+    font-size: 1.6rem;
+    line-height: 1.25;
+    color: var(--chu);
+    word-break: break-word;
+}
+
+.pf-bio {
+    margin-top: 4px;
+    font-style: italic;
+    color: var(--nhat);
+    word-break: break-word;
+}
+
+.pf-hanh-dong {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* ---------- 4 ô thống kê ---------- */
+.pf-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.pf-stat {
+    --c: var(--nhan);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 18px 10px;
+    text-align: center;
+    background: var(--nen);
+    border: 1px solid var(--vien);
+    border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(27, 42, 65, 0.05);
+}
+
+.pf-stat>i {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) 13%, #fff);
+    border-radius: 50%;
+}
+
+.pf-stat b {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    color: var(--chu);
+}
+
+.pf-stat b.pf-stat-chu {
+    font-size: 1.05rem;
+    line-height: 1.9rem;
+}
+
+.pf-stat>span {
+    font-size: 0.82rem;
+    color: var(--nhat);
+}
+
+/* ---------- Thanh tiến độ mở khoá ---------- */
+.pf-thanh {
+    height: 10px;
+    overflow: hidden;
+    background: #e8eefc;
+    border-radius: 999px;
+}
+
+.pf-thanh i {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #2457d6, #5b7cf0);
+    border-radius: 999px;
+    transition: width 0.5s ease;
+}
+
+/* ---------- Hai cột: thông báo + tiện ích ---------- */
+.pf-luoi-2 {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/* ---------- Công tắc bật / tắt ---------- */
+.pf-switch {
+    position: relative;
+    flex: none;
+    width: 48px;
+    height: 28px;
+}
+
+.pf-switch input {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.pf-truot {
+    position: absolute;
+    inset: 0;
+    background: #cdd5e2;
+    border-radius: 999px;
+    transition: background 0.2s;
+}
+
+.pf-truot::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s;
+}
+
+.pf-switch input:checked+.pf-truot {
+    background: var(--nhan);
+}
+
+.pf-switch input:checked+.pf-truot::after {
+    transform: translateX(20px);
+}
+
+.pf-switch input:focus-visible+.pf-truot {
+    outline: 3px solid rgba(36, 87, 214, 0.35);
+    outline-offset: 2px;
+}
+
+.pf-switch input:disabled {
+    cursor: not-allowed;
+}
+
+.pf-switch input:disabled+.pf-truot {
+    opacity: 0.5;
+}
+
+/* ---------- Khối thông báo ---------- */
+.pf-trang-thai {
+    min-height: 1.3em;
+    margin-bottom: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--nhat);
+}
+
+.pf-trang-thai.ok {
+    color: #178a5a;
+}
+
+.pf-trang-thai.loi {
+    color: #c62828;
+}
+
+.tb-chi-tiet {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: opacity 0.2s;
+}
+
+.tb-chi-tiet.tat {
+    opacity: 0.55;
+}
+
+.tb-dong {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid var(--vien);
+}
+
+.tb-bieu-tuong {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    font-size: 1.2rem;
+    background: #f4f7fc;
+    border-radius: 12px;
+}
+
+.tb-chu {
+    flex: 1;
+    min-width: 0;
+}
+
+.tb-chu b {
+    display: block;
+    font-size: 0.97rem;
+    color: var(--chu);
+}
+
+.tb-chu small {
+    display: block;
+    margin-top: 1px;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--nhat);
+}
+
+.tb-gio {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--chu);
+}
+
+.tb-gio input {
+    padding: 5px 8px;
+    font: inherit;
+    border: 1.5px solid var(--vien);
+    border-radius: 8px;
+}
+
+.tb-gio input:focus {
+    outline: none;
+    border-color: var(--nhan);
+}
+
+#tb-thu {
+    align-self: flex-start;
+    margin-top: 8px;
+}
+
+/* ---------- Tiện ích ---------- */
+.pf-lien-ket {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 4px;
+    font-weight: 600;
+    border-top: 1px solid var(--vien);
+    transition: color 0.15s, padding 0.15s;
+}
+
+.pf-card h2+.pf-lien-ket {
+    margin-top: 10px;
+}
+
+.pf-lien-ket:hover {
+    padding-left: 10px;
+    color: var(--nhan);
+}
+
+.pf-lien-ket i {
+    font-size: 0.8rem;
+    color: var(--nhat);
+}
+
+.pf-dang-xuat {
+    width: 100%;
+    margin-top: 14px;
+    color: #c62828;
+    border-color: #f0b6b6;
+}
+
+.pf-dang-xuat:hover {
+    color: #fff;
+    background: #c62828;
+    border-color: #c62828;
+}
+
+.pf-dev {
+    text-align: center;
+}
+
+/* ---------- Điện thoại ---------- */
+@media (max-width: 760px) {
+    .pf-luoi-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .pf-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .pf-hero-body {
+        flex-direction: column;
+        align-items: center;
+        padding: 0 18px 22px;
+        text-align: center;
+    }
+
+    .pf-info {
+        flex: none;
+        padding-top: 0;
+    }
+
+    .pf-hanh-dong {
+        justify-content: center;
+    }
+
+    .pf-card {
+        padding: 18px 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .pf-truot,
+    .pf-truot::after,
+    .pf-thanh i,
+    .pf-lien-ket {
+        transition: none;
+    }
+}

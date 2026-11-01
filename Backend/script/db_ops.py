@@ -145,6 +145,7 @@ def update_mon_chuyen(user_id, mon):
     conn.close()
 
 # 9. Lấy thông tin 1 người dùng (KHÔNG lấy mật khẩu)
+# 9. Lấy thông tin 1 người dùng (KHÔNG lấy mật khẩu)
 def get_user(user_id):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -157,13 +158,9 @@ def get_user(user_id):
         return None
 
     u = dict(row)
-    u['streak'] = streak_hien_thi(u['streak'], u['last_active_date'], u['the_bao_ho'] or 0)
-    u.pop('last_active_date')   # không cần gửi ra ngoài
-    u.pop('the_bao_ho')
-    return u
-
-    u = dict(row)
-    u['streak'] = streak_hien_thi(u['streak'], u['last_active_date'], u['the_bao_ho'] or 0)
+    u['hoc_hom_nay'] = (u['last_active_date'] == str(date.today()))   # hôm nay đã làm bài chưa (để nhắc chuỗi)
+    u['the_bao_ho'] = u['the_bao_ho'] or 0                            # giữ lại để trang hồ sơ hiện số thẻ
+    u['streak'] = streak_hien_thi(u['streak'], u['last_active_date'], u['the_bao_ho'])
     u.pop('last_active_date')   # không cần gửi ngày này ra ngoài
     return u
 # 10. Lưu avatar của người dùng ('' = dùng ảnh mặc định)

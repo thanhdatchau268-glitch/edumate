@@ -229,3 +229,13 @@ if (document.readyState === "loading") {
 } else {
   danhDauMenu();
 }
+// Nạp hệ thống thông báo (nhắc chuỗi, cuộc thi, lịch học) trên mọi trang khi đã đăng nhập
+if (
+  localStorage.getItem("isLoggedIn") === "true" &&
+  !window.THONGBAO &&
+  !document.querySelector('script[src^="thong-bao.js"]')
+) {
+  const s = document.createElement("script");
+  s.src = "thong-bao.js?v=1";
+  document.head.appendChild(s);
+}

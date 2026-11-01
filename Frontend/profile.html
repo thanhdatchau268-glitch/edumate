@@ -5,10 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
-  <title>SaoLaEdu</title>
+  <title>SaoLaEdu - Hồ sơ</title>
   <link rel="stylesheet" href="style.css?v=7" />
   <link rel="stylesheet" href="style2.css?v=7" />
   <link rel="stylesheet" href="style3.css?v=7" />
+  <link rel="stylesheet" href="profile.css?v=1" />
 </head>
 
 <body>
@@ -58,42 +59,140 @@
     </div>
   </header>
 
-  <!-- Giữ class "container" để đoạn báo lỗi trong profile.js vẫn chạy -->
-  <div class="container profile-card">
-    <img id="pf-avatar" class="profile-avatar" src="img/avartar.webp" alt="Avatar" />
+  <main class="pf-wrap">
 
-    <h2 id="pf-username"></h2>
-    <p id="pf-bio" class="profile-bio"></p>
+    <!-- ===== Thẻ hồ sơ. Giữ class "profile-card": profile.js dùng để báo lỗi ===== -->
+    <section class="profile-card" aria-label="Hồ sơ">
+      <div class="pf-cover"></div>
+      <div class="pf-hero-body">
+        <img id="pf-avatar" class="pf-avatar" src="img/avartar.webp" alt="Avatar" />
+        <div class="pf-info">
+          <h1 id="pf-username"></h1>
+          <p id="pf-bio" class="pf-bio"></p>
+        </div>
+        <div class="pf-hanh-dong">
+          <button type="button" id="btn-doi-avatar" class="btn">🖼️ Đổi avatar</button>
+          <button type="button" id="btn-sua" class="btn">✏️ Sửa hồ sơ</button>
+        </div>
+      </div>
+    </section>
 
-    <!-- 3 ô thông số nằm ngang -->
-    <div class="profile-stats">
-      <div class="profile-stat">
-        <span class="stat-so" id="pf-score">0</span>
-        <span class="stat-nhan">Điểm</span>
+    <!-- ===== 4 ô thống kê ===== -->
+    <section class="pf-stats" aria-label="Thống kê">
+      <div class="pf-stat" style="--c:#2457d6">
+        <i class="fa-solid fa-star"></i>
+        <b id="pf-score">0</b>
+        <span>Điểm</span>
       </div>
-      <div class="profile-stat">
-        <span class="stat-so">🔥 <span id="pf-streak">0</span></span>
-        <span class="stat-nhan">Chuỗi ngày</span>
+      <div class="pf-stat" style="--c:#ff6d00">
+        <i class="fa-solid fa-fire"></i>
+        <b id="pf-streak">0</b>
+        <span>Chuỗi ngày</span>
       </div>
-      <div class="profile-stat">
-        <span class="stat-so stat-chu" id="pf-chuyen"></span>
-        <span class="stat-nhan">Môn chuyên</span>
+      <div class="pf-stat" style="--c:#178a5a">
+        <i class="fa-solid fa-shield-halved"></i>
+        <b id="pf-baoho">0</b>
+        <span>Thẻ bảo hộ</span>
       </div>
+      <div class="pf-stat" style="--c:#7b4bd8">
+        <i class="fa-solid fa-atom"></i>
+        <b id="pf-chuyen" class="pf-stat-chu">Không</b>
+        <span>Môn chuyên</span>
+      </div>
+    </section>
+
+    <!-- ===== Tiến độ mở khoá ===== -->
+    <section class="pf-card">
+      <div class="pf-card-dau">
+        <div>
+          <h2><i class="fa-solid fa-lock-open"></i> Mở khoá tính năng</h2>
+          <p id="pf-mk-text" class="pf-ghi"></p>
+        </div>
+      </div>
+      <div class="pf-thanh" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Tiến độ mở khoá">
+        <i id="pf-mk-bar"></i>
+      </div>
+    </section>
+
+    <!-- ===== Thông báo + Tiện ích ===== -->
+    <div class="pf-luoi-2">
+
+      <section class="pf-card" id="tb-card">
+        <div class="pf-card-dau">
+          <div>
+            <h2><i class="fa-solid fa-bell"></i> Thông báo</h2>
+            <p class="pf-ghi">Nhắc bạn đúng lúc để giữ nhịp học.</p>
+          </div>
+          <label class="pf-switch" aria-label="Bật hoặc tắt thông báo">
+            <input type="checkbox" id="tb-bat">
+            <span class="pf-truot"></span>
+          </label>
+        </div>
+
+        <p id="tb-trang-thai" class="pf-trang-thai" aria-live="polite"></p>
+
+        <div id="tb-chi-tiet" class="tb-chi-tiet tat">
+          <div class="tb-dong">
+            <span class="tb-bieu-tuong">🔥</span>
+            <div class="tb-chu">
+              <b>Nhắc giữ chuỗi</b>
+              <small>Báo nếu đến giờ này mà hôm nay bạn chưa làm bài nào.</small>
+              <label class="tb-gio">Nhắc lúc <input type="time" id="tb-gio-chuoi" value="20:00"></label>
+            </div>
+            <label class="pf-switch" aria-label="Bật nhắc giữ chuỗi">
+              <input type="checkbox" id="tb-chuoi">
+              <span class="pf-truot"></span>
+            </label>
+          </div>
+
+          <div class="tb-dong">
+            <span class="tb-bieu-tuong">🏆</span>
+            <div class="tb-chu">
+              <b>Nhắc cuộc thi</b>
+              <small>Báo trước 30 phút và khi cuộc thi bắt đầu.</small>
+            </div>
+            <label class="pf-switch" aria-label="Bật nhắc cuộc thi">
+              <input type="checkbox" id="tb-thi">
+              <span class="pf-truot"></span>
+            </label>
+          </div>
+
+          <div class="tb-dong">
+            <span class="tb-bieu-tuong">📅</span>
+            <div class="tb-chu">
+              <b>Nhắc lịch học cá nhân hoá</b>
+              <small>Báo trước 5 phút mỗi khung giờ ôn bài, học thêm, luyện tập trong lịch của bạn: mấy giờ, làm
+                gì.</small>
+            </div>
+            <label class="pf-switch" aria-label="Bật nhắc lịch học">
+              <input type="checkbox" id="tb-lich">
+              <span class="pf-truot"></span>
+            </label>
+          </div>
+
+          <button type="button" id="tb-thu" class="btn">🔔 Gửi thử một thông báo</button>
+        </div>
+
+        <p class="pf-ghi nho">Thông báo hoạt động khi SaoLaEdu đang mở trong trình duyệt (kể cả tab chạy nền).</p>
+      </section>
+
+      <section class="pf-card">
+        <h2><i class="fa-solid fa-compass"></i> Tiện ích</h2>
+        <a href="qua.html" class="pf-lien-ket"><span>🎁 Điểm danh &amp; Quay thưởng</span><i
+            class="fa-solid fa-chevron-right"></i></a>
+        <a href="personal.html" class="pf-lien-ket"><span>🎓 Học tập cá nhân hoá</span><i
+            class="fa-solid fa-chevron-right"></i></a>
+        <a href="ranking.html" class="pf-lien-ket"><span>🏅 Bảng xếp hạng</span><i
+            class="fa-solid fa-chevron-right"></i></a>
+        <button type="button" id="btn-dang-xuat" class="btn pf-dang-xuat">Đăng xuất</button>
+      </section>
     </div>
-  </div>
 
-  <!-- Nút đổi avatar, sửa hồ sơ và đăng xuất, căn giữa trang -->
-  <div style="text-align:center; margin-top:24px;">
-    <button type="button" id="btn-doi-avatar" class="btn">🖼️ Đổi avatar</button>
-    <button type="button" id="btn-sua" class="btn">✏️ Sửa hồ sơ</button>
-    <button type="button" id="btn-dang-xuat" class="btn">Đăng xuất</button>
-    <a href="qua.html" class="btn">🎁 Điểm danh &amp; Quay thưởng</a>
-  </div>
-
-  <!-- Nút thử nghiệm: chỉ hiện khi mở web bằng localhost. XÓA khi đưa lên hosting -->
-  <div style="text-align:center; margin-top:14px;">
-    <button type="button" id="btn-buff" class="btn hidden">🎁 +500 điểm (thử nghiệm)</button>
-  </div>
+    <!-- Nút thử nghiệm: chỉ hiện khi mở web bằng localhost. XÓA khi đưa lên hosting -->
+    <div class="pf-dev">
+      <button type="button" id="btn-buff" class="btn hidden">🎁 +500 điểm (thử nghiệm)</button>
+    </div>
+  </main>
 
   <!-- Hộp chọn avatar -->
   <div id="avatar-nen" class="modal-nen hidden">
@@ -144,7 +243,9 @@
     </div>
   </div>
 
-  <script src="profile.js?v=7"></script>
+  <!-- thong-bao.js nạp TRƯỚC profile.js để window.THONGBAO có sẵn khi trang chạy -->
+  <script src="thong-bao.js?v=1"></script>
+  <script src="profile.js?v=8"></script>
   <script src="script.js?v=7"></script>
 </body>
 

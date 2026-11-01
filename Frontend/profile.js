@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     $("pf-bio").textContent = u.bio || "Chưa có giới thiệu";
     $("pf-score").textContent = u.score;
     $("pf-streak").textContent = u.streak;
+    $("pf-baoho").textContent = u.the_bao_ho ?? 0;
     $("pf-chuyen").textContent = TEN_MON[u.mon_chuyen] || "Không";
     datAvatar($("pf-avatar"), u.avatar); // hàm nằm trong script.js
   }
@@ -48,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     hienThongTin(user);
     localStorage.setItem("avatar", user.avatar || ""); // đồng bộ lại cho thanh menu
   } catch (err) {
-    // Chỉ thay phần thẻ hồ sơ, KHÔNG xoá nút Đăng xuất / Sửa hồ sơ
+    // Chỉ thay phần thẻ hồ sơ, KHÔNG xoá nút Đăng xuất
     document.querySelector(".profile-card").textContent = "Lỗi: " + err.message;
     return;
   }
@@ -74,6 +75,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     ttKhoa.textContent = duAnh
       ? ""
       : `🔒 Tải ảnh riêng sẽ mở khóa khi đạt ${DIEM_TAI_ANH} điểm (bạn đang có ${user.score}).`;
+
+    // thanh tiến độ mở khóa
+    const pt = Math.min(100, Math.round((user.score / DIEM_MO_KHOA) * 100));
+    $("pf-mk-bar").style.width = pt + "%";
+    $("pf-mk-bar").parentElement.setAttribute("aria-valuenow", pt);
+    $("pf-mk-text").textContent = duSua
+      ? "Bạn đã mở khóa Sửa hồ sơ và Tải ảnh avatar riêng 🎉"
+      : `${user.score}/${DIEM_MO_KHOA} điểm để mở khóa Sửa hồ sơ và Tải ảnh avatar riêng.`;
   }
 
   // =========================================================
@@ -334,6 +343,89 @@ document.addEventListener("DOMContentLoaded", async () => {
       tb.textContent = err.message;
     }
   });
+
+  // =========================================================
+  // THÔNG BÁO (phần xử lý nằm trong thong-bao.js)
+  // =========================================================
+  const TB = window.THONGBAO;
+  const tbBat = $("tb-bat");
+  const tbChiTiet = $("tb-chi-tiet");
+  const tbTrangThai = $("tb-trang-thai");
+
+  function datTrangThai(chu, lop) {
+    tbTrangThai.textContent = chu;
+    tbTrangThai.className = "pf-trang-thai" + (lop ? " " + lop : "");
+  }
+
+  // Vẽ lại công tắc + trạng thái theo cài đặt hiện tại
+  function veThongBao() {
+    if (!TB) {
+      datTrangThai("Chưa nạp được thong-bao.js (kiểm tra file có nằm cùng thư mục profile.html không).", "loi");
+      tbBat.disabled = true;
+      return;
+    }
+    const c = TB.doc();
+    const q = TB.quyen();
+    const bat = c.bat && q === "granted";
+
+    tbBat.checked = bat;
+    tbBat.disabled = q === "unsupported";
+    $("tb-chuoi").checked = c.chuoi;
+    $("tb-thi").checked = c.thi;
+    $("tb-lich").checked = c.lich;
+    $("tb-gio-chuoi").value = c.gioChuoi;
+
+    // chưa bật thì mờ và khóa các mục bên dưới
+    tbChiTiet.classList.toggle("tat", !bat);
+    tbChiTiet.querySelectorAll("input, button").forEach((el) => (el.disabled = !bat));
+
+    if (q === "unsupported") datTrangThai("Trình duyệt này không hỗ trợ thông báo.", "loi");
+    else if (q === "denied") datTrangThai("Thông báo đang bị chặn trong trình duyệt. Bấm biểu tượng ổ khóa cạnh địa chỉ trang → cho phép Thông báo.", "loi");
+    else if (bat) datTrangThai("Đang bật ✔", "ok");
+    else datTrangThai("Đang tắt. Gạt công tắc để bật.", "");
+  }
+
+  if (TB) {
+    // Công tắc tổng: bật thì xin quyền của trình duyệt (phải gọi ngay lúc bấm)
+    tbBat.addEventListener("change", async () => {
+      if (tbBat.checked) {
+        const kq = await TB.bat();
+        veThongBao();
+        if (!kq.ok) datTrangThai(kq.loi, "loi");
+      } else {
+        TB.tat();
+        veThongBao();
+      }
+    });
+
+    // 3 công tắc con: lưu ngay
+    [["tb-chuoi", "chuoi"], ["tb-thi", "thi"], ["tb-lich", "lich"]].forEach(([id, khoa]) => {
+      $(id).addEventListener("change", () => {
+        const c = TB.doc();
+        c[khoa] = $(id).checked;
+        TB.luu(c);
+      });
+    });
+
+    // Giờ nhắc chuỗi
+    $("tb-gio-chuoi").addEventListener("change", () => {
+      const v = $("tb-gio-chuoi").value;
+      if (!v) { $("tb-gio-chuoi").value = TB.doc().gioChuoi; return; } // để trống thì trả lại giờ cũ
+      const c = TB.doc();
+      c.gioChuoi = v;
+      TB.luu(c);
+    });
+
+    // Gửi thử
+    $("tb-thu").addEventListener("click", async () => {
+      const ok = await TB.thu();
+      datTrangThai(
+        ok ? "Đã gửi thông báo thử, xem góc màn hình nhé." : "Chưa gửi được. Hãy kiểm tra quyền thông báo của trình duyệt.",
+        ok ? "ok" : "loi",
+      );
+    });
+  }
+  veThongBao();
 
   // =========================================================
   // NÚT BUFF +500 ĐIỂM (thử nghiệm, chỉ hiện khi chạy ở localhost)

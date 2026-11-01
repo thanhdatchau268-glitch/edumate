@@ -209,8 +209,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ---------- 7. Hiển thị lịch ----------
     let ngayChon = null;
+    // Lưu lịch cả tuần cho thong-bao.js: { "2026-11-01": [{s, e, loai, ten}, ...] }
+    function luuLichChoThongBao(kh) {
+        try {
+            const hn = new Date();
+            const lich = {};
+            kh.ngay.forEach((x) => {
+                const d = new Date(hn.getFullYear(), hn.getMonth(), hn.getDate() + (x.d - kh.ti));
+                const key = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+                lich[key] = x.muc.filter((m) => m.loai !== "truong").map((m) => ({ s: m.s, e: m.e, loai: m.loai, ten: m.ten }));
+            });
+            localStorage.setItem("saola_lich_" + uid, JSON.stringify(lich));
+        } catch (e) { /* bộ nhớ đầy / bị chặn thì bỏ qua */ }
+    }
     function veKeHoach() {
         const kh = keHoach();
+        luuLichChoThongBao(kh);
         if (ngayChon === null || ngayChon < kh.ti) ngayChon = kh.ti;
         $("hom-nay").textContent = new Date().toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "numeric" });
         $("tabs-ngay").innerHTML = kh.ngay.map((x) =>
@@ -268,6 +282,24 @@ document.addEventListener("DOMContentLoaded", () => {
     $("tab-lich").addEventListener("click", () => { veKeHoach(); chonTab("lich"); });
     $("tab-setup").addEventListener("click", () => chonTab("setup"));
     $("tab-diem").addEventListener("click", () => chonTab("diem"));
+    // ---------- Banner bật nhắc lịch học ----------
+    function veBannerThongBao() {
+        const el = $("tb-banner"), TB = window.THONGBAO;
+        if (!el || !TB) return;
+        const c = TB.doc();
+        if (c.bat && c.lich && TB.quyen() === "granted") {
+            el.innerHTML = '🔔 Đang bật nhắc lịch: bạn sẽ nhận thông báo trước mỗi khung giờ học 5 phút. Tắt ở <a href="profile.html" style="color:var(--nhan);font-weight:600">Hồ sơ</a>.';
+            return;
+        }
+        el.innerHTML = '🔔 Bật thông báo để được nhắc đúng giờ học. <button id="tb-bat-nhanh" class="btn" type="button">Bật nhắc lịch</button> <span id="tb-bat-loi" class="canhbao"></span>';
+        $("tb-bat-nhanh").addEventListener("click", async () => {
+            const kq = await TB.bat();
+            if (!kq.ok) { $("tb-bat-loi").textContent = kq.loi; return; }
+            const cc = TB.doc(); cc.lich = true; TB.luu(cc);
+            veBannerThongBao();
+        });
+    }
+    veBannerThongBao();
 
     // ---------- Khởi động ----------
     veBang(); capNhatUuTien(); veDanhSach(); veKeHoach();
