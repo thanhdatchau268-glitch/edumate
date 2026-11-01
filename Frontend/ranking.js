@@ -65,7 +65,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     xoaBuc();
     baoDong("Đang tải...");
     try {
-      const res = await fetch(`${API}/api/ranking?bang=${encodeURIComponent(bang)}&ky=${encodeURIComponent(ky)}`);
+      const uq = userId ? `&user_id=${encodeURIComponent(userId)}` : "";
+      const res = await fetch(`${API}/api/ranking?bang=${encodeURIComponent(bang)}&ky=${encodeURIComponent(ky)}${uq}`);
       const kq = await res.json();
       if (l !== luot) return; // đã bấm sang bảng khác
       if (!kq.success) throw new Error(kq.message);
@@ -119,8 +120,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // ----- Khởi động: lấy danh sách bảng từ server -----
   try {
-    const uq = userId ? `&user_id=${encodeURIComponent(userId)}` : "";
-    const res = await fetch(`${API}/api/ranking?bang=${encodeURIComponent(bang)}&ky=${encodeURIComponent(ky)}${uq}`);
+    const res = await fetch(`${API}/api/ranking/cau-hinh`);
     const kq = await res.json();
     if (!kq.success) throw new Error(kq.message);
     cauHinh = kq;
