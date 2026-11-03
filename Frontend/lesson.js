@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("bai-tieu-de").textContent = ten.bai || "Bài học";
     document.getElementById("bai-phu").textContent =
       `${ten.chuong ? ten.chuong + " · " : ""}${baiSapXep.length} bài tập · ${tong}/${baiSapXep.length * 100} điểm`;
-    if (ten.bai) document.title = ten.bai + " - SaoLaEdu";
+    if (ten.bai) document.title = ten.bai + " - VnStarL";
 
     // Thẻ từng bài tập
     const ds = document.getElementById("ds-cau");

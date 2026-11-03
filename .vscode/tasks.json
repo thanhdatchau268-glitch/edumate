@@ -62,7 +62,7 @@
             }
         },
         {
-            "label": "SaoLaEdu: Khởi động tất cả",
+            "label": "VnStarL: Khởi động tất cả",
             "dependsOn": [
                 "Backend: Flask",
                 "Frontend: http.server",

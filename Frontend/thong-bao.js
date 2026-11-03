@@ -1,6 +1,6 @@
 // thong-bao.js - nhắc giữ chuỗi, nhắc cuộc thi, nhắc lịch học cá nhân hoá
 // Nạp từ script.js (mọi trang) và nạp thẳng ở profile.html / personal.html.
-// Thông báo chạy khi SaoLaEdu đang mở trong trình duyệt (kể cả tab nền).
+// Thông báo chạy khi VnStarL đang mở trong trình duyệt (kể cả tab nền).
 (function () {
     if (window.THONGBAO) return; // nạp 2 lần cũng chỉ chạy 1 bản
 
@@ -241,7 +241,7 @@
     }
 
     async function thu() {
-        return gui("🔔 Thông báo đã hoạt động!", "SaoLaEdu sẽ nhắc bạn đúng lúc để giữ nhịp học.", "saola-thu", "profile.html");
+        return gui("🔔 Thông báo đã hoạt động!", "VnStarL sẽ nhắc bạn đúng lúc để giữ nhịp học.", "saola-thu", "profile.html");
     }
 
     window.THONGBAO = { doc, luu, hoTro, quyen, bat, tat, thu, khoiDong, dung };

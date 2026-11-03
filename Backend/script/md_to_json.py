@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 r"""
-md_to_json.py - Chuyển file đề (.md) sang JSON cho web SaoLaEdu  (BẢN CHỊU ĐƯỢC NHIỀU DẠNG VIẾT)
+md_to_json.py - Chuyển file đề (.md) sang JSON cho web VnStarL  (BẢN CHỊU ĐƯỢC NHIỀU DẠNG VIẾT)
 
 Mỗi file .md = 1 đề (vd: đề 1.1, đề 1.2) và được tách thành 2 file JSON:
   - Frontend/file_de/<môn>/chuong-N/bai-NN.json   : đề (KHÔNG có đáp án, trình duyệt đọc được)
@@ -489,7 +489,7 @@ def luu(root, mon, chuong, bai_tap, dap_an):
 
 # ======================================================================
 def main():
-    ap = argparse.ArgumentParser(description="Chuyển file đề .md sang JSON cho SaoLaEdu")
+    ap = argparse.ArgumentParser(description="Chuyển file đề .md sang JSON cho VnStarL")
     ap.add_argument("files", nargs="+", help="file .md (nhận cả dấu * kiểu de/*.md)")
     ap.add_argument("-s", "--subject", default="toan", help="thư mục môn: toan, chuyen_toan, vat_ly... (mặc định toan)")
     ap.add_argument("-c", "--chapter", required=True, help="số chương, vd: 1 hoặc chuong-1")
