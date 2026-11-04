@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ---------- 8. Điểm các kỳ thi lớp 9 ----------
     const KT = window.KYTHI;
-    const TEN_CHUYEN = { toan: "Chuyên Toán", ly: "Chuyên Vật lí", hoa: "Chuyên Hóa học" };
+    const TEN_CHUYEN = { toan: "Chuyên Toán", ly: "Chuyên Vật lí", hoa: "Chuyên Hóa học", dia: "Chuyên Địa lí" };
 
     function veDiem() {
         const ky = KT.capNhatKy().filter((k) => !k.luon); // 4 kỳ lớp 9

@@ -13,6 +13,7 @@ from db_ops import (
     get_user, update_avatar, streak_hien_thi, get_my_rank,
     BANG_XEP_HANG, KY_XEP_HANG, MON_CHUYEN_HOP_LE, thang_hien_tai
 )
+from cham_tu_luan import cham_tu_luan
 
 from qua_tang import qua_bp, he_so_x15   # điểm danh + vòng quay + buff x1,5
 
@@ -233,12 +234,19 @@ def submit():
             # bỏ trống thì không tính điểm
             ket_qua[cau_id] = {"dung": None, "diem": diem}
             continue
-
+                # ---- Câu tự luận: chấm từ khóa, có điểm từng phần ----
+        if info.get('loai') == 'tu-luan':
+            got, chi_tiet = cham_tu_luan(info, tra_loi)
+            diem_dat += got
+            ket_qua[cau_id] = {"dung": got >= diem / 2, "diem": diem, "diem_dat": got,
+                               "tu_luan": chi_tiet, "loi_giai": info.get('loi_giai', '')}
+            continue
         dung = cham(info['dap_an_dung'], tra_loi)
         if dung:
             diem_dat += diem
         # lời giải chỉ gửi về SAU khi đã nộp
         ket_qua[cau_id] = {"dung": dung, "diem": diem, "loi_giai": info.get('loi_giai', '')}
+    diem_dat, diem_toi_da = round(diem_dat, 2), round(diem_toi_da, 2)
 
     # lưu điểm (chỉ khi đã đăng nhập và có điểm)
     da_luu = False
@@ -281,7 +289,7 @@ def submit():
     so_loi_ghi = []
     if user_id:
         bai_key = f"{subject}/{chapter}/{article}/{bai_id}"
-        so_loi_ghi = ghi_ket_qua_nop_bai(user_id, bai_key, ket_qua)    # ghi câu sai, giấu lời giải câu sai
+        so_loi_ghi = ghi_ket_qua_nop_bai(user_id, bai_key, {k: v for k, v in ket_qua.items() if "tu_luan" not in v})
         ghi_su_kien_nop_bai(user_id, subject, bai_key, ket_qua, pct, best_cu)
         ghi_hoat_dong(user_id, bai_key, ket_qua, pct)   # log có giờ cho Khoa bảng
     return jsonify({"success": True, "diem_dat": diem_dat, "diem_toi_da": diem_toi_da, "ket_qua": ket_qua, "da_luu": da_luu, "streak": streak, "diem_cong": diem_cong, "he_so": he_so, "pct": pct, "best_pct": best_pct,"so_loi_ghi": so_loi_ghi}), 200

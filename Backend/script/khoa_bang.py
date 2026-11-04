@@ -10,7 +10,7 @@ GIAI ĐOẠN 2 (file này): bảng dữ liệu + cấu hình + thuật toán tí
   - tinh_diem_huong()    : điểm Thi Hương của 1 học sinh trong 1 tuần
   - xep_hang_huong()     : bảng xếp hạng Thi Hương (có xử lý đồng điểm)
   - tinh_diem_hoi/dinh() : công thức điểm Thi Hội / Thi Đình (nhận số đã quy về %, phần lấy dữ liệu làm ở giai đoạn 3)
-  - trao_danh_hieu()     : chia danh hiệu theo tỷ lệ cấu hình, KHÔNG mặc định ai cũng có
+  - trao_danh_hieu()     : chia danh hiệu theo cấu hình (bậc cuối có thể nhận "tất cả người còn lại")
 GIAI ĐOẠN 3 (phần cuối file): kỳ thi, chốt kỳ idempotent, token, API.
 
 Nguyên tắc: mọi thành phần điểm đều quy về thang 0-100 rồi mới nhân trọng số.
@@ -27,7 +27,14 @@ from db_ops import DB_PATH, BANG_XEP_HANG
 
 kb_bp = Blueprint('khoa_bang', __name__)   # giai đoạn 3 sẽ thêm route vào đây
 
+# Tăng số này mỗi khi đổi cách chia danh hiệu trong CAU_HINH_MAC_DINH, DB cũ sẽ được cập nhật 1 lần
+PHIEN_BAN_DANH_HIEU = "2"
+
 # ====================== CẤU HÌNH MẶC ĐỊNH (admin chỉnh trong bảng kb_cau_hinh) ======================
+# Mỗi bậc danh hiệu dùng 1 trong 3 cách chia suất:
+#   "so_luong": số người cố định
+#   "ty_le"   : tỷ lệ x số người đủ điều kiện (làm tròn, tối thiểu 1)
+#   "con_lai" : True = tất cả người còn lại đủ điều kiện (dùng cho bậc cuối)
 CAU_HINH_MAC_DINH = {
     "huong": {
         "trong_so": {"luyen_de": 50, "chinh_xac": 25, "chuyen_can": 15, "tien_bo": 10},
@@ -36,48 +43,49 @@ CAU_HINH_MAC_DINH = {
         "prior_pct": 50,           # mức trung bình giả định
         "diem_san": 40,            # dưới điểm này không nhận danh hiệu
         "toi_thieu_thi_sinh": 3,   # ít hơn số người này thì kỳ không trao danh hiệu
-        "danh_hieu": [             # xét từ trên xuống; so_luong cố định hoặc ty_le (% số thí sinh đủ điều kiện)
+        "danh_hieu": [             # 10 người: 1 Giải nguyên, 4 Cử nhân, 5 Tú tài
             {"ma": "giai_nguyen", "so_luong": 1},
-            {"ma": "huong_cong", "ty_le": 0.10},
-            {"ma": "sinh_do", "ty_le": 0.30},
+            {"ma": "huong_cong", "ty_le": 0.40},
+            {"ma": "sinh_do", "con_lai": True},
         ],
     },
     "hoi": {
         "trong_so": {"thi_hoi": 70, "thi_huong": 20, "tien_bo": 10},
         "khao_hach_san": 40,       # có vòng Khảo hạch thì phải đạt từ % này mới được vào Thi chính
         "diem_san": 40, "toi_thieu_thi_sinh": 3,
-        "danh_hieu": [
+        "danh_hieu": [             # 10 người: 1 Hội nguyên, 5 Tiến sĩ, 4 Phó bảng
             {"ma": "hoi_nguyen", "so_luong": 1},
-            {"ma": "thai_hoc_sinh", "ty_le": 0.10},
-            {"ma": "pho_bang", "ty_le": 0.30},
+            {"ma": "thai_hoc_sinh", "ty_le": 0.50},
+            {"ma": "pho_bang", "con_lai": True},
         ],
     },
     "dinh": {
         "trong_so": {"thi_dinh": 60, "thi_hoi": 25, "thi_huong": 15},
         "toi_thieu_ky_hoi": 2, "diem_san": 50, "toi_thieu_thi_sinh": 3,
-        "danh_hieu": [
+        "danh_hieu": [             # 10 người: 1 Trạng nguyên, 1 Bảng nhãn, 1 Thám hoa, 3 Hoàng giáp, 4 Đồng tiến sĩ
             {"ma": "trang_nguyen", "so_luong": 1},
             {"ma": "bang_nhan", "so_luong": 1},
             {"ma": "tham_hoa", "so_luong": 1},
-            {"ma": "hoang_giap", "ty_le": 0.10},
-            {"ma": "dong_tien_si", "ty_le": 0.30},
+            {"ma": "hoang_giap", "ty_le": 0.30},
+            {"ma": "dong_tien_si", "con_lai": True},
         ],
     },
 }
 
 # (mã, tên, cấp, nhóm giáp, thứ tự, điểm tích lũy khoa bảng khi đạt)
+# Mã giữ nguyên để không vỡ dữ liệu cũ; chỉ tên hiển thị thay đổi.
 DANH_HIEU = [
     ("giai_nguyen", "Giải nguyên", "huong", "", 1, 10),
-    ("huong_cong", "Hương cống", "huong", "", 2, 5),
-    ("sinh_do", "Sinh đồ", "huong", "", 3, 2),
+    ("huong_cong", "Cử nhân", "huong", "", 2, 5),
+    ("sinh_do", "Tú tài", "huong", "", 3, 2),
     ("hoi_nguyen", "Hội nguyên", "hoi", "", 1, 40),
-    ("thai_hoc_sinh", "Thái học sinh", "hoi", "", 2, 20),
+    ("thai_hoc_sinh", "Tiến sĩ", "hoi", "", 2, 20),
     ("pho_bang", "Phó bảng", "hoi", "", 3, 8),
     ("trang_nguyen", "Trạng nguyên", "dinh", "Đệ nhất giáp - Tam khôi", 1, 150),
     ("bang_nhan", "Bảng nhãn", "dinh", "Đệ nhất giáp - Tam khôi", 2, 100),
     ("tham_hoa", "Thám hoa", "dinh", "Đệ nhất giáp - Tam khôi", 3, 70),
     ("hoang_giap", "Hoàng giáp", "dinh", "Đệ nhị giáp", 4, 40),
-    ("dong_tien_si", "Đồng tiến sĩ xuất thân", "dinh", "Đệ tam giáp", 5, 20),
+    ("dong_tien_si", "Đồng tiến sĩ", "dinh", "Đệ tam giáp", 5, 20),
 ]
 
 # Trộm "nộp quá nhanh": 2 lần nộp cách nhau dưới số giây này (và bài có từ 5 câu) thì đưa vào danh sách chờ duyệt
@@ -155,10 +163,25 @@ def dam_bao_bang():
     cot_ct = [c[1] for c in conn.execute("PRAGMA table_info(contests)")]
     if cot_ct and 'loai' not in cot_ct:                                       # contests: '' | hoi | dinh | khao_hach
         conn.execute("ALTER TABLE contests ADD COLUMN loai TEXT DEFAULT ''")
-    # nạp danh mục + cấu hình mặc định (đã có thì giữ nguyên, không ghi đè chỉnh sửa của admin)
-    conn.executemany("INSERT OR IGNORE INTO kb_danh_hieu (ma, ten, cap, giap, thu_tu, diem_tich_luy) VALUES (?,?,?,?,?,?)", DANH_HIEU)
+
+    # Danh mục danh hiệu lấy từ code nên luôn ghi đè (để đổi tên có hiệu lực ngay cả khi DB đã có dữ liệu cũ)
+    conn.executemany("INSERT OR REPLACE INTO kb_danh_hieu (ma, ten, cap, giap, thu_tu, diem_tich_luy) VALUES (?,?,?,?,?,?)", DANH_HIEU)
+
+    # Cấu hình: chưa có thì tạo; đã có thì giữ nguyên chỉnh sửa của admin
     for khoa, gt in CAU_HINH_MAC_DINH.items():
         conn.execute("INSERT OR IGNORE INTO kb_cau_hinh (khoa, gia_tri) VALUES (?, ?)", (khoa, json.dumps(gt)))
+
+    # Riêng cách chia danh hiệu: DB cũ còn lưu cách chia cũ, nên cập nhật đúng 1 lần theo PHIEN_BAN_DANH_HIEU
+    if not conn.execute("SELECT 1 FROM kb_cau_hinh WHERE khoa = 'ver_danh_hieu' AND gia_tri = ?", (PHIEN_BAN_DANH_HIEU,)).fetchone():
+        for khoa, gt in CAU_HINH_MAC_DINH.items():
+            row = conn.execute("SELECT gia_tri FROM kb_cau_hinh WHERE khoa = ?", (khoa,)).fetchone()
+            try:
+                cu = json.loads(row[0]) if row else {}
+            except ValueError:
+                cu = {}
+            cu["danh_hieu"] = gt["danh_hieu"]
+            conn.execute("INSERT OR REPLACE INTO kb_cau_hinh (khoa, gia_tri) VALUES (?, ?)", (khoa, json.dumps(cu)))
+        conn.execute("INSERT OR REPLACE INTO kb_cau_hinh (khoa, gia_tri) VALUES ('ver_danh_hieu', ?)", (PHIEN_BAN_DANH_HIEU,))
     conn.commit()
     conn.close()
 
@@ -338,19 +361,27 @@ def du_dieu_kien_dinh(so_ky_hoi, diem_dinh_tho, co_vi_pham, cfg):
 
 
 # ====================== CHIA DANH HIỆU ======================
+def so_suat(bac, so_nguoi, da_phat):
+    """Số suất của 1 bậc danh hiệu: so_luong cố định | ty_le x số người (làm tròn, tối thiểu 1) | con_lai = tất cả người còn lại."""
+    if "so_luong" in bac:
+        return bac["so_luong"]
+    if bac.get("con_lai"):
+        return max(0, so_nguoi - da_phat)
+    return max(1, int(math.floor(bac["ty_le"] * so_nguoi + 0.5)))
+
+
 def trao_danh_hieu(bang_xep_hang, cfg):
     """bang_xep_hang: list dict đã sắp theo hạng, mỗi dict có 'user_id' và 'diem_tong'.
     Trả về list (user_id, ma_danh_hieu, hang). Quy tắc:
       - Dưới `toi_thieu_thi_sinh` người đủ điều kiện: không trao ai.
       - Người dưới `diem_san` không bao giờ nhận.
-      - Số suất: so_luong cố định, hoặc ty_le x số người đủ điều kiện (làm tròn, tối thiểu 1).
-    Không mặc định ai tham gia cũng có danh hiệu."""
+      - Số suất theo từng bậc (xem so_suat); bậc cuối có "con_lai" thì nhận hết người còn lại."""
     du = [d for d in bang_xep_hang if d["diem_tong"] >= cfg["diem_san"]]
     if len(du) < cfg["toi_thieu_thi_sinh"]:
         return []
     ket_qua, vi_tri = [], 0
     for bac in cfg["danh_hieu"]:
-        suat = bac["so_luong"] if "so_luong" in bac else max(1, int(math.floor(bac["ty_le"] * len(du) + 0.5)))
+        suat = so_suat(bac, len(du), vi_tri)
         for d in du[vi_tri: vi_tri + suat]:
             ket_qua.append((d["user_id"], bac["ma"], d["hang"]))
         vi_tri += suat
@@ -704,6 +735,16 @@ def _danh_hieu_ky(conn, ky_id):
         "LEFT JOIN kb_ket_qua r ON r.ky_id = t.ky_id AND r.user_id = t.user_id "
         "WHERE t.ky_id = ? ORDER BY d.thu_tu, t.hang", (ky_id,))]
 
+def _chu_suat(bac):
+    """Chữ mô tả số suất của 1 bậc danh hiệu, hiện ở trang Quy chế."""
+    if bac.get("so_luong") == 1:
+        return "1 người"
+    if "so_luong" in bac:
+        return f"{bac['so_luong']} người"
+    if bac.get("con_lai"):
+        return "Tất cả thí sinh còn lại đủ điều kiện"
+    return f"{round(bac['ty_le'] * 100)}% thí sinh đủ điều kiện (tối thiểu 1)"
+
 def quy_che(conn, cap):
     "Thi chính là một cuộc thi riêng trong tháng, nộp trong khung giờ quy định."
     cfg = doc_cau_hinh(conn, cap)
@@ -726,9 +767,7 @@ def quy_che(conn, cap):
     thuong = []
     for bac in cfg["danh_hieu"]:
         r = dh[bac["ma"]]
-        suat = "1 người" if bac.get("so_luong") == 1 else (f"{bac['so_luong']} người" if "so_luong" in bac
-                else f"{round(bac['ty_le'] * 100)}% thí sinh đủ điều kiện (tối thiểu 1)")
-        thuong.append({"ma": r["ma"], "ten": r["ten"], "giap": r["giap"], "suat": suat, "diem_tich_luy": r["diem_tich_luy"]})
+        thuong.append({"ma": r["ma"], "ten": r["ten"], "giap": r["giap"], "suat": _chu_suat(bac), "diem_tich_luy": r["diem_tich_luy"]})
     return {"chu_ky": CHU_KY[cap], "cach_tinh": cach, "dieu_kien": dk, "danh_hieu": thuong,
             "luu_y": f"Kỳ chỉ trao danh hiệu khi có ít nhất {cfg['toi_thieu_thi_sinh']} thí sinh đủ điều kiện và đạt từ {cfg['diem_san']} điểm."}
 
@@ -883,8 +922,18 @@ if __name__ == "__main__":
     assert khoang_ky("dinh", date(2026, 12, 31))[2] == date(2026, 12, 31)
     assert khoang_ky("hoi", date(2026, 2, 10))[2] == date(2026, 2, 28)
     assert lam_muot(100, 1, 3, 50) < lam_muot(80 * 20, 20, 3, 50)       # 1 bài 100% < 20 bài đều 80%
-    bxh = [{"user_id": i, "diem_tong": 90 - i * 5, "hang": i + 1} for i in range(10)]
-    cfg = CAU_HINH_MAC_DINH["huong"]
-    print("Danh hiệu 10 người:", trao_danh_hieu(bxh, cfg))
-    assert trao_danh_hieu(bxh[:2], cfg) == []                           # chưa đủ thí sinh
-    print("OK")
+
+    def dem(ds):
+        out = {}
+        for _, ma, _ in ds:
+            out[ma] = out.get(ma, 0) + 1
+        return out
+
+    bxh = [{"user_id": i, "diem_tong": 95 - i * 3, "hang": i + 1} for i in range(10)]   # 10 người, đều >= 50 điểm
+    assert dem(trao_danh_hieu(bxh, CAU_HINH_MAC_DINH["huong"])) == {"giai_nguyen": 1, "huong_cong": 4, "sinh_do": 5}
+    assert dem(trao_danh_hieu(bxh, CAU_HINH_MAC_DINH["hoi"])) == {"hoi_nguyen": 1, "thai_hoc_sinh": 5, "pho_bang": 4}
+    assert dem(trao_danh_hieu(bxh, CAU_HINH_MAC_DINH["dinh"])) == {
+        "trang_nguyen": 1, "bang_nhan": 1, "tham_hoa": 1, "hoang_giap": 3, "dong_tien_si": 4}
+    assert trao_danh_hieu(bxh[:2], CAU_HINH_MAC_DINH["huong"]) == []                    # chưa đủ thí sinh
+    assert dem(trao_danh_hieu(bxh[:3], CAU_HINH_MAC_DINH["dinh"])) == {"trang_nguyen": 1, "bang_nhan": 1, "tham_hoa": 1}
+    print("OK: 10 người ra đúng 1-4-5 / 1-5-4 / 1-1-1-3-4")

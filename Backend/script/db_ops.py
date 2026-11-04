@@ -12,6 +12,7 @@ BANG_XEP_HANG = {
     "toan":         ("Chuyên Toán", "toan"),
     "ly":           ("Chuyên Vật Lý", "ly"),
     "hoa":          ("Chuyên Hóa Học", "hoa"),
+    "dia":          ("Chuyên Địa Lí", "dia"),
 }
 # Thêm kỳ xếp hạng mới (vd "tuan") thì thêm ở đây và xử lý trong get_ranking
 KY_XEP_HANG = {"tong": "Tổng", "thang": "Tháng này"}

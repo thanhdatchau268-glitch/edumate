@@ -199,6 +199,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     "trac-nghiem": "Trắc nghiệm nhiều lựa chọn",
     "dung-sai": "Trắc nghiệm đúng sai",
     "tra-loi-ngan": "Trả lời ngắn",
+    "tu-luan": "Tự luận",
   };
 
   // Điểm mỗi câu: lấy trong JSON, không có thì mặc định 10
@@ -307,7 +308,17 @@ document.addEventListener("DOMContentLoaded", async () => {
               <label class="lua-chon"><input type="radio" name="${name}" value="true"><span class="lua-chon-chu">Đúng</span></label>
               <label class="lua-chon"><input type="radio" name="${name}" value="false"><span class="lua-chon-chu">Sai</span></label>
             </div>`;
-        } else {
+        } else if (cau.type === "tu-luan") {
+          cauHtml.innerHTML = `${tieuDe}
+            <textarea class="o-tu-luan" name="${name}" rows="10" maxlength="6000" placeholder="Viết bài làm của bạn..."></textarea>
+            <div class="tu-luan-dem">0 từ</div>`;
+          const ta = cauHtml.querySelector("textarea");
+          ta.addEventListener("input", () => {
+            cauHtml.querySelector(".tu-luan-dem").textContent =
+              (ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0) + " từ";
+          });
+        }
+        else {
           cauHtml.innerHTML = `${tieuDe}
             <input class="o-tra-loi" type="text" name="${name}" placeholder="Nhập câu trả lời..." autocomplete="off">`;
         }
@@ -346,7 +357,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       ds.forEach(({ cau, card }) => {
         if (cau.type === "tra-loi-ngan") {
           answers[cau.id] = card.querySelector("input[type=text]").value.trim();
-        } else {
+        }
+        else if (cau.type === "tu-luan") {
+          answers[cau.id] = card.querySelector("textarea").value;
+        }
+        else {
           const chon = card.querySelector("input[type=radio]:checked");
           answers[cau.id] = chon ? chon.value : "";
         }
@@ -356,7 +371,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Khoá mọi ô nhập sau khi nộp thành công
     const khoaOnhap = () =>
-      quizContainer.querySelectorAll("input").forEach((el) => (el.disabled = true));
+      quizContainer.querySelectorAll("input, textarea").forEach((el) => (el.disabled = true));
 
     // ----- Bấm Nộp bài -----
     btnNop.addEventListener("click", async () => {
@@ -430,6 +445,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!r || r.dung === null) {
               card.classList.add("chua-lam");
               o.innerHTML = `<div class="kq kq-chua">Bạn chưa trả lời câu này.</div>`;
+              return;
+            }
+            if (cau.type === "tu-luan" && r.tu_luan) {
+              card.classList.add(r.dung ? "dung" : "sai");
+              o.innerHTML = `<div class="kq ${r.dung ? "kq-dung" : "kq-sai"}">Bạn đạt ${r.diem_dat} / ${r.diem} điểm</div>
+              <ul class="tl-y">${r.tu_luan.map((y) => `<li class="${y.dat ? "dat" : "chua"}">
+              <b>${y.dat ? "✔" : "✘"} ${y.diem} đ</b> ${esc(y.noi_dung)}${y.nhoi ? " (bài chỉ liệt kê từ khóa nên không tính)" : y.qua_ngan ? " (bài viết quá ngắn nên chưa tính)" : ""}</li>`).join("")}</ul>
+               <p class="tl-luu-y">Hệ thống chấm theo từ khóa nên chỉ gần đúng. Hãy đối chiếu với đáp án mẫu.</p>`;
+              if (r.loi_giai) o.innerHTML += `<div class="kq-loi-giai"><b>Đáp án mẫu:</b> ${r.loi_giai}</div>`;
+              veCongThuc(o);
               return;
             }
             card.classList.add(r.dung ? "dung" : "sai");

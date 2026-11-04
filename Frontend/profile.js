@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const API = "http://127.0.0.1:5000";
   const $ = (id) => document.getElementById(id);
-  const TEN_MON = { toan: "Chuyên Toán", ly: "Chuyên Lý", hoa: "Chuyên Hóa" };
+  const TEN_MON = { toan: "Chuyên Toán", ly: "Chuyên Lý", hoa: "Chuyên Hóa", dia: "Chuyên Địa" };
 
   // các mốc điểm (phải giống số bên app.py)
   const DIEM_MO_KHOA = 500;         // mở "Sửa hồ sơ"

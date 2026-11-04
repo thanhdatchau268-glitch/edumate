@@ -439,3 +439,68 @@
         transform: none;
     }
 }
+
+.question-card.q-tu-luan:not(.dung):not(.sai):not(.chua-lam) {
+    --mau: #0e9aa7;
+}
+
+.o-tu-luan {
+    display: block;
+    width: 100%;
+    padding: 14px 18px;
+    font: inherit;
+    line-height: 1.7;
+    background: #f6fdfd;
+    border: 2px solid #b6e3e7;
+    border-radius: 14px;
+    resize: vertical;
+}
+
+.o-tu-luan:focus {
+    outline: none;
+    background: #fff;
+    border-color: #0e9aa7;
+    box-shadow: 0 0 0 4px rgba(14, 154, 167, .2);
+}
+
+.o-tu-luan:disabled {
+    background: #f4f4f4;
+    color: #666;
+}
+
+.tu-luan-dem {
+    margin-top: 6px;
+    font-size: .85rem;
+    text-align: right;
+    color: var(--nhat);
+}
+
+.tl-y {
+    list-style: none;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tl-y li {
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.tl-y li.dat {
+    background: #dff5e9;
+    color: #0f6b44;
+}
+
+.tl-y li.chua {
+    background: #fde4e4;
+    color: #b42323;
+}
+
+.tl-luu-y {
+    margin-top: 8px;
+    font-size: .88rem;
+    color: var(--nhat);
+}

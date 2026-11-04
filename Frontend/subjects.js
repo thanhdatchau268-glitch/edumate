@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
       icon: "fa-flask",
       coBai: false,
     },
+    dia: { ten: "Chuyên Địa Lí", subject: "chuyen-dia", anh: "chuyen_dia", icon: "fa-earth-asia", coBai: true },
   };
 
   // Môn chuyên đã lưu lúc khảo sát / đăng nhập ("" = không thi chuyên)
