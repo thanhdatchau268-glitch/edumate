@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700;800&display=swap" />
+    <title>Bảng vàng khoa bảng - VnStarL</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style3.css" />
+    <link rel="stylesheet" href="khoa-bang.css" />
+</head>
+
+<body>
+    <header id="header">
+        <div id="header-inner">
+            <section class="right">
+                <a href="index.html" id="logo">
+                    <img src="img/logo.webp" alt="Logo" />
+                    <span>Vn<span id="logo-span">StarL</span></span>
+                </a>
+            </section>
+            <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">☰</button>
+            <ul id="nav" class="center">
+                <li id="nav-gioi-thieu">
+                    <a href="index.html" id="link-gioi-thieu" title="Giới thiệu" aria-label="Giới thiệu">
+                        <i class="fa-solid fa-house"></i><span class="nav-chu">Giới thiệu</span>
+                    </a>
+                </li>
+                <li id="nav-bai-tap">
+                    <a href="subjects.html" id="link-bai-tap" title="Bài tập" aria-label="Bài tập">
+                        <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
+                    </a>
+                </li>
+                <li id="nav-cuoc-thi">
+                    <a href="contest.html" id="link-cuoc-thi" title="Tranh tài" aria-label="Tranh tài">
+                        <i class="fa-solid fa-trophy"></i><span class="nav-chu">Tranh tài</span>
+                    </a>
+                </li>
+                <li id="nav-xep-hang">
+                    <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
+                        <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="khoa-bang.html" id="link-khoa-bang" class="active" title="Khoa bảng"
+                        aria-label="Khoa bảng">
+                        <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa bảng</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="user-account-area">
+                <div id="auth-buttons">
+                    <a href="login.html" class="auth-link">Đăng nhập</a>
+                    <a href="register.html" class="auth-link">Đăng ký</a>
+                </div>
+                <div id="user-profile" class="hidden">
+                    <div class="streak-box">🔥 <span>0</span></div>
+                    <span class="username">Username</span>
+                    <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="kb-trang">
+        <section class="kb-hero">
+            <p class="kb-ngan">✦ Khoa cử · Vinh danh · Kế thừa ✦</p>
+            <h1>Bảng Vàng Khoa Bảng</h1>
+            <p>Ba kỳ thi, ba bậc danh vọng: <b>Thi Hương</b> mỗi tuần, <b>Thi Hội</b> mỗi tháng, <b>Thi Đình</b> mỗi
+                quý.</p>
+        </section>
+
+        <div class="kb-bar">
+            <nav class="kb-tabs" id="kb-tabs" aria-label="Các mục khoa bảng">
+                <a href="#tong-quan" data-tab="tong-quan">Tổng quan</a>
+                <a href="#huong" data-tab="huong">Thi Hương</a>
+                <a href="#hoi" data-tab="hoi">Thi Hội</a>
+                <a href="#dinh" data-tab="dinh">Thi Đình</a>
+                <a href="#vinh-danh" data-tab="vinh-danh">Vinh danh</a>
+                <a href="#ho-so" data-tab="ho-so">Hồ sơ</a>
+            </nav>
+            <div class="kb-chips" id="kb-bang" role="tablist" aria-label="Chọn nhóm thi"></div>
+        </div>
+
+        <div id="kb-noi-dung" aria-live="polite"></div>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="khoa-bang.js"></script>
+</body>
+
+</html>

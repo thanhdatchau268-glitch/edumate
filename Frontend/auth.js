@@ -119,6 +119,7 @@
                 localStorage.setItem("streak", data.user.streak);
                 localStorage.setItem("monChuyen", data.user.mon_chuyen || "");
                 localStorage.setItem("avatar", data.user.avatar || "");
+                if (data.token) localStorage.setItem("kbToken", data.token);
                 baoForm("success", "Đăng nhập thành công! Đang chuyển trang...");
                 // Lần đầu thì khảo sát, các lần sau vào thẳng trang chính
                 const quayLai = sessionStorage.getItem("quayLai");   // trang khách đang xem trước khi bị mời đăng nhập

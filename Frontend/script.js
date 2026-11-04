@@ -127,6 +127,7 @@ async function handleLoginSubmit(event) {
       localStorage.setItem("streak", data.user.streak);
       localStorage.setItem("monChuyen", data.user.mon_chuyen || "");
       localStorage.setItem("avatar", data.user.avatar || "");
+      if (data.token) localStorage.setItem("kbToken", data.token);
 
       // Chỉ lần đăng nhập đầu tiên mới khảo sát, các lần sau vào thẳng trang chính
       if (data.user.can_khao_sat) {
@@ -209,6 +210,16 @@ function toggleModal() {
 
 if (btnLogin) btnLogin.addEventListener("click", toggleModal);
 if (btnClose) btnClose.addEventListener("click", toggleModal);
+function themMucKhoaBang() {
+  const ds = document.getElementById("nav");
+  if (!ds || ds.querySelector('a[href="khoa-bang.html"]')) return;
+  const li = document.createElement("li");
+  li.innerHTML = '<a href="khoa-bang.html" id="link-khoa-bang" title="Khoa bảng" aria-label="Khoa bảng"><i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa bảng</span></a>';
+  const xh = ds.querySelector("#nav-xep-hang");
+  xh ? xh.after(li) : ds.appendChild(li);
+}
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", themMucKhoaBang);
+else themMucKhoaBang();
 // Tự đánh dấu mục menu của trang hiện tại
 function danhDauMenu() {
   const trang = location.pathname.split("/").pop() || "index.html";

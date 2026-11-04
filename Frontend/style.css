@@ -666,3 +666,8 @@ header {
     opacity: 1;
   }
 }
+
+/* Không cho quy tắc * đè font của KaTeX */
+.katex * {
+  font-family: inherit;
+}

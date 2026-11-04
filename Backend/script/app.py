@@ -33,6 +33,8 @@ from so_loi import so_loi_bp, ghi_ket_qua_nop_bai          # Sổ lỗi sai
 from nhiem_vu import nhiem_vu_bp, ghi_su_kien_nop_bai      # Nhiệm vụ hằng ngày
 app.register_blueprint(so_loi_bp)
 app.register_blueprint(nhiem_vu_bp)
+from khoa_bang import kb_bp, ghi_hoat_dong, tao_token
+app.register_blueprint(kb_bp)
 
 # Giới hạn dung lượng 1 request là 3MB (ảnh đã được trình duyệt thu nhỏ nên rất nhẹ)
 app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024
@@ -162,7 +164,8 @@ def login():
         "bio": row['bio'], "mon_chuyen": row['mon_chuyen'], "streak": streak_dang_nhap,
         "can_khao_sat": can_khao_sat, "avatar": row['avatar'] or ""
     }
-    return jsonify({"success": True, "message": "Đăng nhập thành công!", "user": info}), 200
+    return jsonify({"success": True, "message": "Đăng nhập thành công!", "user": info,
+                "token": tao_token(row['id'])}), 200
 
 # 3. API Lấy danh sách tất cả user (Read)
 #@app.route('/api/users', methods=['GET'])
@@ -280,6 +283,7 @@ def submit():
         bai_key = f"{subject}/{chapter}/{article}/{bai_id}"
         so_loi_ghi = ghi_ket_qua_nop_bai(user_id, bai_key, ket_qua)    # ghi câu sai, giấu lời giải câu sai
         ghi_su_kien_nop_bai(user_id, subject, bai_key, ket_qua, pct, best_cu)
+        ghi_hoat_dong(user_id, bai_key, ket_qua, pct)   # log có giờ cho Khoa bảng
     return jsonify({"success": True, "diem_dat": diem_dat, "diem_toi_da": diem_toi_da, "ket_qua": ket_qua, "da_luu": da_luu, "streak": streak, "diem_cong": diem_cong, "he_so": he_so, "pct": pct, "best_pct": best_pct,"so_loi_ghi": so_loi_ghi}), 200
 
 # 7. API bảng xếp hạng: /api/ranking?bang=toan&ky=thang
