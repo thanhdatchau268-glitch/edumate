@@ -133,7 +133,7 @@
       <div class="kb-the" style="margin-bottom:14px">
         ${ngayVN(ky.bat_dau)} → ${ngayVN(ky.ket_thuc)} ·
         ${mo ? `<span class="kb-dem" data-giay="${ky.con_lai_giay}" style="display:inline-block"></span>` : `<b>Đã chốt kết quả chính thức</b>`}
-        ${coThiChinh && mo && !ky.co_cuoc_thi ? `<p style="margin-top:8px">Kỳ này chưa có cuộc thi chính thức được công bố trong mục <a href="contest.html" style="color:var(--son);font-weight:700">Tranh tài</a>.</p>` : ""}
+      
       </div>
       ${kq.tam_tinh ? `<p class="kb-tam-tinh">Bảng xếp hạng đang <b>tạm tính</b>, danh hiệu là <b>dự kiến</b>. Kết quả sẽ được khóa khi kỳ kết thúc. ${esc(q.luu_y)}</p>` : ""}
       ${bangXh(cap, bangDs, q)}

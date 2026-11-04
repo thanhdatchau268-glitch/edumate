@@ -1,25 +1,23 @@
 /* ==========================================================
    khoa-bang.css - Bảng vàng khoa bảng (khoa-bang.html)
-   Đỏ son, vàng kim, nâu gỗ, giấy ngà. Tiền tố kb- để không đụng CSS cũ.
+   Tông XANH đồng bộ với web (--nhan #2457d6), điểm nhấn vàng kim cho hạng nhất.
+   Tiền tố kb- để không đụng CSS cũ.
    ========================================================== */
 .kb-trang {
-    --son: #a8201a;
-    --son-dam: #7d1511;
-    --kim: #c9a227;
-    --kim-nhat: #f3e2a1;
-    --go: #5a3a22;
-    --ngà: #f6edd8;
-    --giay: #fffaf0;
-    --vien-go: #dcc9a3;
+    --xanh: #2457d6;
+    --xanh-dam: #163a96;
+    --xanh-sau: #0f2a70;
+    --xanh-nhat: #e8eefc;
+    --vang: #d99a06;
+    --vang-nhat: #ffe9a8;
+    --chu: #1b2a41;
+    --nen-phu: #f4f7fc;
+    --giay: #ffffff;
+    --vien-xanh: #d3ddf3;
     max-width: 1080px;
     margin: 0 auto;
     padding: 24px 16px 80px;
-    color: var(--go);
-    font-family: "Noto Serif", Georgia, "Times New Roman", serif;
-}
-
-.kb-trang * {
-    font-family: inherit;
+    color: var(--chu);
 }
 
 .kb-trang i.fa-solid,
@@ -30,30 +28,47 @@
 /* ---------- Đầu trang ---------- */
 .kb-hero {
     position: relative;
-    padding: 38px 20px 30px;
+    isolation: isolate;
+    padding: 40px 24px 34px;
     text-align: center;
-    color: var(--kim-nhat);
+    color: #dbe6ff;
     background:
-        repeating-linear-gradient(45deg, rgba(255, 255, 255, .035) 0 10px, transparent 10px 20px),
-        linear-gradient(160deg, var(--son-dam), var(--son) 55%, #c0392b);
-    border: 3px solid var(--kim);
-    border-radius: 18px;
-    box-shadow: inset 0 0 0 5px var(--son-dam), inset 0 0 0 6px var(--kim), 0 14px 34px rgba(125, 21, 17, .3);
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Cg fill='none' stroke='white' stroke-opacity='.22' stroke-width='1.4'%3E%3Cpath d='M0 100a50 50 0 0 1 100 0'/%3E%3Cpath d='M12 100a38 38 0 0 1 76 0'/%3E%3Cpath d='M24 100a26 26 0 0 1 52 0'/%3E%3Cpath d='M36 100a14 14 0 0 1 28 0'/%3E%3Cpath d='M100 100a50 50 0 0 1 100 0'/%3E%3Cpath d='M112 100a38 38 0 0 1 76 0'/%3E%3Cpath d='M124 100a26 26 0 0 1 52 0'/%3E%3Cpath d='M136 100a14 14 0 0 1 28 0'/%3E%3C/g%3E%3C/svg%3E") left bottom / 230px auto no-repeat,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Cg fill='none' stroke='white' stroke-opacity='.22' stroke-width='1.4'%3E%3Cpath d='M0 100a50 50 0 0 1 100 0'/%3E%3Cpath d='M12 100a38 38 0 0 1 76 0'/%3E%3Cpath d='M24 100a26 26 0 0 1 52 0'/%3E%3Cpath d='M36 100a14 14 0 0 1 28 0'/%3E%3Cpath d='M100 100a50 50 0 0 1 100 0'/%3E%3Cpath d='M112 100a38 38 0 0 1 76 0'/%3E%3Cpath d='M124 100a26 26 0 0 1 52 0'/%3E%3Cpath d='M136 100a14 14 0 0 1 28 0'/%3E%3C/g%3E%3C/svg%3E") right bottom / 230px auto no-repeat,
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, .035) 0 2px, transparent 2px 9px),
+        linear-gradient(180deg, #1c42a6, #14307f);
+    border: 4px solid #0d2260;
+    border-radius: 20px;
+    box-shadow: 0 0 0 2px var(--vang), 0 16px 34px rgba(22, 58, 150, .32);
+}
+
+/* đường viền vàng mỏng bên trong */
+.kb-hero::before {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    z-index: -1;
+    border: 1px solid rgba(217, 154, 6, .75);
+    border-radius: 13px;
+    pointer-events: none;
 }
 
 .kb-hero h1 {
-    margin: 6px 0 8px;
-    font-size: clamp(1.8rem, 5vw, 2.9rem);
+    margin: 10px 0 10px;
+    font-family: inherit;
+    font-size: clamp(1.7rem, 4.8vw, 2.7rem);
     font-weight: 800;
     letter-spacing: .04em;
     text-transform: uppercase;
-    color: #ffe9a8;
-    text-shadow: 0 2px 0 var(--son-dam), 0 0 22px rgba(255, 215, 120, .35);
+    color: #f6e7b0;
+    text-shadow: 0 2px 0 #0d2260, 0 0 18px rgba(255, 215, 120, .22);
 }
 
 .kb-hero p {
-    max-width: 62ch;
+    max-width: 68ch;
     margin: 0 auto;
+    line-height: 1.6;
+    text-wrap: balance;
 }
 
 .kb-hero b {
@@ -61,9 +76,42 @@
 }
 
 .kb-ngan {
-    letter-spacing: .25em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 4px;
     font-size: .82rem;
-    opacity: .9;
+    letter-spacing: .18em;
+    white-space: nowrap;
+    color: #f0dfa0;
+}
+
+.kb-ngan::before,
+.kb-ngan::after {
+    content: "";
+    flex: 0 0 clamp(30px, 8vw, 80px);
+    height: 1px;
+}
+
+.kb-ngan::before {
+    background: linear-gradient(90deg, transparent, var(--vang));
+}
+
+.kb-ngan::after {
+    background: linear-gradient(270deg, transparent, var(--vang));
+}
+
+@media (max-width: 560px) {
+    .kb-ngan {
+        font-size: .7rem;
+        letter-spacing: .1em;
+    }
+
+    .kb-ngan::before,
+    .kb-ngan::after {
+        display: none;
+    }
 }
 
 /* ---------- Thanh chọn ---------- */
@@ -86,21 +134,22 @@
 .kb-tabs a {
     padding: 8px 16px;
     font-weight: 700;
-    color: var(--go);
+    color: var(--xanh);
     background: var(--giay);
-    border: 1.5px solid var(--vien-go);
+    border: 1.5px solid var(--vien-xanh);
     border-radius: 999px;
+    transition: background .15s, color .15s, border-color .15s;
 }
 
 .kb-tabs a:hover {
-    border-color: var(--son);
-    color: var(--son);
+    background: var(--xanh-nhat);
+    border-color: var(--xanh);
 }
 
 .kb-tabs a.on {
-    color: #ffe9a8;
-    background: var(--son);
-    border-color: var(--son-dam);
+    color: #fff;
+    background: var(--xanh);
+    border-color: var(--xanh-dam);
 }
 
 .kb-chip {
@@ -108,23 +157,27 @@
     font: inherit;
     font-size: .88rem;
     font-weight: 600;
-    color: var(--go);
+    color: var(--xanh);
     background: transparent;
-    border: 1.5px dashed var(--vien-go);
+    border: 1.5px dashed #b5c6ec;
     border-radius: 999px;
     cursor: pointer;
 }
 
+.kb-chip:hover {
+    background: var(--xanh-nhat);
+}
+
 .kb-chip.on {
     color: #fff;
-    background: var(--go);
-    border: 1.5px solid var(--go);
+    background: var(--xanh-dam);
+    border: 1.5px solid var(--xanh-dam);
 }
 
 .kb-tabs a:focus-visible,
 .kb-chip:focus-visible,
 .kb-nut:focus-visible {
-    outline: 3px solid rgba(168, 32, 26, .4);
+    outline: 3px solid rgba(36, 87, 214, .4);
     outline-offset: 2px;
 }
 
@@ -132,14 +185,14 @@
 .kb-the {
     padding: 20px 22px;
     background: var(--giay);
-    border: 1.5px solid var(--vien-go);
+    border: 1px solid var(--vien-xanh);
     border-radius: 14px;
-    box-shadow: 0 2px 4px rgba(90, 58, 34, .06), 0 10px 26px rgba(90, 58, 34, .08);
+    box-shadow: 0 2px 4px rgba(27, 42, 65, .05), 0 10px 26px rgba(36, 87, 214, .08);
 }
 
 .kb-the h2,
 .kb-the h3 {
-    color: var(--son-dam);
+    color: var(--xanh-dam);
 }
 
 .kb-luoi-3 {
@@ -152,15 +205,15 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    border-top: 5px solid var(--son);
+    border-top: 5px solid var(--xanh);
 }
 
 .kb-cap:nth-child(2) {
-    border-top-color: var(--kim);
+    border-top-color: var(--vang);
 }
 
 .kb-cap:nth-child(3) {
-    border-top-color: var(--go);
+    border-top-color: var(--xanh-sau);
 }
 
 .kb-cap-dau {
@@ -174,8 +227,8 @@
     place-items: center;
     width: 42px;
     height: 42px;
-    color: var(--kim-nhat);
-    background: var(--son);
+    color: #fff;
+    background: var(--xanh);
     border-radius: 50%;
 }
 
@@ -185,8 +238,7 @@
 }
 
 .kb-cap-dau small {
-    color: var(--go);
-    opacity: .75;
+    color: #5b6b82;
 }
 
 .kb-dem {
@@ -194,9 +246,9 @@
     font-variant-numeric: tabular-nums;
     font-weight: 700;
     text-align: center;
-    color: var(--son-dam);
-    background: var(--ngà);
-    border: 1px dashed var(--kim);
+    color: var(--xanh-dam);
+    background: var(--xanh-nhat);
+    border: 1px dashed #9db4ea;
     border-radius: 10px;
 }
 
@@ -205,8 +257,8 @@
     align-items: center;
     gap: 12px;
     padding: 10px 12px;
-    background: linear-gradient(120deg, #fff4cf, var(--ngà));
-    border: 1.5px solid var(--kim);
+    background: linear-gradient(120deg, #fff6d6, #fffbea);
+    border: 1.5px solid var(--vang);
     border-radius: 12px;
 }
 
@@ -215,7 +267,7 @@
     font-size: .75rem;
     letter-spacing: .08em;
     text-transform: uppercase;
-    color: var(--son);
+    color: #b7791f;
 }
 
 .kb-av {
@@ -223,8 +275,8 @@
     width: 40px;
     height: 40px;
     object-fit: cover;
-    background: var(--ngà);
-    border: 2px solid var(--kim);
+    background: var(--xanh-nhat);
+    border: 2px solid var(--xanh);
     border-radius: 50%;
 }
 
@@ -244,7 +296,7 @@
     justify-content: space-between;
     gap: 8px;
     padding: 5px 0;
-    border-bottom: 1px dotted var(--vien-go);
+    border-bottom: 1px dotted var(--vien-xanh);
 }
 
 .kb-mini li span:first-child {
@@ -259,25 +311,26 @@
     padding: 9px 18px;
     font: inherit;
     font-weight: 700;
-    color: #ffe9a8;
-    background: var(--son);
-    border: 1.5px solid var(--son-dam);
+    color: #fff;
+    background: var(--xanh);
+    border: 1.5px solid var(--xanh-dam);
     border-radius: 10px;
     cursor: pointer;
+    transition: background .15s;
 }
 
 .kb-nut:hover {
-    background: var(--son-dam);
+    background: var(--xanh-dam);
 }
 
 .kb-nut.phu {
-    color: var(--son);
+    color: var(--xanh);
     background: transparent;
 }
 
 .kb-nut.phu:hover {
     color: #fff;
-    background: var(--son);
+    background: var(--xanh);
 }
 
 .kb-nut:disabled {
@@ -292,21 +345,21 @@
 .kb-khoi>h2 {
     margin-bottom: 12px;
     font-size: 1.3rem;
-    color: var(--son-dam);
+    color: var(--xanh-dam);
 }
 
 .kb-trong {
     padding: 30px 16px;
     text-align: center;
-    opacity: .8;
+    color: #5b6b82;
 }
 
 .kb-tam-tinh {
     margin: 0 0 14px;
     padding: 10px 14px;
     font-size: .92rem;
-    background: #fff4cf;
-    border-left: 5px solid var(--kim);
+    background: var(--xanh-nhat);
+    border-left: 5px solid var(--xanh);
     border-radius: 0 10px 10px 0;
 }
 
@@ -319,7 +372,7 @@
     width: 100%;
     border-collapse: collapse;
     background: var(--giay);
-    border: 1.5px solid var(--vien-go);
+    border: 1px solid var(--vien-xanh);
     border-radius: 12px;
     overflow: hidden;
 }
@@ -327,18 +380,22 @@
 .kb-bang-xh th {
     padding: 11px 12px;
     text-align: left;
-    color: #ffe9a8;
-    background: var(--son);
+    color: #fff;
+    background: var(--xanh);
 }
 
 .kb-bang-xh td {
     padding: 11px 12px;
-    border-top: 1px solid var(--vien-go);
+    border-top: 1px solid var(--vien-xanh);
+}
+
+.kb-bang-xh tbody tr:hover {
+    background: rgba(36, 87, 214, .04);
 }
 
 .kb-bang-xh tr.toi td {
     font-weight: 700;
-    background: #fff1c2;
+    background: #eaf0ff;
 }
 
 .kb-bang-xh td.hang {
@@ -348,16 +405,16 @@
 }
 
 .kb-bang-xh tbody tr:nth-child(1) td.hang {
-    color: var(--kim);
+    color: var(--top1-vang, #f59e0b);
     font-size: 1.15rem;
 }
 
 .kb-bang-xh tbody tr:nth-child(2) td.hang {
-    color: #8e9aa6;
+    color: var(--top2-bac, #94a3b8);
 }
 
 .kb-bang-xh tbody tr:nth-child(3) td.hang {
-    color: #b4651e;
+    color: var(--top3-dong, #d97706);
 }
 
 .kb-ten-hs {
@@ -367,13 +424,13 @@
 }
 
 .kb-ten-hs a:hover {
-    color: var(--son);
+    color: var(--xanh);
     text-decoration: underline;
 }
 
 .kb-diem {
     font-weight: 800;
-    color: var(--son);
+    color: var(--xanh);
 }
 
 .kb-dh {
@@ -381,9 +438,9 @@
     padding: 2px 10px;
     font-size: .8rem;
     font-weight: 700;
-    color: var(--son-dam);
-    background: var(--kim-nhat);
-    border: 1px solid var(--kim);
+    color: var(--xanh-dam);
+    background: var(--xanh-nhat);
+    border: 1px solid #9db4ea;
     border-radius: 999px;
     white-space: nowrap;
 }
@@ -402,7 +459,7 @@
 
 .kb-chi-tiet span {
     padding: 1px 7px;
-    background: var(--ngà);
+    background: var(--nen-phu);
     border-radius: 6px;
 }
 
@@ -418,15 +475,15 @@
 
 .kb-tieu-ky h2 {
     font-size: 1.5rem;
-    color: var(--son-dam);
+    color: var(--xanh-dam);
 }
 
 .kb-chon {
     padding: 8px 12px;
     font: inherit;
-    color: var(--go);
+    color: var(--chu);
     background: var(--giay);
-    border: 1.5px solid var(--vien-go);
+    border: 1.5px solid var(--vien-xanh);
     border-radius: 10px;
 }
 
@@ -457,7 +514,7 @@
 .kb-ty-trong i {
     grid-column: 1 / -1;
     height: 7px;
-    background: linear-gradient(90deg, var(--son), var(--kim));
+    background: linear-gradient(90deg, var(--xanh), #7b9cf5);
     border-radius: 9px;
 }
 
@@ -468,12 +525,12 @@
     justify-content: space-between;
     gap: 4px 10px;
     padding: 6px 0;
-    border-bottom: 1px dotted var(--vien-go);
+    border-bottom: 1px dotted var(--vien-xanh);
 }
 
 .kb-thuong small {
     flex: 1 1 100%;
-    opacity: .75;
+    color: #5b6b82;
 }
 
 .kb-phuc-khao textarea {
@@ -481,9 +538,14 @@
     margin: 8px 0;
     padding: 10px;
     font: inherit;
-    color: var(--go);
-    border: 1.5px solid var(--vien-go);
+    color: var(--chu);
+    border: 1.5px solid var(--vien-xanh);
     border-radius: 10px;
+}
+
+.kb-phuc-khao textarea:focus {
+    outline: none;
+    border-color: var(--xanh);
 }
 
 .kb-tb {
@@ -492,7 +554,7 @@
 }
 
 .kb-tb.ok {
-    color: #1d7a46;
+    color: #178a5a;
 }
 
 .kb-tb.loi {
@@ -505,11 +567,11 @@
     margin: 0 0 30px;
     padding: 30px 22px 26px;
     background:
-        repeating-linear-gradient(90deg, rgba(90, 58, 34, .05) 0 2px, transparent 2px 7px),
-        linear-gradient(180deg, #fff3c4, #f2dc8e 60%, #e8c766);
-    border: 4px solid var(--go);
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, .05) 0 2px, transparent 2px 7px),
+        linear-gradient(180deg, #2a5fe0, #1d49b8 60%, #163a96);
+    border: 4px solid var(--xanh-sau);
     border-radius: 10px;
-    box-shadow: inset 0 0 0 3px var(--kim), 0 16px 36px rgba(90, 58, 34, .3);
+    box-shadow: inset 0 0 0 3px var(--vang), 0 16px 36px rgba(22, 58, 150, .35);
 }
 
 /* hai trục cuốn thư ở trên và dưới */
@@ -520,7 +582,7 @@
     left: -10px;
     right: -10px;
     height: 16px;
-    background: linear-gradient(180deg, #7a4f2d, var(--go) 50%, #3e2714);
+    background: linear-gradient(180deg, #3d6be0, var(--xanh-dam) 50%, var(--xanh-sau));
     border-radius: 10px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, .3);
 }
@@ -540,7 +602,7 @@
 
 .kb-bv-tieu small {
     letter-spacing: .3em;
-    color: var(--son);
+    color: var(--vang-nhat);
     font-weight: 700;
 }
 
@@ -548,7 +610,7 @@
     font-size: clamp(1.4rem, 4vw, 2.1rem);
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: var(--son-dam);
+    color: #fff;
 }
 
 .kb-xuong-tb {
@@ -556,7 +618,7 @@
     margin: 4px 0 14px;
     text-align: center;
     font-weight: 700;
-    color: var(--son);
+    color: var(--vang-nhat);
 }
 
 .kb-tam-khoi {
@@ -574,8 +636,9 @@
     gap: 6px;
     padding: 16px 10px 14px;
     text-align: center;
+    color: var(--chu);
     background: var(--giay);
-    border: 3px double var(--son);
+    border: 3px double var(--xanh);
     border-radius: 12px;
     opacity: 0;
     transform: translateY(26px) scale(.94);
@@ -591,9 +654,9 @@
     order: 2;
     padding-top: 26px;
     padding-bottom: 24px;
-    background: linear-gradient(180deg, #fff9e2, #ffe9a8);
-    border-color: var(--son-dam);
-    box-shadow: 0 0 0 3px var(--kim), 0 0 30px rgba(255, 200, 60, .55);
+    background: linear-gradient(180deg, #fffbea, #ffe9a8);
+    border-color: var(--vang);
+    box-shadow: 0 0 0 3px var(--vang), 0 0 30px rgba(255, 200, 60, .55);
 }
 
 .kb-khoi-the[data-thu="2"] {
@@ -610,25 +673,25 @@
 
 @keyframes kb-sang {
     50% {
-        box-shadow: 0 0 0 3px var(--kim), 0 0 52px rgba(255, 200, 60, .95);
+        box-shadow: 0 0 0 3px var(--vang), 0 0 52px rgba(255, 200, 60, .95);
     }
 }
 
 .kb-khoi-the i.bieu {
     font-size: 1.8rem;
-    color: var(--son);
+    color: var(--xanh);
 }
 
 .kb-khoi-the[data-thu="1"] i.bieu {
     font-size: 2.4rem;
-    color: var(--kim);
+    color: var(--vang);
 }
 
 .kb-khoi-the b.dh {
     font-size: 1.05rem;
     letter-spacing: .06em;
     text-transform: uppercase;
-    color: var(--son-dam);
+    color: var(--xanh-dam);
 }
 
 .kb-khoi-the .ten {
@@ -638,7 +701,7 @@
 }
 
 .kb-khoi-the small {
-    opacity: .75;
+    color: #5b6b82;
 }
 
 .kb-giap {
@@ -649,7 +712,7 @@
     margin-bottom: 6px;
     font-size: .95rem;
     letter-spacing: .06em;
-    color: var(--son-dam);
+    color: var(--vang-nhat);
 }
 
 .kb-giap ul {
@@ -669,9 +732,20 @@
     padding: 4px 12px;
     font-size: .9rem;
     font-weight: 600;
+    color: var(--xanh-dam);
     background: var(--giay);
-    border: 1px solid var(--go);
+    border: 1px solid var(--vang);
     border-radius: 999px;
+}
+
+.kb-bv .kb-nut.phu {
+    color: #fff;
+    border-color: rgba(255, 255, 255, .6);
+}
+
+.kb-bv .kb-nut.phu:hover {
+    color: var(--xanh-dam);
+    background: #fff;
 }
 
 /* ---------- Hồ sơ khoa bảng ---------- */
@@ -696,19 +770,20 @@
 .kb-chi-so div {
     padding: 14px 8px;
     text-align: center;
-    background: var(--ngà);
-    border: 1px solid var(--vien-go);
+    background: var(--nen-phu);
+    border: 1px solid var(--vien-xanh);
     border-radius: 12px;
 }
 
 .kb-chi-so b {
     display: block;
     font-size: 1.35rem;
-    color: var(--son);
+    color: var(--xanh);
 }
 
 .kb-chi-so span {
     font-size: .82rem;
+    color: #5b6b82;
 }
 
 .kb-huy-chuong {
@@ -723,19 +798,19 @@
     gap: 8px;
     padding: 8px 14px;
     font-weight: 700;
-    background: var(--kim-nhat);
-    border: 1.5px solid var(--kim);
+    background: var(--xanh-nhat);
+    border: 1.5px solid #9db4ea;
     border-radius: 12px;
 }
 
 .kb-huy-chuong i {
-    color: var(--son);
+    color: var(--xanh);
 }
 
 .kb-huy-chuong small {
     padding: 0 7px;
     color: #fff;
-    background: var(--son);
+    background: var(--xanh);
     border-radius: 999px;
 }
 

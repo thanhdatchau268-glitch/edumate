@@ -705,7 +705,7 @@ def _danh_hieu_ky(conn, ky_id):
         "WHERE t.ky_id = ? ORDER BY d.thu_tu, t.hang", (ky_id,))]
 
 def quy_che(conn, cap):
-    """Quy chế hiển thị cho học sinh, sinh từ chính cấu hình đang dùng (admin đổi cấu hình thì quy chế tự đổi)."""
+    "Thi chính là một cuộc thi riêng trong tháng, nộp trong khung giờ quy định."
     cfg = doc_cau_hinh(conn, cap)
     dh = {r["ma"]: r for r in conn.execute("SELECT * FROM kb_danh_hieu")}
     tong = sum(cfg["trong_so"].values())
