@@ -13,7 +13,7 @@ from db_ops import (
     get_user, update_avatar, streak_hien_thi, get_my_rank,
     BANG_XEP_HANG, KY_XEP_HANG, MON_CHUYEN_HOP_LE, thang_hien_tai
 )
-from cham_tu_luan import cham_tu_luan
+from cham_ngu_nghia import cham_hon_hop as cham_tu_luan, nap_san
 
 from qua_tang import qua_bp, he_so_x15   # điểm danh + vòng quay + buff x1,5
 
@@ -525,4 +525,7 @@ def buff_diem():
     return jsonify({"success": True, "score": get_user(user_id)['score']}), 200
 
 if __name__ == '__main__':
+    # Chế độ debug chạy 2 tiến trình, chỉ tiến trình con mới nạp model để khỏi tốn RAM gấp đôi
+    if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+        nap_san()
     app.run(debug=True)

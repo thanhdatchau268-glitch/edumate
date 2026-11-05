@@ -36,13 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
       icon: "fa-atom",
       coBai: true,
     },
-    hoa: {
-      ten: "Chuyên Hóa Học",
-      subject: "chuyen-hoa",
-      anh: "chuyen_hoa",
-      icon: "fa-flask",
-      coBai: false,
-    },
     dia: { ten: "Chuyên Địa Lí", subject: "chuyen-dia", anh: "chuyen_dia", icon: "fa-earth-asia", coBai: true },
   };
 

@@ -47,7 +47,7 @@ TEN_MUC = ["Chưa vững", "Đang luyện", "Khá", "Thông thạo"]
 NGUYEN_NHAN = ("khai_niem", "tinh_nham", "doc_sai_de", "doan_bua")
 LOAI_CAU = ("trac-nghiem", "dung-sai", "tra-loi-ngan")
 TEN_MON = {"toan": "Toán", "ngu_van": "Ngữ văn", "vat_ly": "Vật lí",
-           "chuyen_toan": "Chuyên Toán", "chuyen_hoa": "Chuyên Hóa học"}
+           "chuyen_toan": "Chuyên Toán"}
 
 GOC = os.path.dirname(os.path.abspath(__file__))
 THU_MUC_DE = os.path.join(GOC, '..', '..', 'Frontend', 'file_de')   # đề (không đáp án)

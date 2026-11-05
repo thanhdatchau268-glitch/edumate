@@ -11,7 +11,6 @@ BANG_XEP_HANG = {
     "khong-chuyen": ("Không chuyên", ""),
     "toan":         ("Chuyên Toán", "toan"),
     "ly":           ("Chuyên Vật Lý", "ly"),
-    "hoa":          ("Chuyên Hóa Học", "hoa"),
     "dia":          ("Chuyên Địa Lí", "dia"),
 }
 # Thêm kỳ xếp hạng mới (vd "tuan") thì thêm ở đây và xử lý trong get_ranking

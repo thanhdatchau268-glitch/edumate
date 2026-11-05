@@ -13,8 +13,8 @@
   let ST = null; // trạng thái kết quả (để đổi / ghim trường mà không tính lại từ đầu)
   let KY = []; // danh sách kỳ thi + trạng thái mở/khóa
 
-  const KEY_MON = { toan: "Toan", ly: "Ly", hoa: "Hoa", dia: "Dia" };
-  const TEN_MON = { toan: "Toán", ly: "Vật Lý", hoa: "Hóa Học", dia: "Địa Lí" };
+  const KEY_MON = { toan: "Toan", ly: "Ly", dia: "Dia" };
+  const TEN_MON = { toan: "Toán", ly: "Vật Lý", dia: "Địa Lí" };
   const ANH = {
     thuong: { thuMuc: "img/school/", tienTo: "" },
     chuyen: { thuMuc: "img/school/", tienTo: "chuyen_" },

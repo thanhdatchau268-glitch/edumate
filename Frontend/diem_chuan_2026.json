@@ -606,29 +606,55 @@
         "diem_2025": null
       }
     ],
-    "Hoa": [
+    "Su": [
       {
         "id": 1,
         "ten_truong": "THPT Chuyên Nguyễn Quang Diêu",
         "vi_do": 10.470415,
         "kinh_do": 105.626503,
-        "diem_2026": 39.35,
-        "diem_2025": 34.0
+        "diem_2026": 23.3,
+        "diem_2025": 25.25
       },
       {
         "id": 2,
         "ten_truong": "THPT chuyên Nguyễn Đình Chiểu",
         "vi_do": 10.283126,
         "kinh_do": 105.772583,
-        "diem_2026": 36.2,
-        "diem_2025": 29.25
+        "diem_2026": 23.1,
+        "diem_2025": 22.875
       },
       {
         "id": 3,
         "ten_truong": "Trường THPT chuyên Tiền Giang",
         "vi_do": 10.355152,
         "kinh_do": 106.331564,
-        "diem_2026": 35.2,
+        "diem_2026": 21.2,
+        "diem_2025": null
+      }
+    ],
+    "Dia": [
+      {
+        "id": 1,
+        "ten_truong": "THPT Chuyên Nguyễn Quang Diêu",
+        "vi_do": 10.470415,
+        "kinh_do": 105.626503,
+        "diem_2026": 24.95,
+        "diem_2025": 30.0
+      },
+      {
+        "id": 2,
+        "ten_truong": "THPT chuyên Nguyễn Đình Chiểu",
+        "vi_do": 10.283126,
+        "kinh_do": 105.772583,
+        "diem_2026": null,
+        "diem_2025": 21.875
+      },
+      {
+        "id": 3,
+        "ten_truong": "Trường THPT chuyên Tiền Giang",
+        "vi_do": 10.355152,
+        "kinh_do": 106.331564,
+        "diem_2026": 25.4,
         "diem_2025": null
       }
     ]

@@ -451,7 +451,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               card.classList.add(r.dung ? "dung" : "sai");
               o.innerHTML = `<div class="kq ${r.dung ? "kq-dung" : "kq-sai"}">Bạn đạt ${r.diem_dat} / ${r.diem} điểm</div>
               <ul class="tl-y">${r.tu_luan.map((y) => `<li class="${y.dat ? "dat" : "chua"}">
-              <b>${y.dat ? "✔" : "✘"} ${y.diem} đ</b> ${esc(y.noi_dung)}${y.nhoi ? " (bài chỉ liệt kê từ khóa nên không tính)" : y.qua_ngan ? " (bài viết quá ngắn nên chưa tính)" : ""}</li>`).join("")}</ul>
+              ${y.nhoi ? " (bài chỉ liệt kê từ khóa nên không tính)" : y.qua_ngan ? " (bài viết quá ngắn nên chưa tính)" : y.ngu_nghia ? " (chấm theo ý nghĩa)" : ""}</li> `).join("")}</ul>
                <p class="tl-luu-y">Hệ thống chấm theo từ khóa nên chỉ gần đúng. Hãy đối chiếu với đáp án mẫu.</p>`;
               if (r.loi_giai) o.innerHTML += `<div class="kq-loi-giai"><b>Đáp án mẫu:</b> ${r.loi_giai}</div>`;
               veCongThuc(o);

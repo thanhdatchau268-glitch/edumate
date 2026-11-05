@@ -106,7 +106,7 @@
       <div class="subject-grid">
         ${theMon("Toán", "toan", "fa-calculator", "Đại số · Hình học")}
         ${theMon("Ngữ Văn", "ngu_van", "fa-feather-pointed", "Đọc hiểu · Tác phẩm")}
-        ${theMon("Môn chuyên", "chuyen_toan", "fa-shapes", "Toán · Vật lý · Hóa học · Địa lý")}
+        ${theMon("Môn chuyên", "chuyen_toan", "fa-shapes", "Toán · Vật lý · Địa lý")}
       </div>
     </section>
 

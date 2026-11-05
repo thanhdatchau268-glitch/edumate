@@ -44,6 +44,26 @@ def _de_sang_html(de_bai):
         out.append(re.sub(r"^([a-d]\))", r"<b>\1</b>", d))
     return "<br>".join(out)
 
+def _truong_them(y, cid, canh_bao):
+    """Các trường tùy chọn cho chấm so nghĩa."""
+    out = {}
+    if y.get("chi_tu_khoa"):
+        out["chi_tu_khoa"] = True
+    lt = [str(t).strip() for t in (y.get("loai_tru") or []) if str(t).strip()]
+    if lt:
+        out["loai_tru"] = lt
+    if y.get("nguong") is not None:
+        n = float(y["nguong"])
+        if not 0.5 <= n <= 0.95:
+            raise ValueError(f"ý {y.get('id')}: nguong phải từ 0.5 đến 0.95")
+        out["nguong"] = n
+    nd = str(y.get("noi_dung", ""))
+    if not out.get("chi_tu_khoa"):
+        if len(nd.split()) < 5:
+            canh_bao.append(f"Câu {cid}, ý {y.get('id')}: noi_dung quá ngắn, so nghĩa sẽ kém chính xác.")
+        if any(ch.isdigit() for ch in nd):
+            canh_bao.append(f"Câu {cid}, ý {y.get('id')}: noi_dung có số liệu nên ý này chỉ chấm bằng từ khóa.")
+    return out
 
 def chuyen_de(d, bai_id, ten=None, do_kho=3):
     """Trả về (bai_tap cho frontend, dap_an cho backend, danh sách cảnh báo). Lỗi nghiêm trọng -> ValueError."""
@@ -81,7 +101,8 @@ def chuyen_de(d, bai_id, ten=None, do_kho=3):
                 if any(len(n) > 1 and len(set(n)) != len(n) for n in nhom):
                     canh_bao.append(f"Câu {cid}, ý {y.get('id')}: có từ khóa lặp trong 1 nhóm.")
                 y_moi.append({"id": str(y["id"]), "diem": _lam_tron(round(float(y["diem"]) * k, 2)),
-                              "noi_dung": str(y.get("noi_dung", "")).strip(), "nhom_tu_khoa": nhom, "can_dat": can})
+                "noi_dung": str(y.get("noi_dung", "")).strip(), "nhom_tu_khoa": nhom, "can_dat": can,
+                **_truong_them(y, cid, canh_bao)})
             diem_cau = _lam_tron(round(float(c["diem"]) * k, 2))
             tong += diem_cau
             # Tự kiểm tra: chấm thử chính đáp án mẫu. Ý nào đáp án mẫu cũng không đạt = từ khóa sai, học sinh khó đạt
@@ -90,8 +111,8 @@ def chuyen_de(d, bai_id, ten=None, do_kho=3):
             hong = [r["id"] for r in kq_mau if not r["dat"]]
             if hong:
                 canh_bao.append(f"Câu {cid}: đáp án mẫu chỉ tự chấm được {diem_mau}/{diem_cau}. Ý từ khóa chưa khớp: {', '.join(hong)}")
-            cau_hoi.append({"id": cid, "type": "tu-luan", "de_bai": _de_sang_html(c["de_bai"]), "diem": diem_cau})
-            dap_an[cid] = {"loai": "tu-luan", "dap_an_dung": "", "diem": diem_cau, "y": y_moi,
+                cau_hoi.append({"id": cid, "type": "tu-luan", "de_bai": _de_sang_html(c["de_bai"]), "diem": diem_cau})
+                dap_an[cid] = {"loai": "tu-luan", "dap_an_dung": "", "diem": diem_cau, "y": y_moi,
                            "loi_giai": html.escape(str(c.get("dap_an_mau", "")).strip(), quote=False).replace("\n", "<br>")}
         except (KeyError, ValueError, TypeError) as e:
             loi.append(f"Câu {cid}: {e}")
