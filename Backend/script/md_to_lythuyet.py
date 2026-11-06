@@ -57,7 +57,9 @@ import json
 import re
 import sys
 import unicodedata
+import math
 from pathlib import Path
+
 
 try:
     ROOT = Path(__file__).resolve().parents[2]      # Backend/script/x.py -> thư mục gốc dự án
@@ -233,7 +235,122 @@ def _danh_sach(lines, i):
         parts.append(f"</li></{stack.pop()[1]}>")
     return "".join(parts), i
 
+# ======================================================================
+# 2b. Khối ```hinh -> SVG (hình học vẽ bằng lệnh đơn giản)
+# ======================================================================
+RE_HINH = re.compile(r"^```[ \t]*hinh[ \t]*\n(.*?)\n?```[ \t]*$", re.M | re.S)
+MAU_NET, MAU_TO, MAU_CHU = "#1b2a41", "#e8eefc", "#1b2a41"
 
+
+def _lenh(s):
+    return re.sub(r"[\s_\-]+", "", bo_dau(s).lower())
+
+
+def _so(x):
+    return float(x.replace(",", "."))
+
+
+def ve_hinh(src, cb):
+    """Đọc các lệnh vẽ (toạ độ toán học, trục y hướng LÊN) và trả về HTML chứa 1 thẻ <svg>.
+    Lệnh: diem, doan, netdut, tamgiac, vuong, goc, tron, chu  (xem hướng dẫn trong prompt NotebookLM)."""
+    P, lenh = {}, []
+    # --- Lượt 1: đọc điểm trước để lệnh nào đứng trước cũng dùng được ---
+    for n, dong in enumerate(src.split("\n"), 1):
+        dong = dong.strip()
+        if not dong or dong.startswith("#"):
+            continue
+        parts = dong.split(None, 3) if _lenh(dong.split()[0]) == "chu" else dong.split()
+        cmd = _lenh(parts[0])
+        try:
+            if cmd == "diem":
+                P[parts[1]] = (_so(parts[2]), _so(parts[3]))
+            else:
+                lenh.append((n, cmd, parts, dong))
+        except (IndexError, ValueError):
+            cb.append(f"Hình, dòng {n}: «{dong}» sai cú pháp, đã bỏ qua.")
+
+    # --- Lượt 2: gom hình ---
+    polys, lines, circles, angles, rights, texts = [], [], [], [], [], []
+    for n, cmd, parts, dong in lenh:
+        try:
+            if cmd in ("tamgiac", "dagiac"):
+                if len(parts) < 4:
+                    raise IndexError
+                polys.append([P[x] for x in parts[1:]])
+            elif cmd in ("doan", "netdut"):
+                lines.append((P[parts[1]], P[parts[2]], cmd == "netdut"))
+            elif cmd == "vuong":          # vuong <đỉnh> <điểm trên cạnh 1> <điểm trên cạnh 2>
+                rights.append((P[parts[1]], P[parts[2]], P[parts[3]]))
+            elif cmd == "goc":            # goc <đỉnh> <điểm 1> <điểm 2>  (cung tròn đánh dấu góc)
+                angles.append((P[parts[1]], P[parts[2]], P[parts[3]]))
+            elif cmd == "tron":           # tron <tâm> <bán kính>
+                circles.append((P[parts[1]], _so(parts[2])))
+            elif cmd == "chu":            # chu <x> <y> <nội dung>
+                texts.append((_so(parts[1]), _so(parts[2]), parts[3].strip()))
+            else:
+                cb.append(f"Hình, dòng {n}: lệnh lạ «{parts[0]}», đã bỏ qua.")
+        except KeyError as e:
+            cb.append(f"Hình, dòng {n}: chưa khai báo điểm {e}. Hãy thêm 'diem {e} x y'.")
+        except (IndexError, ValueError):
+            cb.append(f"Hình, dòng {n}: «{dong}» sai cú pháp, đã bỏ qua.")
+
+    # --- Khung hình: tính theo đơn vị toán học để chọn tỉ lệ, rồi đổi sang pixel ---
+    xs = [p[0] for p in P.values()] + [t[0] for t in texts]
+    ys = [p[1] for p in P.values()] + [t[1] for t in texts]
+    for (cx, cy), r in circles:
+        xs += [cx - r, cx + r]
+        ys += [cy - r, cy + r]
+    if not xs:
+        cb.append("Khối ```hinh không có điểm hoặc hình nào, đã bỏ qua.")
+        return ""
+    s = max(30.0, min(70.0, 380.0 / max(max(xs) - min(xs), max(ys) - min(ys), 1)))
+    X = lambda x: x * s
+    Y = lambda y: -y * s
+
+    # chữ rộng khoảng 8 px / ký tự: tính thêm để không bị cắt mép
+    bx = [X(x) for x in xs] + [X(t[0]) + d * len(t[2]) * 4.2 for t in texts for d in (-1, 1)]
+    by = [Y(y) for y in ys]
+    pad = 18
+    x0, y0 = min(bx) - pad, min(by) - pad
+    w, h = max(bx) - min(bx) + 2 * pad, max(by) - min(by) + 2 * pad
+
+    o = []
+    for pl in polys:
+        pts = " ".join(f"{X(a):.1f},{Y(b):.1f}" for a, b in pl)
+        o.append(f'<polygon points="{pts}" fill="{MAU_TO}" stroke="{MAU_NET}" stroke-width="2" stroke-linejoin="round"/>')
+    for a, b, dut in lines:
+        o.append(f'<line x1="{X(a[0]):.1f}" y1="{Y(a[1]):.1f}" x2="{X(b[0]):.1f}" y2="{Y(b[1]):.1f}" '
+                 f'stroke="{MAU_NET}" stroke-width="2"{" stroke-dasharray=\"6 5\"" if dut else ""}/>')
+    for (cx, cy), r in circles:
+        o.append(f'<circle cx="{X(cx):.1f}" cy="{Y(cy):.1f}" r="{r * s:.1f}" fill="none" stroke="{MAU_NET}" stroke-width="2"/>')
+
+    def huong(v, p):                      # góc (màn hình) của tia v->p
+        return math.atan2(Y(p[1]) - Y(v[1]), X(p[0]) - X(v[0]))
+
+    for v, p, q in angles:
+        a1, a2, r = huong(v, p), huong(v, q), 0.55 * s
+        d = (a2 - a1 + math.pi) % (2 * math.pi) - math.pi          # đi đường ngắn
+        o.append(f'<path d="M{X(v[0]) + r * math.cos(a1):.1f},{Y(v[1]) + r * math.sin(a1):.1f} '
+                 f'A{r:.1f},{r:.1f} 0 0 {1 if d > 0 else 0} {X(v[0]) + r * math.cos(a2):.1f},{Y(v[1]) + r * math.sin(a2):.1f}" '
+                 f'fill="none" stroke="#c27410" stroke-width="2"/>')
+    for v, p, q in rights:
+        a1, a2, k = huong(v, p), huong(v, q), 0.28 * s
+        vx, vy = X(v[0]), Y(v[1])
+        ux, uy, wx, wy = k * math.cos(a1), k * math.sin(a1), k * math.cos(a2), k * math.sin(a2)
+        o.append(f'<path d="M{vx + ux:.1f},{vy + uy:.1f} L{vx + ux + wx:.1f},{vy + uy + wy:.1f} L{vx + wx:.1f},{vy + wy:.1f}" '
+                 f'fill="none" stroke="{MAU_NET}" stroke-width="1.6"/>')
+    for a, b in P.values():
+        o.append(f'<circle cx="{X(a):.1f}" cy="{Y(b):.1f}" r="3" fill="{MAU_NET}"/>')
+    for x, y, t in texts:
+        nghieng = ' font-style="italic" font-weight="700"' if len(t) == 1 and t.isalpha() else ""
+        o.append(f'<text x="{X(x):.1f}" y="{Y(y):.1f}" text-anchor="middle" dominant-baseline="central" '
+                 f'font-size="15" fill="{MAU_CHU}" stroke="#fff" stroke-width="3" paint-order="stroke" '
+                 f'stroke-linejoin="round"{nghieng}>{html.escape(t, quote=False)}</text>')
+
+    return (f'<div style="text-align:center;margin:12px 0"><svg xmlns="http://www.w3.org/2000/svg" '
+            f'viewBox="{x0:.1f} {y0:.1f} {w:.1f} {h:.1f}" width="{w:.0f}" style="max-width:100%;height:auto" '
+            f'role="img" aria-label="Hình minh hoạ" font-family="Segoe UI, Roboto, Arial, sans-serif">'
+            + "".join(o) + "</svg></div>")
 def md_sang_html(text, cb):
     """text đã qua lam_sach. cb = danh sách cảnh báo (hàm tự thêm vào)."""
     # --- Bước 1: cất công thức đi để Markdown không phá (| _ * < > & trong công thức) ---
@@ -242,7 +359,14 @@ def md_sang_html(text, cb):
     def cat(m):
         kho.append(m.group(0))
         return f"\x00{len(kho) - 1}\x00"
+        # --- Cất các khối ```hinh (vẽ thành SVG), để Markdown không phá ---
+    hinh_ds = []
 
+    def cat_hinh(m):
+        hinh_ds.append(ve_hinh(m.group(1), cb))
+        return f"\n\x01{len(hinh_ds) - 1}\x01\n"
+
+    text = RE_HINH.sub(cat_hinh, text)
     text = RE_TOAN.sub(cat, text)
 
     # --- Kiểm tra phần chữ còn lại ---
@@ -282,7 +406,11 @@ def md_sang_html(text, cb):
             dong_doan()
             i += 1
             continue
-
+        if re.fullmatch(r"\x01\d+\x01", s):          # chỗ đặt hình
+            dong_doan()
+            out.append(hinh_ds[int(s[1:-1])])
+            i += 1
+            continue
         m = RE_H.match(s)
         if m:
             dong_doan()

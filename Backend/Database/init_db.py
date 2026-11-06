@@ -62,6 +62,23 @@ def init_db():
     )
     ''')
 
+    # Sao La: skin đang mặc + giới tính giọng nói, và các skin người dùng sở hữu
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS pet (
+        user_id INTEGER PRIMARY KEY,
+        skin_dang_mac TEXT DEFAULT 'mac_dinh',
+        gioi_tinh TEXT DEFAULT 'nu'
+    )
+    ''')
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS pet_do (
+        user_id INTEGER,
+        skin_id TEXT,
+        ngay_nhan TEXT DEFAULT '',
+        PRIMARY KEY (user_id, skin_id)
+    )
+    ''')
+
     # DB cũ thiếu cột nào thì thêm vào (không mất dữ liệu)
     cac_cot = [c[1] for c in cursor.execute("PRAGMA table_info(users)")]
     if 'mon_chuyen' not in cac_cot:

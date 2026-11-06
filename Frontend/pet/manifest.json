@@ -1,0 +1,10 @@
+{
+  "khung": 256,
+  "skin_mac_dinh": "mac_dinh",
+  "hanh_dong_du_phong": "idle",
+  "hanh_dong": {
+    "an_banh":  {"frames": 6, "fps": 6, "lap": true, "nhom": "chinh"},
+    "doc_sach": {"frames": 6, "fps": 6, "lap": true, "nhom": "chinh"}
+  },
+  "ghi_chu": "Thêm hành động mới = chạy pet_cat_anh.py, script tự thêm dòng vào đây. nhom: chinh (có áo toàn thân) | hiem (chỉ thân + hiệu ứng)."
+}

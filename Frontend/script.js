@@ -251,3 +251,21 @@ if (
   s.src = "thong-bao.js?v=1";
   document.head.appendChild(s);
 }
+
+// Nạp Sao La (pet) trên mọi trang khi đã đăng nhập (trừ đăng nhập / đăng ký)
+if (
+  localStorage.getItem("isLoggedIn") === "true" &&
+  !window.SAOLA &&
+  !/(login|register)\.html$/i.test(location.pathname) &&
+  !document.querySelector('script[src^="pet.js"]')
+) {
+  const s = document.createElement("script");
+  s.src = "pet.js?v=1";
+  document.head.appendChild(s);
+}
+// Nạp pet Sao La trên mọi trang khi đã đăng nhập
+if (localStorage.getItem("isLoggedIn") === "true" && !window.PET && !document.querySelector('script[src^="pet.js"]')) {
+  const s = document.createElement("script");
+  s.src = "pet.js?v=1";
+  document.head.appendChild(s);
+}

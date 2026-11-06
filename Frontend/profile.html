@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="style2.css?v=7" />
   <link rel="stylesheet" href="style3.css?v=7" />
   <link rel="stylesheet" href="profile.css?v=1" />
+  <link rel="stylesheet" href="pet.css?v=1" />
 </head>
 
 <body>
@@ -113,6 +114,32 @@
       <div class="pf-thanh" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Tiến độ mở khoá">
         <i id="pf-mk-bar"></i>
       </div>
+    </section>
+
+    <!-- ===== Sao La: giọng nói (nam/nữ) + trang phục. Logic nằm trong pet-ho-so.js ===== -->
+    <section class="pf-card" id="sl-the">
+      <div class="pf-card-dau">
+        <div>
+          <h2><i class="fa-solid fa-paw"></i> Sao La</h2>
+          <p class="pf-ghi">Chọn giọng nói và trang phục cho Sao La.</p>
+        </div>
+      </div>
+
+      <fieldset class="sl-nhom">
+        <legend>Sao La là</legend>
+        <div class="sl-gt">
+          <label><input type="radio" name="sl-gt" value="nu"><span>Nữ</span></label>
+          <label><input type="radio" name="sl-gt" value="nam"><span>Nam</span></label>
+        </div>
+        <p id="sl-gt-tt" class="sl-tt" aria-live="polite"></p>
+        <p class="pf-ghi nho">Chỉ đổi giọng nói, không đổi hình.</p>
+      </fieldset>
+
+      <fieldset class="sl-nhom">
+        <legend>Trang phục</legend>
+        <div id="sl-skin-luoi" class="sl-luoi"></div>
+        <p id="sl-skin-tt" class="sl-tt" aria-live="polite"></p>
+      </fieldset>
     </section>
 
     <!-- ===== Thông báo + Tiện ích ===== -->
@@ -249,6 +276,9 @@
   <!-- thong-bao.js nạp TRƯỚC profile.js để window.THONGBAO có sẵn khi trang chạy -->
   <script src="thong-bao.js?v=1"></script>
   <script src="profile.js?v=8"></script>
+  <!-- pet.js nạp TRƯỚC pet-ho-so.js để window.SAOLA có sẵn -->
+  <script src="pet.js?v=1"></script>
+  <script src="pet-ho-so.js?v=1"></script>
   <script src="script.js?v=7"></script>
 </body>
 

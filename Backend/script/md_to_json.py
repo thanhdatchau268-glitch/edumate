@@ -402,7 +402,25 @@ def doc_de(text, ten_file, id_cli=None):
         raise ValueError("Không xác định được id đề. Hãy thêm --id, ví dụ --id 1.1")
 
     ten = re.sub(r"\(\s*ĐỀ[^)]*\)", "", tieu_de, flags=re.I).strip().lower().capitalize()
-
+        # --- ngữ liệu / bài đọc (khối <!-- tac_pham ... --> ở đầu file) ---
+    tac_pham = None
+    mt = re.search(r"<!--\s*tac_pham[ \t]*\n(.*?)-->", dau, re.S)
+    if mt:
+        tp, nd, dang_nd = {"ten": "", "tac_gia": ""}, [], False
+        for d in mt.group(1).split("\n"):
+            if dang_nd:
+                nd.append(d.strip())
+                continue
+            k, _, v = d.partition(":")
+            k = k.strip().lower()
+            if k in ("ten", "tac_gia"):
+                tp[k] = html.escape(v.strip(), quote=False)
+            elif k == "noi_dung":
+                dang_nd = True
+        while nd and not nd[-1]:
+            nd.pop()
+        tp["noi_dung"] = "<br>".join(html.escape(x, quote=False) for x in nd)
+        tac_pham = tp
     # --- độ khó chung ---
     m = re.search(r"Độ khó chung[\s*]*:[\s*]*(\d+(?:[.,]\d+)?)", dau, re.I)
     if m:
@@ -444,8 +462,10 @@ def doc_de(text, ten_file, id_cli=None):
 
     bai_tap = {"id": bai_id, "do_kho": do_kho if do_kho is not None else (do_kho_cau_dau or 1),
                "ten": ten, "cau_hoi": cau_hoi}
+    if tac_pham:
+        bai_tap["tac_pham"] = tac_pham
     return bai_tap, dap_an, canh_bao
-
+    
 
 # ======================================================================
 # 5. Ghi file (gộp với file có sẵn)

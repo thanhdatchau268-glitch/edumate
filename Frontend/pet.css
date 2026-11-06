@@ -1,0 +1,199 @@
+/* pet.css - Sao La (pet nổi góc phải + thẻ "Sao La" trong hồ sơ).
+   Dùng lại biến màu của style3.css: --nen, --chu, --nhat, --nhan, --vien */
+
+/* ---------- Pet nổi ---------- */
+#sao-la {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    z-index: 900;              /* thấp hơn menu (1000) và hộp thoại */
+    width: 112px;
+    pointer-events: none;      /* chỉ chính pet / nút mới bắt chuột, không chặn nội dung phía sau */
+}
+
+#sao-la[hidden] {
+    display: none;
+}
+
+#sao-la .sl-pet {
+    position: relative;
+    width: 112px;
+    height: 112px;
+    cursor: pointer;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+    outline-offset: 2px;
+}
+
+#sao-la .sl-than,
+#sao-la .sl-hu {
+    position: absolute;
+    inset: 0;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    image-rendering: auto;
+}
+
+#sao-la .sl-tieng {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid var(--vien, #d8e0ee);
+    border-radius: 50%;
+    background: var(--nen, #fff);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 2;
+}
+
+#sao-la .sl-tieng[hidden] {
+    display: none;
+}
+
+#sao-la .sl-bong {
+    position: absolute;
+    right: 8px;
+    bottom: 118px;
+    width: max-content;
+    max-width: min(240px, calc(100vw - 40px));
+    padding: 8px 12px;
+    border: 1px solid var(--vien, #d8e0ee);
+    border-radius: 14px;
+    background: var(--nen, #fff);
+    color: var(--chu, #1b2a41);
+    font-size: 14px;
+    line-height: 1.4;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .12);
+    pointer-events: none;
+}
+
+#sao-la .sl-bong[hidden] {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    #sao-la,
+    #sao-la .sl-pet {
+        width: 88px;
+    }
+
+    #sao-la .sl-pet {
+        height: 88px;
+    }
+
+    #sao-la .sl-bong {
+        bottom: 94px;
+    }
+}
+
+/* ---------- Thẻ "Sao La" trong hồ sơ ---------- */
+.sl-nhom {
+    border: 0;
+    margin: 14px 0 6px;
+    padding: 0;
+}
+
+.sl-nhom legend {
+    padding: 0;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--chu);
+}
+
+.sl-gt {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.sl-gt label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid var(--vien);
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--chu);
+}
+
+.sl-gt label:has(input:checked) {
+    border-color: var(--nhan);
+    background: color-mix(in srgb, var(--nhan) 10%, #fff);
+}
+
+.sl-gt input:disabled + span {
+    opacity: .6;
+}
+
+.sl-luoi {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.sl-o {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 8px;
+    border: 2px solid var(--vien);
+    border-radius: 14px;
+    background: var(--nen);
+    color: var(--chu);
+    font: inherit;
+    cursor: pointer;
+    text-align: center;
+}
+
+.sl-o img {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+}
+
+.sl-o.dang-mac {
+    border-color: var(--nhan);
+    background: color-mix(in srgb, var(--nhan) 8%, #fff);
+}
+
+.sl-o.chua-co img {
+    filter: grayscale(.6);
+    opacity: .75;
+}
+
+.sl-o:disabled {
+    cursor: default;
+}
+
+.sl-ten {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.sl-nhan {
+    font-size: 12px;
+    color: var(--nhat);
+}
+
+.sl-tt {
+    min-height: 1.3em;
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: var(--nhat);
+}
+
+.sl-tt.loi {
+    color: #dc2626;
+}
+
+.sl-tt.ok {
+    color: #178a5a;
+}

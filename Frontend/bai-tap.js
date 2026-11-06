@@ -1,5 +1,20 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  // Chốt chặn: nếu file này lỡ bị nạp 2 lần trong HTML thì lần thứ 2 dừng ngay,
+  // không vẽ lặp bài tập (nguyên nhân gây lỗi "bài hiện 2 lần" trước đây).
+  if (window.__baiTapDaChay) {
+    console.warn("bai-tap.js bị nạp nhiều lần - bỏ qua lần chạy thừa. Hãy kiểm tra thẻ <script> trong HTML.");
+    return;
+  }
+  window.__baiTapDaChay = true;
+
   const API = "http://127.0.0.1:5000";
+
+  // Âm thanh: nếu am-thanh.js không nạp được thì dùng bản "câm" để code không bị lỗi
+  const Am = window.AmThanh || {
+    chon() { }, go() { }, xong() { }, dung() { }, sai() { }, nop() { }, hoanThanh() { },
+    dangBat: () => false, batTat: () => false,
+  };
+  const giamChuyenDong = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // Lấy các tham số từ địa chỉ trang
   const params = new URLSearchParams(window.location.search);
@@ -310,7 +325,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>`;
         } else if (cau.type === "tu-luan") {
           cauHtml.innerHTML = `${tieuDe}
-            <textarea class="o-tu-luan" name="${name}" rows="10" maxlength="6000" placeholder="Viết bài làm của bạn..."></textarea>
+            <textarea class="o-tu-luan" name="${name}" rows="5" maxlength="6000" placeholder="Viết bài làm của bạn..."></textarea>
             <div class="tu-luan-dem">0 từ</div>`;
           const ta = cauHtml.querySelector("textarea");
           ta.addEventListener("input", () => {
@@ -346,10 +361,144 @@ document.addEventListener("DOMContentLoaded", async () => {
     const hangBox = document.createElement("div"); // MỚI: nơi hiện hạng sau khi nộp
     hangBox.className = "hang-ket-qua";
 
+    // Khung sao + lời khen hiện sau khi nộp
+    const saoBox = document.createElement("div");
+    saoBox.className = "sao-khung";
+
     quizContainer.appendChild(btnNop);
+    quizContainer.appendChild(saoBox);
     quizContainer.appendChild(tongKet);
     quizContainer.appendChild(hangBox);
     veCongThuc(quizContainer);
+
+    // ----- Thanh tiến độ dính trên cùng + nút bật/tắt âm -----
+    const thanhTD = document.createElement("div");
+    thanhTD.className = "tien-do-lam";
+    thanhTD.innerHTML = `
+      <div class="tdl-hang">
+        <span class="tdl-chu"><b class="tdl-so">0/${dsCau.length}</b><span class="tdl-loi"></span></span>
+        <button type="button" class="tdl-am" aria-label="Bật/tắt âm thanh"></button>
+      </div>
+      <div class="tdl-thanh"><i></i></div>`;
+    quizContainer.prepend(thanhTD);
+    const tdlSo = thanhTD.querySelector(".tdl-so");
+    const tdlLoi = thanhTD.querySelector(".tdl-loi");
+    const tdlDai = thanhTD.querySelector(".tdl-thanh i");
+    const tdlAm = thanhTD.querySelector(".tdl-am");
+
+    const veNutAm = () => {
+      const b = Am.dangBat();
+      tdlAm.textContent = b ? "🔊" : "🔇";
+      tdlAm.setAttribute("aria-pressed", String(b));
+      tdlAm.title = b ? "Đang bật âm thanh (bấm để tắt)" : "Đang tắt âm thanh (bấm để bật)";
+    };
+    tdlAm.addEventListener("click", () => { Am.batTat(); veNutAm(); });
+    veNutAm();
+
+    // Câu này đã có trả lời chưa?
+    const daLam = ({ cau, card }) => {
+      if (cau.type === "tra-loi-ngan") return card.querySelector("input[type=text]").value.trim() !== "";
+      if (cau.type === "tu-luan") return card.querySelector("textarea").value.trim() !== "";
+      return !!card.querySelector("input[type=radio]:checked");
+    };
+
+    let daBaoXong = false; // chỉ rung chuông "xong hết" 1 lần
+    function capNhatTienDo() {
+      const tong = dsCau.length;
+      let xong = 0;
+      dsCau.forEach((x) => {
+        const co = daLam(x);
+        x.card.classList.toggle("da-lam", co);
+        if (co) xong++;
+      });
+      const pt = tong ? Math.round((xong / tong) * 100) : 0;
+      tdlSo.textContent = `${xong}/${tong}`;
+      tdlDai.style.width = pt + "%";
+      thanhTD.classList.toggle("het", tong > 0 && xong === tong);
+      btnNop.classList.toggle("san-sang", tong > 0 && xong === tong && !btnNop.disabled);
+
+      let loi = " · Bắt đầu thôi nào! 🚀";
+      if (tong > 0 && xong === tong) loi = " · Xong hết rồi, bấm Nộp bài nhé! 🎯";
+      else if (tong - xong === 1) loi = " · Còn đúng 1 câu nữa thôi! 🔥";
+      else if (pt >= 50) loi = " · Quá nửa chặng rồi, cố lên! 💪";
+      else if (xong > 0) loi = " · Đang vào guồng rồi đó! ✨";
+      tdlLoi.textContent = loi;
+
+      if (tong > 0 && xong === tong && !daBaoXong) { daBaoXong = true; Am.xong(); }
+      if (xong < tong) daBaoXong = false;
+    }
+    capNhatTienDo();
+
+    // Chọn đáp án / gõ chữ -> kêu "bóp", cập nhật tiến độ
+    quizContainer.addEventListener("change", (e) => {
+      if (e.target.matches("input[type=radio]")) { Am.chon(); capNhatTienDo(); }
+    });
+    quizContainer.addEventListener("input", (e) => {
+      if (!e.target.matches("input[type=text], textarea")) return;
+      const truoc = e.target.classList.contains("co-chu");
+      const co = e.target.value.trim() !== "";
+      e.target.classList.toggle("co-chu", co);
+      if (co && !truoc) Am.go(); // chỉ kêu ở ký tự đầu tiên, đỡ ồn
+      capNhatTienDo();
+    });
+
+    // Pháo giấy nhỏ khi làm tốt (tự tắt nếu người dùng chọn giảm chuyển động)
+    function phaoGiay(soHat) {
+      if (giamChuyenDong) return;
+      const mau = ["#2457d6", "#178a5a", "#e07a1f", "#7b4bd8", "#f59e0b", "#d93a3a"];
+      const lop = document.createElement("div");
+      lop.className = "phao-giay";
+      for (let i = 0; i < soHat; i++) {
+        const h = document.createElement("i");
+        h.style.left = Math.random() * 100 + "%";
+        h.style.background = mau[i % mau.length];
+        h.style.animationDelay = Math.random() * 0.4 + "s";
+        h.style.animationDuration = 1.6 + Math.random() * 1.2 + "s";
+        h.style.setProperty("--lech", (Math.random() * 160 - 80) + "px");
+        h.style.transform = `rotate(${Math.random() * 360}deg)`;
+        lop.appendChild(h);
+      }
+      document.body.appendChild(lop);
+      setTimeout(() => lop.remove(), 3500);
+    }
+
+    // Hiện sao + lời khen sau khi chấm xong
+    function hienSao(pct) {
+      const sao = pct >= 90 ? 3 : pct >= 60 ? 2 : pct > 0 ? 1 : 0;
+      const loi =
+        pct >= 100 ? "Tuyệt đối! Không sai câu nào 🏆" :
+          pct >= 80 ? "Xuất sắc! Gần như hoàn hảo 🎉" :
+            pct >= 60 ? "Làm tốt lắm! Thêm chút nữa là hoàn hảo 💪" :
+              pct >= 30 ? "Cố lên! Xem lời giải rồi làm lại nhé 📘" :
+                "Đừng nản! Mỗi câu sai là một bài học 🌱";
+      saoBox.innerHTML = `
+        <div class="sao-hang">${[1, 2, 3].map((n) =>
+        `<span class="sao${n <= sao ? " bat" : ""}" style="animation-delay:${(n - 1) * 0.18}s">★</span>`).join("")}</div>
+        <div class="sao-loi">${loi}</div>`;
+      saoBox.classList.add("hien");
+      saoBox.scrollIntoView({ behavior: giamChuyenDong ? "auto" : "smooth", block: "center" });
+      Am.hoanThanh(pct);
+      if (pct >= 60) phaoGiay(pct >= 90 ? 70 : 40);
+    }
+
+    // Phát kết quả từng câu lần lượt: đúng thì "ting" (liên tiếp đúng thì cao dần), sai thì rung nhẹ
+    function phatKetQua(thuTu, pct) {
+      const buoc = Math.max(70, Math.min(220, Math.floor(2600 / Math.max(1, thuTu.length))));
+      let combo = 0;
+      thuTu.forEach((x, i) => {
+        setTimeout(() => {
+          if (x.dung === true) {
+            x.card.classList.add("bung-dung");
+            Am.dung(combo++);
+          } else if (x.dung === false) {
+            x.card.classList.add("bung-sai");
+            Am.sai();
+            combo = 0;
+          }
+        }, i * buoc);
+      });
+      setTimeout(() => hienSao(pct), thuTu.length * buoc + 250);
+    }
 
     // Lấy câu trả lời người dùng đã chọn / nhập của 1 nhóm câu
     function layCauTraLoi(ds) {
@@ -376,8 +525,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     // ----- Bấm Nộp bài -----
     btnNop.addEventListener("click", async () => {
       btnNop.disabled = true; // tránh bấm nhiều lần
+      btnNop.classList.remove("san-sang");
+      Am.nop();
       tongKet.textContent = "Đang nộp bài...";
       hangBox.innerHTML = "";
+      saoBox.classList.remove("hien");
+      saoBox.innerHTML = "";
       const userId = localStorage.getItem("userId");
 
       try {
@@ -394,6 +547,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (!kq.success) throw new Error(kq.message);
           tongKet.textContent = `Đã nộp bài. Điểm của bạn: ${kq.diem}`;
           khoaOnhap();
+          Am.xong();
+          phaoGiay(30);
           return;
         }
 
@@ -408,6 +563,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const theoBai = {};
         dsCau.forEach((x) => (theoBai[x.baiId] ||= []).push(x));
+        const thuTuKetQua = []; // để phát âm thanh/hiệu ứng lần lượt sau khi chấm xong
 
         for (const baiId of Object.keys(theoBai)) {
           const res = await fetch(`${API}/api/submit`, {
@@ -441,7 +597,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           theoBai[baiId].forEach(({ cau, card }) => {
             const o = card.querySelector(".ket-qua-cau");
             const r = kq.ket_qua[cau.id];
-            card.classList.remove("dung", "sai", "chua-lam");
+            card.classList.remove("dung", "sai", "chua-lam", "bung-dung", "bung-sai");
+            thuTuKetQua.push({ card, dung: r ? r.dung : null });
             if (!r || r.dung === null) {
               card.classList.add("chua-lam");
               o.innerHTML = `<div class="kq kq-chua">Bạn chưa trả lời câu này.</div>`;
@@ -451,7 +608,8 @@ document.addEventListener("DOMContentLoaded", async () => {
               card.classList.add(r.dung ? "dung" : "sai");
               o.innerHTML = `<div class="kq ${r.dung ? "kq-dung" : "kq-sai"}">Bạn đạt ${r.diem_dat} / ${r.diem} điểm</div>
               <ul class="tl-y">${r.tu_luan.map((y) => `<li class="${y.dat ? "dat" : "chua"}">
-              ${y.nhoi ? " (bài chỉ liệt kê từ khóa nên không tính)" : y.qua_ngan ? " (bài viết quá ngắn nên chưa tính)" : y.ngu_nghia ? " (chấm theo ý nghĩa)" : ""}</li> `).join("")}</ul>
+              <b>${y.dat ? "✔" : "✘"}</b> ${esc(y.noi_dung || "")}
+              <small>${y.nhoi ? " (bài chỉ liệt kê từ khóa nên không tính)" : y.qua_ngan ? " (bài viết quá ngắn nên chưa tính)" : y.ngu_nghia ? " (chấm theo ý nghĩa)" : ""}</small></li>`).join("")}</ul>
                <p class="tl-luu-y">Hệ thống chấm theo từ khóa nên chỉ gần đúng. Hãy đối chiếu với đáp án mẫu.</p>`;
               if (r.loi_giai) o.innerHTML += `<div class="kq-loi-giai"><b>Đáp án mẫu:</b> ${r.loi_giai}</div>`;
               veCongThuc(o);
@@ -489,8 +647,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             <span>Hạng cao nhất của bài này: <b style="color:${hang.c}">${hang.ten}</b> (${bestPct}%)</span>`;
         }
         khoaOnhap();
+        phatKetQua(thuTuKetQua, diemToiDa ? Math.round((diemDat / diemToiDa) * 100) : 0);
       } catch (err) {
         btnNop.disabled = false; // lỗi thì cho nộp lại
+        capNhatTienDo();
         tongKet.textContent = "Không nộp được bài: " + err.message;
       }
     });

@@ -1,0 +1,634 @@
+{
+  "nam_hoc": "2026-2027",
+  "thang_diem": 100,
+  "cau_hoi": [
+    {
+      "id": 1,
+      "diem": 30.0,
+      "de_bai": "Câu 1 (30 điểm):\na) Phân tích tác động của đặc điểm địa hình đồi núi và khí hậu nhiệt đới ẩm gió mùa đến mạng lưới và chế độ nước sông ngòi Việt Nam.\nb) So sánh đặc điểm tự nhiên cơ bản giữa khu vực Đông Bắc và Tây Bắc thuộc vùng Trung du và miền núi phía Bắc.",
+      "dap_an_mau": "Địa hình đồi núi hẹp ngang và dốc làm phần lớn sông ngòi Việt Nam ngắn và dốc. Khí hậu nhiệt đới ẩm với lượng mưa lớn phân mùa làm sông ngòi dồi dào nước và chế độ nước phân mùa lũ cạn rõ rệt.\nKhu vực Đông Bắc có địa hình núi thấp hướng cánh cung, khí hậu có mùa đông lạnh nhất cả nước. Khu vực Tây Bắc có địa hình núi cao nhất cả nước hướng tây bắc - đông nam, sông ngòi dốc giàu tiềm năng thủy điện và phân hóa đủ ba đai sinh vật nhiệt đới, cận nhiệt, ôn đới núi cao.",
+      "y": [
+        {
+          "id": "1.1",
+          "diem": 6.0,
+          "noi_dung": "Địa hình đồi núi hẹp ngang và dốc khiến phần lớn sông ngòi Việt Nam có chiều dài ngắn và độ dốc lớn.",
+          "nhom_tu_khoa": [
+            [
+              "đồi núi dốc",
+              "địa hình hẹp ngang",
+              "địa hình dốc"
+            ],
+            [
+              "sông ngắn",
+              "sông ngòi ngắn",
+              "chiều dài ngắn"
+            ],
+            [
+              "sông dốc",
+              "độ dốc lớn",
+              "lòng sông dốc"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": false,
+          "loai_tru": [
+            "sông dài",
+            "đồng bằng rộng"
+          ]
+        },
+        {
+          "id": "1.2",
+          "diem": 6.0,
+          "noi_dung": "Khí hậu nhiệt đới ẩm mưa lớn phân mùa làm sông ngòi Việt Nam dồi dào nước và chế độ nước phân mùa lũ cạn.",
+          "nhom_tu_khoa": [
+            [
+              "mưa lớn",
+              "lượng mưa lớn",
+              "nhiệt đới ẩm"
+            ],
+            [
+              "nước dồi dào",
+              "dồi dào nước",
+              "lượng nước lớn"
+            ],
+            [
+              "phân mùa lũ cạn",
+              "mùa lũ mùa cạn",
+              "chế độ nước phân mùa"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": false,
+          "loai_tru": [
+            "chế độ nước điều hòa",
+            "ít mưa"
+          ]
+        },
+        {
+          "id": "1.3",
+          "diem": 6.0,
+          "noi_dung": "Khu vực Đông Bắc có địa hình chủ yếu là núi thấp hướng cánh cung và chịu ảnh hưởng mùa đông lạnh nhất cả nước.",
+          "nhom_tu_khoa": [
+            [
+              "khu vực Đông Bắc",
+              "vùng Đông Bắc"
+            ],
+            [
+              "núi thấp",
+              "địa hình núi thấp"
+            ],
+            [
+              "hướng cánh cung",
+              "núi cánh cung"
+            ],
+            [
+              "mùa đông lạnh nhất",
+              "lạnh nhất cả nước"
+            ]
+          ],
+          "can_dat": 4,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "khu vực Tây Bắc",
+            "hướng tây bắc đông nam"
+          ]
+        },
+        {
+          "id": "1.4",
+          "diem": 6.0,
+          "noi_dung": "Khu vực Tây Bắc có địa hình núi cao hướng tây bắc đông nam và hệ thống sông ngòi dốc giàu tiềm năng thủy điện.",
+          "nhom_tu_khoa": [
+            [
+              "khu vực Tây Bắc",
+              "vùng Tây Bắc"
+            ],
+            [
+              "núi cao",
+              "địa hình núi cao"
+            ],
+            [
+              "tây bắc đông nam",
+              "hướng tây bắc"
+            ],
+            [
+              "tiềm năng thủy điện",
+              "giàu thủy điện"
+            ]
+          ],
+          "can_dat": 4,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "khu vực Đông Bắc",
+            "hướng cánh cung"
+          ]
+        },
+        {
+          "id": "1.5",
+          "diem": 6.0,
+          "noi_dung": "Địa hình núi cao Tây Bắc tạo sự phân hóa khí hậu theo độ cao với đủ ba đai sinh vật.",
+          "nhom_tu_khoa": [
+            [
+              "núi cao Tây Bắc",
+              "miền núi Tây Bắc"
+            ],
+            [
+              "phân hóa theo độ cao",
+              "đai cao khí hậu"
+            ],
+            [
+              "đai nhiệt đới",
+              "sinh vật nhiệt đới"
+            ],
+            [
+              "đai cận nhiệt",
+              "đai ôn đới"
+            ]
+          ],
+          "can_dat": 4,
+          "chi_tu_khoa": false,
+          "loai_tru": [
+            "chỉ có nhiệt đới",
+            "khu vực Đông Bắc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "diem": 10.0,
+      "de_bai": "Câu 2 (10 điểm):\na) Trình bày sự thay đổi quy mô và cơ cấu dân số theo nhóm tuổi của nước ta giai đoạn 1999 - 2024.\nb) Phân tích tác động của cơ cấu dân số vàng và xu hướng già hóa dân số đến phát triển kinh tế xã hội.",
+      "dap_an_mau": "Dân số Việt Nam tăng liên tục từ 76,5 triệu người năm 1999 lên 101,3 triệu người năm 2024. Tỉ lệ nhóm tuổi từ 15 đến 64 tuổi đạt 67,4% năm 2024 khẳng định thời kỳ dân số vàng, cung cấp lực lượng lao động dồi dào chiếm 52,2% tổng dân số giúp thu hút đầu tư phát triển.\nĐồng thời, tỉ lệ nhóm từ 65 tuổi trở lên tăng lên 9,3% năm 2024 cho thấy nước ta đang bước vào quá trình già hóa dân số, đặt ra thách thức về an sinh xã hội và chăm sóc y tế.",
+      "y": [
+        {
+          "id": "2.1",
+          "diem": 2.5,
+          "noi_dung": "Quy mô dân số Việt Nam tăng liên tục từ 76,5 triệu người năm 1999 lên 101,3 triệu người năm 2024.",
+          "nhom_tu_khoa": [
+            [
+              "quy mô dân số",
+              "dân số Việt Nam"
+            ],
+            [
+              "76,5 triệu người",
+              "76.5 triệu người"
+            ],
+            [
+              "101,3 triệu người",
+              "101.3 triệu người"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "dân số giảm",
+            "100 triệu người"
+          ]
+        },
+        {
+          "id": "2.2",
+          "diem": 2.5,
+          "noi_dung": "Tỉ lệ nhóm dân số từ 15 đến 64 tuổi đạt 67,4% năm 2024 thể hiện nước ta ở thời kỳ dân số vàng.",
+          "nhom_tu_khoa": [
+            [
+              "từ 15 đến 64 tuổi",
+              "15-64 tuổi"
+            ],
+            [
+              "67,4%",
+              "67.4%"
+            ],
+            [
+              "dân số vàng",
+              "thời kỳ dân số vàng"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "dân số già",
+            "dưới 15 tuổi"
+          ]
+        },
+        {
+          "id": "2.3",
+          "diem": 2.5,
+          "noi_dung": "Thời kỳ dân số vàng cung cấp nguồn lao động dồi dào chiếm 52,2% tổng dân số giúp thu hút đầu tư.",
+          "nhom_tu_khoa": [
+            [
+              "lao động dồi dào",
+              "nguồn lao động"
+            ],
+            [
+              "52,2%",
+              "52.2%"
+            ],
+            [
+              "thu hút đầu tư",
+              "hấp dẫn đầu tư"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "thiếu lao động",
+            "thất nghiệp"
+          ]
+        },
+        {
+          "id": "2.4",
+          "diem": 2.5,
+          "noi_dung": "Tỉ lệ nhóm dân số từ 65 tuổi trở lên tăng từ 5,8% lên 9,3% năm 2024 đánh dấu quá trình già hóa dân số.",
+          "nhom_tu_khoa": [
+            [
+              "65 tuổi trở lên",
+              "từ 65 tuổi"
+            ],
+            [
+              "9,3%",
+              "9.3%"
+            ],
+            [
+              "già hóa dân số",
+              "quá trình già hóa"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "trẻ hóa dân số",
+            "dưới 15 tuổi"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "diem": 20.0,
+      "de_bai": "Câu 3 (20 điểm):\na) Tính cơ cấu sản lượng thủy sản phân theo khai thác và nuôi trồng giai đoạn 2010 - 2024 từ số liệu cho trước.\nb) Nhận xét và giải thích sự chuyển dịch cơ cấu sản lượng thủy sản nước ta.",
+      "dap_an_mau": "Tỉ trọng thủy sản khai thác giảm từ 48,1% năm 2010 xuống 40,2% năm 2024. Trong khi đó, tỉ trọng thủy sản nuôi trồng tăng nhanh từ 51,9% năm 2010 lên 59,8% năm 2024 và giữ vai trò chủ đạo.\nSự chuyển dịch do nuôi trồng thủy sản phát triển mạnh nhờ mô hình trang trại ứng dụng công nghệ cao và thị trường xuất khẩu mở rộng. Ngược lại, tỉ trọng khai thác giảm nhằm tuân thủ quy định chống khai thác bất hợp pháp IUU và bảo vệ nguồn lợi ven bờ.",
+      "y": [
+        {
+          "id": "3.1",
+          "diem": 5.0,
+          "noi_dung": "Tỉ trọng sản lượng thủy sản khai thác giảm liên tục từ 48,1% năm 2010 xuống còn 40,2% năm 2024.",
+          "nhom_tu_khoa": [
+            [
+              "thủy sản khai thác",
+              "sản lượng khai thác"
+            ],
+            [
+              "48,1%",
+              "48.1%"
+            ],
+            [
+              "40,2%",
+              "40.2%"
+            ],
+            [
+              "giảm liên tục",
+              "tỉ trọng giảm"
+            ]
+          ],
+          "can_dat": 4,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "tỉ trọng tăng",
+            "thủy sản nuôi trồng"
+          ]
+        },
+        {
+          "id": "3.2",
+          "diem": 5.0,
+          "noi_dung": "Tỉ trọng sản lượng thủy sản nuôi trồng tăng nhanh từ 51,9% năm 2010 lên 59,8% năm 2024 và giữ vai trò chủ đạo.",
+          "nhom_tu_khoa": [
+            [
+              "thủy sản nuôi trồng",
+              "sản lượng nuôi trồng"
+            ],
+            [
+              "51,9%",
+              "51.9%"
+            ],
+            [
+              "59,8%",
+              "59.8%"
+            ],
+            [
+              "vai trò chủ đạo",
+              "chiếm chủ đạo"
+            ]
+          ],
+          "can_dat": 4,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "tỉ trọng giảm",
+            "thủy sản khai thác"
+          ]
+        },
+        {
+          "id": "3.3",
+          "diem": 5.0,
+          "noi_dung": "Ngành nuôi trồng thủy sản phát triển mạnh nhờ đẩy mạnh ứng dụng công nghệ cao và nhu cầu thị trường xuất khẩu gia tăng.",
+          "nhom_tu_khoa": [
+            [
+              "nuôi trồng thủy sản",
+              "ngành nuôi trồng"
+            ],
+            [
+              "ứng dụng công nghệ cao",
+              "công nghệ cao"
+            ],
+            [
+              "thị trường xuất khẩu",
+              "nhu cầu xuất khẩu"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": false,
+          "loai_tru": [
+            "khai thác ven bờ",
+            "suy giảm thị trường"
+          ]
+        },
+        {
+          "id": "3.4",
+          "diem": 5.0,
+          "noi_dung": "Khai thác thủy sản giảm tỉ trọng do tuân thủ quy định chống khai thác IUU và bảo vệ nguồn lợi ven bờ.",
+          "nhom_tu_khoa": [
+            [
+              "khai thác thủy sản",
+              "hoạt động khai thác"
+            ],
+            [
+              "chống khai thác IUU",
+              "quy định IUU"
+            ],
+            [
+              "bảo vệ nguồn lợi",
+              "nguồn lợi ven bờ"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "đẩy mạnh ven bờ",
+            "vi phạm quy định"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "diem": 30.0,
+      "de_bai": "Câu 4 (30 điểm):\na) Phân tích thế mạnh về điều kiện tự nhiên đối với phát triển nông nghiệp ở vùng Đồng bằng sông Hồng.\nb) Trình bày vị trí địa lí và đặc điểm phát triển công nghiệp vùng Đông Nam Bộ.",
+      "dap_an_mau": "Đồng bằng sông Hồng có địa hình bằng phẳng và đất phù sa màu mỡ rất thuận lợi cho canh tác lúa nước. Khí hậu nhiệt đới ẩm có mùa đông lạnh tạo thế mạnh phát triển các loại cây vụ đông đem lại giá trị kinh tế cao.\nVùng Đông Nam Bộ có vị trí cầu nối chiến lược giữa Đồng bằng sông Cửu Long, Tây Nguyên và quốc tế. Công nghiệp Đông Nam Bộ phát triển mạnh nhất cả nước nhờ thu hút vốn đầu tư FDI lớn với các ngành trọng điểm như khai thác dầu khí, sản xuất điện tử, dệt may và chế biến thực phẩm.",
+      "y": [
+        {
+          "id": "4.1",
+          "diem": 6.0,
+          "noi_dung": "Địa hình Đồng bằng sông Hồng tương đối bằng phẳng kết hợp đất phù sa màu mỡ rất thuận lợi cho canh tác lúa nước.",
+          "nhom_tu_khoa": [
+            [
+              "Đồng bằng sông Hồng",
+              "vùng Đồng bằng sông Hồng"
+            ],
+            [
+              "địa hình bằng phẳng",
+              "bằng phẳng"
+            ],
+            [
+              "đất phù sa màu mỡ",
+              "đất phù sa"
+            ],
+            [
+              "trồng lúa nước",
+              "canh tác lúa"
+            ]
+          ],
+          "can_dat": 4,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "địa hình đồi núi",
+            "đất feralit"
+          ]
+        },
+        {
+          "id": "4.2",
+          "diem": 6.0,
+          "noi_dung": "Khí hậu có mùa đông lạnh giúp Đồng bằng sông Hồng phát triển các loại cây vụ đông đem lại giá trị cao.",
+          "nhom_tu_khoa": [
+            [
+              "mùa đông lạnh",
+              "khí hậu mùa đông"
+            ],
+            [
+              "cây vụ đông",
+              "phát triển cây vụ đông"
+            ],
+            [
+              "đất Đồng bằng sông Hồng",
+              "khu vực sông Hồng"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": false,
+          "loai_tru": [
+            "nóng quanh năm",
+            "cận xích đạo"
+          ]
+        },
+        {
+          "id": "4.3",
+          "diem": 6.0,
+          "noi_dung": "Đông Nam Bộ có vị trí cầu nối giữa Đồng bằng sông Cửu Long, Tây Nguyên và các tuyến hàng hải quốc tế.",
+          "nhom_tu_khoa": [
+            [
+              "vùng Đông Nam Bộ",
+              "Đông Nam Bộ"
+            ],
+            [
+              "vị trí cầu nối",
+              "cầu nối chiến lược"
+            ],
+            [
+              "Đồng bằng sông Cửu Long",
+              "Tây Nguyên"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "vùng miền núi phía bắc",
+            "giáp Trung Quốc"
+          ]
+        },
+        {
+          "id": "4.4",
+          "diem": 6.0,
+          "noi_dung": "Công nghiệp Đông Nam Bộ dẫn đầu cả nước nhờ thu hút nguồn vốn FDI lớn và cơ cấu ngành hiện đại.",
+          "nhom_tu_khoa": [
+            [
+              "công nghiệp Đông Nam Bộ",
+              "miền Đông Nam Bộ"
+            ],
+            [
+              "phát triển mạnh nhất",
+              "dẫn đầu cả nước"
+            ],
+            [
+              "vốn đầu tư FDI",
+              "đầu tư nước ngoài"
+            ],
+            [
+              "cơ cấu hiện đại",
+              "ngành hiện đại"
+            ]
+          ],
+          "can_dat": 4,
+          "chi_tu_khoa": false,
+          "loai_tru": [
+            "chậm phát triển",
+            "nông nghiệp chủ đạo"
+          ]
+        },
+        {
+          "id": "4.5",
+          "diem": 6.0,
+          "noi_dung": "Các ngành công nghiệp trọng điểm Đông Nam Bộ gồm khai thác dầu khí, sản xuất điện tử, dệt may và thực phẩm.",
+          "nhom_tu_khoa": [
+            [
+              "ngành công nghiệp Đông Nam",
+              "công nghiệp chủ lực"
+            ],
+            [
+              "khai thác dầu khí",
+              "dầu khí"
+            ],
+            [
+              "sản xuất điện tử",
+              "công nghiệp điện tử"
+            ],
+            [
+              "dệt may chế biến",
+              "dệt may thực phẩm"
+            ]
+          ],
+          "can_dat": 4,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "khai thác than",
+            "thủy điện lớn"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "diem": 10.0,
+      "de_bai": "Câu 5 (10 điểm):\na) Trình bày tiềm năng và thực trạng ngành du lịch biển đảo ở nước ta.\nb) Đề xuất các giải pháp chiến lược phát triển bền vững kinh tế biển gắn với bảo vệ môi trường và chủ quyền quốc gia.",
+      "dap_an_mau": "Đường bờ biển dài trên 3260 km cùng nhiều bãi tắm đẹp tạo tiềm năng to lớn cho du lịch biển đảo Việt Nam. Các trung tâm du lịch nổi tiếng như Hạ Long, Cát Bà, Nha Trang, Phú Quốc thu hút đông đảo du khách trong và ngoài nước.\nĐể phát triển bền vững, phát triển kinh tế biển phải kết hợp chặt chẽ với bảo vệ an ninh quốc phòng chủ quyền biển đảo. Đồng thời, cần tăng cường bảo vệ môi trường biển, xử lý chất thải và bảo tồn các hệ sinh thái rạn san hô, rừng ngập mặn.",
+      "y": [
+        {
+          "id": "5.1",
+          "diem": 2.5,
+          "noi_dung": "Đường bờ biển dài trên 3260 km cùng nhiều bãi tắm đẹp tạo tiềm năng lớn cho du lịch biển đảo Việt Nam.",
+          "nhom_tu_khoa": [
+            [
+              "bờ biển dài",
+              "trên 3260 km"
+            ],
+            [
+              "bãi tắm đẹp",
+              "vịnh biển đẹp"
+            ],
+            [
+              "du lịch biển đảo",
+              "du lịch biển"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "không có bờ biển",
+            "du lịch núi"
+          ]
+        },
+        {
+          "id": "5.2",
+          "diem": 2.5,
+          "noi_dung": "Các trung tâm du lịch biển đảo nổi tiếng như Hạ Long Cát Bà Nha Trang và Phú Quốc thu hút lượng lớn du khách.",
+          "nhom_tu_khoa": [
+            [
+              "trung tâm du lịch biển",
+              "đô thị du lịch biển"
+            ],
+            [
+              "Hạ Long Cát Bà",
+              "vịnh Hạ Long"
+            ],
+            [
+              "Nha Trang Phú Quốc",
+              "đảo Phú Quốc"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": true,
+          "loai_tru": [
+            "Sapa Mẫu Sơn",
+            "Đà Lạt"
+          ]
+        },
+        {
+          "id": "5.3",
+          "diem": 2.5,
+          "noi_dung": "Phát triển kinh tế biển phải kết hợp chặt chẽ với nhiệm vụ bảo vệ chủ quyền an ninh quốc phòng biển đảo.",
+          "nhom_tu_khoa": [
+            [
+              "phát triển kinh tế biển",
+              "ngành kinh tế biển"
+            ],
+            [
+              "kết hợp chặt chẽ",
+              "gắn liền với"
+            ],
+            [
+              "bảo vệ chủ quyền",
+              "an ninh quốc phòng"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": false,
+          "loai_tru": [
+            "bỏ qua an ninh",
+            "chỉ phát triển kinh tế"
+          ]
+        },
+        {
+          "id": "5.4",
+          "diem": 2.5,
+          "noi_dung": "Giải pháp then chốt là bảo vệ môi trường biển xử lý chất thải và bảo tồn các hệ sinh thái ven biển.",
+          "nhom_tu_khoa": [
+            [
+              "bảo vệ môi trường biển",
+              "môi trường sinh thái"
+            ],
+            [
+              "xử lý chất thải",
+              "giảm ô nhiễm"
+            ],
+            [
+              "bảo tồn hệ sinh thái",
+              "bảo tồn ven biển"
+            ]
+          ],
+          "can_dat": 3,
+          "chi_tu_khoa": false,
+          "loai_tru": [
+            "xả thải tự do",
+            "tàn phá sinh thái"
+          ]
+        }
+      ]
+    }
+  ]
+}

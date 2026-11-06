@@ -36,6 +36,8 @@ app.register_blueprint(so_loi_bp)
 app.register_blueprint(nhiem_vu_bp)
 from khoa_bang import kb_bp, ghi_hoat_dong, tao_token
 app.register_blueprint(kb_bp)
+from pet import pet_bp   # Sao La: skin (trang phục) + giới tính giọng nói
+app.register_blueprint(pet_bp)
 
 # Giới hạn dung lượng 1 request là 3MB (ảnh đã được trình duyệt thu nhỏ nên rất nhẹ)
 app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024
