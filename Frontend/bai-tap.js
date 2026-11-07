@@ -233,6 +233,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       quizContainer.insertAdjacentHTML("afterbegin", `<p>Không tìm thấy bài này.</p>`);
       return;
     }
+    // Toán / Ngữ văn thường: làm từng câu một (quiz-tung-cau.js)
+    if (window.QuizTungCau && ["toan", "ngu_van"].includes(subject)) {
+      const mp = typeof data.mo_phong === "string" ? data.mo_phong : (data.mo_phong || {}).url;
+      if (QuizTungCau.chay({
+        API, subject, subjectUrl: params.get("subject"), chapter, article, userId,
+        dsBai, moPhong: mp && /^https:\/\//i.test(mp) ? mp : "",
+        esc, veCongThuc, Am,
+      })) return;
+    }
 
     // Bài có mô phỏng thì thêm nút mở mô phỏng ở tab mới (chỉ nhận link https)
     const moPhong = typeof data.mo_phong === "string" ? data.mo_phong : (data.mo_phong || {}).url;
