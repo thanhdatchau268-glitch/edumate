@@ -260,12 +260,6 @@ if (
   !document.querySelector('script[src^="pet.js"]')
 ) {
   const s = document.createElement("script");
-  s.src = "pet.js?v=1";
-  document.head.appendChild(s);
-}
-// Nạp pet Sao La trên mọi trang khi đã đăng nhập
-if (localStorage.getItem("isLoggedIn") === "true" && !window.PET && !document.querySelector('script[src^="pet.js"]')) {
-  const s = document.createElement("script");
-  s.src = "pet.js?v=1";
+  s.src = "pet.js?v=3";
   document.head.appendChild(s);
 }

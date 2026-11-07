@@ -89,8 +89,8 @@
   // ---------- 3 nguyện vọng ----------
   // min/max: khoảng xác suất đỗ của vai trò; dich: xác suất lý tưởng (dùng khi không có trường nào lọt khoảng)
   const VAI_TRO = [
-    { ten: "NV1", nhan: "Thử sức", loai: "thusuc", min: 0.25, max: 0.65, dich: 0.45, mota: "Trường mơ ước, cao hơn mức bạn đang đạt một chút." },
-    { ten: "NV2", nhan: "Vừa sức", loai: "vuasuc", min: 0.55, max: 0.9, dich: 0.72, mota: "Sát với năng lực hiện tại của bạn." },
+    { ten: "NV1", nhan: "Thử sức", loai: "thusuc", min: 0.25, max: 0.65, dich: 0.45, mota: "Trường mơ ước, cao hơn mức anh/chị đang đạt một chút." },
+    { ten: "NV2", nhan: "Vừa sức", loai: "vuasuc", min: 0.55, max: 0.9, dich: 0.72, mota: "Sát với năng lực hiện tại của anh/chị." },
     { ten: "NV3", nhan: "An toàn", loai: "antoan", min: 0.85, max: 1.01, dich: 0.95, mota: "Phương án dự phòng chắc chắn." },
   ];
 
@@ -296,10 +296,10 @@
           // chấp nhận xa: chọn trường dễ đỗ nhất, trừ khi chỉ hơn trường gần nhất rất ít
           const chon = chuyenXa && tot.id !== gan.id && (tot.xs ?? -1) - (gan.xs ?? -1) >= 0.08 ? tot : gan;
           let lyDo = `Điểm xét chuyên ước tính ${ST.diemChuyen}. `;
-          if (chon.id === gan.id) lyDo += "Trường chuyên gần nhà bạn nhất.";
+          if (chon.id === gan.id) lyDo += "Trường chuyên gần nhà anh/chị nhất.";
           else lyDo += `Khả năng đỗ cao hơn trường gần nhất (${gan.ten_truong}) khoảng ${Math.round((chon.xs - (gan.xs ?? 0)) * 100)}%, đổi lại cách nhà ${chon.km.toFixed(1)} km nên cần ở trọ / ký túc xá.`;
           const goiY = (!chuyenXa && tot.id !== chon.id && (tot.xs ?? -1) - (chon.xs ?? 0) >= 0.15)
-            ? `${tot.ten_truong} dễ vào hơn (khả năng đỗ ~${Math.round(tot.xs * 100)}%) nhưng cách nhà ${tot.km.toFixed(1)} km. Nếu bạn chấp nhận học xa, hãy tích ô "chấp nhận học chuyên ở trường xa" rồi nộp lại.` : "";
+            ? `${tot.ten_truong} dễ vào hơn (khả năng đỗ ~${Math.round(tot.xs * 100)}%) nhưng cách nhà ${tot.km.toFixed(1)} km. Nếu anh/chị chấp nhận học xa, hãy tích ô "chấp nhận học chuyên ở trường xa" rồi nộp lại.` : "";
           ST.chuyen = { ds: dsC, chon, tot, lyDo, goiY };
         }
       }
@@ -330,8 +330,8 @@
   }
 
   function lyDoTruong(c, vt) {
-    let s = `${VAI_TRO[vt].mota} Điểm chuẩn dự đoán ${c.dub.du.toFixed(1)}, điểm ước tính của bạn ${ST.diem}.`;
-    if (c.id === ST.gannhatId) s += " Gần nhất trong các trường bạn có khả năng đỗ.";
+    let s = `${VAI_TRO[vt].mota} Điểm chuẩn dự đoán ${c.dub.du.toFixed(1)}, điểm ước tính của anh/chị ${ST.diem}.`;
+    if (c.id === ST.gannhatId) s += " Gần nhất trong các trường anh/chị có khả năng đỗ.";
     return s;
   }
 
@@ -409,7 +409,7 @@
       <div class="tom-tat">
         <b>Điểm xét tuyển ước tính: ${S.diem}</b>
         (Toán TB ${S.toan.toFixed(1)}, Văn TB ${S.van.toFixed(1)}${S.diemChuyen !== null ? `, điểm xét chuyên ${S.diemChuyen}` : ""}).
-        ${esc(xh)}Ưu tiên của bạn: <b>${{ gan: "gần nhà", chatluong: "chất lượng", antoan: "chắc đỗ" }[S.uuTien]}</b>
+        ${esc(xh)}Ưu tiên của anh/chị: <b>${{ gan: "gần nhà", chatluong: "chất lượng", antoan: "chắc đỗ" }[S.uuTien]}</b>
         · ${S.dorm ? "có thể ở ký túc xá nên xét cả trường xa" : `chỉ xét trường đi được trong ${GIOI_HAN_PHUT[S.pt]} phút`}.
       </div>`;
 
@@ -434,11 +434,11 @@
     out.dataset.dangLuu = "0";
     out.innerHTML = `
       <div class="ket-qua-khoi${animate ? "" : " khong-anim"}">
-        <h2 class="ketqua-tieu-de">Gợi ý dành cho bạn</h2>
+        <h2 class="ketqua-tieu-de">Gợi ý dành cho anh/chị</h2>
         ${tomTat}
         ${chuyenHtml()}
         <h2 class="ketqua-tieu-de nho">3 nguyện vọng trường thường</h2>
-        <p class="chon-goi-y">Bấm "Đổi trường này" để xem trường thay thế, "Ghim" để giữ lại trường bạn thích.</p>
+        <p class="chon-goi-y">Bấm "Đổi trường này" để xem trường thay thế, "Ghim" để giữ lại trường anh/chị thích.</p>
         <div class="truong-grid">${cards}</div>
         <div class="bang-cuon">
           <table class="so-sanh">
@@ -520,7 +520,7 @@
       (pos) => {
         viTri.lat = pos.coords.latitude;
         viTri.lng = pos.coords.longitude;
-        kq.textContent = "Đã lấy được vị trí của bạn.";
+        kq.textContent = "Đã lấy được vị trí của anh/chị.";
       },
       (err) => {
         kq.textContent = "Chưa lấy được vị trí (" + err.message + "). Hãy cho phép định vị rồi tải lại trang.";

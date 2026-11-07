@@ -1,28 +1,62 @@
-/* pet.css - Sao La (pet nổi góc phải + thẻ "Sao La" trong hồ sơ).
+/* pet.css - Sao La (pet đứng trên bệ ở góc phải-trên + thẻ "Sao La" trong hồ sơ).
    Dùng lại biến màu của style3.css: --nen, --chu, --nhat, --nhan, --vien */
 
-/* ---------- Pet nổi ---------- */
+/* ---------- Pet đứng trên bệ ----------
+   #sao-la là hộp CAO 0 đặt ở mép phải, cách mép trên --sl-dat-y.
+   Đường nằm ngang đó chính là "mặt đất": bệ nằm ngay dưới nó, chân pet chạm vào nó,
+   còn bong bóng chữ mở ra bên dưới bệ (khoảng trống bên phải trang). */
 #sao-la {
+    --sl-w: 190px;             /* bề rộng bệ */
+    --sl-pet: 112px;           /* kích thước 1 khung hình pet */
+    --sl-dat-y: 160px;         /* mặt đất cách mép trên cửa sổ bao nhiêu */
     position: fixed;
-    right: 12px;
-    bottom: 12px;
+    right: 0;
+    top: var(--sl-dat-y);
+    width: var(--sl-w);
+    height: 0;
     z-index: 900;              /* thấp hơn menu (1000) và hộp thoại */
-    width: 112px;
-    pointer-events: none;      /* chỉ chính pet / nút mới bắt chuột, không chặn nội dung phía sau */
+    pointer-events: none;      /* chỉ vùng pet / nút tiếng bắt chuột, không chặn nội dung phía sau */
 }
 
 #sao-la[hidden] {
     display: none;
 }
 
+/* Bệ: mặt cỏ + thân đất, bo góc bên trái, dính sát mép phải */
+#sao-la .sl-dat {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 12px;
+    border-radius: 8px 0 0 8px;
+    background: linear-gradient(#7cc47f 0 4px, #d9c3a0 4px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .12);
+}
+
+/* Bóng đổ dưới chân để pet "dính" vào bệ */
+#sao-la .sl-dat::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -3px;
+    width: calc(var(--sl-pet) * .75);
+    height: 10px;
+    margin-left: calc(var(--sl-pet) * -.375);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(0, 0, 0, .28), transparent);
+}
+
+/* Khung hình pet: đáy khung nằm sát mặt đất (lún 3px vào cỏ). JS dịch hình sao cho
+   điểm ảnh thấp nhất của pet trùng đáy khung nên chân luôn chạm đất, dù ảnh có chừa lề trống. */
 #sao-la .sl-pet {
-    position: relative;
-    width: 112px;
-    height: 112px;
-    cursor: pointer;
-    pointer-events: auto;
-    -webkit-tap-highlight-color: transparent;
-    outline-offset: 2px;
+    position: absolute;
+    left: 50%;
+    bottom: -3px;
+    width: var(--sl-pet);
+    height: var(--sl-pet);
+    margin-left: calc(var(--sl-pet) / -2);
+    pointer-events: none;
 }
 
 #sao-la .sl-than,
@@ -34,17 +68,35 @@
     image-rendering: auto;
 }
 
+/* Vùng bấm ôm sát hình thật của pet (JS đặt left/top/width/height theo khung bao) */
+#sao-la .sl-hit {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 12px;
+    outline-offset: 2px;
+}
+
+/* nới vùng bấm thêm 8px mỗi phía để pet nhỏ vẫn dễ chạm bằng ngón tay */
+#sao-la .sl-hit::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+}
+
 #sao-la .sl-tieng {
     position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 28px;
-    height: 28px;
+    left: 6px;
+    bottom: 2px;
+    width: 26px;
+    height: 26px;
     padding: 0;
     border: 1px solid var(--vien, #d8e0ee);
     border-radius: 50%;
     background: var(--nen, #fff);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1;
     cursor: pointer;
     pointer-events: auto;
@@ -55,12 +107,14 @@
     display: none;
 }
 
+/* Bong bóng chữ nằm dưới bệ, mũi nhọn chỉ lên pet */
 #sao-la .sl-bong {
     position: absolute;
-    right: 8px;
-    bottom: 118px;
+    top: 20px;
+    right: 10px;
     width: max-content;
-    max-width: min(240px, calc(100vw - 40px));
+    min-width: 96px;
+    max-width: calc(var(--sl-w) - 20px);
     padding: 8px 12px;
     border: 1px solid var(--vien, #d8e0ee);
     border-radius: 14px;
@@ -72,22 +126,33 @@
     pointer-events: none;
 }
 
+#sao-la .sl-bong::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    right: calc(var(--sl-w) / 2 - 15px);
+    width: 10px;
+    height: 10px;
+    background: var(--nen, #fff);
+    border-left: 1px solid var(--vien, #d8e0ee);
+    border-top: 1px solid var(--vien, #d8e0ee);
+    transform: rotate(45deg);
+}
+
 #sao-la .sl-bong[hidden] {
     display: none;
 }
 
+@media (max-width: 900px) {
+    #sao-la {
+        --sl-w: 140px;
+        --sl-pet: 84px;
+    }
+}
+
 @media (max-width: 600px) {
-    #sao-la,
-    #sao-la .sl-pet {
-        width: 88px;
-    }
-
-    #sao-la .sl-pet {
-        height: 88px;
-    }
-
-    #sao-la .sl-bong {
-        bottom: 94px;
+    #sao-la {
+        --sl-dat-y: 130px;
     }
 }
 

@@ -183,7 +183,7 @@ def diem_danh():
         conn.close()
         if not co_user:
             return jsonify({"success": False, "message": "Không tìm thấy người dùng!"}), 404
-        return jsonify({"success": False, "message": "Hôm nay bạn đã điểm danh rồi!"}), 409
+        return jsonify({"success": False, "message": "Hôm nay anh/chị đã điểm danh rồi!"}), 409
 
     tong = conn.execute("SELECT dd_tong FROM users WHERE id = ?", (user_id,)).fetchone()[0]
     nhan = []   # danh sách quà nhận hôm nay để báo cho người dùng

@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
         tbody.appendChild(tr);
       });
-      // Bạn nằm ngoài top 20: hiện thêm dòng của bạn ngay dưới bảng
+      // Bạn nằm ngoài top 20: hiện thêm dòng của anh/chị ngay dưới bảng
       if (kq.me) {
         const cach = document.createElement("tr");
         cach.innerHTML = `<td colspan="4" class="rk-cach">⋯</td>`;
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // Mặc định mở bảng đúng môn của bạn (không thi chuyên -> bảng Không chuyên)
+  // Mặc định mở bảng đúng môn của anh/chị (không thi chuyên -> bảng Không chuyên)
   const cuaToi = cauHinh.bang.find((b) => b.mon === monCuaToi);
   bang = (cuaToi || cauHinh.bang[0]).id;
   veTab();

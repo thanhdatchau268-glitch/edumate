@@ -113,7 +113,7 @@
             if (u.hoc_hom_nay) return; // hôm nay đã làm bài thì khỏi nhắc
             const coChuoi = u.streak > 0;
             await gui(
-                coChuoi ? `🔥 Chuỗi ${u.streak} ngày sắp mất!` : "📚 Hôm nay bạn chưa học bài nào",
+                coChuoi ? `🔥 Chuỗi ${u.streak} ngày sắp mất!` : "📚 Hôm nay anh/chị chưa học bài nào",
                 coChuoi
                     ? "Làm ít nhất 1 bài tập trước 24:00 để giữ chuỗi nhé."
                     : "Làm 1 bài tập ngay để bắt đầu chuỗi ngày học mới.",
@@ -241,7 +241,7 @@
     }
 
     async function thu() {
-        return gui("🔔 Thông báo đã hoạt động!", "VnStarL sẽ nhắc bạn đúng lúc để giữ nhịp học.", "saola-thu", "profile.html");
+        return gui("🔔 Thông báo đã hoạt động!", "VnStarL sẽ nhắc anh/chị đúng lúc để giữ nhịp học.", "saola-thu", "profile.html");
     }
 
     window.THONGBAO = { doc, luu, hoTro, quyen, bat, tat, thu, khoiDong, dung };

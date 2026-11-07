@@ -70,23 +70,24 @@
   function dungGiaoDien() {
     if (!document.querySelector('link[href^="pet.css"]')) {
       const l = document.createElement("link");
-      l.rel = "stylesheet"; l.href = "pet.css?v=1";
+      l.rel = "stylesheet"; l.href = "pet.css?v=2";
       document.head.appendChild(l);
     }
     const goc = document.createElement("div");
     goc.id = "sao-la";
     goc.hidden = true; // có skin rồi mới hiện
     goc.innerHTML =
+      '<div class="sl-dat" aria-hidden="true"></div>' +
       '<div class="sl-bong" hidden role="status" aria-live="polite"></div>' +
       '<button type="button" class="sl-tieng" aria-label="Bật hoặc tắt tiếng Sao La"></button>' +
-      '<div class="sl-pet" role="button" tabindex="0" aria-label="Sao La, chạm để trò chuyện">' +
-      '<div class="sl-than"></div><div class="sl-hu"></div></div>';
+      '<div class="sl-pet"><div class="sl-than"></div><div class="sl-hu"></div>' +
+      '<div class="sl-hit" role="button" tabindex="0" aria-label="Sao La, chạm để trò chuyện"></div></div>';
     document.body.appendChild(goc);
 
     ELM.goc = goc;
     ELM.bong = goc.querySelector(".sl-bong");
     ELM.tieng = goc.querySelector(".sl-tieng");
-    ELM.pet = goc.querySelector(".sl-pet");
+    ELM.hit = goc.querySelector(".sl-hit");
     ELM.than = { el: goc.querySelector(".sl-than"), anh: null, n: 1, i: 0 };
     ELM.hu = { el: goc.querySelector(".sl-hu"), anh: null, n: 1, i: 0 };
 
@@ -99,8 +100,8 @@
     });
 
     const chamVao = () => { noi(layLoiCham()); datHanhDong("vui", 2500); };
-    ELM.pet.addEventListener("click", chamVao);
-    ELM.pet.addEventListener("keydown", (e) => {
+    ELM.hit.addEventListener("click", chamVao);
+    ELM.hit.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); chamVao(); }
     });
   }
@@ -120,6 +121,59 @@
     nc.el.style.backgroundPosition = (nc.n > 1 ? (nc.i / (nc.n - 1)) * 100 : 0) + "% 0";
   }
 
+  // ---------- cắt / căn ảnh theo hình thật ----------
+  // Ảnh họa sĩ xuất ra thường chừa lề trong suốt (chân pet cách đáy khung vài chục px) nên pet trông
+  // "lơ lửng". Ta quét kênh alpha của TOÀN BỘ các khung idle để tìm khung bao (bounding box) thật,
+  // rồi: (1) dịch hình xuống cho điểm ảnh thấp nhất chạm đáy khung = mặt đất, (2) căn giữa theo chiều
+  // ngang, (3) thu vùng bấm ôm sát hình. Mọi hành động và hiệu ứng của skin dùng chung 1 mốc căn này
+  // (lấy từ idle) nên đổi hành động không bị giật vị trí.
+  const NGUONG_ALPHA = 24;   // điểm ảnh có alpha > 24/255 mới tính là "có hình" (bỏ viền mờ/bóng khuếch tán)
+
+  // Trả về {l, t, r, b} theo tỉ lệ 0..1 của 1 khung, hoặc null nếu không đọc được (ảnh khác nguồn, trống...).
+  function tinhKhungBao(img, soKhung) {
+    try {
+      const W = img.naturalWidth, H = img.naturalHeight;
+      const fw = Math.floor(W / Math.max(1, soKhung));
+      if (!W || !H || fw < 1) return null;
+      const cv = document.createElement("canvas");
+      cv.width = W; cv.height = H;
+      const g = cv.getContext("2d", { willReadFrequently: true });
+      g.drawImage(img, 0, 0);
+      const d = g.getImageData(0, 0, W, H).data;
+      cv.width = cv.height = 0; // trả bộ nhớ ngay
+      let l = fw, r = -1, t = H, b = -1;
+      for (let y = 0; y < H; y++) {
+        const hang = y * W * 4 + 3;
+        for (let x = 0; x < fw * soKhung; x++) {
+          if (d[hang + x * 4] > NGUONG_ALPHA) {
+            const xx = x % fw;
+            if (xx < l) l = xx;
+            if (xx > r) r = xx;
+            if (y < t) t = y;
+            if (y > b) b = y;
+          }
+        }
+      }
+      if (r < 0) return null;
+      return { l: l / fw, r: (r + 1) / fw, t: t / H, b: (b + 1) / H };
+    } catch (e) { return null; } // canvas bị chặn (khác nguồn): bỏ qua, pet vẫn chạy như cũ
+  }
+
+  // Áp mốc căn cho skin vừa nạp xong. kb = null thì không căn.
+  function canChinh(kb) {
+    const dx = kb ? 0.5 - (kb.l + kb.r) / 2 : 0;   // dịch ngang cho giữa khung
+    const dy = kb ? 1 - kb.b : 0;                  // phần trống phía dưới chân -> dịch xuống bấy nhiêu
+    const dich = kb ? "translate(" + dx * 100 + "%, " + dy * 100 + "%)" : "";
+    ELM.than.el.style.transform = dich;
+    ELM.hu.el.style.transform = dich;              // hiệu ứng vẽ cùng hệ tọa độ với pet nên dịch giống hệt
+    const h = ELM.hit.style;                       // vùng bấm ôm sát hình sau khi dịch
+    if (kb) {
+      h.left = (kb.l + dx) * 100 + "%";  h.top = (kb.t + dy) * 100 + "%";
+      h.width = (kb.r - kb.l) * 100 + "%"; h.height = (kb.b - kb.t) * 100 + "%";
+      h.right = h.bottom = "auto";
+    } else { h.left = h.top = "0"; h.width = h.height = "100%"; }
+  }
+
   // 1 bộ đếm giờ chung cho cả pet và hiệu ứng; tab ẩn thì đứng im cho đỡ tốn pin
   let tgTruoc = 0;
   function lap(t) {
@@ -135,6 +189,11 @@
   // =====================================================================
   // NẠP SPRITE (lười) + ĐỔI SKIN
   // =====================================================================
+  // Đuôi ?v= đổi khi họa sĩ thay ảnh, nên sw.js/trình duyệt không giữ ảnh cũ trùng tên
+  function duongDanSprite(skin, ten) {
+    return skin.thu_muc + ten + ".webp?v=" + (skin.v || 0);
+  }
+
   function napAnh(url) {
     return new Promise((ok) => {
       const im = new Image();
@@ -166,7 +225,7 @@
     if (S.skin && S.skin.id === moTa.id) { S.skin = moTa; return true; }
 
     const luot = ++S.luotSkin;
-    const idle = await napAnh(moTa.thu_muc + "idle.webp");
+    const idle = await napAnh(duongDanSprite(moTa, "idle"));
     if (luot !== S.luotSkin) return false; // trong lúc chờ đã có yêu cầu đổi khác
     if (!idle) return false;               // nạp lỗi thì giữ skin cũ, không báo lỗi
 
@@ -175,6 +234,7 @@
     S.anhSkin = new Map([["idle", idle]]);
     ++S.luotHanhDong;
     clearTimeout(S.henVeIdle);
+    canChinh(tinhKhungBao(idle, S.soKhung)); // cắt/căn theo hình thật: chân chạm đất
     datSprite(ELM.than, idle, S.soKhung);   // hiện skin mới trước...
     xoaSprite(ELM.hu);
     giaiPhongAnh(mapCu);                    // ...rồi mới thả skin cũ
@@ -188,7 +248,7 @@
     const skin = S.skin;
     if (!skin || !skin.hanh_dong.includes(ten)) return null;
     if (S.anhSkin.has(ten)) return S.anhSkin.get(ten);
-    const im = await napAnh(skin.thu_muc + ten + ".webp");
+    const im = await napAnh(duongDanSprite(skin, ten));
     if (S.skin !== skin) { if (im) im.src = ""; return null; } // đã đổi skin trong lúc nạp
     if (im) S.anhSkin.set(ten, im);
     return im;
@@ -196,7 +256,7 @@
 
   async function layHieuUng(ten) {
     if (S.anhHu.has(ten)) return S.anhHu.get(ten);
-    const im = await napAnh(S.hieuUng.thu_muc + ten + ".webp");
+    const im = await napAnh(S.hieuUng.thu_muc + ten + ".webp?v=" + (S.hieuUng.v || 0));
     if (im) S.anhHu.set(ten, im);
     return im;
   }

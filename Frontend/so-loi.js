@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ].map(([so, nhan]) => `<div class="sl-so"><b>${so}</b><span>${nhan}</span></div>`).join("");
 
             if (!ds.length) {
-                box.innerHTML = `<div class="sl-rong">Sổ đang trống. Khi bạn làm sai một câu, kỹ năng đó sẽ xuất hiện ở đây để ôn.<br>
+                box.innerHTML = `<div class="sl-rong">Sổ đang trống. Khi anh/chị làm sai một câu, kỹ năng đó sẽ xuất hiện ở đây để ôn.<br>
           <a class="sl-btn dac" href="subjects.html">Đi làm bài tập</a></div>`;
                 return;
             }
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const m = MUC[kn.muc];
 
         const banner = sua
-            ? `<div class="sl-banner sua"><b>Sửa lỗi.</b> Đây là câu bạn từng làm sai${the.loi_con_lai > 1 ? ` (còn ${the.loi_con_lai} lỗi)` : ""}.
+            ? `<div class="sl-banner sua"><b>Sửa lỗi.</b> Đây là câu anh/chị từng làm sai${the.loi_con_lai > 1 ? ` (còn ${the.loi_con_lai} lỗi)` : ""}.
          Hãy thử lại trước. Cần thì mở gợi ý từng tầng, lời giải để cuối cùng.</div>`
             : `<div class="sl-banner cm"><b>Chứng minh.</b> Câu mới cùng kỹ năng. Đúng ngay lần đầu và không dùng gợi ý mới được lên mức.
          ${the.tinh_tien_do ? "" : "<i>Chưa đến hạn nên đây chỉ là luyện thêm, không tính lên mức.</i>"}</div>`;
@@ -312,13 +312,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 chu = `Tuyệt vời! Bạn vẫn nhớ sau nhiều ngày: kỹ năng đã được ghi nhớ lâu dài${tt.thuong_diem ? ` (+${tt.thuong_diem} điểm)` : ""}.`;
             }
         } else if (kq.ket_qua === "dat_goi_y") {
-            chu = "Đúng, nhưng bạn đã sai hoặc dùng gợi ý nên chưa tính để lên mức. Thử thêm một câu mới nhé!";
+            chu = "Đúng, nhưng anh/chị đã sai hoặc dùng gợi ý nên chưa tính để lên mức. Thử thêm một câu mới nhé!";
             loai = "chua";
         } else {
             loai = "chua";
             chu = "Đã mở lời giải nên thẻ này chưa đạt.";
             if (tt.tinh && tt.muc_sau < tt.muc_truoc) chu += ` Kỹ năng tụt về mức <b>${MUC[tt.muc_sau].ten}</b>, hẹn ôn lại ngày ${ngayVN(tt.ngay_on_ke)}.`;
-            chu += " Hãy thử câu mới để chứng minh bạn đã hiểu.";
+            chu += " Hãy thử câu mới để chứng minh anh/chị đã hiểu.";
         }
 
         const giai = kq.xem_loi_giai ? "" : (kq.loi_giai ? `<div class="kq-loi-giai"><b>Lời giải:</b> ${kq.loi_giai}</div>` : "");

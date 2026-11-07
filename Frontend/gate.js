@@ -91,7 +91,7 @@
 
     <section class="gt-khoi">
       <h2>Luyện tập theo lộ trình rõ ràng</h2>
-      <p class="gt-sub">Mỗi bài học đều đi qua 4 bước, bạn luôn biết mình đang ở đâu.</p>
+      <p class="gt-sub">Mỗi bài học đều đi qua 4 bước, anh/chị luôn biết mình đang ở đâu.</p>
       ${buoc([
       ["fa-book-open", "Chọn môn và chương", "Mỗi chương gồm nhiều bài học, sắp theo thứ tự nên học."],
       ["fa-lightbulb", "Đọc lý thuyết", "Tóm tắt kiến thức, có mô phỏng thực hành ở một số bài."],
@@ -102,7 +102,7 @@
 
     <section class="gt-khoi">
       <h2>Các môn đang có</h2>
-      <p class="gt-sub">Bấm vào một môn để thử, hệ thống sẽ mời bạn đăng nhập.</p>
+      <p class="gt-sub">Bấm vào một môn để thử, hệ thống sẽ mời anh/chị đăng nhập.</p>
       <div class="subject-grid">
         ${theMon("Toán", "toan", "fa-calculator", "Đại số · Hình học")}
         ${theMon("Ngữ Văn", "ngu_van", "fa-feather-pointed", "Đọc hiểu · Tác phẩm")}
@@ -112,7 +112,7 @@
 
     <section class="gt-khoi">
       <h2>Xem trước bên trong</h2>
-      <p class="gt-sub">Đây là giao diện bạn sẽ dùng hằng ngày. Thử làm ngay câu hỏi bên phải nhé!</p>
+      <p class="gt-sub">Đây là giao diện anh/chị sẽ dùng hằng ngày. Thử làm ngay câu hỏi bên phải nhé!</p>
       <div class="gt-xem">
 
         <div class="gt-cua-so">
@@ -161,12 +161,12 @@
 
     <section class="gt-khoi">
       <h2>Không chỉ là làm bài</h2>
-      <p class="gt-sub">Những thứ giúp bạn học đều và nhớ lâu.</p>
+      <p class="gt-sub">Những thứ giúp anh/chị học đều và nhớ lâu.</p>
       ${tinhNang([
       ["fa-circle-check", "#178a5a", "Lời giải chi tiết", "Nộp bài là có kết quả từng câu, kèm lời giải để hiểu vì sao."],
       ["fa-book-bookmark", "#c27410", "Sổ lỗi sai", "Câu sai tự vào sổ, ôn lại cách 1, 3, 7 ngày để nhớ thật."],
       ["fa-fire", "#d9480f", "Chuỗi ngày và nhiệm vụ", "Mỗi ngày 3 nhiệm vụ, điểm danh và quay thưởng."],
-      ["fa-ranking-star", "#2457d6", "Bảng xếp hạng", "Tích điểm từ bài tập và so tài cùng bạn bè."],
+      ["fa-ranking-star", "#2457d6", "Bảng xếp hạng", "Tích điểm từ bài tập và so tài cùng anh/chị bè."],
     ])}
     </section>
 
@@ -186,7 +186,7 @@
       kq.innerHTML =
         (dung ? `<div class="kq kq-dung">✔ Đúng! +2 điểm</div>` : `<div class="kq kq-sai">✘ Chưa đúng. Đáp án là B.</div>`) +
         `<div class="kq-loi-giai"><b>Lời giải:</b> 2x = 11 − 3 = 8, suy ra x = 4.</div>
-         <div class="gt-demo-moi">Thích chứ? Đăng ký để làm tiếp các bài tập thật và lưu điểm của bạn.${cta}</div>`;
+         <div class="gt-demo-moi">Thích chứ? Đăng ký để làm tiếp các bài tập thật và lưu điểm của anh/chị.${cta}</div>`;
     });
   }
 
@@ -237,7 +237,7 @@
           <div class="podium-card bronze"><img class="avatar" src="img/avartar.webp" alt="Top 3">
             <span class="podium-name">Thí sinh C - 240</span><div class="step">3</div></div>
         </div>
-        <p class="gt-ghi">Tên của bạn có thể ở đây. Điểm lên bảng ngay sau khi nộp bài.</p>
+        <p class="gt-ghi">Tên của anh/chị có thể ở đây. Điểm lên bảng ngay sau khi nộp bài.</p>
       </div>`,
   };
 
@@ -245,7 +245,7 @@
     return `
     <section class="gt-hero">
      <span class="gt-nhan"><i class="fa-solid fa-lock"></i> Dành cho thành viên VnStarL</span>
-      <h1>Tranh tài cùng bạn bè</h1>
+      <h1>Tranh tài cùng anh/chị bè</h1>
       <p>Mỗi cuộc thi có khung giờ riêng, đề riêng và bảng xếp hạng riêng.
          Đăng nhập để vào thi, ghi tên mình lên bục vinh danh.</p>
       ${cta}

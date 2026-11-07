@@ -436,7 +436,7 @@ def tao_the():
     kn = conn.execute("SELECT * FROM ky_nang_user WHERE user_id = ? AND bai_key = ?", (uid, key)).fetchone()
     if not kn:
         conn.close()
-        return _loi("Kỹ năng này chưa có trong sổ của bạn!", 404)
+        return _loi("Kỹ năng này chưa có trong sổ của anh/chị!", 404)
     hom_nay = _hom_nay()
 
     loai, cau_id, con_lai = None, None, 0

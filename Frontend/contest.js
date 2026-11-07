@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function veBaiTap(c, luot) {
     // Chưa tới giờ thì không cho xem đề
     if (c.trang_thai === "sap-dien-ra") {
-      baoTrongO("Đề thi sẽ mở khi cuộc thi bắt đầu, bạn quay lại sau nhé!");
+      baoTrongO("Đề thi sẽ mở khi cuộc thi bắt đầu, anh/chị quay lại sau nhé!");
       return;
     }
 
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const kq = await res.json();
 
     if (!kq.data || kq.data.length === 0) {
-      baoDong("Chưa có cuộc thi nào, bạn quay lại sau nhé!");
+      baoDong("Chưa có cuộc thi nào, anh/chị quay lại sau nhé!");
       return;
     }
 

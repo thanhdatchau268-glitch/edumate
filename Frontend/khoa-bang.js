@@ -248,7 +248,7 @@
     // ---------- TAB: Hồ sơ khoa bảng ----------
     async function veHoSo(uid, l) {
         if (!uid) {
-            vao(`<p class="kb-trong kb-the">Hãy <a href="login.html" style="color:var(--son);font-weight:700">đăng nhập</a> để xem hồ sơ khoa bảng của bạn.</p>`);
+            vao(`<p class="kb-trong kb-the">Hãy <a href="login.html" style="color:var(--son);font-weight:700">đăng nhập</a> để xem hồ sơ khoa bảng của anh/chị.</p>`);
             return;
         }
         const d = (await goi(`/ho-so/${encodeURIComponent(uid)}`)).data;
@@ -304,7 +304,7 @@
     async function khoiDong() {
         try { cauHinh = await goi("/cau-hinh"); }
         catch (err) { $("kb-noi-dung").innerHTML = `<p class="kb-trong kb-the">${esc(err.message)}</p>`; return; }
-        // Mặc định mở nhóm đúng môn chuyên của bạn
+        // Mặc định mở nhóm đúng môn chuyên của anh/chị
         const cuaToi = cauHinh.bang.find((b) => b.mon === (localStorage.getItem("monChuyen") || ""));
         bang = (cuaToi || cauHinh.bang[0]).id;
         veNhom();

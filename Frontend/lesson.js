@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // đọc dạng chữ trước, file trống thì báo thân thiện thay vì lỗi JSON
     const text = await res.text();
-    if (!text.trim()) throw new Error("Bài này chưa có nội dung, bạn quay lại sau nhé!");
+    if (!text.trim()) throw new Error("Bài này chưa có nội dung, anh/chị quay lại sau nhé!");
     const data = JSON.parse(text);
 
     // Phần 1: lý thuyết
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     if (!userId) {
-      document.getElementById("ds-ghi").textContent = "Đăng nhập để hạng và điểm của bạn được lưu lại nhé!";
+      document.getElementById("ds-ghi").textContent = "Đăng nhập để hạng và điểm của anh/chị được lưu lại nhé!";
     }
   } catch (err) {
     // Lỗi thì vẫn cho bấm nút, trong ô sẽ hiện thông báo lỗi

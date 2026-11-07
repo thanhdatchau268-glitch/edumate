@@ -68,13 +68,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (duSua) delete nutSua.dataset.tip;
     else nutSua.dataset.tip = `Bạn phải đủ ${DIEM_MO_KHOA} điểm mới mở khóa tính năng này`;
 
-    // nút "Tải ảnh của bạn"
+    // nút "Tải ảnh của anh/chị"
     const duAnh = user.score >= DIEM_TAI_ANH;
     nutTaiAnh.classList.toggle("da-khoa", !duAnh);
     ttKhoa.style.color = "#5b6b82";
     ttKhoa.textContent = duAnh
       ? ""
-      : `🔒 Tải ảnh riêng sẽ mở khóa khi đạt ${DIEM_TAI_ANH} điểm (bạn đang có ${user.score}).`;
+      : `🔒 Tải ảnh riêng sẽ mở khóa khi đạt ${DIEM_TAI_ANH} điểm (anh/chị đang có ${user.score}).`;
 
     // thanh tiến độ mở khóa
     const pt = Math.min(100, Math.round((user.score / DIEM_MO_KHOA) * 100));

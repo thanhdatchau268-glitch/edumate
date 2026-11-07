@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!el || !TB) return;
         const c = TB.doc();
         if (c.bat && c.lich && TB.quyen() === "granted") {
-            el.innerHTML = '🔔 Đang bật nhắc lịch: bạn sẽ nhận thông báo trước mỗi khung giờ học 5 phút. Tắt ở <a href="profile.html" style="color:var(--nhan);font-weight:600">Hồ sơ</a>.';
+            el.innerHTML = '🔔 Đang bật nhắc lịch: anh/chị sẽ nhận thông báo trước mỗi khung giờ học 5 phút. Tắt ở <a href="profile.html" style="color:var(--nhan);font-weight:600">Hồ sơ</a>.';
             return;
         }
         el.innerHTML = '🔔 Bật thông báo để được nhắc đúng giờ học. <button id="tb-bat-nhanh" class="btn" type="button">Bật nhắc lịch</button> <span id="tb-bat-loi" class="canhbao"></span>';

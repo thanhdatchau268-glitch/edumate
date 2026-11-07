@@ -24,7 +24,7 @@ Dạng câu mà web chưa có, script đổi như sau:
   - Nhiều phương án đúng (tô vàng >= 2 đáp án)  -> câu Đúng/Sai (mỗi phương án 1 ý)
   - Điền chỗ trống (1) ____ (đáp án tô vàng/...)  -> mỗi chỗ trống 1 câu trắc nghiệm (đáp án được xáo trộn)
   - Nối cột A - cột B -> câu trả lời ngắn, NHƯNG chỉ khi cột giữa của bảng có điền đáp án (vd 3, 1, 4, 2).
-    Bảng nối chưa có đáp án thì bỏ qua và ghi vào file _can_xu_ly.txt để bạn tự xử lý.
+    Bảng nối chưa có đáp án thì bỏ qua và ghi vào file _can_xu_ly.txt để anh/chị tự xử lý.
 Điểm mỗi đề được chia để tổng = 100 (câu Đúng/Sai nặng gấp đôi câu trắc nghiệm).
 """
 import argparse

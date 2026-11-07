@@ -5,7 +5,7 @@ self.addEventListener("install", () => self.skipWaiting());
 
 // ====================== CACHE SAO LA ======================
 // Đổi PHIEN_BAN khi thay ảnh/giọng nói thật sự (tên file giữ nguyên) để máy người dùng nạp lại.
-const PHIEN_BAN = "v1";
+const PHIEN_BAN = "v2";
 const TIEN_TO = "vnstarl-pet-";
 const CACHE_THAN = TIEN_TO + "than-" + PHIEN_BAN;       // sprite của skin
 const CACHE_HIEU_UNG = TIEN_TO + "hu-" + PHIEN_BAN;     // hiệu ứng dùng chung (nhỏ, ít)
@@ -39,6 +39,12 @@ async function xoaSkinNgoai(cache, giu) {
 
 // Sau khi thêm file mới vào cache: giữ trong giới hạn
 async function donDep(ten, cache, requestMoi) {
+    // cùng 1 file nhưng khác ?v= là bản ảnh cũ: xóa đi
+    const moi = new URL(requestMoi.url);
+    for (const r of await cache.keys()) {
+        const u = new URL(r.url);
+        if (u.pathname === moi.pathname && u.search !== moi.search) await cache.delete(r);
+    }
     const keys = await cache.keys();   // theo thứ tự thêm vào: cũ nhất đứng trước
     if (ten === CACHE_THAN) {
         const moi = idSkin(requestMoi);

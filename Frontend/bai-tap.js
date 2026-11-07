@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const response = await fetch(url);
     if (!response.ok) throw new Error(loiKhongThay);
     const text = await response.text();
-    if (!text.trim()) throw new Error("Bài này chưa có nội dung, bạn quay lại sau nhé!");
+    if (!text.trim()) throw new Error("Bài này chưa có nội dung, anh/chị quay lại sau nhé!");
     return JSON.parse(text);
   }
 
@@ -325,7 +325,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>`;
         } else if (cau.type === "tu-luan") {
           cauHtml.innerHTML = `${tieuDe}
-            <textarea class="o-tu-luan" name="${name}" rows="5" maxlength="6000" placeholder="Viết bài làm của bạn..."></textarea>
+            <textarea class="o-tu-luan" name="${name}" rows="5" maxlength="6000" placeholder="Viết bài làm của anh/chị..."></textarea>
             <div class="tu-luan-dem">0 từ</div>`;
           const ta = cauHtml.querySelector("textarea");
           ta.addEventListener("input", () => {
@@ -545,7 +545,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           });
           const kq = await res.json();
           if (!kq.success) throw new Error(kq.message);
-          tongKet.textContent = `Đã nộp bài. Điểm của bạn: ${kq.diem}`;
+          tongKet.textContent = `Đã nộp bài. Điểm của anh/chị: ${kq.diem}`;
           khoaOnhap();
           Am.xong();
           phaoGiay(30);
@@ -626,18 +626,18 @@ document.addEventListener("DOMContentLoaded", async () => {
               o.appendChild(hop);
               SOLOI.veChanDoan(hop, { bai_key: `${subject}/${chapter}/${article}/${baiId}`, cau_id: String(cau.id) });
               o.insertAdjacentHTML("beforeend",
-                `<p class="sl-ghi-chu">Lời giải sẽ mở khi bạn <a href="so-loi.html">sửa lỗi trong Sổ lỗi sai</a>.</p>`);
+                `<p class="sl-ghi-chu">Lời giải sẽ mở khi anh/chị <a href="so-loi.html">sửa lỗi trong Sổ lỗi sai</a>.</p>`);
             }
             veCongThuc(o); // vẽ công thức trong lời giải vừa hiện ra
           });
         }
 
-        tongKet.textContent = `Điểm của bạn: ${diemDat} / ${diemToiDa}`;
+        tongKet.textContent = `Điểm của anh/chị: ${diemDat} / ${diemToiDa}`;
         if (daLuu && heSo > 1) {
           tongKet.textContent += ` Thưởng ×${heSo.toFixed(1)}: +${diemCong} điểm lên bảng xếp hạng.`;
         }
         if (!userId) tongKet.textContent += " (Đăng nhập để điểm được lưu nhé!)";
-        else if (diemDat > 0 && !daLuu) tongKet.textContent += " (Bài này bạn đã được cộng điểm trước đó)";
+        else if (diemDat > 0 && !daLuu) tongKet.textContent += " (Bài này anh/chị đã được cộng điểm trước đó)";
         if (soLoiMoi > 0) tongKet.innerHTML += ` <a href="so-loi.html" style="color:var(--nhan)">${soLoiMoi} câu sai đã vào Sổ lỗi sai. Sửa ngay</a>`;
         // MỚI: hiện hạng cao nhất của bài sau khi nộp
         const hang = window.hangCua ? hangCua(bestPct) : null;

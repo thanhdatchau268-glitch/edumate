@@ -153,18 +153,30 @@ def _skin_so_huu(conn, user_id):
     ds.add(SKIN_MAC_DINH)
     return ds
 
+def _phien_ban_thu_muc(duong_dan):
+    """Mốc thời gian sửa file mới nhất trong thư mục. Gắn vào đuôi URL ảnh (?v=...) để khi họa sĩ thay ảnh
+    (tên file giữ nguyên) thì trình duyệt và service worker tự nạp bản mới, không dính ảnh cũ trong cache."""
+    try:
+        with os.scandir(duong_dan) as it:
+            return max((int(e.stat().st_mtime) for e in it if e.is_file()), default=0)
+    except OSError:
+        return 0
+
 def _mo_ta_skin(sid, info, so_huu):
     """Skin chưa sở hữu: KHÔNG có thu_muc / hanh_dong (không lộ đường dẫn sprite)."""
+    thu_muc = os.path.join(THU_MUC_PET, "than", sid)
+    v = _phien_ban_thu_muc(thu_muc)
     d = {
         "id": sid,
         "ten": info["ten"],
         "gia": info["gia"],
-        "xem_truoc": f"{URL_PET}than/{sid}/_xem_truoc.webp",
+        "xem_truoc": f"{URL_PET}than/{sid}/_xem_truoc.webp?v={v}",
         "so_huu": so_huu,
     }
     if so_huu:
         d["thu_muc"] = f"{URL_PET}than/{sid}/"
         d["hanh_dong"] = info["hanh_dong"]
+        d["v"] = v          # web nối ?v=<v> sau mỗi file sprite
     return d
 
 def _trang_thai(conn, user_id):
@@ -187,7 +199,8 @@ def _trang_thai(conn, user_id):
         "skin": ds_skin,                   # danh sách cho màn hình chọn đồ / cửa hàng
         "so_khung": mf["so_khung"],
         "fps": mf["fps"],
-        "hieu_ung": {"thu_muc": f"{URL_PET}hieu_ung/", **mf["hieu_ung"]},
+        "hieu_ung": {"thu_muc": f"{URL_PET}hieu_ung/", "v": _phien_ban_thu_muc(os.path.join(THU_MUC_PET, "hieu_ung")),
+                     **mf["hieu_ung"]},
     }
 
 def _lay_uid_tu_token():
