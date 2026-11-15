@@ -23,7 +23,8 @@ from datetime import date, datetime, timedelta
 
 from flask import Blueprint
 
-from db_ops import DB_PATH, BANG_XEP_HANG
+from db_ops import DB_PATH, BANG_XEP_HANG, cong_diem_thang
+from huy_hieu import kiem_tra_huy_hieu
 
 kb_bp = Blueprint('khoa_bang', __name__)   # giai đoạn 3 sẽ thêm route vào đây
 
@@ -163,6 +164,9 @@ def dam_bao_bang():
     cot_ct = [c[1] for c in conn.execute("PRAGMA table_info(contests)")]
     if cot_ct and 'loai' not in cot_ct:                                       # contests: '' | hoi | dinh | khao_hach
         conn.execute("ALTER TABLE contests ADD COLUMN loai TEXT DEFAULT ''")
+    cot_u = [c[1] for c in conn.execute("PRAGMA table_info(users)")]
+    if cot_u and 'huy_hieu' not in cot_u:
+        conn.execute("ALTER TABLE users ADD COLUMN huy_hieu TEXT DEFAULT ''")
 
     # Danh mục danh hiệu lấy từ code nên luôn ghi đè (để đổi tên có hiệu lực ngay cả khi DB đã có dữ liệu cũ)
     conn.executemany("INSERT OR REPLACE INTO kb_danh_hieu (ma, ten, cap, giap, thu_tu, diem_tich_luy) VALUES (?,?,?,?,?,?)", DANH_HIEU)
@@ -635,16 +639,28 @@ def chot_ky(conn, ky_id):
         cfg = doc_cau_hinh(conn, ky["cap"])
         ds = tinh_ket_qua_ky(conn, ky)
         bay_gio = _bay_gio()
+        he_so_bxh = {"huong": 1.0, "hoi": 1.2, "dinh": 1.5}.get(ky["cap"], 1.0)
+        co_cot_score = any(r[1] == "score" for r in conn.execute("PRAGMA table_info(users)"))
+        co_bang_thang = bool(conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='diem_thang'").fetchone())
         for d in ds:
             conn.execute("INSERT OR REPLACE INTO kb_ket_qua (ky_id, user_id, diem_tong, hang, chi_tiet) VALUES (?,?,?,?,?)",
                          (ky_id, d["user_id"], d["diem_tong"], d["hang"], json.dumps(d["chi_tiet"])))
             conn.execute("INSERT OR IGNORE INTO kb_tham_gia (ky_id, user_id, tao_luc) VALUES (?,?,?)", (ky_id, d["user_id"], bay_gio))
+            diem_bxh = round((d.get("diem_tong") or 0) * he_so_bxh)
+            if diem_bxh > 0:
+                if co_cot_score:
+                    conn.execute("UPDATE users SET score = COALESCE(score, 0) + ? WHERE id = ?", (diem_bxh, d["user_id"]))
+                if co_bang_thang:
+                    cong_diem_thang(conn, d["user_id"], diem_bxh)
         for uid, ma, hang in trao_danh_hieu(ds, cfg):
             conn.execute("INSERT OR REPLACE INTO kb_user_danh_hieu (user_id, ky_id, ma_danh_hieu, hang, trao_luc) VALUES (?,?,?,?,?)",
                          (uid, ky_id, ma, hang, bay_gio))
             diem = conn.execute("SELECT diem_tich_luy FROM kb_danh_hieu WHERE ma = ?", (ma,)).fetchone()[0]
             conn.execute("INSERT OR IGNORE INTO kb_diem_tich_luy (user_id, ky_id, diem, ly_do, tao_luc) VALUES (?,?,?,?,?)",
                          (uid, ky_id, diem, ma, bay_gio))
+        if co_cot_score:
+            for d in ds:
+                kiem_tra_huy_hieu(conn, d["user_id"])
         conn.commit()
         return True
     except Exception:
@@ -694,10 +710,10 @@ def _gan_ten(conn, ds):
     if not ds:
         return
     ids = [d["user_id"] for d in ds]
-    m = {r["id"]: r for r in conn.execute(f"SELECT id, username, avatar FROM users WHERE id IN ({','.join('?' * len(ids))})", ids)}
+    m = {r["id"]: r for r in conn.execute(f"SELECT id, username, avatar, COALESCE(huy_hieu, '') AS huy_hieu FROM users WHERE id IN ({','.join('?' * len(ids))})", ids)}
     for d in ds:
         u = m.get(d["user_id"])
-        d["username"], d["avatar"] = (u["username"], u["avatar"] or "") if u else ("(đã xóa)", "")
+        d["username"], d["avatar"], d["huy_hieu"] = (u["username"], u["avatar"] or "", u["huy_hieu"] or "") if u else ("(đã xóa)", "", "")
 
 def _ky_info(ky):
     kt = _d(ky["ket_thuc"])
@@ -730,7 +746,7 @@ def bang_cua_ky(conn, ky, gioi_han=50):
 
 def _danh_hieu_ky(conn, ky_id):
     return [dict(r) for r in conn.execute(
-        "SELECT t.user_id, t.ma_danh_hieu AS ma, t.hang, d.ten, d.giap, d.thu_tu, u.username, u.avatar, r.diem_tong AS diem "
+        "SELECT t.user_id, t.ma_danh_hieu AS ma, t.hang, d.ten, d.giap, d.thu_tu, u.username, u.avatar, COALESCE(u.huy_hieu, '') AS huy_hieu, r.diem_tong AS diem "
         "FROM kb_user_danh_hieu t JOIN kb_danh_hieu d ON d.ma = t.ma_danh_hieu JOIN users u ON u.id = t.user_id "
         "LEFT JOIN kb_ket_qua r ON r.ky_id = t.ky_id AND r.user_id = t.user_id "
         "WHERE t.ky_id = ? ORDER BY d.thu_tu, t.hang", (ky_id,))]
@@ -860,7 +876,7 @@ def api_vinh_danh():
 @kb_bp.route("/api/khoa-bang/ho-so/<int:uid>", methods=["GET"])
 def api_ho_so(uid):
     conn = _ket_noi()
-    u = conn.execute("SELECT id, username, avatar, bio FROM users WHERE id = ?", (uid,)).fetchone()
+    u = conn.execute("SELECT id, username, avatar, COALESCE(huy_hieu, '') AS huy_hieu, bio FROM users WHERE id = ?", (uid,)).fetchone()
     if not u:
         conn.close()
         return _loi("Không tìm thấy học sinh!", 404)

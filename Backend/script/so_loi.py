@@ -34,6 +34,7 @@ from datetime import date, timedelta
 from flask import Blueprint, jsonify, request
 
 from db_ops import DB_PATH
+from huy_hieu import kiem_tra_huy_hieu
 from nhiem_vu import ghi_su_kien
 
 so_loi_bp = Blueprint('so_loi', __name__)
@@ -304,6 +305,7 @@ def ghi_ket_qua_nop_bai(user_id, bai_key, ket_qua):
                      (user_id, bai_key, str(cid)))
     if sai:
         _mo_lai_ky_nang(conn, user_id, bai_key, hom_nay)
+    kiem_tra_huy_hieu(conn, user_id)
     conn.commit()
     conn.close()
     return [str(c) for c in sai]
@@ -360,6 +362,7 @@ def _ket_thuc_the(conn, uid, the, ket_qua):
         if ket_qua == 'dat' and tt["tinh"]:
             ghi_su_kien(uid, "chung_minh", 1, conn)
     ghi_su_kien(uid, "on_the", 1, conn)
+    kiem_tra_huy_hieu(conn, uid)
     return tt
 
 
@@ -436,7 +439,7 @@ def tao_the():
     kn = conn.execute("SELECT * FROM ky_nang_user WHERE user_id = ? AND bai_key = ?", (uid, key)).fetchone()
     if not kn:
         conn.close()
-        return _loi("Kỹ năng này chưa có trong sổ của anh/chị!", 404)
+        return _loi("Kỹ năng này chưa có trong sổ của bạn!", 404)
     hom_nay = _hom_nay()
 
     loai, cau_id, con_lai = None, None, 0

@@ -13,6 +13,7 @@ from datetime import date, datetime, timedelta
 from flask import Blueprint, jsonify, request
 
 from db_ops import DB_PATH, streak_hien_thi, cong_diem_thang
+from huy_hieu import kiem_tra_huy_hieu
 
 qua_bp = Blueprint('qua', __name__)
 
@@ -129,19 +130,19 @@ def _trang_thai(conn, user_id):
         "the_bao_ho": u['the_bao_ho'] or 0,
         "toi_da_bao_ho": TOI_DA_BAO_HO,
         "x15_con_lai": _x15_con_lai(u['x15_den']),
-        "score": u['score'],
-        "streak": streak_hien_thi(u['streak'], u['last_active_date'], u['the_bao_ho'] or 0),
+        "score": u['score'] or 0,
+        "streak": streak_hien_thi(u['streak'] or 0, u['last_active_date'], u['the_bao_ho'] or 0),
     }
 
 def _cong_bao_ho(conn, user_id):
     """Cộng 1 thẻ bảo hộ. Trả về True nếu cộng được, False nếu đã đầy."""
     cur = conn.execute(
-        "UPDATE users SET the_bao_ho = the_bao_ho + 1 WHERE id = ? AND the_bao_ho < ?",
+        "UPDATE users SET the_bao_ho = COALESCE(the_bao_ho, 0) + 1 WHERE id = ? AND COALESCE(the_bao_ho, 0) < ?",
         (user_id, TOI_DA_BAO_HO))
     return cur.rowcount == 1
 
 def _cong_diem(conn, user_id, diem):
-    conn.execute("UPDATE users SET score = score + ? WHERE id = ?", (diem, user_id))
+    conn.execute("UPDATE users SET score = COALESCE(score, 0) + ? WHERE id = ?", (diem, user_id))
     cong_diem_thang(conn, user_id, diem)
 
 def _lay_user_id():
@@ -176,16 +177,16 @@ def diem_danh():
     conn = _ket_noi()
     # Đánh dấu hôm nay NGAY trong 1 câu lệnh: bấm 2 lần cùng lúc thì chỉ 1 lần thắng
     cur = conn.execute(
-        "UPDATE users SET dd_last = ?, dd_tong = dd_tong + 1 "
+        "UPDATE users SET dd_last = ?, dd_tong = COALESCE(dd_tong, 0) + 1 "
         "WHERE id = ? AND COALESCE(dd_last, '') != ?", (hom_nay, user_id, hom_nay))
     if cur.rowcount == 0:
         co_user = conn.execute("SELECT 1 FROM users WHERE id = ?", (user_id,)).fetchone()
         conn.close()
         if not co_user:
             return jsonify({"success": False, "message": "Không tìm thấy người dùng!"}), 404
-        return jsonify({"success": False, "message": "Hôm nay anh/chị đã điểm danh rồi!"}), 409
+        return jsonify({"success": False, "message": "Hôm nay bạn đã điểm danh rồi!"}), 409
 
-    tong = conn.execute("SELECT dd_tong FROM users WHERE id = ?", (user_id,)).fetchone()[0]
+    tong = conn.execute("SELECT COALESCE(dd_tong, 0) FROM users WHERE id = ?", (user_id,)).fetchone()[0] or 0
     nhan = []   # danh sách quà nhận hôm nay để báo cho người dùng
 
     if tong <= CHU_KY:   # 7 ngày đầu: quà từng ngày
@@ -201,12 +202,13 @@ def diem_danh():
                 nhan.append(f"+{DIEM_DOI_THE_DAY} điểm (thẻ bảo hộ đã đầy)")
 
     if tong % CHU_KY == 0:   # đủ 7 lần điểm danh -> 1 lượt quay (lặp lại mỗi 7 ngày)
-        conn.execute("UPDATE users SET luot_quay = luot_quay + 1 WHERE id = ?", (user_id,))
+        conn.execute("UPDATE users SET luot_quay = COALESCE(luot_quay, 0) + 1 WHERE id = ?", (user_id,))
         nhan.append("1 lượt quay vòng quay thưởng")
 
     if not nhan:
         nhan.append("Điểm danh thành công! Cố lên, sắp tới quà rồi")
 
+    kiem_tra_huy_hieu(conn, user_id)
     conn.commit()
     tt = _trang_thai(conn, user_id)
     conn.close()
@@ -223,7 +225,7 @@ def quay_thuong():
     conn = _ket_noi()
     # Trừ lượt trước: có lượt thì mới quay được, bấm nhanh nhiều lần cũng không quay lố
     cur = conn.execute(
-        "UPDATE users SET luot_quay = luot_quay - 1 WHERE id = ? AND luot_quay > 0", (user_id,))
+        "UPDATE users SET luot_quay = COALESCE(luot_quay, 0) - 1 WHERE id = ? AND COALESCE(luot_quay, 0) > 0", (user_id,))
     if cur.rowcount == 0:
         co_user = conn.execute("SELECT 1 FROM users WHERE id = ?", (user_id,)).fetchone()
         conn.close()
@@ -248,9 +250,10 @@ def quay_thuong():
         conn.execute("UPDATE users SET x15_den = ? WHERE id = ?",
                      (het.strftime(DINH_DANG_GIO), user_id))
     elif trung["id"] == "them_luot":
-        conn.execute("UPDATE users SET luot_quay = luot_quay + 1 WHERE id = ?", (user_id,))
+        conn.execute("UPDATE users SET luot_quay = COALESCE(luot_quay, 0) + 1 WHERE id = ?", (user_id,))
     # "hut" thì không làm gì
 
+    kiem_tra_huy_hieu(conn, user_id)
     conn.commit()
     tt = _trang_thai(conn, user_id)
     conn.close()

@@ -25,6 +25,7 @@ from datetime import date, timedelta
 from flask import Blueprint, jsonify, request
 
 from db_ops import DB_PATH
+from huy_hieu import kiem_tra_huy_hieu
 import qua_tang  # noqa: F401  (import để chắc chắn bảng users đã có cột dd_last, luot_quay)
 
 nhiem_vu_bp = Blueprint('nhiem_vu', __name__)
@@ -95,7 +96,7 @@ dam_bao_bang()
 
 # ====================== HÀM DÙNG CHUNG ======================
 def _ket_noi():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=10)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -140,28 +141,39 @@ def ghi_su_kien_nop_bai(user_id, subject, bai_key, ket_qua, pct, best_cu=None):
         user_id = int(user_id)
     except (TypeError, ValueError):
         return
+    if not isinstance(ket_qua, dict):
+        return
     so_cau = len(ket_qua)
-    da_tra_loi = sum(1 for r in ket_qua.values() if r.get("dung") is not None)
+    da_tra_loi = sum(1 for r in ket_qua.values() if isinstance(r, dict) and r.get("dung") is not None)
     if not so_cau or da_tra_loi * 2 < so_cau:      # bỏ trống quá nửa: không tính (chống nộp bừa lấy nhiệm vụ)
         return
-    so_dung = sum(1 for r in ket_qua.values() if r.get("dung"))
+    so_dung = sum(1 for r in ket_qua.values() if isinstance(r, dict) and r.get("dung"))
 
-    conn = _ket_noi()
-    if not _co_user(conn, user_id):
-        conn.close()
-        return
-    lan_dau_hom_nay = _danh_dau_moi(conn, user_id, "bai:" + bai_key)   # bài khác nhau mới tính là bài mới
-    _danh_dau_moi(conn, user_id, "mon:" + subject)
-    if lan_dau_hom_nay:                                                # nộp lại cùng bài không cày thêm câu đúng
-        ghi_su_kien(user_id, "cau_dung", so_dung, conn)
-    if pct >= 80:
-        ghi_su_kien(user_id, "bai_80", 1, conn)
-    if pct >= 100:
-        ghi_su_kien(user_id, "bai_100", 1, conn)
-    if best_cu is not None and pct > best_cu:
-        ghi_su_kien(user_id, "nang_hang", 1, conn)
-    conn.commit()
-    conn.close()
+    conn = None
+    try:
+        conn = _ket_noi()
+        if not _co_user(conn, user_id):
+            return
+        lan_dau_hom_nay = _danh_dau_moi(conn, user_id, "bai:" + str(bai_key))   # bài khác nhau mới tính là bài mới
+        _danh_dau_moi(conn, user_id, "mon:" + str(subject))
+        if lan_dau_hom_nay:                                                # nộp lại cùng bài không cày thêm câu đúng
+            ghi_su_kien(user_id, "cau_dung", so_dung, conn)
+        if pct >= 80:
+            ghi_su_kien(user_id, "bai_80", 1, conn)
+        if pct >= 100:
+            ghi_su_kien(user_id, "bai_100", 1, conn)
+        if best_cu is not None and pct > best_cu:
+            ghi_su_kien(user_id, "nang_hang", 1, conn)
+        conn.commit()
+    except Exception:
+        # Không làm hỏng việc nộp bài khi ghi nhận nhiệm vụ gặp lỗi
+        pass
+    finally:
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception:
+                pass
 
 
 # ====================== CHỌN 3 NHIỆM VỤ MỖI NGÀY ======================
@@ -306,6 +318,7 @@ def nhan_thuong():
         if cur.rowcount == 1:
             conn.execute("UPDATE users SET luot_quay = luot_quay + ? WHERE id = ?", (LUOT_QUAY_DU_3, user_id))
             thuong_them = LUOT_QUAY_DU_3
+    kiem_tra_huy_hieu(conn, user_id)
     conn.commit()
     tt = _trang_thai(conn, user_id)
     conn.close()
