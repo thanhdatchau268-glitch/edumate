@@ -23,7 +23,7 @@ from datetime import date, datetime, timedelta
 
 from flask import Blueprint
 
-from db_ops import DB_PATH, BANG_XEP_HANG, cong_diem_thang
+from db_ops import DB_PATH, BANG_XEP_HANG, cong_diem_thang, cong_diem_va_educoin
 from huy_hieu import kiem_tra_huy_hieu
 
 kb_bp = Blueprint('khoa_bang', __name__)   # giai đoạn 3 sẽ thêm route vào đây
@@ -641,6 +641,8 @@ def chot_ky(conn, ky_id):
         bay_gio = _bay_gio()
         he_so_bxh = {"huong": 1.0, "hoi": 1.2, "dinh": 1.5}.get(ky["cap"], 1.0)
         co_cot_score = any(r[1] == "score" for r in conn.execute("PRAGMA table_info(users)"))
+        if co_cot_score and not any(r[1] == "educoin" for r in conn.execute("PRAGMA table_info(users)")):
+            conn.execute("ALTER TABLE users ADD COLUMN educoin INTEGER DEFAULT 0")
         co_bang_thang = bool(conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='diem_thang'").fetchone())
         for d in ds:
             conn.execute("INSERT OR REPLACE INTO kb_ket_qua (ky_id, user_id, diem_tong, hang, chi_tiet) VALUES (?,?,?,?,?)",
@@ -649,8 +651,11 @@ def chot_ky(conn, ky_id):
             diem_bxh = round((d.get("diem_tong") or 0) * he_so_bxh)
             if diem_bxh > 0:
                 if co_cot_score:
-                    conn.execute("UPDATE users SET score = COALESCE(score, 0) + ? WHERE id = ?", (diem_bxh, d["user_id"]))
-                if co_bang_thang:
+                    if co_bang_thang:
+                        cong_diem_va_educoin(conn, d["user_id"], diem_bxh, cong_thang=True)
+                    else:
+                        cong_diem_va_educoin(conn, d["user_id"], diem_bxh, cong_thang=False)
+                elif co_bang_thang:
                     cong_diem_thang(conn, d["user_id"], diem_bxh)
         for uid, ma, hang in trao_danh_hieu(ds, cfg):
             conn.execute("INSERT OR REPLACE INTO kb_user_danh_hieu (user_id, ky_id, ma_danh_hieu, hang, trao_luc) VALUES (?,?,?,?,?)",

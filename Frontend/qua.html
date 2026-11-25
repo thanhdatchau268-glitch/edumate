@@ -4,12 +4,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
     <title>VnStarL - Quà tặng</title>
-    <link rel="stylesheet" href="style.css?v=7" />
+    <link rel="stylesheet" href="style.css?v=11" />
     <link rel="stylesheet" href="style2.css?v=7" />
     <link rel="stylesheet" href="style3.css?v=7" />
-    <link rel="stylesheet" href="qua.css?v=1" />
+    <link rel="stylesheet" href="qua.css?v=2" />
 </head>
 
 <body>
@@ -33,15 +36,20 @@
                         <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
                     </a>
                 </li>
-                <li id="nav-cuoc-thi">
-                    <a href="contest.html" id="link-cuoc-thi" title="Tranh tài" aria-label="Tranh tài">
-                        <i class="fa-solid fa-trophy"></i><span class="nav-chu">Tranh tài</span>
+                <li id="nav-khoa-bang">
+                    <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+                        <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
                     </a>
                 </li>
                 <li id="nav-xep-hang">
                     <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
                         <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
                     </a>
+                </li>
+                <li id="nav-vuon-saoladou">
+                  <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+                    <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
+                  </a>
                 </li>
             </ul>
             <!-- KHU VỰC TÀI KHOẢN -->
@@ -51,7 +59,7 @@
                     <a href="register.html" class="auth-link">Đăng ký</a>
                 </div>
                 <div id="user-profile" class="hidden">
-                    <div class="streak-box">🔥 <span>0</span></div>
+                    <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
                     <span class="username">Username</span>
                     <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
                 </div>
@@ -59,44 +67,89 @@
         </div>
     </header>
 
-    <div class="container qua-trang">
-        <h2 class="qua-tieu-de">🎁 Điểm danh &amp; Quay thưởng</h2>
-        <p id="qua-loi" class="qua-thong-bao"></p>
-
-        <!-- Các thẻ trạng thái -->
-        <div class="qua-chi-so">
-            <div class="qua-the"><span class="qua-so" id="qua-diem">0</span><span class="qua-nhan">Điểm</span></div>
-            <div class="qua-the"><span class="qua-so">🛡️ <span id="qua-bao-ho">0</span></span><span
-                    class="qua-nhan">Thẻ bảo hộ streak</span></div>
-            <div class="qua-the"><span class="qua-so">🎟️ <span id="qua-luot">0</span></span><span class="qua-nhan">Lượt
-                    quay</span></div>
-        </div>
+    <main class="qua-arena-wrapper">
+        <p id="qua-loi" class="qua-thong-bao" style="margin-bottom: 12px;"></p>
         <p id="qua-x15" class="qua-x15 hidden"></p>
 
-        <!-- Điểm danh -->
-        <h3>Điểm danh</h3>
-        <p id="qua-mo-ta" class="qua-mo-ta"></p>
-        <div id="qua-lich" class="qua-lich"></div>
-        <div style="text-align:center; margin-top:16px;">
-            <button type="button" id="btn-diem-danh" class="btn">✅ Điểm danh hôm nay</button>
-        </div>
-        <p id="qua-dd-tb" class="qua-thong-bao"></p>
+        <div class="qua-arena-grid">
 
-        <!-- Vòng quay -->
-        <h3>Vòng quay thưởng</h3>
-        <p class="qua-mo-ta">Cứ đủ 7 lần điểm danh anh/chị nhận 1 lượt quay.</p>
-        <div class="qua-quay-khung">
-            <div class="qua-kim"></div>
-            <div id="qua-banh" class="qua-banh"></div>
-        </div>
-        <div style="text-align:center; margin-top:16px;">
-            <button type="button" id="btn-quay" class="btn">🎡 Quay</button>
-        </div>
-        <p id="qua-quay-tb" class="qua-thong-bao"></p>
-    </div>
+            <!-- ==================== CỘT TRÁI: HÀNH TRÌNH ĐIỂM DANH & TÚI ĐỒ ==================== -->
+            <section class="arena-card card-checkin-journey">
+                <div class="arena-card-head">
+                    <div class="arena-head-title">
+                        <img src="img/icon-hop-qua.png" alt="Quà tặng" class="vn-ico vn-ico-lg" />
+                        <h3>Hành trình điểm danh 7 ngày</h3>
+                    </div>
+                </div>
 
-    <script src="qua.js?v=1"></script>
-    <script src="script.js?v=7"></script>
+                <!-- Túi đồ tài sản người chơi -->
+                <div class="player-inventory-strip">
+                    <div class="inv-item">
+                        <img src="img/icon-diem.png" alt="Điểm" class="vn-ico vn-ico-2xl" />
+                        <div><span class="inv-val" id="qua-diem">0</span><span class="inv-lbl">Điểm</span></div>
+                    </div>
+                    <div class="inv-item">
+                        <img src="img/icon-bao-ho.png" alt="Bảo hộ streak" class="vn-ico vn-ico-2xl" />
+                        <div><span class="inv-val" id="qua-bao-ho">0/3</span><span class="inv-lbl">Thẻ bảo hộ</span></div>
+                    </div>
+                    <div class="inv-item">
+                        <img src="img/icon-ve.png" alt="Vé quay" class="vn-ico vn-ico-2xl" />
+                        <div><span class="inv-val" id="qua-luot">0</span><span class="inv-lbl">Lượt quay</span></div>
+                    </div>
+                </div>
+
+                <!-- Lộ trình 7 ngày của Sao La -->
+                <p id="qua-mo-ta" class="qua-mo-ta"></p>
+                <div id="qua-lich" class="arena-journey-trail qua-lich">
+                    <!-- JS render các trạm 1 -> 7 với cờ và rương báu -->
+                </div>
+
+                <!-- Nút điểm danh lớn -->
+                <div class="arena-btn-wrap">
+                    <button type="button" id="btn-diem-danh" class="btn-checkin-3d">
+                        <i class="fa-solid fa-calendar-check"></i> Điểm danh hôm nay
+                    </button>
+                </div>
+                <p id="qua-dd-tb" class="qua-thong-bao"></p>
+
+                <!-- Thông báo phụ -->
+                <p class="journey-note"><i class="fa-solid fa-circle-info text-blue-500"></i> Điểm danh 7 ngày liên tục để nhận <b>1 Vòng quay may mắn</b> và <b>Thẻ bảo hộ streak</b>.</p>
+            </section>
+
+            <!-- ==================== CỘT PHẢI: VÒNG QUAY MAY MẮN HOÀNG GIA ==================== -->
+            <section class="arena-card card-lucky-wheel">
+                <div class="arena-card-head">
+                    <div class="arena-head-title">
+                        <i class="fa-solid fa-dharmachakra text-blue-500"></i>
+                        <h3>Vòng quay may mắn Hoàng Gia</h3>
+                    </div>
+                    <span class="wheel-spins-badge">Còn <b id="wheel-spins-val">0</b> lượt</span>
+                </div>
+
+                <!-- Vòng quay canvas trong khung mạ vàng 3D -->
+                <div class="qua-quay-khung-v2">
+                    <div class="wheel-outer-ring">
+                        <div class="qua-kim"></div>
+                        <div id="qua-banh" class="qua-banh"></div>
+                    </div>
+                </div>
+
+                <!-- Nút quay thưởng nổi bật -->
+                <div class="arena-btn-wrap">
+                    <button type="button" id="btn-quay" class="btn-spin-gold">
+                        <i class="fa-solid fa-rotate text-amber-300"></i> QUAY THƯỞNG NGAY
+                    </button>
+                </div>
+                <p id="qua-quay-tb" class="qua-thong-bao"></p>
+
+                <p class="journey-note text-center"><i class="fa-solid fa-sparkles text-amber-500"></i> Tích lũy đủ 7 lần điểm danh nhận thêm 1 lượt quay may mắn!</p>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="qua.js?v=5"></script>
+    <script src="script.js?v=17"></script>
 </body>
 
 </html>

@@ -141,8 +141,28 @@
 /* ---------- Ô cuộc thi (dùng lại .modal-nen và .modal-hop của style3.css) ---------- */
 .contest-hop {
   max-width: 800px;
-  height: 560px;        /* giữ chiều cao cố định để đổi tab ô không nhảy lên xuống */
-  max-height: 90vh;
+  min-height: 420px;
+  max-height: 88vh;
+}
+
+/* Nút vào làm bài trong tab Bài tập của cuộc thi */
+.contest-btn-thi {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--nhan);
+  color: #fff !important;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(36, 87, 214, 0.25);
+  transition: transform 0.15s, background 0.15s;
+}
+
+.contest-btn-thi:hover {
+  background: #1842aa;
+  transform: translateY(-1px);
 }
 
 /* Hàng tab nằm góc trên bên trái */
@@ -206,16 +226,74 @@
   margin: 0 auto;
 }
 
-/* ---------- Điện thoại ---------- */
+/* ---------- Điện thoại (tối ưu riêng cho di động, giữ nguyên máy tính) ---------- */
 @media (max-width: 640px) {
+  .contest-head {
+    padding: 24px 12px 6px;
+  }
+  .contest-head i {
+    font-size: 32px;
+  }
+  .contest-head h1 {
+    font-size: 1.6rem;
+  }
+  .contest-container {
+    padding: 0 8px;
+    margin: 16px auto 40px;
+    overflow-x: auto;
+  }
+  .contest-table {
+    min-width: 480px; /* cho phép cuộn ngang mượt mà trên màn hình nhỏ */
+  }
   .contest-table th,
   .contest-table td {
     padding: 10px 8px;
-    font-size: 14px;
+    font-size: 13px;
   }
   .contest-badge {
-    display: block;
-    width: fit-content;
-    margin: 4px 0 0;
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 7px;
   }
+  .contest-hop {
+    width: 96%;
+    max-height: 90vh;
+    border-radius: 12px;
+  }
+  .contest-tabs {
+    gap: 4px;
+  }
+  .contest-tab {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+  .contest-noi-dung {
+    padding: 14px 12px;
+  }
+  .contest-ten {
+    font-size: 1.15rem;
+  }
+}
+
+/* Avatar + khung huy hiệu trong bảng xếp hạng cuộc thi */
+.ct-user-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ct-user-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ct-av-fallback {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1.5px solid #cbd5e1;
 }

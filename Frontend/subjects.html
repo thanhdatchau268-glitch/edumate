@@ -4,20 +4,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=2"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
-  <title>VnStarL</title>
-  </title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Các môn học - VnStarL</title>
+  <link rel="stylesheet" href="style.css?v=11" />
   <link rel="stylesheet" href="style2.css" />
   <link rel="stylesheet" href="style3.css" />
   <link rel="stylesheet" href="tien-do.css" />
   <link rel="stylesheet" href="form.css" />
   <link rel="stylesheet" href="gate.css" />
+  <link rel="stylesheet" href="subject-orbit.css?v=5" />
+  <link rel="stylesheet" href="tour-personal.css?v=6" />
 </head>
 
-<body data-gate="bai-tap"></body>
-
-<body>
+<body data-gate="bai-tap" class="subject-page-body">
   <header id="header">
     <div id="header-inner">
       <section class="right">
@@ -41,9 +43,19 @@
             <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
           </a>
         </li>
+        <li id="nav-khoa-bang">
+          <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+            <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+          </a>
+        </li>
         <li id="nav-xep-hang">
           <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
             <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+          </a>
+        </li>
+        <li id="nav-vuon-saoladou">
+          <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+            <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
           </a>
         </li>
       </ul>
@@ -56,7 +68,7 @@
         </div>
         <!-- Khi đã đăng nhập (mặc định thêm class hidden) -->
         <div id="user-profile" class="hidden">
-          <div class="streak-box">🔥 <span>0</span></div>
+          <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
           <span class="username">Username</span>
           <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
         </div>
@@ -64,20 +76,159 @@
     </div>
   </header>
 
-  <main class="subject-selection subject-page">
-    <div class="subject-head">
-      <i class="fa-solid fa-book-open"></i>
-      <h1>Chọn môn học</h1>
-      <p>Chọn một môn để bắt đầu luyện tập</p>
+  <main class="subject-selection subject-page subject-page-v2">
+    <!-- KHỐI GIAO DIỆN DÀNH RIÊNG CHO ĐIỆN THOẠI (<= 640px) TÁCH ĐỘC LẬP -->
+    <div class="mobile-subject-wrapper" id="mobile-subject-wrapper">
+      <div class="subject-head mobile-head-only">
+        <i class="fa-solid fa-book-open"></i>
+        <h1>Chọn môn học</h1>
+        <p>Chọn một môn để bắt đầu luyện tập</p>
+      </div>
+      <div id="subject-orbit" class="orbit"></div>
     </div>
 
-    <!-- subjects.js sẽ tự vẽ các ô môn vào đây -->
-    <div id="subject-grid" class="subject-grid"></div>
+    <!-- CONTAINER KHUNG KÍNH MỜ CÂN XỨNG V7 MASTER -->
+    <div class="hub-container-3col">
+
+      <!-- ==================== CỘT 1 (BÊN TRÁI): SÂN KHẤU LINH VẬT SAO LA ==================== -->
+      <aside class="col-mascot-hub" id="mascot-stage">
+        <!-- Bong bóng thoại chào mừng -->
+        <div class="mascot-speech-bubble">
+          <p class="bubble-greeting">Chào bạn, <b class="user-name-bubble">vô mae</b>! 👋</p>
+          <p class="bubble-sub">Hôm nay bạn đã sẵn sàng bứt phá mục tiêu cùng VnStarL chưa?</p>
+          <div class="bubble-tail"></div>
+        </div>
+
+        <!-- Hình ảnh linh vật Saoladuo đồng hành -->
+        <div class="mascot-avatar-container">
+          <img src="img/saoladuo_donghanh.png" alt="Linh vật Saoladuo VnStarL" class="mascot-img-render"
+            loading="lazy" decoding="async" onerror="this.src='img/logo.webp'">
+          <div class="mascot-shadow-pedestal"></div>
+        </div>
+
+        <!-- Huy hiệu cổ vũ / Cấp độ linh vật -->
+        <div class="mascot-cheer-badge">
+          <i class="fa-solid fa-sparkles"></i> Bạn đồng hành học tập
+        </div>
+      </aside>
+
+      <!-- ==================== CỘT 2 (Ở GIỮA): TÂM ĐIỂM 3 MÔN HỌC & BÀI DỞ DANG ==================== -->
+      <section class="col-center-hub">
+        <!-- Tiêu đề trang cá nhân -->
+        <div class="hub-welcome hub-welcome-row">
+          <div class="hub-welcome-text">
+            <h1 id="welcome-title">Lộ trình học tập cá nhân</h1>
+          </div>
+          <button type="button" id="btn-mo-tour-bt" class="btn-tour-replay" title="Xem lại hướng dẫn Kho bài tập">
+            <i class="fa-regular fa-circle-question"></i> Hướng dẫn
+          </button>
+        </div>
+
+        <!-- Lưới 3 thẻ môn học (Toán - Văn - Chuyên Vật Lý) -->
+        <div id="subject-grid" class="subject-grid-v2"></div>
+
+        <!-- Khối 'Các môn đang làm dở' thanh mảnh ngay dưới 3 môn (Tự động ẩn nếu không có bài dở) -->
+        <section id="resume-section" class="resume-section-slim" style="display: none;">
+          <div class="resume-slim-header">
+            <span class="resume-badge-tag"><i class="fa-solid fa-clock-rotate-left"></i> CÁC MÔN ĐANG LÀM DỞ</span>
+            <span class="resume-note-text">Hệ thống tự động lưu vị trí câu hỏi chưa hoàn thành</span>
+          </div>
+          <div id="resume-items-container" class="resume-items-container">
+            <!-- JS render động danh sách môn làm dở -->
+          </div>
+        </section>
+      </section>
+
+      <!-- ==================== CỘT 3 (BÊN PHẢI): 2 CARD HỌC TẬP TỈ LỆ 50/50 ==================== -->
+      <aside class="col-right-social">
+
+        <!-- CARD 1: NHIỆM VỤ HÔM NAY (~220px - GỌN GÀNG, KHÔNG BỊ GIÃN) -->
+        <section class="card-quests-real widget-accent-red">
+          <div class="widget-head">
+            <div class="widget-head-title">
+              <div class="widget-ico-box ico-red"><i class="fa-solid fa-bullseye"></i></div>
+              <h3 class="widget-title-nowrap">Nhiệm vụ hôm nay</h3>
+            </div>
+            <div class="widget-head-actions">
+              <span class="quest-count-badge" id="quest-count">0/3</span>
+              <a href="personal.html#tab-nv" class="widget-link" title="Xem danh sách đầy đủ">
+                Chi tiết <i class="fa-solid fa-angle-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Thanh tiến độ nhiệm vụ -->
+          <div class="quest-mini-track">
+            <div class="quest-mini-bar" id="quest-mini-bar" style="width: 0%;"></div>
+          </div>
+
+          <!-- Danh sách 3 nhiệm vụ ngày -->
+          <ul id="real-quest-list" class="real-quest-list">
+            <!-- JS fetch động từ /api/nhiem-vu/${userId} -->
+          </ul>
+        </section>
+
+        <!-- CARD 2: MỤC TIÊU TUẦN & BIỂU ĐỒ 7 NGÀY (~220px) -->
+        <section class="card-weekly-goal widget-accent-blue">
+          <div class="widget-head">
+            <div class="widget-head-title">
+              <div class="widget-ico-box ico-blue"><i class="fa-solid fa-chart-simple"></i></div>
+              <h3 class="widget-title-nowrap">Mục tiêu tuần</h3>
+            </div>
+            <div class="widget-head-actions">
+              <button type="button" class="goal-edit-btn" id="btn-edit-weekly-goal" title="Đặt mục tiêu tuần" aria-label="Đặt mục tiêu tuần">
+                <i class="fa-solid fa-pen"></i> Đặt mục tiêu
+              </button>
+              <span class="goal-percent-badge" id="weekly-goal-percent">0%</span>
+            </div>
+          </div>
+
+          <div class="weekly-goal-editor" id="weekly-goal-editor" hidden>
+            <label for="in-weekly-target">Mục tiêu:</label>
+            <input type="number" id="in-weekly-target" min="5" max="200" value="20" />
+            <span>bài/tuần</span>
+            <button type="button" class="goal-save-btn" id="btn-save-weekly-goal">Lưu</button>
+            <button type="button" class="goal-cancel-btn" id="btn-cancel-weekly-goal">Hủy</button>
+          </div>
+
+          <!-- Thông tin tiến độ bài tập trong tuần -->
+          <div class="weekly-goal-progress-wrap">
+            <div class="weekly-goal-labels">
+              <span class="weekly-goal-title">Đã làm <b id="weekly-done-count">0</b>/<span id="weekly-total-target">20</span> bài</span>
+              <span class="weekly-remain-text" id="weekly-remain-count">Còn 20 bài</span>
+            </div>
+            <div class="goal-track-bar">
+              <div class="goal-fill-bar" id="weekly-fill-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Biểu đồ mini 7 ngày trong tuần (T2 -> CN) -->
+          <div class="weekly-mini-chart">
+            <div class="chart-day-col"><div class="chart-bar" style="height: 0%;" title="T2: Chưa làm"></div><span class="day-lbl">T2</span></div>
+            <div class="chart-day-col"><div class="chart-bar" style="height: 0%;" title="T3: Chưa làm"></div><span class="day-lbl">T3</span></div>
+            <div class="chart-day-col"><div class="chart-bar" style="height: 0%;" title="T4: Chưa làm"></div><span class="day-lbl">T4</span></div>
+            <div class="chart-day-col"><div class="chart-bar" style="height: 0%;" title="T5: Chưa làm"></div><span class="day-lbl">T5</span></div>
+            <div class="chart-day-col"><div class="chart-bar" style="height: 0%;" title="T6: Chưa làm"></div><span class="day-lbl">T6</span></div>
+            <div class="chart-day-col"><div class="chart-bar" style="height: 0%;" title="T7: Chưa làm"></div><span class="day-lbl">T7</span></div>
+            <div class="chart-day-col"><div class="chart-bar" style="height: 0%;" title="CN: Chưa làm"></div><span class="day-lbl">CN</span></div>
+          </div>
+
+          <!-- Footer: Chuỗi ngày học Streak -->
+          <div class="weekly-streak-footer is-lost">
+            <img id="weekly-streak-ico" src="img/icon-streak-mat.png" alt="Mất chuỗi" class="vn-ico vn-ico-lg" />
+            <span id="weekly-streak-text">Chưa có chuỗi (<b>0 ngày</b>) — làm 1 bài hôm nay!</span>
+          </div>
+        </section>
+
+      </aside>
+
+    </div>
   </main>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=17"></script>
   <script src="gate.js"></script>
-  <script src="subjects.js"></script>
+  <script src="subjects.js?v=4"></script>
+  <script src="tour-bai-tap.js?v=6"></script>
 
 </body>
 

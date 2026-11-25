@@ -33,7 +33,7 @@ from datetime import date, timedelta
 
 from flask import Blueprint, jsonify, request
 
-from db_ops import DB_PATH
+from db_ops import DB_PATH, cong_diem_va_educoin
 from huy_hieu import kiem_tra_huy_hieu
 from nhiem_vu import ghi_su_kien
 
@@ -66,6 +66,8 @@ def dam_bao_bang():
             so_lan_sai INTEGER DEFAULT 1,
             lan_cuoi TEXT DEFAULT '',
             da_hieu INTEGER DEFAULT 0,                 -- 1 = đã sửa lỗi (làm đúng lại hoặc đã xem lời giải)
+            do_tu_tin TEXT DEFAULT '',                 -- V31: doan_thu | kha_chac | rat_chac
+            uu_tien_cao INTEGER DEFAULT 0,             -- V31: 2 = Lỗ hổng ẩn (rat_chac + sai), 1 = ưu tiên cao
             PRIMARY KEY (user_id, bai_key, cau_id)
         );
         CREATE TABLE IF NOT EXISTS ky_nang_user (      -- mức thành thạo của từng kỹ năng
@@ -88,6 +90,12 @@ def dam_bao_bang():
             tao_luc TEXT DEFAULT ''
         );
     ''')
+    cot_sl = [c[1] for c in conn.execute("PRAGMA table_info(so_loi)")]
+    if cot_sl and 'do_tu_tin' not in cot_sl:
+        conn.execute("ALTER TABLE so_loi ADD COLUMN do_tu_tin TEXT DEFAULT ''")
+    if cot_sl and 'uu_tien_cao' not in cot_sl:
+        conn.execute("ALTER TABLE so_loi ADD COLUMN uu_tien_cao INTEGER DEFAULT 0")
+    conn.commit()
     conn.close()
 
 dam_bao_bang()
@@ -261,13 +269,23 @@ def _lay_the_dang_mo(conn, uid, the_id):
         return None, _loi("Thẻ này đã kết thúc rồi, hãy mở thẻ mới!", 409)
     return the, None
 
-def _ghi_loi(conn, uid, bai_key, cau_id, hom_nay, them_lan=True):
-    """Thêm (hoặc cộng dồn) 1 câu sai vào sổ, đánh dấu chưa hiểu."""
-    conn.execute(
-        "INSERT INTO so_loi (user_id, bai_key, cau_id, so_lan_sai, lan_cuoi) VALUES (?, ?, ?, 1, ?) "
-        "ON CONFLICT(user_id, bai_key, cau_id) DO UPDATE SET "
-        "so_lan_sai = so_lan_sai + ?, lan_cuoi = excluded.lan_cuoi, da_hieu = 0",
-        (uid, bai_key, cau_id, hom_nay, 1 if them_lan else 0))
+def _ghi_loi(conn, uid, bai_key, cau_id, hom_nay, them_lan=True, do_tu_tin=None, uu_tien_cao=None):
+    """Thêm (hoặc cộng dồn) 1 câu sai vào sổ, đánh dấu chưa hiểu. Hỗ trợ lưu độ tự tin V31."""
+    if do_tu_tin is not None and uu_tien_cao is not None:
+        conn.execute(
+            "INSERT INTO so_loi (user_id, bai_key, cau_id, so_lan_sai, lan_cuoi, do_tu_tin, uu_tien_cao) "
+            "VALUES (?, ?, ?, 1, ?, ?, ?) "
+            "ON CONFLICT(user_id, bai_key, cau_id) DO UPDATE SET "
+            "so_lan_sai = so_lan_sai + ?, lan_cuoi = excluded.lan_cuoi, da_hieu = 0, "
+            "do_tu_tin = excluded.do_tu_tin, "
+            "uu_tien_cao = MAX(COALESCE(so_loi.uu_tien_cao, 0), excluded.uu_tien_cao)",
+            (uid, bai_key, cau_id, hom_nay, do_tu_tin, int(uu_tien_cao), 1 if them_lan else 0))
+    else:
+        conn.execute(
+            "INSERT INTO so_loi (user_id, bai_key, cau_id, so_lan_sai, lan_cuoi) VALUES (?, ?, ?, 1, ?) "
+            "ON CONFLICT(user_id, bai_key, cau_id) DO UPDATE SET "
+            "so_lan_sai = so_lan_sai + ?, lan_cuoi = excluded.lan_cuoi, da_hieu = 0",
+            (uid, bai_key, cau_id, hom_nay, 1 if them_lan else 0))
 
 def _mo_lai_ky_nang(conn, uid, bai_key, hom_nay):
     """Sai ở bài thường nghĩa là chưa vững: tạo kỹ năng (nếu chưa có) hoặc cho rớt 1 mức và ôn ngay."""
@@ -345,7 +363,7 @@ def _cap_nhat_muc(conn, uid, bai_key, ket_qua, hom_nay):
         "so_lan_dat = so_lan_dat + ?, so_lan_chua_dat = so_lan_chua_dat + ? WHERE user_id = ? AND bai_key = ?",
         (moi, hen_moi, hom_nay, 1 if ket_qua == 'dat' else 0, 1 if ket_qua == 'chua_dat' else 0, uid, bai_key))
     if diem:
-        conn.execute("UPDATE users SET score = score + ? WHERE id = ?", (diem, uid))
+        cong_diem_va_educoin(conn, uid, diem, cong_thang=False)
     tt.update(muc_sau=moi, ngay_on_ke=hen_moi, thuong_diem=diem)
     return tt
 
@@ -380,19 +398,26 @@ def ky_nang(user_id):
         key = r["bai_key"]
         if not KEY_RE.match(key):
             continue
-        tong, chua = conn.execute(
-            "SELECT COUNT(*), COALESCE(SUM(1 - da_hieu), 0) FROM so_loi WHERE user_id = ? AND bai_key = ?",
+        tong, chua, uu_max = conn.execute(
+            "SELECT COUNT(*), COALESCE(SUM(1 - da_hieu), 0), "
+            "COALESCE(MAX(CASE WHEN da_hieu = 0 THEN COALESCE(uu_tien_cao, 0) ELSE 0 END), 0) "
+            "FROM so_loi WHERE user_id = ? AND bai_key = ?",
             (user_id, key)).fetchone()
         nn = conn.execute(
             "SELECT nguyen_nhan FROM so_loi WHERE user_id = ? AND bai_key = ? AND nguyen_nhan != '' "
             "GROUP BY nguyen_nhan ORDER BY COUNT(*) DESC LIMIT 1", (user_id, key)).fetchone()
+        uu_int = int(uu_max or 0)
         ds.append({**_ten_ky_nang(key), "bai_key": key, "muc": r["muc"], "ten_muc": TEN_MUC[r["muc"]],
                    "ngay_on_ke": r["ngay_on_ke"], "den_han": bool(r["ngay_on_ke"]) and r["ngay_on_ke"] <= hom_nay,
-                   "tong_loi": tong, "loi_chua_hieu": chua, "nguyen_nhan_chinh": nn[0] if nn else ""})
+                   "tong_loi": tong, "loi_chua_hieu": chua,
+                   "uu_tien_cao": uu_int, "lo_hong_an": uu_int >= 2,
+                   "nguyen_nhan_chinh": nn[0] if nn else ""})
     conn.close()
-    ds.sort(key=lambda k: (not k["den_han"], k["muc"], k["bai_key"]))   # đến hạn lên đầu, mức thấp trước
+    # V31: Ưu tiên "Lỗ hổng ẩn" (uu_tien_cao=2) lên đầu tiên, rồi tới đến hạn ôn -> mức thấp
+    ds.sort(key=lambda k: (-int(k["uu_tien_cao"]), not k["den_han"], k["muc"], k["bai_key"]))
     tom_tat = {"tong": len(ds), "den_han": sum(1 for k in ds if k["den_han"]),
                "thong_thao": sum(1 for k in ds if k["muc"] == 3),
+               "lo_hong_an": sum(1 for k in ds if k["lo_hong_an"]),
                "loi_chua_hieu": sum(k["loi_chua_hieu"] for k in ds)}
     return jsonify({"success": True, "data": {"tom_tat": tom_tat, "ds": ds}}), 200
 

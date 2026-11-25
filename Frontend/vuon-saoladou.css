@@ -1,0 +1,2747 @@
+/* vuon-saoladou.css - Giao diện Vườn Saoladou & Cửa hàng Rừng Trường Sơn */
+
+body.vuon-page {
+  background: linear-gradient(180deg, #dbeafe 0%, #eff6ff 55%, #ecfdf5 100%);
+  transition: background 0.8s ease;
+}
+
+body.vuon-page[data-time="sunset"] {
+  background: linear-gradient(180deg, #fae8ff 0%, #ffedd5 55%, #f8fafc 100%);
+}
+
+body.vuon-page[data-time="night"] {
+  background: linear-gradient(180deg, #0b1120 0%, #172554 60%, #0f172a 100%);
+}
+
+/* Ẩn widget Sao La nổi góc dưới ở riêng trang Vườn để tránh trùng lặp với Sao La giữa rừng */
+body.vuon-page #sao-la {
+  display: none !important;
+}
+
+.vuon-app {
+  max-width: 1260px;
+  margin: 12px auto 20px;
+  padding: 0 14px;
+  min-height: 600px;
+}
+
+.vuon-app .hidden,
+.vuon-stage .hidden {
+  display: none !important;
+}
+
+/* ---------- Thẻ trạng thái: Đang tải / Chưa đăng nhập / Lỗi ---------- */
+.vuon-state-card {
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  padding: 36px 24px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(16, 185, 129, 0.14), transparent 46%),
+    radial-gradient(circle at 85% 80%, rgba(37, 99, 235, 0.12), transparent 48%),
+    #ffffff;
+  border: 1px solid #dbe7f4;
+  box-shadow: 0 18px 42px -18px rgba(15, 23, 42, 0.14);
+}
+
+.vuon-state-emoji {
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.vuon-state-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--chu, #1b2a41);
+  margin: 0;
+}
+
+.vuon-state-sub {
+  max-width: 480px;
+  color: var(--nhat, #5b6b82);
+  font-size: 0.96rem;
+  margin: 0;
+}
+
+.vuon-state-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.vuon-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #16a34a 0%, #059669 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 10px 22px -10px rgba(5, 150, 105, 0.6);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.vuon-cta-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px -10px rgba(5, 150, 105, 0.65);
+}
+
+.vuon-cta-btn--ghost {
+  background: #ffffff;
+  color: var(--chu, #1b2a41);
+  border: 1.5px solid #cbd5e1;
+  box-shadow: none;
+}
+
+.vuon-cta-btn--ghost:hover {
+  background: #f8fafc;
+  box-shadow: none;
+}
+
+.vuon-spinner {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 3.5px solid #d1fae5;
+  border-top-color: #10b981;
+  animation: vuonSpin 0.8s linear infinite;
+}
+
+@keyframes vuonSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Khung chính: Thế giới Rừng Suối Trường Sơn 2.5D Vector ---------- */
+.vuon-stage {
+  --sky-1: #5cc3fb;
+  --sky-2: #a9e4ff;
+  --sky-3: #e7fbf9;
+  --cloud-main: #ffffff;
+  --cloud-shade: #cde9fa;
+  --mtn-far-top: #7bb4cc;
+  --mtn-far-bot: #9fd0d9;
+  --mtn-mid-top: #4b9c8a;
+  --mtn-mid-bot: #6db892;
+  --mtn-near-top: #2f855a;
+  --mtn-near-bot: #276749;
+  --mist-color: #e6fffb;
+  --forest-tree: #257a4f;
+  --grass-hill: #65c96c;
+  --grass-1: #8ee56b;
+  --grass-2: #4cc156;
+  --grass-3: #2a984c;
+  --sun-patch: #fef08a;
+  --stone-path: #d6c8ad;
+  --tuft-color: #1c7c41;
+  --water-1: #7ce8ff;
+  --water-2: #1db6eb;
+  --water-3: #0377b5;
+  --water-shine: #ffffff;
+  --bank-top: #9f7950;
+  --bank-bot: #6d4f32;
+  --rock-lit: #cbd5e1;
+  --rock-mid: #94a3b8;
+  --rock-dark: #64748b;
+  --trunk-lit: #b87c4b;
+  --trunk-mid: #8c5730;
+  --trunk-dark: #5c361c;
+  --leaf-dark: #14532d;
+  --leaf-mid-1: #22a355;
+  --leaf-mid-2: #15803d;
+  --leaf-top-1: #86efac;
+  --leaf-top-2: #34d399;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+  min-height: 600px;
+  height: min(760px, calc(100vh - 94px));
+  background: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 52%, var(--sky-3) 100%);
+  border-radius: 26px;
+  overflow: hidden;
+  border: 1.5px solid rgba(255, 255, 255, 0.52);
+  box-shadow: 0 28px 64px -22px rgba(15, 23, 42, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: background 0.8s ease, border-color 0.6s ease;
+}
+
+.vuon-stage[data-time="sunset"] {
+  --sky-1: #473188;
+  --sky-2: #df6982;
+  --sky-3: #ffd099;
+  --cloud-main: #ffe4cc;
+  --cloud-shade: #d97a90;
+  --mtn-far-top: #74558d;
+  --mtn-far-bot: #b0738b;
+  --mtn-mid-top: #50646e;
+  --mtn-mid-bot: #6d816f;
+  --mtn-near-top: #2c5e4a;
+  --mtn-near-bot: #214538;
+  --mist-color: #ffd8b5;
+  --forest-tree: #234f3d;
+  --grass-hill: #6b9e54;
+  --grass-1: #93b856;
+  --grass-2: #4f9447;
+  --grass-3: #2a6d3c;
+  --sun-patch: #fb923c;
+  --stone-path: #c4a98f;
+  --tuft-color: #215c33;
+  --water-1: #fdba74;
+  --water-2: #3898c9;
+  --water-3: #1e4e7a;
+  --water-shine: #fed7aa;
+  --bank-top: #8f6346;
+  --bank-bot: #5c3c28;
+  --rock-lit: #d4b9a8;
+  --rock-mid: #8e8694;
+  --rock-dark: #585566;
+  --trunk-lit: #a86442;
+  --trunk-mid: #754229;
+  --trunk-dark: #4a2819;
+  --leaf-dark: #173d2c;
+  --leaf-mid-1: #3b7c47;
+  --leaf-mid-2: #1f5c36;
+  --leaf-top-1: #bef264;
+  --leaf-top-2: #4d9e58;
+}
+
+.vuon-stage[data-time="night"] {
+  --sky-1: #091026;
+  --sky-2: #16244f;
+  --sky-3: #233c73;
+  --cloud-main: #4a6294;
+  --cloud-shade: #25365e;
+  --mtn-far-top: #1d2f5e;
+  --mtn-far-bot: #26406d;
+  --mtn-mid-top: #14364a;
+  --mtn-mid-bot: #194452;
+  --mtn-near-top: #0f3834;
+  --mtn-near-bot: #0b2928;
+  --mist-color: #3b598a;
+  --forest-tree: #0d302b;
+  --grass-hill: #1c5746;
+  --grass-1: #246b4c;
+  --grass-2: #164e3d;
+  --grass-3: #0e382d;
+  --sun-patch: #93c5fd;
+  --stone-path: #5a6c7d;
+  --tuft-color: #114534;
+  --water-1: #38bdf8;
+  --water-2: #135d8c;
+  --water-3: #0c3559;
+  --water-shine: #bae6fd;
+  --bank-top: #4f4138;
+  --bank-bot: #312722;
+  --rock-lit: #697f9c;
+  --rock-mid: #475569;
+  --rock-dark: #2a3647;
+  --trunk-lit: #61483b;
+  --trunk-mid: #453127;
+  --trunk-dark: #291c16;
+  --leaf-dark: #07221d;
+  --leaf-mid-1: #134a3c;
+  --leaf-mid-2: #0d362d;
+  --leaf-top-1: #2a7860;
+  --leaf-top-2: #1a5948;
+}
+
+/* ---------- 2 Đảo Kính Mờ nổi phía trên (Floating Top HUD Islands) ---------- */
+.vuon-hud {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  right: 16px;
+  width: auto;
+  z-index: 25;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 14px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.vuon-hud-island {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  color: #0f172a;
+  box-shadow: 0 12px 28px -14px rgba(15, 23, 42, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  transition: background 0.5s ease, border-color 0.5s ease, color 0.5s ease;
+}
+
+.vuon-stage[data-time="sunset"] .vuon-hud-island {
+  background: rgba(255, 248, 240, 0.76);
+  border-color: rgba(254, 215, 170, 0.78);
+}
+
+.vuon-hud-island--stats {
+  flex: 0 1 440px;
+  min-width: 0;
+}
+
+.vuon-hud-island--controls {
+  align-items: flex-end;
+  gap: 7px;
+}
+
+.vuon-hud-ctrl-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.vuon-hud-ctrl-sub {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.vuon-stage[data-time="night"] .vuon-hud-island {
+  background: rgba(15, 23, 42, 0.56);
+  border-color: rgba(148, 163, 184, 0.28);
+  color: #f8fafc;
+  box-shadow: 0 14px 32px -12px rgba(2, 6, 23, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.vuon-stage[data-time="night"] .vuon-health-pill.is-healthy {
+  background: rgba(16, 185, 129, 0.22);
+  border-color: rgba(52, 211, 153, 0.48);
+  color: #a7f3d0;
+}
+
+.vuon-stage[data-time="night"] .vuon-health-pill.is-warn {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: rgba(251, 191, 36, 0.48);
+  color: #fde68a;
+}
+
+.vuon-stage[data-time="night"] .vuon-health-pill.is-sick {
+  background: rgba(239, 68, 68, 0.24);
+  border-color: rgba(248, 113, 113, 0.55);
+  color: #fecaca;
+}
+
+.vuon-stage[data-time="night"] .vuon-health-pill.is-sleep {
+  background: rgba(99, 102, 241, 0.24);
+  border-color: rgba(165, 180, 252, 0.48);
+  color: #e0e7ff;
+}
+
+.vuon-stage[data-time="night"] .vuon-stat-head {
+  color: #cbd5e1;
+}
+
+.vuon-stage[data-time="night"] .vuon-stat-head b {
+  color: #f8fafc;
+}
+
+.vuon-stage[data-time="night"] .vuon-stat-track {
+  background: rgba(148, 163, 184, 0.25);
+}
+
+.vuon-stage[data-time="night"] .vuon-bxh-sub {
+  color: #cbd5e1;
+}
+
+.vuon-stage[data-time="night"] .vuon-mode-tabs {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(148, 163, 184, 0.3);
+}
+
+.vuon-stage[data-time="night"] .vuon-mode-btn {
+  color: #cbd5e1;
+}
+
+.vuon-stage[data-time="night"] .vuon-mode-btn:hover {
+  color: #ffffff;
+}
+
+.vuon-stage[data-time="night"] .vuon-mode-btn.is-active {
+  background: rgba(37, 99, 235, 0.92);
+  color: #ffffff;
+}
+
+.vuon-status-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.vuon-health-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.vuon-health-pill.is-healthy {
+  background: linear-gradient(135deg, #dcfce7 0%, #d1fae5 100%);
+  border-color: #86efac;
+  color: #065f46;
+}
+
+.vuon-health-pill.is-warn {
+  background: linear-gradient(135deg, #fef3c7 0%, #ffedd5 100%);
+  border-color: #fdba74;
+  color: #9a3412;
+}
+
+.vuon-health-pill.is-sick {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+  animation: vuonSickPulse 1.5s ease-in-out infinite;
+}
+
+.vuon-health-pill.is-sleep {
+  background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
+  border-color: #a5b4fc;
+  color: #3730a3;
+}
+
+@keyframes vuonSickPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.35); }
+  50% { transform: scale(1.02); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+
+.vuon-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(106px, 140px));
+  gap: 10px;
+}
+
+.vuon-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vuon-stat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.vuon-stat-head b {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.vuon-stat-track {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.14);
+}
+
+.vuon-stat-fill {
+  height: 100%;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transition: width 0.35s ease, background 0.25s ease;
+}
+
+.vuon-stat-fill--no {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+.vuon-stat-fill--vui {
+  background: linear-gradient(90deg, #facc15, #f59e0b);
+}
+
+.vuon-stat-fill--sach {
+  background: linear-gradient(90deg, #38bdf8, #2563eb);
+}
+
+.vuon-stat.is-warn .vuon-stat-fill {
+  background: linear-gradient(90deg, #fb923c, #f59e0b);
+}
+
+.vuon-stat.is-danger .vuon-stat-fill {
+  background: linear-gradient(90deg, #f87171, #dc2626);
+}
+
+.vuon-stat.is-danger .vuon-stat-head b {
+  color: #dc2626;
+}
+
+.vuon-coin-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 13px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 55%, #fcd34d 100%);
+  border: 1.5px solid #f59e0b;
+  color: #78350f;
+  font-size: 0.9rem;
+  font-weight: 800;
+  box-shadow: 0 4px 12px -5px rgba(245, 158, 11, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.vuon-coin-ico {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.vuon-coin-ico--btn {
+  width: 17px;
+  height: 17px;
+}
+
+.vuon-bxh-sub {
+  font-size: 0.71rem;
+  font-weight: 600;
+  color: #475569;
+  white-space: nowrap;
+}
+
+.vuon-mode-tabs {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 13px;
+  background: rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  gap: 4px;
+}
+
+.vuon-mode-btn {
+  border: none;
+  background: transparent;
+  color: #334155;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 6px 13px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.vuon-mode-btn:hover {
+  color: #0f172a;
+}
+
+.vuon-mode-btn.is-active {
+  background: #ffffff;
+  color: #047857;
+  box-shadow: 0 4px 12px -4px rgba(15, 23, 42, 0.22);
+}
+
+/* ---------- Toast thông báo nổi trong stage ---------- */
+.vuon-toast-banner {
+  position: absolute;
+  top: 112px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  max-width: min(92%, 500px);
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.88);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 10px 26px -8px rgba(15, 23, 42, 0.45);
+  pointer-events: none;
+  animation: vuonToastIn 0.22s ease;
+}
+
+.vuon-toast-banner.is-ok {
+  background: rgba(6, 95, 70, 0.94);
+}
+
+.vuon-toast-banner.is-warn {
+  background: rgba(180, 83, 9, 0.95);
+}
+
+.vuon-toast-banner.is-err {
+  background: rgba(185, 28, 28, 0.94);
+}
+
+@keyframes vuonToastIn {
+  from { opacity: 0; transform: translate(-50%, -8px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ---------- Tab Vườn: Sân rừng tràn trọn 100% khung ---------- */
+.vuon-scene {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.vuon-arena {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 540px;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ---------- Thế giới 2.5D Vector ---------- */
+.vuon-world {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.vuon-sky {
+  position: absolute;
+  inset: 0 0 38% 0;
+  background: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 60%, var(--sky-3) 100%);
+  pointer-events: none;
+  transition: background 0.8s ease;
+}
+
+.vuon-sky-sunbeam {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 24%, rgba(254, 240, 138, 0.34) 0%, transparent 46%);
+  opacity: 1;
+  transition: opacity 0.8s ease;
+}
+
+.vuon-stage[data-time="sunset"] .vuon-sky-sunbeam {
+  background: radial-gradient(circle at 38% 72%, rgba(253, 186, 116, 0.55) 0%, transparent 52%);
+}
+
+.vuon-stage[data-time="night"] .vuon-sky-sunbeam {
+  background: radial-gradient(circle at 76% 24%, rgba(191, 219, 254, 0.22) 0%, transparent 42%);
+}
+
+.vuon-celestial {
+  position: absolute;
+  top: 14%;
+  left: 17%;
+  width: 66px;
+  height: 66px;
+  transition: left 0.9s ease, top 0.9s ease;
+}
+
+.vuon-stage[data-time="sunset"] .vuon-celestial {
+  top: 52%;
+  left: 34%;
+}
+
+.vuon-stage[data-time="night"] .vuon-celestial {
+  top: 14%;
+  left: 74%;
+}
+
+.vuon-sun-glow {
+  position: absolute;
+  inset: -24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(254, 240, 138, 0.52) 0%, rgba(254, 240, 138, 0) 70%);
+  transition: opacity 0.6s ease;
+}
+
+.vuon-sun-core {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fffbeb 0%, #fde047 65%, #f59e0b 100%);
+  box-shadow: 0 0 28px rgba(250, 204, 21, 0.68);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.vuon-stage[data-time="sunset"] .vuon-sun-core {
+  background: radial-gradient(circle at 40% 35%, #fef08a 0%, #fb923c 65%, #ef4444 100%);
+  box-shadow: 0 0 36px rgba(251, 146, 60, 0.78);
+}
+
+.vuon-stage[data-time="night"] .vuon-sun-core,
+.vuon-stage[data-time="night"] .vuon-sun-glow {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.vuon-moon-core {
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  box-shadow: inset -14px -4px 0 0 #fef9c3, 0 0 24px rgba(254, 249, 195, 0.55);
+  transform: rotate(-18deg) scale(0.6);
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.vuon-stage[data-time="night"] .vuon-moon-core {
+  opacity: 1;
+  transform: rotate(-18deg) scale(1);
+}
+
+.vuon-stars {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.vuon-stage[data-time="sunset"] .vuon-stars {
+  opacity: 0.28;
+}
+
+.vuon-stage[data-time="night"] .vuon-stars {
+  opacity: 1;
+}
+
+.vuon-stars span {
+  position: absolute;
+  width: var(--s, 2.5px);
+  height: var(--s, 2.5px);
+  border-radius: 50%;
+  background: #fef9c3;
+  box-shadow: 0 0 8px rgba(254, 249, 195, 0.9);
+  animation: vuonStarTwinkle 2.8s ease-in-out var(--d, 0s) infinite;
+}
+
+@keyframes vuonStarTwinkle {
+  0%, 100% { opacity: 0.35; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+.vuon-clouds {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.vuon-cloud {
+  position: absolute;
+  opacity: 0.92;
+  filter: drop-shadow(0 6px 10px rgba(15, 23, 42, 0.06));
+}
+
+.vuon-stage[data-time="night"] .vuon-cloud {
+  opacity: 0.4;
+}
+
+.vuon-cloud--1 {
+  width: 158px;
+  top: 10%;
+  left: -180px;
+  animation: vuonCloudDrift 52s linear -12s infinite;
+}
+
+.vuon-cloud--2 {
+  width: 128px;
+  top: 22%;
+  left: -160px;
+  animation: vuonCloudDrift 66s linear -36s infinite;
+}
+
+.vuon-cloud--3 {
+  width: 108px;
+  top: 14%;
+  left: -140px;
+  animation: vuonCloudDrift 78s linear -58s infinite;
+}
+
+@keyframes vuonCloudDrift {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(100vw + 240px)); }
+}
+
+/* Dãy núi Trường Sơn 3 tầng */
+.vuon-horizon-svg {
+  position: absolute;
+  left: 0;
+  bottom: 36%;
+  width: 100%;
+  height: 54%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ---------- 4 Vùng Môi Trường Tương Tác ---------- */
+.vuon-zone {
+  position: absolute;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vuon-zone-badge {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  transform: translate(-50%, 6px);
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 0.73rem;
+  font-weight: 800;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 15;
+}
+
+.vuon-zone:hover .vuon-zone-badge,
+.vuon-zone:focus-visible .vuon-zone-badge {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* 1. Bãi cỏ trung tâm 2.5D */
+.vuon-zone-co {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 48%;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.vuon-meadow-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Cảnh vật bờ đối diện phía trái-trên kia bờ sông */
+.vuon-far-bank-svg {
+  position: absolute;
+  left: 0;
+  bottom: 24%;
+  width: 48%;
+  height: 86%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.vuon-grass-tufts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.vuon-tuft {
+  position: absolute;
+  width: 34px;
+  height: 20px;
+  transform-origin: center bottom;
+  animation: vuonGrassWind 3.8s ease-in-out infinite;
+}
+
+.vuon-tuft--alt {
+  animation-duration: 4.5s;
+  animation-delay: 0.9s;
+}
+
+@keyframes vuonGrassWind {
+  0%, 100% { transform: skewX(-4deg); }
+  50% { transform: skewX(5deg); }
+}
+
+.vuon-ping-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.vuon-click-ping {
+  position: absolute;
+  width: 28px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.65);
+  transform: translate(-50%, 50%) scale(0.35);
+  animation: vuonClickPing 0.58s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes vuonClickPing {
+  0% { opacity: 0.95; transform: translate(-50%, 50%) scale(0.35); }
+  100% { opacity: 0; transform: translate(-50%, 50%) scale(1.9); }
+}
+
+/* 2. Hồ Nước Trường Sơn 2.5D nằm gọn trên thảm cỏ bên trái */
+.vuon-zone-song {
+  left: 5%;
+  bottom: 13%;
+  width: clamp(270px, 34vw, 420px);
+  height: clamp(135px, 18vw, 200px);
+  z-index: 3;
+  pointer-events: none;
+  transition: filter 0.2s ease;
+}
+
+.vuon-song-hit,
+.vuon-zone-song .vuon-zone-badge {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.vuon-zone-song:hover {
+  filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.65));
+}
+
+.vuon-song-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.vuon-lake-ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: vuonLakeRipple 4.4s ease-in-out infinite;
+}
+
+.vuon-lake-ripple--2 {
+  animation-delay: 2.1s;
+}
+
+@keyframes vuonLakeRipple {
+  0%, 100% { transform: scale(0.92); opacity: 0.25; }
+  50% { transform: scale(1.06); opacity: 0.62; }
+}
+
+.vuon-water-flow {
+  stroke-dasharray: 28 18 14 22;
+  animation: vuonWaterFlow 4.2s linear infinite;
+}
+
+.vuon-water-flow--2 {
+  stroke-dasharray: 20 22 12 20;
+  animation-duration: 5.4s;
+}
+
+.vuon-water-flow--3 {
+  stroke-dasharray: 16 18;
+  animation-duration: 3.6s;
+}
+
+@keyframes vuonWaterFlow {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -164; }
+}
+
+.vuon-zone-song .vuon-zone-badge {
+  left: 50%;
+  top: 6px;
+}
+
+/* 3. Tảng đá sưởi nắng 2.5D (Bên phải bãi cỏ) */
+.vuon-zone-da {
+  left: auto;
+  right: 19%;
+  bottom: 33%;
+  width: clamp(118px, 15vw, 174px);
+  height: auto;
+  z-index: 4;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.vuon-zone-da:hover {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 6px 14px rgba(254, 240, 138, 0.45));
+}
+
+.vuon-da-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.vuon-zone-da .vuon-zone-badge {
+  top: -12px;
+}
+
+/* 4. Cây cổ thụ Trường Sơn 2.5D (Bên phải) */
+.vuon-zone-cay {
+  right: 1%;
+  bottom: 18%;
+  width: clamp(176px, 24vw, 274px);
+  height: auto;
+  z-index: 4;
+  transition: filter 0.2s ease;
+}
+
+.vuon-zone-cay:hover {
+  filter: drop-shadow(0 0 18px rgba(74, 222, 128, 0.5));
+}
+
+.vuon-cay-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.vuon-tree-canopy {
+  transform-origin: 155px 150px;
+  animation: vuonTreeSway 5.5s ease-in-out infinite;
+}
+
+@keyframes vuonTreeSway {
+  0%, 100% { transform: rotate(-1.2deg); }
+  50% { transform: rotate(1.4deg); }
+}
+
+.vuon-zone-cay .vuon-zone-badge {
+  left: 48%;
+  top: 32%;
+}
+
+/* Đom đóm rừng ban đêm & Lá dương xỉ tiền cảnh 2.5D */
+.vuon-night-fireflies {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.vuon-stage[data-time="night"] .vuon-night-fireflies {
+  opacity: 1;
+}
+
+.vuon-night-fireflies span {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fef08a;
+  box-shadow: 0 0 12px 4px rgba(250, 204, 21, 0.85);
+  animation: vuonNightFirefly 4.4s ease-in-out var(--d, 0s) infinite;
+}
+
+@keyframes vuonNightFirefly {
+  0%, 100% { opacity: 0.2; transform: translate(0, 0) scale(0.8); }
+  45% { opacity: 1; transform: translate(12px, -18px) scale(1.2); }
+  75% { opacity: 0.6; transform: translate(-8px, -10px) scale(0.95); }
+}
+
+.vuon-fg-fern {
+  position: absolute;
+  bottom: -4px;
+  width: clamp(64px, 9vw, 108px);
+  height: auto;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.vuon-fg-fern--left { left: -4px; }
+.vuon-fg-fern--right { right: -4px; }
+
+/* Cụm chuyển chế độ ánh sáng nhúng gọn trong Đảo Phải HUD */
+.vuon-time-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+}
+
+.vuon-stage[data-time="night"] .vuon-time-switch {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+.vuon-time-btn {
+  border: none;
+  background: transparent;
+  color: #334155;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 3px 7px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.vuon-stage[data-time="night"] .vuon-time-btn {
+  color: #cbd5e1;
+}
+
+.vuon-time-btn.is-active {
+  background: #ffffff;
+  color: #047857;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.14);
+}
+
+.vuon-stage[data-time="night"] .vuon-time-btn.is-active {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* Lớp đồ trang trí */
+.vuon-decor-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.vuon-stage[data-time="night"] .vuon-decor--den_dom_dom {
+  filter: drop-shadow(0 0 24px rgba(250, 204, 21, 0.95));
+}
+
+.vuon-stage[data-time="night"] .vuon-firefly {
+  box-shadow: 0 0 16px 6px rgba(250, 204, 21, 1);
+}
+
+.vuon-decor-item {
+  position: absolute;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 8px 14px rgba(15, 23, 42, 0.22));
+}
+
+.vuon-decor--lan_rung {
+  width: 96px;
+  height: 92px;
+}
+
+.vuon-decor--den_dom_dom {
+  width: 64px;
+  height: 100px;
+  z-index: 6;
+  transform-origin: top center;
+  animation: vuonLanternSway 4.2s ease-in-out infinite;
+}
+
+.vuon-decor--ghe_da {
+  width: 126px;
+  height: 76px;
+}
+
+.vuon-decor--ghe_da.is-interactive {
+  pointer-events: auto;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.vuon-decor--ghe_da.is-interactive:hover {
+  transform: translateX(-50%) translateY(-2px);
+  filter: drop-shadow(0 10px 16px rgba(14, 165, 233, 0.35));
+}
+
+.vuon-decor--ghe_da .vuon-zone-badge {
+  top: -26px;
+  left: 50%;
+}
+
+.vuon-decor--ghe_da.is-interactive:hover .vuon-zone-badge,
+.vuon-decor--ghe_da.is-interactive:focus-visible .vuon-zone-badge {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.vuon-decor--bang_ten {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 146px;
+}
+
+/* 4 món trang trí mới V29: Hoa sen, Lều trại, Chuông gió trúc, Nấm phát sáng */
+.vuon-decor--hoa_sen {
+  width: 98px;
+  height: 64px;
+  z-index: 4;
+  animation: vuonLotusBob 3.8s ease-in-out infinite;
+}
+
+.vuon-decor--leu_trai {
+  width: 142px;
+  height: 106px;
+  z-index: 5;
+}
+
+.vuon-decor--leu_trai .vuon-tent-glow {
+  transition: fill 0.6s ease, filter 0.6s ease;
+}
+
+.vuon-decor--leu_trai .vuon-tent-beam {
+  transition: opacity 0.6s ease;
+}
+
+.vuon-stage[data-time="night"] .vuon-decor--leu_trai .vuon-tent-glow {
+  fill: #fde047;
+  filter: drop-shadow(0 0 12px rgba(250, 204, 21, 0.95));
+}
+
+.vuon-stage[data-time="night"] .vuon-decor--leu_trai .vuon-tent-beam {
+  opacity: 0.34;
+}
+
+.vuon-stage[data-time="night"] .vuon-decor--leu_trai {
+  filter: drop-shadow(0 0 18px rgba(250, 204, 21, 0.45));
+}
+
+.vuon-decor--chuong_gio {
+  width: 58px;
+  height: 88px;
+  z-index: 6;
+  transform-origin: top center;
+  animation: vuonWindChime 3.6s ease-in-out infinite;
+}
+
+.vuon-chime-note {
+  position: absolute;
+  color: #38bdf8;
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
+  pointer-events: none;
+  animation: vuonMusicNote 3.2s ease-out infinite;
+}
+
+.vuon-chime-note--1 { left: 4px; top: 44px; animation-delay: 0s; }
+.vuon-chime-note--2 { right: 2px; top: 32px; color: #f59e0b; animation-delay: 1.5s; }
+
+.vuon-decor--suoi_nam {
+  width: 88px;
+  height: 70px;
+  z-index: 5;
+  transition: filter 0.6s ease;
+}
+
+.vuon-stage[data-time="night"] .vuon-decor--suoi_nam {
+  filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.85)) drop-shadow(0 0 22px rgba(251, 146, 60, 0.55));
+}
+
+@keyframes vuonLotusBob {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(-1deg); }
+  50% { transform: translateX(-50%) translateY(-3px) rotate(1.5deg); }
+}
+
+@keyframes vuonWindChime {
+  0%, 100% { transform: translateX(-50%) rotate(-4deg); }
+  50% { transform: translateX(-50%) rotate(4.5deg); }
+}
+
+@keyframes vuonMusicNote {
+  0% { opacity: 0; transform: translate(0, 8px) scale(0.75); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-14px, -28px) scale(1.1); }
+}
+
+.vuon-sign-board {
+  position: relative;
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #b45309 0%, #92400e 100%);
+  border: 2px solid #78350f;
+  box-shadow: inset 0 1px 0 rgba(254, 243, 199, 0.35), 0 4px 10px rgba(15, 23, 42, 0.25);
+  color: #fef3c7;
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.vuon-sign-post {
+  width: 12px;
+  height: 28px;
+  background: linear-gradient(90deg, #78350f, #92400e, #78350f);
+  border-radius: 0 0 4px 4px;
+}
+
+/* Bướm & Đom đóm trang trí */
+.vuon-butterfly {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  width: 22px;
+  height: 18px;
+  animation: vuonBuom 3.6s ease-in-out infinite;
+}
+
+.vuon-firefly {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fef08a;
+  box-shadow: 0 0 10px 3px rgba(250, 204, 21, 0.85);
+  animation: vuonDomDom 2.8s ease-in-out infinite;
+}
+
+.vuon-firefly--1 { left: 8px; top: 56px; animation-delay: 0s; }
+.vuon-firefly--2 { right: 6px; top: 42px; animation-delay: 0.9s; }
+.vuon-firefly--3 { left: 26px; top: 82px; animation-delay: 1.7s; }
+
+@keyframes vuonLanternSway {
+  0%, 100% { transform: translateX(-50%) rotate(-2.5deg); }
+  50% { transform: translateX(-50%) rotate(2.5deg); }
+}
+
+@keyframes vuonBuom {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  35% { transform: translate(-10px, -10px) scale(1.06); }
+  70% { transform: translate(6px, -6px) scale(0.96); }
+}
+
+@keyframes vuonDomDom {
+  0%, 100% { opacity: 0.35; transform: translate(0, 0) scale(0.85); }
+  50% { opacity: 1; transform: translate(4px, -9px) scale(1.15); }
+}
+
+/* ---------- Nhân vật Sao La di chuyển tự do 2.5D ---------- */
+.vuon-pet-wrap {
+  --move-ms: 0ms;
+  --pet-scale: 1;
+  position: absolute;
+  left: 50%;
+  bottom: 20%;
+  transform: translateX(-50%) scale(var(--pet-scale));
+  transform-origin: center bottom;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: left var(--move-ms) linear, bottom var(--move-ms) linear, transform var(--move-ms) linear;
+  pointer-events: none;
+}
+
+.vuon-pet-wrap .vuon-pet-btn {
+  pointer-events: auto;
+}
+
+.vuon-pet-wrap.face-left .vuon-pet-sprite,
+.vuon-pet-wrap.face-left .vuon-pet-fx {
+  transform: scaleX(-1);
+}
+
+.vuon-pet-wrap.is-walking .vuon-pet-btn {
+  animation: vuonPetWalk 0.36s ease-in-out infinite;
+}
+
+.vuon-pet-wrap.is-swimming .vuon-pet-btn {
+  animation: vuonPetSwim 1.2s ease-in-out infinite;
+}
+
+.vuon-pet-wrap.is-swimming .vuon-pet-shadow {
+  opacity: 0;
+}
+
+.vuon-pet-wrap.is-resting .vuon-pet-btn {
+  animation: vuonPetRest 2.8s ease-in-out infinite;
+}
+
+/* Ốm xỉu nằm ngất bất động ở Frame 6 */
+.vuon-pet-wrap.is-fainted .vuon-pet-btn {
+  animation: none;
+  transform: translateY(12px);
+}
+
+.vuon-pet-wrap.is-fainted .vuon-pet-shadow {
+  width: 124px;
+  height: 18px;
+  bottom: -4px;
+  opacity: 0.42;
+}
+
+/* Ngồi khít trên mặt ghế đá — hông tựa mặt đá, chân buông tự nhiên phía trước */
+.vuon-pet-wrap.is-sitting .vuon-pet-btn {
+  animation: none;
+  transform: translateY(4px);
+}
+
+.vuon-pet-wrap.is-sitting .vuon-pet-shadow {
+  opacity: 0;
+}
+
+.vuon-pet-wrap.is-sitting .vuon-pet-hint,
+.vuon-pet-wrap.is-swimming .vuon-pet-hint {
+  opacity: 0;
+}
+
+/* Ngủ say theo giờ cá nhân hóa */
+.vuon-pet-wrap.is-sleeping .vuon-pet-btn {
+  animation: vuonPetSleep 3.8s ease-in-out infinite;
+}
+
+.vuon-pet-wrap.is-sleeping .vuon-pet-shadow {
+  width: 120px;
+  height: 18px;
+  bottom: -4px;
+  opacity: 0.36;
+}
+
+.vuon-pet-wrap.is-sleeping .vuon-rest-fx {
+  opacity: 1;
+}
+
+.vuon-pet-wrap.is-sleeping .vuon-fall-leaf {
+  display: none;
+}
+
+.vuon-pet-wrap.is-sleep-wiggle .vuon-pet-btn {
+  animation: vuonSleepWiggle 0.44s ease-in-out;
+}
+
+.vuon-pet-wrap.is-annoyed .vuon-pet-btn {
+  animation: vuonPetAnnoyed 0.45s ease-in-out 2;
+}
+
+@keyframes vuonPetWalk {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-7px) rotate(-2.5deg); }
+  75% { transform: translateY(-5px) rotate(2.5deg); }
+}
+
+@keyframes vuonPetSwim {
+  0%, 100% { transform: translateY(11px) rotate(-2deg); }
+  50% { transform: translateY(15px) rotate(2deg); }
+}
+
+@keyframes vuonPetRest {
+  0%, 100% { transform: translateY(6px) scaleY(0.95); }
+  50% { transform: translateY(8px) scaleY(0.98); }
+}
+
+@keyframes vuonPetSit {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(-2px) scaleY(1.02); }
+}
+
+@keyframes vuonPetSleep {
+  0%, 100% { transform: translateY(10px) scale(1, 0.98); }
+  50% { transform: translateY(9px) scale(1.025, 1.02); }
+}
+
+@keyframes vuonSleepWiggle {
+  0%, 100% { transform: translateY(10px) rotate(0deg); }
+  25% { transform: translateY(9px) rotate(-4deg); }
+  75% { transform: translateY(9px) rotate(4deg); }
+}
+
+@keyframes vuonPetAnnoyed {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  30% { transform: translateY(-6px) rotate(-4deg); }
+  70% { transform: translateY(-4px) rotate(4deg); }
+}
+
+/* Hiệu ứng môi trường quanh SaoLa: sóng nước tắm sông & Zzz nghỉ ngơi */
+.vuon-env-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.vuon-swim-fx,
+.vuon-rest-fx {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.vuon-pet-wrap.is-swimming .vuon-swim-fx {
+  opacity: 1;
+}
+
+.vuon-pet-wrap.is-resting .vuon-rest-fx {
+  opacity: 1;
+}
+
+.vuon-ripple {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 124px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid rgba(224, 242, 254, 0.9);
+  transform: translateX(-50%) scale(0.5);
+  animation: vuonSongLan 1.4s ease-out infinite;
+}
+
+.vuon-ripple--2 {
+  animation-delay: 0.7s;
+}
+
+@keyframes vuonSongLan {
+  0% { opacity: 0.95; transform: translateX(-50%) scale(0.55); }
+  100% { opacity: 0; transform: translateX(-50%) scale(1.48); }
+}
+
+.vuon-drop {
+  position: absolute;
+  bottom: 46px;
+  width: 9px;
+  height: 12px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: linear-gradient(180deg, #ffffff 0%, #38bdf8 100%);
+  animation: vuonWaterSplash 0.95s ease-out infinite;
+}
+
+.vuon-drop--1 { left: 16%; --dx: -24px; animation-delay: 0s; }
+.vuon-drop--2 { left: 32%; --dx: -12px; animation-delay: 0.25s; }
+.vuon-drop--3 { right: 28%; --dx: 14px; animation-delay: 0.45s; }
+.vuon-drop--4 { right: 14%; --dx: 26px; animation-delay: 0.7s; }
+
+@keyframes vuonWaterSplash {
+  0% { opacity: 0; transform: translate(0, 6px) scale(0.6); }
+  30% { opacity: 1; transform: translate(calc(var(--dx) * 0.5), -24px) scale(1.05); }
+  100% { opacity: 0; transform: translate(var(--dx), 8px) scale(0.7); }
+}
+
+.vuon-zzz {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  color: #e0f2fe;
+  text-shadow: 0 2px 6px rgba(15, 23, 42, 0.45);
+  font-weight: 900;
+  font-size: 1rem;
+  opacity: 0;
+  animation: vuonZzzFloat 2.4s ease-out infinite;
+}
+
+.vuon-zzz--2 { font-size: 1.25rem; right: 2px; animation-delay: 0.7s; }
+.vuon-zzz--3 { font-size: 0.88rem; right: 22px; animation-delay: 1.4s; }
+
+@keyframes vuonZzzFloat {
+  0% { opacity: 0; transform: translate(0, 12px) scale(0.75); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(18px, -36px) scale(1.15); }
+}
+
+.vuon-fall-leaf {
+  position: absolute;
+  top: -12px;
+  font-size: 0.95rem;
+  opacity: 0;
+  animation: vuonFallLeaf 3s ease-in-out infinite;
+}
+
+.vuon-fall-leaf--1 { left: 10px; animation-delay: 0s; }
+.vuon-fall-leaf--2 { right: 18px; animation-delay: 1.4s; }
+
+@keyframes vuonFallLeaf {
+  0% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+  20% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(-22px, 84px) rotate(130deg); }
+}
+
+.vuon-pet-shadow {
+  position: absolute;
+  bottom: 2px;
+  width: 112px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(15, 23, 42, 0.34), transparent);
+  pointer-events: none;
+}
+
+.vuon-pet-btn {
+  position: relative;
+  width: 142px;
+  height: 142px;
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  transform-origin: center bottom;
+  animation: petTho 3s ease-in-out infinite;
+  -webkit-tap-highlight-color: transparent;
+  transition: filter 0.18s ease;
+}
+
+.vuon-pet-btn:hover {
+  filter: drop-shadow(0 8px 14px rgba(16, 185, 129, 0.32));
+}
+
+.vuon-pet-btn:active {
+  transform: scale(0.95);
+}
+
+.vuon-pet-btn.is-petting {
+  animation: vuonPetBounce 0.48s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes petTho {
+  0%, 100% { transform: scaleY(1) translateY(0); }
+  50% { transform: scaleY(1.032) translateY(-2px); }
+}
+
+@keyframes vuonPetBounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08, 0.94) translateY(3px); }
+  75% { transform: scale(0.97, 1.05) translateY(-8px); }
+  100% { transform: scale(1); }
+}
+
+.vuon-pet-sprite,
+.vuon-pet-fx {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  pointer-events: none;
+}
+
+.vuon-pet-sprite.is-fallback {
+  background-size: contain !important;
+  background-position: center bottom !important;
+}
+
+.vuon-pet-sick-fx {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #fecaca;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.22);
+  font-size: 1.05rem;
+  animation: vuonSickPulse 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.vuon-pet-sick-fx img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.vuon-pet-hint {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0;
+  padding: 3px 11px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.62);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+/* Bong bóng thoại & hạt bay lên */
+.vuon-speech {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 260px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1.5px solid #d1fae5;
+  color: #0f172a;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+  box-shadow: 0 10px 24px -8px rgba(15, 23, 42, 0.26);
+  z-index: 16;
+  pointer-events: none;
+}
+
+.vuon-speech::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 7px solid transparent;
+  border-top-color: #ffffff;
+}
+
+.vuon-speech.is-annoyed {
+  border-color: #fda4af;
+  background: #fff1f2;
+  color: #9f1239;
+}
+
+.vuon-speech.is-annoyed::after {
+  border-top-color: #fff1f2;
+}
+
+.vuon-speech.align-left {
+  left: 0;
+  transform: translateX(-10%);
+}
+
+.vuon-speech.align-left::after {
+  left: 26%;
+}
+
+.vuon-speech.align-right {
+  left: auto;
+  right: 0;
+  transform: translateX(10%);
+}
+
+.vuon-speech.align-right::after {
+  left: 74%;
+}
+
+@media (hover: none), (max-width: 640px) {
+  /* Trên màn hình cảm ứng (PE): hiện nhãn gợi ý gọn nhẹ để nhận biết các vùng chạm tương tác */
+  .vuon-zone .vuon-zone-badge,
+  .vuon-decor--ghe_da.is-interactive .vuon-zone-badge {
+    opacity: 0.92;
+    transform: translate(-50%, 0);
+    font-size: 0.62rem;
+    padding: 3px 8px;
+    background: rgba(15, 23, 42, 0.68);
+  }
+}
+
+.vuon-zone:active {
+  transform: scale(0.97);
+}
+
+.vuon-float-layer {
+  position: absolute;
+  inset: -32px -40px 24px;
+  pointer-events: none;
+  z-index: 18;
+}
+
+.vuon-float-pop {
+  position: absolute;
+  left: 50%;
+  bottom: 58%;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #047857;
+  font-size: 0.82rem;
+  font-weight: 800;
+  box-shadow: 0 6px 14px -4px rgba(15, 23, 42, 0.22);
+  white-space: nowrap;
+  animation: bayLen 1.45s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+.vuon-float-pop--heart {
+  color: #e11d48;
+}
+
+@keyframes bayLen {
+  0% { opacity: 0; transform: translate(-50%, 10px) scale(0.85); }
+  20% { opacity: 1; transform: translate(-50%, -6px) scale(1.04); }
+  100% { opacity: 0; transform: translate(-50%, -58px) scale(0.96); }
+}
+
+/* ---------- Khay Túi đồ Kính mờ nổi ở đáy (Floating Bottom Dock + Thu gọn) ---------- */
+.vuon-dock {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 14px;
+  z-index: 22;
+  max-width: 960px;
+  margin: 0 auto;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  box-shadow: 0 14px 34px -14px rgba(15, 23, 42, 0.34);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: background 0.5s ease, border-color 0.5s ease, padding 0.2s ease, border-radius 0.2s ease;
+}
+
+.vuon-dock.is-collapsed {
+  width: fit-content;
+  max-width: none;
+  left: auto;
+  right: 16px;
+  margin: 0;
+  padding: 6px 8px;
+  border-radius: 999px;
+  gap: 0;
+}
+
+.vuon-dock.is-collapsed .vuon-filter-pills,
+.vuon-dock.is-collapsed .vuon-dock-tip,
+.vuon-dock.is-collapsed .vuon-dock-items {
+  display: none;
+}
+
+.vuon-dock-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.vuon-dock-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.vuon-dock-toggle {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.9);
+  color: #0f172a;
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.16s ease, color 0.16s ease, transform 0.15s ease;
+}
+
+.vuon-dock-toggle:hover {
+  background: #ecfdf5;
+  color: #047857;
+  transform: translateY(-1px);
+}
+
+.vuon-stage[data-time="night"] .vuon-dock {
+  background: rgba(15, 23, 42, 0.72);
+  border-color: rgba(148, 163, 184, 0.35);
+  box-shadow: 0 16px 36px -12px rgba(2, 6, 23, 0.72);
+}
+
+.vuon-stage[data-time="night"] .vuon-dock-tip {
+  color: #cbd5e1;
+}
+
+.vuon-stage[data-time="night"] .vuon-dock-toggle {
+  background: rgba(30, 41, 59, 0.92);
+  border-color: rgba(148, 163, 184, 0.38);
+  color: #f8fafc;
+}
+
+.vuon-stage[data-time="night"] .vuon-dock-toggle:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.vuon-stage[data-time="night"] .vuon-dock .vuon-pill {
+  background: rgba(30, 41, 59, 0.85);
+  border-color: rgba(148, 163, 184, 0.35);
+  color: #cbd5e1;
+}
+
+.vuon-stage[data-time="night"] .vuon-dock .vuon-pill.is-active {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.vuon-stage[data-time="night"] .vuon-dock-card {
+  background: rgba(30, 41, 59, 0.88);
+  border-color: rgba(148, 163, 184, 0.3);
+}
+
+.vuon-stage[data-time="night"] .vuon-dock-card.is-on {
+  background: rgba(6, 78, 59, 0.75);
+  border-color: #34d399;
+}
+
+.vuon-stage[data-time="night"] .vuon-dock-name {
+  color: #f8fafc;
+}
+
+.vuon-stage[data-time="night"] .vuon-dock-sub {
+  color: #6ee7b7;
+}
+
+.vuon-dock-tip {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.vuon-filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.vuon-pill {
+  border: 1px solid #cbd5e1;
+  background: rgba(255, 255, 255, 0.85);
+  color: #334155;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.vuon-pill:hover {
+  border-color: #10b981;
+  color: #047857;
+}
+
+.vuon-pill.is-active {
+  background: #059669;
+  border-color: #059669;
+  color: #ffffff;
+  box-shadow: 0 4px 10px -4px rgba(5, 150, 105, 0.55);
+}
+
+.vuon-dock-items {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: thin;
+}
+
+.vuon-dock-card {
+  flex: 0 0 auto;
+  min-width: 158px;
+  max-width: 196px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 11px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vuon-dock-card:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: #10b981;
+  box-shadow: 0 8px 18px -10px rgba(5, 150, 105, 0.45);
+}
+
+.vuon-dock-card:disabled {
+  opacity: 0.68;
+  cursor: not-allowed;
+}
+
+.vuon-dock-card.is-equipped,
+.vuon-dock-card.is-on {
+  border-color: #10b981;
+  background: #ecfdf5;
+}
+
+.vuon-dock-ico {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: #f1f5f9;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.vuon-dock-ico img,
+.vuon-dock-ico svg {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.vuon-dock-meta {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vuon-dock-name {
+  font-size: 0.81rem;
+  font-weight: 800;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vuon-dock-sub {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #059669;
+}
+
+.vuon-dock-card.is-cooldown .vuon-dock-sub {
+  color: #d97706;
+}
+
+.vuon-empty-cta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 18px;
+  border-radius: 14px;
+  border: 1.5px dashed #10b981;
+  background: rgba(236, 253, 245, 0.88);
+  color: #065f46;
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.vuon-empty-cta:hover {
+  background: #d1fae5;
+  transform: translateY(-1px);
+}
+
+/* ---------- Tab Shop overlay bên trong .vuon-stage (chừa khoảng dưới 2 Đảo HUD) ---------- */
+.vuon-shop {
+  position: relative;
+  z-index: 18;
+  flex: 1;
+  min-height: 0;
+  margin: 118px 16px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 42px -16px rgba(15, 23, 42, 0.32);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.vuon-shop-head {
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  background: rgba(248, 250, 252, 0.85);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.vuon-shop-title {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.vuon-shop-sub {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.vuon-shop-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.vuon-shop-section-title {
+  margin: 0 0 10px;
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vuon-shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(236px, 1fr));
+  gap: 12px;
+}
+
+.vuon-shop-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 6px 16px -12px rgba(15, 23, 42, 0.25);
+  transition: transform 0.16s ease, border-color 0.16s ease;
+}
+
+.vuon-shop-card:hover {
+  transform: translateY(-2px);
+  border-color: #93c5fd;
+}
+
+.vuon-shop-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+}
+
+.vuon-shop-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #ecfdf5 0%, #eff6ff 100%);
+  border: 1px solid #dbeafe;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.vuon-shop-thumb svg,
+.vuon-shop-thumb img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.vuon-shop-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.vuon-shop-name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.3;
+}
+
+.vuon-shop-desc {
+  margin: 4px 0 0;
+  font-size: 0.76rem;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.vuon-shop-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.vuon-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.71rem;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.vuon-tag--stat {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.vuon-tag--forever {
+  background: #eef2ff;
+  color: #4338ca;
+}
+
+.vuon-tag--qty {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.vuon-shop-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.vuon-owned-pill {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #059669;
+}
+
+.vuon-buy-btn,
+.vuon-sub-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.14s ease, opacity 0.14s ease, background 0.14s ease;
+}
+
+.vuon-buy-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 14px -6px rgba(37, 99, 235, 0.6);
+}
+
+.vuon-buy-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.vuon-buy-btn:disabled {
+  background: #e2e8f0;
+  color: #64748b;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.vuon-sub-btn {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.vuon-sub-btn:hover:not(:disabled) {
+  background: #d1fae5;
+}
+
+.vuon-sub-btn:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+/* ---------- Responsive Tablet & Mobile ---------- */
+@media (max-width: 960px) {
+  .vuon-stage {
+    height: auto;
+    min-height: 640px;
+  }
+
+  .vuon-hud {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .vuon-hud-island--stats,
+  .vuon-hud-island--controls {
+    flex: 0 0 auto;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .vuon-hud-ctrl-top,
+  .vuon-hud-ctrl-sub {
+    justify-content: space-between;
+  }
+
+  .vuon-shop {
+    margin-top: 158px;
+    max-height: 520px;
+  }
+}
+
+@media (max-width: 720px) {
+  .vuon-decor--hoa_sen {
+    width: 78px;
+    height: 52px;
+  }
+
+  .vuon-decor--leu_trai {
+    width: 112px;
+    height: 84px;
+  }
+
+  .vuon-decor--chuong_gio {
+    width: 54px;
+    height: 84px;
+  }
+
+  .vuon-decor--suoi_nam {
+    width: 70px;
+    height: 56px;
+  }
+}
+
+@media (max-width: 640px) {
+  .vuon-app {
+    margin: 6px auto 0;
+    padding: 0 8px 82px;
+    min-height: 0;
+  }
+
+  .vuon-stage {
+    height: calc(100dvh - 144px);
+    min-height: 500px;
+    max-height: 760px;
+    border-radius: 20px;
+  }
+
+  .vuon-hud {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    gap: 6px;
+  }
+
+  .vuon-hud-island {
+    padding: 7px 10px;
+    border-radius: 14px;
+    gap: 5px;
+  }
+
+  .vuon-health-pill {
+    font-size: 0.72rem;
+    padding: 3px 10px;
+  }
+
+  .vuon-stats-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .vuon-stat-head {
+    font-size: 0.67rem;
+  }
+
+  .vuon-stat-track {
+    height: 6px;
+  }
+
+  .vuon-hud-ctrl-top {
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .vuon-coin-pill {
+    padding: 4px 10px;
+    font-size: 0.82rem;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .vuon-coin-ico {
+    width: 18px;
+    height: 18px;
+  }
+
+  .vuon-mode-tabs {
+    flex-shrink: 0;
+  }
+
+  .vuon-mode-btn {
+    font-size: 0.78rem;
+    padding: 5px 10px;
+  }
+
+  .vuon-hud-ctrl-sub {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+
+  .vuon-bxh-sub {
+    font-size: 0.64rem;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .vuon-time-switch {
+    flex-shrink: 0;
+  }
+
+  .vuon-time-btn {
+    font-size: 0.68rem;
+    padding: 4px 7px;
+    min-height: 26px;
+  }
+
+  .vuon-toast-banner {
+    top: 134px;
+    font-size: 0.78rem;
+    padding: 6px 14px;
+  }
+
+  .vuon-arena {
+    min-height: 0;
+    height: 100%;
+    flex: 1;
+    touch-action: manipulation;
+  }
+
+  /* Nâng nhẹ cụm rừng/sông/đá/cây trên ĐT để nằm trọn phía trên khay túi đồ */
+  .vuon-zone-co {
+    height: 50%;
+  }
+
+  .vuon-zone-song {
+    left: 2%;
+    bottom: 19%;
+    width: 55%;
+    height: 112px;
+  }
+
+  .vuon-far-bank-svg {
+    width: 55%;
+    bottom: 29%;
+  }
+
+  .vuon-zone-cay {
+    right: -2%;
+    bottom: 21%;
+    width: 152px;
+  }
+
+  .vuon-zone-da {
+    left: auto;
+    right: 23%;
+    bottom: 35%;
+    width: 100px;
+  }
+
+  .vuon-zone-cay .vuon-zone-badge {
+    top: 24%;
+  }
+
+  .vuon-zone-da .vuon-zone-badge {
+    top: -16px;
+  }
+
+  .vuon-pet-btn {
+    width: 112px;
+    height: 112px;
+  }
+
+  .vuon-pet-shadow {
+    width: 88px;
+    height: 18px;
+    bottom: 2px;
+  }
+
+  .vuon-pet-hint {
+    font-size: 0.66rem;
+    padding: 2px 8px;
+  }
+
+  .vuon-speech {
+    max-width: min(220px, 66vw);
+    font-size: 0.78rem;
+    padding: 7px 11px;
+  }
+
+  .vuon-decor--lan_rung {
+    width: 72px;
+    height: 68px;
+  }
+
+  .vuon-decor--den_dom_dom {
+    width: 52px;
+    height: 80px;
+  }
+
+  .vuon-decor--ghe_da {
+    width: 92px;
+    height: 56px;
+  }
+
+  .vuon-decor--bang_ten {
+    width: 112px;
+  }
+
+  .vuon-decor--hoa_sen {
+    width: 68px;
+    height: 46px;
+  }
+
+  .vuon-decor--leu_trai {
+    width: 98px;
+    height: 74px;
+  }
+
+  .vuon-decor--chuong_gio {
+    width: 44px;
+    height: 68px;
+  }
+
+  .vuon-decor--suoi_nam {
+    width: 64px;
+    height: 50px;
+  }
+
+  .vuon-sign-board {
+    font-size: 0.64rem;
+    padding: 4px 6px;
+  }
+
+  /* Khay Túi đồ tối ưu thao tác ngón tay 1 hàng trên ĐT */
+  .vuon-dock {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    padding: 7px 9px;
+    gap: 6px;
+    border-radius: 16px;
+  }
+
+  .vuon-dock.is-collapsed {
+    right: 8px;
+    padding: 5px 7px;
+  }
+
+  .vuon-dock-top {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+
+  .vuon-dock-tip {
+    display: none;
+  }
+
+  .vuon-dock-actions {
+    flex-shrink: 0;
+  }
+
+  .vuon-dock-toggle {
+    padding: 5px 10px;
+    font-size: 0.72rem;
+  }
+
+  .vuon-dock .vuon-filter-pills,
+  .vuon-shop-head .vuon-filter-pills {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    flex: 1;
+    min-width: 0;
+    padding-bottom: 1px;
+  }
+
+  .vuon-dock .vuon-filter-pills::-webkit-scrollbar,
+  .vuon-shop-head .vuon-filter-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .vuon-pill {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-size: 0.72rem;
+    padding: 4px 10px;
+  }
+
+  .vuon-dock-items {
+    gap: 8px;
+    scroll-snap-type: x proximity;
+    touch-action: pan-x;
+    scrollbar-width: none;
+  }
+
+  .vuon-dock-items::-webkit-scrollbar {
+    display: none;
+  }
+
+  .vuon-dock-card {
+    min-width: 136px;
+    max-width: 164px;
+    padding: 7px 9px;
+    gap: 8px;
+    border-radius: 12px;
+    scroll-snap-align: start;
+  }
+
+  .vuon-dock-card:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+
+  .vuon-dock-ico {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
+
+  .vuon-dock-ico img,
+  .vuon-dock-ico svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .vuon-dock-name {
+    font-size: 0.76rem;
+  }
+
+  .vuon-dock-sub {
+    font-size: 0.67rem;
+  }
+
+  .vuon-empty-cta {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+
+  /* Cửa hàng tối ưu chiều cao vừa khung trên ĐT */
+  .vuon-shop {
+    margin: 132px 8px 8px;
+    max-height: none;
+    flex: 1;
+    border-radius: 16px;
+  }
+
+  .vuon-shop-head {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .vuon-shop-title {
+    font-size: 0.96rem;
+  }
+
+  .vuon-shop-sub {
+    font-size: 0.73rem;
+  }
+
+  .vuon-shop-body {
+    padding: 10px 12px 14px;
+    gap: 14px;
+  }
+
+  .vuon-shop-grid {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .vuon-shop-card {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .vuon-buy-btn {
+    min-height: 38px;
+    font-size: 0.82rem;
+  }
+}
+
+@media (min-width: 440px) and (max-width: 640px) {
+  .vuon-shop-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vuon-spinner,
+  .vuon-health-pill.is-sick,
+  .vuon-decor--den_dom_dom,
+  .vuon-decor--hoa_sen,
+  .vuon-decor--chuong_gio,
+  .vuon-chime-note,
+  .vuon-lake-ripple,
+  .vuon-butterfly,
+  .vuon-firefly,
+  .vuon-pet-btn,
+  .vuon-pet-sick-fx,
+  .vuon-cloud,
+  .vuon-tuft,
+  .vuon-water-flow,
+  .vuon-tree-canopy,
+  .vuon-stars span,
+  .vuon-night-fireflies span,
+  .vuon-ripple,
+  .vuon-drop,
+  .vuon-zzz,
+  .vuon-fall-leaf {
+    animation: none !important;
+  }
+}

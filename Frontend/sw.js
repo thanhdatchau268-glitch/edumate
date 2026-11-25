@@ -5,7 +5,7 @@ self.addEventListener("install", () => self.skipWaiting());
 
 // ====================== CACHE SAO LA ======================
 // Đổi PHIEN_BAN khi thay ảnh/giọng nói thật sự (tên file giữ nguyên) để máy người dùng nạp lại.
-const PHIEN_BAN = "v2";
+const PHIEN_BAN = "v3";
 const TIEN_TO = "vnstarl-pet-";
 const CACHE_THAN = TIEN_TO + "than-" + PHIEN_BAN;       // sprite của skin
 const CACHE_HIEU_UNG = TIEN_TO + "hu-" + PHIEN_BAN;     // hiệu ứng dùng chung (nhỏ, ít)
@@ -67,12 +67,16 @@ async function uuTienCache(e, ten) {
     const co = await cache.match(e.request);
     if (co) return co;
 
-    const res = await fetch(e.request);
-    // chỉ cache phản hồi thành công trọn vẹn (200), không cache lỗi 404/206
-    if (res.status === 200 && res.type === "basic") {
-        e.waitUntil(cache.put(e.request, res.clone()).then(() => donDep(ten, cache, e.request)).catch(() => { }));
+    try {
+        const res = await fetch(e.request);
+        // chỉ cache phản hồi thành công trọn vẹn (200), không cache lỗi 404/206
+        if (res.status === 200 && res.type === "basic") {
+            e.waitUntil(cache.put(e.request, res.clone()).then(() => donDep(ten, cache, e.request)).catch(() => { }));
+        }
+        return res;
+    } catch (err) {
+        return new Response("", { status: 503, statusText: "Offline" });
     }
-    return res;
 }
 
 self.addEventListener("fetch", (e) => {

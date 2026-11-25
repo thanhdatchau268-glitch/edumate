@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test Định Hướng Môn Chuyên (6 Môn + Rẽ Nhánh 15 Câu + ML)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --giay: #f7faff;
+      --muc: #0f1b3d;
+      --xanh: #3a5bff;
+      --xanh-nhat: #e4e9ff;
+      --nang: #ffc93c;
+      --bac-ha: #1fb89a;
+      --bac-ha-nhat: #e2faf4;
+      --do: #e5484d;
+      --vien: #d6ddf0;
+      --nhat: #5b6788;
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Be Vietnam Pro", system-ui, sans-serif;
+      background: var(--giay);
+      color: var(--muc);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    h1, h2, h3 { font-family: "Baloo 2", "Be Vietnam Pro", sans-serif; line-height: 1.2; }
+    .khung { max-width: 780px; margin: 0 auto; padding: 20px 16px 64px; }
+    button { font: inherit; cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--xanh); outline-offset: 2px; }
+
+    /* ---- Đầu trang ---- */
+    .dau { padding: 18px 4px 12px; }
+    .nhan-test {
+      display: inline-block; padding: 4px 12px; border-radius: 999px;
+      border: 2px solid var(--muc); background: var(--nang);
+      font-size: .78rem; font-weight: 800; margin-bottom: 10px;
+    }
+    .dau h1 { font-size: clamp(1.85rem, 6vw, 2.55rem); font-weight: 800; }
+    .dau h1 em { font-style: normal; background: linear-gradient(transparent 62%, var(--nang) 62%); }
+    .dau p { margin-top: 6px; color: var(--nhat); max-width: 62ch; font-size: .95rem; }
+    .trang-thai-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
+      border-radius: 999px; background: var(--xanh-nhat); color: var(--xanh);
+      font-weight: 700; font-size: .82rem;
+    }
+    .pill.ok { background: var(--bac-ha-nhat); color: #0e7a65; }
+    .pill.warn { background: #fff3d1; color: #8a5b00; }
+
+    /* ---- Test nhanh mẫu ---- */
+    .mau-box {
+      margin: 14px 0 16px; padding: 12px 14px;
+      border: 2px dashed var(--vien); border-radius: 16px; background: #fff;
+    }
+    .mau-box .mau-tieu { font-size: .82rem; font-weight: 700; color: var(--nhat); margin-bottom: 8px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .chip {
+      padding: 6px 12px; border: 2px solid var(--vien); border-radius: 999px;
+      background: #fff; color: var(--muc); font-size: .82rem; font-weight: 600; transition: .15s;
+    }
+    .chip:hover { border-color: var(--xanh); background: var(--xanh-nhat); }
+
+    /* ---- Tiến độ ---- */
+    .tien-do { display: flex; gap: 8px; margin: 6px 0 18px; }
+    .tien-do i { flex: 1; height: 8px; border-radius: 999px; background: var(--vien); transition: background .3s; }
+    .tien-do i.xong { background: var(--xanh); }
+    .tien-do i.dang { background: var(--nang); }
+
+    /* ---- Thẻ chính ---- */
+    .the {
+      background: #fff; border: 2px solid var(--muc); border-radius: 20px;
+      padding: 22px 18px; box-shadow: 5px 5px 0 var(--muc);
+    }
+    .buoc { display: none; }
+    .buoc.hien { display: block; }
+    .buoc h2 { font-size: 1.5rem; }
+    .buoc > .phu { color: var(--nhat); margin: 4px 0 16px; font-size: .93rem; }
+
+    /* Bước 1: 6 môn */
+    .diem-wrap { display: grid; gap: 16px; }
+    @media (min-width: 640px) {
+      .diem-wrap { grid-template-columns: 1.05fr .95fr; align-items: start; }
+    }
+    .luoi-diem { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .o-diem label { display: block; font-size: .84rem; font-weight: 700; margin-bottom: 4px; }
+    .o-diem input {
+      width: 100%; padding: 10px 8px; border: 2px solid var(--vien); border-radius: 12px;
+      font: inherit; text-align: center; font-weight: 700; font-size: 1.05rem;
+      color: var(--muc); background: #fff;
+    }
+    .o-diem input:focus { outline: none; border-color: var(--xanh); }
+    .o-diem input.sai { border-color: var(--do); background: #fff1f1; }
+
+    .radar-khung { background: var(--xanh-nhat); border-radius: 16px; padding: 10px; text-align: center; }
+    .radar-khung svg { width: 100%; max-width: 310px; height: auto; }
+    .radar-chu { font-size: .84rem; color: var(--nhat); padding: 0 6px 4px; }
+    .radar-chu b { color: var(--xanh); }
+
+    /* Bước 2: Rẽ nhánh 15 câu */
+    .quiz-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 8px; margin-bottom: 10px;
+    }
+    .quiz-step-pill {
+      display: inline-block; padding: 4px 11px; border-radius: 999px;
+      background: var(--muc); color: #fff; font-size: .8rem; font-weight: 700;
+    }
+    .quiz-tang { font-size: .82rem; font-weight: 700; color: var(--xanh); }
+    .bar-15 {
+      height: 10px; border-radius: 999px; background: var(--vien);
+      overflow: hidden; margin-bottom: 16px;
+    }
+    .bar-15 i { display: block; height: 100%; background: var(--bac-ha); transition: width .25s ease; }
+
+    .cau-box { animation: slideIn .22s ease; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .cau-tieu { font-size: .82rem; font-weight: 700; color: var(--nhat); text-transform: uppercase; letter-spacing: .3px; }
+    .cau-hoi { font-size: 1.08rem; font-weight: 700; margin: 6px 0 14px; color: var(--muc); }
+
+    .ds-opt { display: grid; gap: 10px; }
+    .opt-btn {
+      display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left;
+      padding: 12px 14px; border: 2px solid var(--vien); border-radius: 14px;
+      background: #fff; color: var(--muc); transition: .15s;
+    }
+    .opt-btn:hover { border-color: var(--xanh); background: #f3f6ff; transform: translateY(-1px); }
+    .opt-btn.da-chon {
+      border-color: var(--muc); background: #fff8de; box-shadow: 3px 3px 0 var(--muc);
+    }
+    .opt-chu {
+      flex: 0 0 28px; height: 28px; border-radius: 8px;
+      background: var(--xanh-nhat); color: var(--xanh);
+      font-weight: 800; display: grid; place-items: center; font-size: .9rem;
+    }
+    .opt-btn.da-chon .opt-chu { background: var(--nang); color: var(--muc); border: 1.5px solid var(--muc); }
+    .opt-text { font-size: .93rem; line-height: 1.45; }
+
+    /* Nút điều hướng */
+    .hang-nut { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+    .nut {
+      flex: 1; padding: 12px 18px; border: 2px solid var(--muc); border-radius: 14px;
+      font-weight: 800; background: #fff; color: var(--muc);
+      box-shadow: 3px 3px 0 var(--muc); transition: transform .1s, box-shadow .1s;
+    }
+    .nut:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--muc); }
+    .nut.chinh { background: var(--xanh); color: #fff; }
+    .nut.phu { flex: 0 0 auto; }
+    .nut:disabled { opacity: .6; cursor: wait; }
+    .loi { margin-top: 12px; color: var(--do); font-weight: 700; font-size: .92rem; min-height: 1.2em; }
+
+    /* Kết quả */
+    .kq-head {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
+    }
+    .kq-head h2 { font-size: 1.65rem; }
+    .canh-bao-daitra {
+      margin-bottom: 14px; padding: 11px 14px; border-radius: 14px;
+      background: #fff3d1; border: 2px solid #f0c14b; color: #6b4c00; font-size: .9rem;
+    }
+    .top3-grid { display: grid; gap: 12px; margin-bottom: 18px; }
+    .goi-y-card {
+      border: 2px solid var(--muc); border-radius: 16px;
+      padding: 14px 16px; background: #fff;
+    }
+    .goi-y-card.top1 { background: #fff8de; box-shadow: 4px 4px 0 var(--muc); }
+    .goi-y-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+    .goi-y-ten { font-family: "Baloo 2", sans-serif; font-size: 1.32rem; font-weight: 800; }
+    .goi-y-hang {
+      display: inline-block; padding: 2px 9px; border-radius: 999px;
+      font-size: .75rem; font-weight: 800; margin-right: 6px;
+      background: var(--xanh-nhat); color: var(--xanh);
+    }
+    .goi-y-card.top1 .goi-y-hang { background: var(--nang); color: var(--muc); border: 1.5px solid var(--muc); }
+    .goi-y-pct { font-family: "Baloo 2", sans-serif; font-size: 1.35rem; font-weight: 800; color: var(--xanh); }
+    .thanh-xs { height: 10px; border-radius: 999px; background: var(--vien); overflow: hidden; margin-bottom: 8px; }
+    .thanh-xs i { display: block; height: 100%; border-radius: 999px; background: var(--xanh); }
+    .goi-y-card.top1 .thanh-xs i { background: var(--bac-ha); }
+    .ly-do-ds { padding-left: 18px; font-size: .86rem; color: var(--nhat); }
+
+    .kq-luoi { display: grid; gap: 14px; margin-top: 14px; }
+    @media (min-width: 640px) {
+      .kq-luoi { grid-template-columns: 1fr 1fr; align-items: start; }
+    }
+    .tom-tat-box {
+      background: #f8faff; border: 1.5px solid var(--vien);
+      border-radius: 14px; padding: 12px 14px; font-size: .86rem;
+    }
+    .tom-tat-box h3 { font-size: 1.05rem; margin-bottom: 6px; }
+    .path-chips { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
+    .path-chip {
+      font-size: .74rem; padding: 2px 6px; border-radius: 6px;
+      background: #e9eeff; color: var(--muc); font-weight: 600;
+    }
+
+    .bang-wrap {
+      overflow-x: auto; margin-top: 16px;
+      border: 1.5px solid var(--vien); border-radius: 14px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+    th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--vien); }
+    th { background: #f3f6ff; font-weight: 700; }
+    tr:last-child td { border-bottom: 0; }
+    .mini-bar {
+      display: inline-block; height: 8px; border-radius: 999px;
+      background: var(--xanh); vertical-align: middle; margin-right: 6px;
+    }
+
+    .chan { margin-top: 24px; text-align: center; font-size: .8rem; color: var(--nhat); }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+  </style>
+</head>
+
+<body>
+  <main class="khung">
+    <header class="dau">
+      <span class="nhan-test">🧪 TRANG TEST ĐỘC LẬP — CHƯA ĐƯA LÊN WEB CHÍNH</span>
+      <h1>Test <em>Định hướng môn chuyên</em></h1>
+      <p>Kết hợp <b>6 đầu điểm GDPT 2018</b> + <b>Khảo sát rẽ nhánh thích ứng 15 câu</b> (bóc tách KHTN thành Lý/Hóa/Sinh, KHXH thành Sử/Địa) + <b>Mô hình ML 137 phiếu</b>.</p>
+      <div class="trang-thai-bar">
+        <span class="pill" id="pillModel">137 phiếu (900 mẫu 6 môn) · Đúng nhóm ML: 73.1% · Top-3: 90.2%</span>
+        <span class="pill" id="pillConn">Đang kiểm tra kết nối server.py...</span>
+      </div>
+    </header>
+
+    <div class="mau-box" id="mauBox">
+      <div class="mau-tieu">⚡ Test nhanh 1 chạm (điền 6 điểm + chạy qua 15 câu rẽ nhánh mẫu tương ứng):</div>
+      <div class="chips" id="dsMau"></div>
+    </div>
+
+    <div class="tien-do" id="tienDo"><i class="dang"></i><i></i></div>
+
+    <form class="the" id="form" autocomplete="off" novalidate>
+      <!-- Bước 1: 6 đầu điểm GDPT 2018 -->
+      <section class="buoc hien" data-buoc="0">
+        <h2>Bước 1: Điểm tổng kết 6 môn (học bạ lớp 8 / lớp 9)</h2>
+        <p class="phu">Nhập đủ 6 đầu điểm theo chương trình mới: Toán, Ngữ văn, Tiếng Anh, KHTN (Lý-Hóa-Sinh), KHXH (Sử-Địa) và Tin học.</p>
+
+        <div class="diem-wrap">
+          <div class="luoi-diem" id="luoiDiem"></div>
+          <div class="radar-khung">
+            <svg id="radar" viewBox="0 0 320 300" role="img" aria-label="Biểu đồ 6 môn học bạ"></svg>
+            <p class="radar-chu" id="radarChu">Nhập đủ 6 điểm để tiếp tục.</p>
+          </div>
+        </div>
+
+        <p class="loi" id="loi1" role="alert"></p>
+        <div class="hang-nut">
+          <button type="button" class="nut chinh" id="btnSangBuoc2">Bắt đầu 15 câu rẽ nhánh →</button>
+        </div>
+      </section>
+
+      <!-- Bước 2: Khảo sát rẽ nhánh 15 câu -->
+      <section class="buoc" data-buoc="1">
+        <div class="quiz-meta">
+          <span class="quiz-step-pill" id="quizStepPill">Câu 1 / 15 · Q1</span>
+          <span class="quiz-tang" id="quizTang"></span>
+        </div>
+        <div class="bar-15"><i id="bar15Fill" style="width:6.7%"></i></div>
+
+        <div class="cau-box" id="cauBox">
+          <div class="cau-tieu" id="cauTieu"></div>
+          <p class="cau-hoi" id="cauHoi"></p>
+          <div class="ds-opt" id="dsOpt"></div>
+        </div>
+
+        <p class="loi" id="loi2" role="alert"></p>
+        <div class="hang-nut">
+          <button type="button" class="nut phu" id="btnQuayLaiCau">← Quay lại câu trước</button>
+          <button type="button" class="nut phu" id="btnVeDiem">Sửa lại điểm Bước 1</button>
+        </div>
+      </section>
+    </form>
+
+    <!-- Kết quả -->
+    <section class="the" id="ketQua" hidden>
+      <div class="kq-head">
+        <h2>Kết quả Top 3 Môn Chuyên</h2>
+        <span class="pill" id="pillCheDo"></span>
+      </div>
+
+      <div class="canh-bao-daitra" id="canhBaoDaiTra" hidden></div>
+      <div class="top3-grid" id="top3Box"></div>
+
+      <div class="kq-luoi">
+        <div class="radar-khung">
+          <svg id="radar2" viewBox="0 0 320 300" role="img" aria-label="Biểu đồ tổng hợp 9 môn chuyên"></svg>
+          <p class="radar-chu" id="radarChu2">Biểu đồ điểm tổng hợp 9 môn chuyên (thang 100)</p>
+        </div>
+        <div class="tom-tat-box" id="tomTatBox"></div>
+      </div>
+
+      <div class="bang-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Môn chuyên</th>
+              <th>Điểm tổng hợp</th>
+              <th>Học bạ (40%)</th>
+              <th>Rẽ nhánh (60%)</th>
+              <th>ML (137 phiếu)</th>
+            </tr>
+          </thead>
+          <tbody id="bangTatCa"></tbody>
+        </table>
+      </div>
+
+      <div class="hang-nut">
+        <button type="button" class="nut phu" id="btnLamLai15">Làm lại 15 câu rẽ nhánh</button>
+        <button type="button" class="nut chinh" id="btnNhapMoi">Nhập lại từ đầu</button>
+      </div>
+    </section>
+
+    <p class="chan">Trang test thuật toán VnStarL · 6 Môn GDPT 2018 + Cây rẽ nhánh 15 bước + ML 137 phiếu</p>
+  </main>
+
+  <script>
+    const API_BASE = location.protocol === "file:" ? "http://127.0.0.1:5050" : "";
+    const EMBEDDED_BUNDLE = {"lr_fallback": {"classes": ["Anh", "Hóa", "Không học chuyên", "Lý", "Sinh", "Sử", "Tin", "Toán", "Văn", "Địa"], "feat_cols": ["diem_toan", "diem_van", "diem_anh", "diem_khtn", "diem_khxh", "diem_tin", "diff_diem_toan", "diff_diem_van", "diff_diem_anh", "diff_diem_khtn", "diff_diem_khxh", "diff_diem_tin", "mean_6", "max_6", "min_6", "chenh_khtn_khxh", "toan_vs_khtn", "tin_vs_toan"], "mean": [8.781833, 8.580667, 8.615787, 8.768744, 9.246367, 8.977656, -0.046676, -0.247842, -0.212722, -0.059765, 0.417858, 0.149147, 8.828509, 9.591133, 8.044676, -0.477622, 0.013089, 0.195822], "scale": [0.858461, 0.718315, 0.910693, 0.771113, 0.724784, 0.783396, 0.582048, 0.56756, 0.601109, 0.528243, 0.52458, 0.585434, 0.562248, 0.466085, 0.871651, 0.884838, 0.662322, 0.901218], "coef": [[-0.081895, 0.400922, 0.993094, -0.149898, -0.238598, 0.141333, -0.391179, 0.23012, 1.242741, -0.516751, -0.629671, -0.079704, 0.279914, 0.329053, -1.353378, 0.064807, 0.068373, 0.200865], [0.083688, -0.181443, 0.07753, 0.485656, -0.075764, -0.000849, 0.028642, -0.326848, 0.025676, 0.604502, -0.209853, -0.095378, 0.098128, -0.255223, -0.088258, 0.485296, -0.456957, -0.080456], [-0.070569, -0.145076, 0.009928, 0.02716, 0.110312, -0.166321, -0.051066, -0.129241, 0.066376, 0.098064, 0.211237, -0.169851, -0.054883, -0.885082, -1.207259, -0.066689, -0.123089, -0.077355], [-0.0057, -0.390487, -0.392439, 0.159317, -0.198054, -0.198205, 0.226037, -0.25378, -0.367544, 0.49089, -0.013513, -0.03214, -0.2427, 0.520326, 0.738817, 0.301069, -0.192874, -0.166863], [-0.122017, -0.563486, -0.353272, 0.21137, -0.154556, -0.182657, 0.084434, -0.442012, -0.279201, 0.59988, 0.07982, 0.018446, -0.273708, 0.166662, 0.734683, 0.310802, -0.40424, -0.042549], [-0.507873, 0.523736, -0.033131, -0.265072, 0.129183, -0.15274, -0.657322, 0.756932, 0.038636, -0.28586, 0.280275, -0.11318, -0.09497, -0.504436, -0.553726, -0.336819, -0.349663, 0.351007], [0.337368, -0.047891, -0.194235, -0.2437, -0.225221, 0.910686, 0.371421, -0.189996, -0.416433, -0.494761, -0.451159, 1.093196, 0.130606, 0.214557, 0.128732, -0.027897, 0.721006, 0.470263], [0.930789, 0.059203, -0.053485, 0.316589, -0.124342, 0.315581, 1.030897, -0.275723, -0.412111, 0.085397, -0.551177, 0.082347, 0.353964, 0.393715, 0.320583, 0.377749, 0.837841, -0.612307], [-0.206923, 0.800135, -0.141045, -0.194107, 0.162021, -0.185865, -0.331193, 0.986, -0.238865, -0.312003, 0.195004, -0.274567, 0.026919, 0.304266, 0.104458, -0.301873, -0.04221, 0.03554], [-0.356868, -0.455612, 0.087054, -0.347315, 0.615017, -0.480961, -0.310669, -0.355451, 0.340725, -0.269358, 1.089037, -0.429169, -0.22327, -0.283838, 1.175348, -0.806446, -0.058186, -0.078145]], "intercept": [-0.069628, 0.376331, 0.92206, 0.822675, 0.690424, -0.323551, -0.83952, -1.432104, 0.012168, -0.158857], "metrics": {"so_phieu": 137, "so_mau_sau_nang": 900, "top1_nhom": 73.1, "top3": 90.2}}, "question_bank": {"Q1": {"question_id": "Q1", "phase": 1, "title": "Tiếp cận vấn đề & Đề tài nghiên cứu mới", "scenario": "Trường phát động ngày hội nghiên cứu khoa học với một chủ đề mở về thành phố tương lai. Cách em hào hứng bắt đầu nhất là:", "options": [{"opt": "A", "text": "Xây dựng mô hình toán học giải quyết tắc nghẽn giao thông hoặc viết thuật toán quản lý năng lượng thông minh.", "next_id": "Q2A", "scores": {"Toán": 3, "Tin": 3}}, {"opt": "B", "text": "Thử nghiệm vật liệu xây dựng mới chịu nhiệt, hệ thống pin năng lượng mặt trời hoặc quy trình xử lý rác bằng vi sinh.", "next_id": "Q2B", "scores": {"Lý": 2, "Hóa": 2, "Sinh": 2}}, {"opt": "C", "text": "Tìm hiểu nếp sống thị dân xưa và nay, viết bài khảo cứu lịch sử hoặc khảo sát sự biến đổi không gian đô thị.", "next_id": "Q2C", "scores": {"Văn": 3, "Sử": 2, "Địa": 2}}, {"opt": "D", "text": "Tìm kiếm tài liệu và mô hình đô thị thông minh từ các nước tiên tiến trên thế giới bằng tiếng Anh.", "next_id": "Q2D", "scores": {"Anh": 3, "Tin": 1, "Địa": 1}}]}, "Q2A": {"question_id": "Q2A", "phase": 1, "title": "Nhánh Logic — Phương thức tư duy toán học & Công nghệ", "scenario": "Khi đối mặt với một câu đố tư duy hóc búa, phong cách xử lý khiến em say mê nhất là:", "options": [{"opt": "A", "text": "Ngồi trầm ngâm với giấy nháp, chứng minh từng bước chặt chẽ bằng hình học hoặc đại số thuần túy.", "next_id": "Q3A", "scores": {"Toán": 4, "Lý": 1}}, {"opt": "B", "text": "Bật máy tính, phân tích cấu trúc dữ liệu và thử viết mã lệnh (code) để máy tính chạy thử nghiệm.", "next_id": "Q3B", "scores": {"Tin": 4, "Toán": 2}}, {"opt": "C", "text": "Vẽ sơ đồ lực, thiết lập phương trình cân bằng chuyển động hoặc mạch điện tương đương.", "next_id": "Q3C", "scores": {"Lý": 4, "Toán": 2}}, {"opt": "D", "text": "Thu thập số liệu, lập bảng biểu thống kê và tìm ra quy luật ẩn giấu đằng sau các con số.", "next_id": "Q3A", "scores": {"Toán": 2, "Tin": 2, "Địa": 2}}]}, "Q2B": {"question_id": "Q2B", "phase": 1, "title": "Nhánh KHTN Thực nghiệm — Bóc tách bước đầu Khoa học Tự nhiên", "scenario": "Trong giờ thực hành KHTN tại phòng thí nghiệm trường, khoảnh khắc nào làm em thấy kỳ diệu nhất:", "options": [{"opt": "A", "text": "Lắp ráp thí nghiệm con lắc, đo chu kỳ dao động, đo cường độ dòng điện và kiểm chứng định luật vật lý.", "next_id": "Q3C", "scores": {"Lý": 4, "Toán": 1}}, {"opt": "B", "text": "Pha chế hóa chất, quan sát dung dịch đổi màu bất ngờ, kết tủa lấp lánh và đo lượng nhiệt phản ứng tỏa ra.", "next_id": "Q3D", "scores": {"Hóa": 4, "Lý": 1}}, {"opt": "C", "text": "Điều chỉnh kính hiển vi, quan sát từng tế bào sống, lục lạp chuyển động và cơ chế phân bào nguyên nhiễm.", "next_id": "Q3D", "scores": {"Sinh": 4, "Hóa": 1}}, {"opt": "D", "text": "Khám phá cách chế tạo thuốc chữa bệnh từ cây cỏ tự nhiên kết hợp công nghệ sinh học và nano.", "next_id": "Q3D", "scores": {"Hóa": 2, "Sinh": 3, "Lý": 1}}]}, "Q2C": {"question_id": "Q2C", "phase": 1, "title": "Nhánh KHXH & Nhân văn — Bóc tách bước đầu Khoa học Xã hội", "scenario": "Khi nghe một câu chuyện về vùng đất ngàn năm văn hiến, khía cạnh nào thôi thúc em khám phá sâu nhất:", "options": [{"opt": "A", "text": "Chiều sâu cảm xúc, vẻ đẹp tâm hồn con người thể hiện qua những áng thơ ca và văn chương của thời đại.", "next_id": "Q3E", "scores": {"Văn": 4, "Anh": 1}}, {"opt": "B", "text": "Các triều đại thịnh suy, những chiến công hiển hách chống ngoại xâm và bài học giữ nước của tiền nhân.", "next_id": "Q3F", "scores": {"Sử": 4, "Văn": 1}}, {"opt": "C", "text": "Vị trí địa lý đắc địa 'tiền tam giang hậu thất diệu', khí hậu phong thủy và sự trù phú về kinh tế vùng miền.", "next_id": "Q3F", "scores": {"Địa": 4, "Sử": 1}}, {"opt": "D", "text": "Tác động qua lại giữa luật pháp, đạo đức xã hội và đời sống thường nhật của người dân qua các thời kỳ.", "next_id": "Q3E", "scores": {"Văn": 2, "Sử": 2, "Địa": 2}}]}, "Q2D": {"question_id": "Q2D", "phase": 1, "title": "Nhánh Ngoại ngữ & Hội nhập — Vai trò Tiếng Anh & Năng lực toàn cầu", "scenario": "Em nhìn nhận năng lực Tiếng Anh xuất sắc sẽ là đòn bẩy lớn nhất cho việc gì trong tương lai:", "options": [{"opt": "A", "text": "Tham gia các hội nghị tranh biện quốc tế (MUN), đàm phán ngoại giao và bảo vệ các giá trị nhân văn.", "next_id": "Q3G", "scores": {"Anh": 4, "Văn": 2}}, {"opt": "B", "text": "Đọc trực tiếp các bài báo khoa học, giáo trình đại học hàng đầu thế giới mà không cần dịch.", "next_id": "Q3G", "scores": {"Anh": 4, "Toán": 1, "Sử": 1}}, {"opt": "C", "text": "Học các khóa học trí tuệ nhân tạo, công nghệ cao trực tuyến và giao lưu với lập trình viên toàn cầu.", "next_id": "Q3B", "scores": {"Anh": 2, "Tin": 3, "Toán": 1}}, {"opt": "D", "text": "Du hành khắp năm châu, khám phá địa lý, đa dạng sinh học và văn hóa phong phú của các dân tộc.", "next_id": "Q3F", "scores": {"Anh": 2, "Địa": 3, "Sinh": 1}}]}, "Q3A": {"question_id": "Q3A", "phase": 1, "title": "Toán học chuyên sâu — Mỹ cảm trong Toán học thuần túy", "scenario": "Khi tìm ra lời giải cho một bài toán khó, điều gì mang lại cho em cảm giác thỏa mãn tột cùng nhất:", "options": [{"opt": "A", "text": "Tìm ra một cách giải độc đáo, ngắn gọn chỉ trong 3 dòng dựa trên một nhận xét tinh tế về tính chất đại số/hình học.", "next_id": "Q4A", "scores": {"Toán": 4}}, {"opt": "B", "text": "Tổng quát hóa bài toán đó thành một định lý tổng quát áp dụng cho mọi trường hợp mở rộng.", "next_id": "Q4A", "scores": {"Toán": 4, "Tin": 2}}, {"opt": "C", "text": "Lập luận phản chứng chặt chẽ, bịt kín mọi kẽ hở logic mà không ai có thể bẻ gãy được.", "next_id": "Q4A", "scores": {"Toán": 3, "Văn": 1}}, {"opt": "D", "text": "Ứng dụng ngay công thức vừa chứng minh để giải quyết một bài toán tính toán trong Vật lý hoặc Tin học.", "next_id": "Q4A", "scores": {"Toán": 2, "Lý": 2, "Tin": 2}}]}, "Q3B": {"question_id": "Q3B", "phase": 1, "title": "Tin học chuyên sâu — Tư duy Thuật toán & Hệ thống máy tính", "scenario": "Trong thế giới công nghệ và lập trình, thử thách nào em cảm thấy thôi thúc chinh phục nhất:", "options": [{"opt": "A", "text": "Tối ưu hóa thời gian chạy của thuật toán từ O(N²) xuống O(N log N) bằng kỹ thuật quy hoạch động hoặc chia để trị.", "next_id": "Q4A", "scores": {"Tin": 4, "Toán": 2}}, {"opt": "B", "text": "Tự tay thiết kế và lập trình hoàn thiện một ứng dụng web/mobile hữu ích phục vụ cuộc sống học đường.", "next_id": "Q4A", "scores": {"Tin": 4, "Anh": 1}}, {"opt": "C", "text": "Nghiên cứu cơ chế huấn luyện các mô hình trí tuệ nhân tạo (AI) nhận diện giọng nói hoặc hình ảnh.", "next_id": "Q4A", "scores": {"Tin": 4, "Toán": 2}}, {"opt": "D", "text": "Tìm hiểu an ninh mạng, phân tích các lỗ hổng bảo mật và cách phòng chống mã độc.", "next_id": "Q4A", "scores": {"Tin": 3, "Anh": 2}}]}, "Q3C": {"question_id": "Q3C", "phase": 1, "title": "Vật lý chuyên sâu — Quy luật Vũ trụ & Vật chất", "scenario": "Khi quan sát thế giới xung quanh, hiện tượng vật lý nào kích thích trí tò mò của em mạnh mẽ nhất:", "options": [{"opt": "A", "text": "Lực hấp dẫn, thuyết tương đối và bí ẩn của các lỗ đen trong vũ trụ bao la.", "next_id": "Q4B", "scores": {"Lý": 4, "Toán": 2}}, {"opt": "B", "text": "Nguyên lý cảm ứng điện từ, sóng vô tuyến và cách chế tạo động cơ điện không chổi than hiện đại.", "next_id": "Q4B", "scores": {"Lý": 4, "Tin": 1}}, {"opt": "C", "text": "Bản chất lưỡng tính sóng - hạt của ánh sáng và thế giới hạt cơ bản hạ nguyên tử.", "next_id": "Q4B", "scores": {"Lý": 4, "Hóa": 2}}, {"opt": "D", "text": "Cơ học kết cấu, thiết kế hình dáng khí động học của máy bay và tên lửa siêu thanh.", "next_id": "Q4B", "scores": {"Lý": 4, "Toán": 2}}]}, "Q3D": {"question_id": "Q3D", "phase": 1, "title": "Hóa - Sinh chuyên sâu — Thế giới Phân tử & Sự sống", "scenario": "Nếu được tham gia một dự án nghiên cứu đỉnh cao, em sẽ chọn chủ đề nào:", "options": [{"opt": "A", "text": "Tổng hợp một loại vật liệu polymer mới siêu bền, siêu nhẹ và có khả năng tự phục hồi khi bị trầy xước.", "next_id": "Q4C", "scores": {"Hóa": 4, "Lý": 1}}, {"opt": "B", "text": "Giải mã bộ gen của các loài sinh vật bản địa quý hiếm để bảo tồn nguồn gen và lai tạo giống chống biến đổi khí hậu.", "next_id": "Q4C", "scores": {"Sinh": 4}}, {"opt": "C", "text": "Thiết kế chất ức chế enzyme để ngăn chặn sự phát triển của tế bào ung thư mà không gây hại tế bào lành.", "next_id": "Q4C", "scores": {"Hóa": 3, "Sinh": 3}}, {"opt": "D", "text": "Nghiên cứu pin nhiên liệu hydro sạch và pin lithium cải tiến để thay thế hoàn toàn xăng dầu.", "next_id": "Q4B", "scores": {"Hóa": 3, "Lý": 3}}]}, "Q3E": {"question_id": "Q3E", "phase": 1, "title": "Ngữ văn chuyên sâu — Chiều sâu Văn học & Nghệ thuật biểu đạt", "scenario": "Khi viết một bài văn nghị luận xã hội hoặc văn học, phẩm chất nào em muốn thể hiện rõ nét nhất:", "options": [{"opt": "A", "text": "Trái tim giàu trắc ẩn, sự đồng cảm sâu sắc với số phận những con người bình dị và khát vọng công bằng.", "next_id": "Q4D", "scores": {"Văn": 4}}, {"opt": "B", "text": "Văn phong sắc bén, lập luận chặt chẽ như một luật sư, dùng dẫn chứng xác đáng để làm sáng tỏ chân lý.", "next_id": "Q4D", "scores": {"Văn": 4, "Sử": 2}}, {"opt": "C", "text": "Ngôn từ giàu tính nhạc điệu, hình ảnh sáng tạo và phong cách biểu đạt mang đậm dấu ấn cá nhân.", "next_id": "Q4D", "scores": {"Văn": 4, "Anh": 1}}, {"opt": "D", "text": "Khả năng soi chiếu tác phẩm văn học dưới góc nhìn lịch sử thời đại và tâm lý học xã hội.", "next_id": "Q4D", "scores": {"Văn": 3, "Sử": 2, "Địa": 1}}]}, "Q3F": {"question_id": "Q3F", "phase": 1, "title": "Lịch sử & Địa lí — Bức tranh Lịch sử & Không gian Địa lý", "scenario": "Một chuyến đi thực tế đến vùng địa đầu Tổ quốc (như Hà Giang hay Cà Mau) gợi cho em nhiều suy tưởng nhất về:", "options": [{"opt": "A", "text": "Cột cờ Lũng Cú linh thiêng, những trang sử gìn giữ biên cương hàng ngàn năm của các thế hệ cha anh.", "next_id": "Q4D", "scores": {"Sử": 4}}, {"opt": "B", "text": "Cao nguyên đá Đồng Văn độc nhất vô nhị, cấu tạo địa chất karst và cách người dân thích nghi với sự thiếu nước.", "next_id": "Q4D", "scores": {"Địa": 4}}, {"opt": "C", "text": "Bản sắc văn hóa, kiến trúc nhà trình tường và phong tục tập quán độc đáo của các đồng bào dân tộc thiểu số.", "next_id": "Q4D", "scores": {"Văn": 2, "Sử": 2, "Địa": 2}}, {"opt": "D", "text": "Chiến lược phát triển kinh tế cửa khẩu, quy hoạch du lịch sinh thái gắn liền với an ninh quốc phòng.", "next_id": "Q4D", "scores": {"Địa": 3, "Sử": 2}}]}, "Q3G": {"question_id": "Q3G", "phase": 1, "title": "Tiếng Anh học thuật — Ngôn ngữ Toàn cầu & Tư duy Quốc tế", "scenario": "Trong các cuộc thi học thuật quốc tế bằng tiếng Anh, phần thử thách nào em cảm thấy tự tin và hứng thú nhất:", "options": [{"opt": "A", "text": "Hùng biện và phản biện trực tiếp trước ban giám khảo về các vấn đề nóng của thế giới (AI, bình đẳng giới, biến đổi khí hậu).", "next_id": "Q4D", "scores": {"Anh": 4, "Văn": 2}}, {"opt": "B", "text": "Đọc hiểu và tóm tắt một bài tiểu luận nghiên cứu dài 20 trang với nhiều thuật ngữ học thuật chuyên sâu.", "next_id": "Q4D", "scores": {"Anh": 4, "Sử": 1}}, {"opt": "C", "text": "Viết bài luận nghị luận học thuật chuẩn mực với cấu trúc luận điểm logic, dẫn chứng quốc tế thuyết phục.", "next_id": "Q4D", "scores": {"Anh": 4, "Văn": 2}}, {"opt": "D", "text": "Dịch thuật các tác phẩm văn học hoặc tài liệu khoa học song ngữ đòi hỏi độ chuẩn xác và uyển chuyển cao.", "next_id": "Q4D", "scores": {"Anh": 3, "Văn": 2, "Tin": 1}}]}, "Q4A": {"question_id": "Q4A", "phase": 2, "title": "Phân định Toán vs Tin — Công cụ giải quyết bài toán lớn", "scenario": "Một công ty logistics cần tìm lộ trình giao hàng tối ưu cho 10.000 bưu kiện mỗi ngày. Em sẽ tiếp cận vấn đề theo cách nào:", "options": [{"opt": "A", "text": "Dùng lý thuyết đồ thị (Graph Theory) thuần túy để chứng minh các định lý về đường đi Hamilton và cận trên của bài toán.", "next_id": "Q5A", "scores": {"Toán": 4, "Tin": 1}}, {"opt": "B", "text": "Lập trình cài đặt các thuật toán heuristic (Genetic Algorithm hay Simulated Annealing) để tìm nghiệm xấp xỉ tối ưu.", "next_id": "Q5A", "scores": {"Tin": 4, "Toán": 2}}, {"opt": "C", "text": "Số hóa bản đồ giao thông thực tế, phân tích dữ liệu GIS không gian và mật độ xe theo giờ.", "next_id": "Q5A", "scores": {"Tin": 2, "Địa": 3, "Toán": 1}}, {"opt": "D", "text": "Thiết lập hệ phương trình tối ưu hóa kinh tế vĩ mô để cân đối chi phí nhiên liệu và khấu hao phương tiện.", "next_id": "Q5A", "scores": {"Toán": 3, "Lý": 1}}]}, "Q4B": {"question_id": "Q4B", "phase": 2, "title": "Phân định Vật lý vs Hóa học — Bản chất Công nghệ Pin tương lai", "scenario": "Khi nghiên cứu việc nâng cấp pin cho xe điện để chạy được 1.000 km sau 1 lần sạc, câu hỏi làm em trăn trở nhất là:", "options": [{"opt": "A", "text": "Làm sao cải thiện cấu trúc mạng tinh thể của điện cực và dung môi điện phân để tăng mật độ lưu trữ ion lithium.", "next_id": "Q5B", "scores": {"Hóa": 4, "Lý": 1}}, {"opt": "B", "text": "Giải bài toán tản nhiệt cưỡng bức, hiệu ứng Joule và hiện tượng quá dòng khi sạc siêu nhanh 15 phút.", "next_id": "Q5B", "scores": {"Lý": 4, "Toán": 1}}, {"opt": "C", "text": "Quy trình tái chế thu hồi các kim loại quý (Niken, Coban, Mangan) mà không gây ô nhiễm môi trường đất và nước.", "next_id": "Q5B", "scores": {"Hóa": 3, "Sinh": 2}}, {"opt": "D", "text": "Chế tạo vật liệu siêu dẫn nhiệt độ phòng để triệt tiêu hoàn toàn điện trở hao phí.", "next_id": "Q5B", "scores": {"Lý": 4, "Hóa": 2}}]}, "Q4C": {"question_id": "Q4C", "phase": 2, "title": "Phân định Hóa học vs Sinh học — Ứng dụng Y dược & Đời sống", "scenario": "Để đối phó với một chủng vi khuẩn mới kháng kháng sinh, hướng nghiên cứu nào em muốn dấn thân nhất:", "options": [{"opt": "A", "text": "Nghiên cứu cơ chế enzyme và thành tế bào vi khuẩn, sử dụng công nghệ chỉnh sửa gen CRISPR để vô hiệu hóa gen kháng thuốc.", "next_id": "Q5B", "scores": {"Sinh": 4, "Hóa": 1}}, {"opt": "B", "text": "Tổng hợp các phân tử hóa học hữu cơ mới chưa từng có trong tự nhiên có khả năng phá vỡ màng lipid của vi khuẩn.", "next_id": "Q5B", "scores": {"Hóa": 4}}, {"opt": "C", "text": "Sử dụng virus thực khuẩn (Bacteriophage) như một liệu pháp sinh học tự nhiên để tiêu diệt vi khuẩn mục tiêu.", "next_id": "Q5B", "scores": {"Sinh": 4}}, {"opt": "D", "text": "Kết hợp các nano bạc và phức chất kim loại chuyển tiếp để tạo màng kháng khuẩn bề mặt.", "next_id": "Q5B", "scores": {"Hóa": 3, "Lý": 2}}]}, "Q4D": {"question_id": "Q4D", "phase": 2, "title": "Phân định Văn vs Sử vs Địa — Góc nhìn Sự biến đổi Xã hội", "scenario": "Một làng nghề truyền thống gốm sứ 500 năm tuổi đang đứng trước nguy cơ mai một trong thời đại số. Em quan tâm nhất tới:", "options": [{"opt": "A", "text": "Ghi lại những câu chuyện đời, tâm tư trăn trở của những nghệ nhân già và viết một thiên phóng sự giàu cảm xúc.", "next_id": "Q5C", "scores": {"Văn": 4}}, {"opt": "B", "text": "Lần tìm lịch sử thành lập làng nghề, các sắc phong triều đình và vai trò của làng gốm trong giao thương đường thủy xưa.", "next_id": "Q5C", "scores": {"Sử": 4}}, {"opt": "C", "text": "Khảo sát nguồn nguyên liệu đất sét tại địa phương, sự suy giảm tài nguyên và đề xuất quy hoạch cụm làng nghề gắn du lịch sinh thái.", "next_id": "Q5C", "scores": {"Địa": 4}}, {"opt": "D", "text": "Xây dựng website quảng bá sản phẩm bằng tiếng Anh ra thị trường quốc tế để bảo tồn di sản.", "next_id": "Q5D", "scores": {"Anh": 3, "Tin": 2, "Văn": 1}}]}, "Q5A": {"question_id": "Q5A", "phase": 2, "title": "Thao tác kỹ thuật Toán - Tin — Công cụ làm việc số hóa", "scenario": "Khi chuẩn bị bài thuyết trình về một đề tài khoa học phức tạp, em tự tin nhất khi sử dụng công cụ nào:", "options": [{"opt": "A", "text": "Vẽ đồ thị hàm số, dùng GeoGebra mô phỏng chuyển động hình học không gian 3D chuẩn xác từng tọa độ.", "next_id": "Q6A", "scores": {"Toán": 4, "Tin": 1}}, {"opt": "B", "text": "Viết chương trình Python / C++ tính toán tự động và vẽ biểu đồ phân phối dữ liệu trực quan.", "next_id": "Q6A", "scores": {"Tin": 4, "Toán": 2}}, {"opt": "C", "text": "Mô phỏng vật lý bằng phần mềm chuyên dụng (như Algodoo, PhET) để người xem thấy rõ lực và tương tác.", "next_id": "Q6A", "scores": {"Lý": 4, "Tin": 2}}, {"opt": "D", "text": "Thiết kế bảng tính Excel / Google Sheets với các hàm lồng phức tạp để quản lý và phân tích số liệu.", "next_id": "Q6A", "scores": {"Toán": 2, "Tin": 2, "Địa": 2}}]}, "Q5B": {"question_id": "Q5B", "phase": 2, "title": "Thao tác phòng Lab KHTN — Thực nghiệm & Xử lý sai số", "scenario": "Khi kết quả một thí nghiệm trong phòng thực hành bị sai lệch so với lý thuyết trong sách giáo khoa, em sẽ làm gì đầu tiên:", "options": [{"opt": "A", "text": "Kiểm tra lại độ chính xác của các dụng cụ đo (thước kẹp, đồng hồ bấm giây, cảm biến), tính sai số hệ thống và sai số ngẫu nhiên.", "next_id": "Q6A", "scores": {"Lý": 4, "Toán": 2}}, {"opt": "B", "text": "Kiểm tra độ tinh khiết của hóa chất, nồng độ dung dịch, nhiệt độ môi trường và sự xuất hiện của phản ứng phụ.", "next_id": "Q6A", "scores": {"Hóa": 4}}, {"opt": "C", "text": "Xem xét lại mẫu sinh học, điều kiện ánh sáng, độ ẩm và các yếu tố sinh lý có thể làm thay đổi phản ứng của sinh vật.", "next_id": "Q6A", "scores": {"Sinh": 4}}, {"opt": "D", "text": "Viết code chạy mô phỏng lại toàn bộ quy trình thí nghiệm để đối chiếu xem bước nào dễ gây lỗi nhất.", "next_id": "Q6A", "scores": {"Tin": 3, "Lý": 2}}]}, "Q5C": {"question_id": "Q5C", "phase": 2, "title": "Thao tác tư liệu KHXH — Nguồn tư liệu & Kỹ thuật phân tích", "scenario": "Để viết một bài nghiên cứu xã hội đạt chất lượng giải thưởng học sinh giỏi, nguồn tài liệu em tin cậy nhất là:", "options": [{"opt": "A", "text": "Các văn bản gốc, tác phẩm văn học kinh điển, bút tích tác giả và những bài phê bình văn học chuẩn mực.", "next_id": "Q6B", "scores": {"Văn": 4}}, {"opt": "B", "text": "Châu bản, mộc bản, văn bia lịch sử, các hiệp ước ngoại giao và tài liệu lưu trữ quốc gia.", "next_id": "Q6B", "scores": {"Sử": 4}}, {"opt": "C", "text": "Niên giám thống kê tổng cục, bản đồ địa hình quân sự, dữ liệu ảnh vệ tinh GIS và báo cáo khí hậu.", "next_id": "Q6B", "scores": {"Địa": 4}}, {"opt": "D", "text": "Phỏng vấn sâu nhân chứng thực tế kết hợp quan sát tham gia đời sống cộng đồng.", "next_id": "Q6B", "scores": {"Văn": 2, "Sử": 2, "Địa": 2}}]}, "Q5D": {"question_id": "Q5D", "phase": 2, "title": "Năng lực ngôn ngữ hội nhập — Ứng dụng trong môi trường đa văn hóa", "scenario": "Khi tham gia một diễn đàn thanh niên quốc tế trực tuyến, vai trò nào khiến em phát huy tốt nhất năng lực của mình:", "options": [{"opt": "A", "text": "Người phát ngôn (Spokesperson) trình bày quan điểm, diễn thuyết truyền cảm hứng bằng tiếng Anh lưu loát.", "next_id": "Q6B", "scores": {"Anh": 4, "Văn": 2}}, {"opt": "B", "text": "Nhà soạn thảo văn kiện (Rapporteur) tổng hợp các ý kiến tranh luận thành bản tuyên bố chung chuẩn xác, trang trọng.", "next_id": "Q6B", "scores": {"Anh": 4, "Sử": 2}}, {"opt": "C", "text": "Chuyên gia dữ liệu trình bày các chỉ số thống kê về kinh tế - xã hội các nước bằng biểu đồ trực quan.", "next_id": "Q6A", "scores": {"Anh": 2, "Địa": 3, "Toán": 1}}, {"opt": "D", "text": "Điều phối viên kỹ thuật phụ trách phòng họp ảo, công cụ bình chọn và hệ thống tương tác.", "next_id": "Q6A", "scores": {"Anh": 2, "Tin": 3}}]}, "Q6A": {"question_id": "Q6A", "phase": 2, "title": "Dự án KHTN & Công nghệ — Ý tưởng Dự án Khoa học Kỹ thuật", "scenario": "Nếu được cấp 20 triệu đồng để làm dự án tham gia cuộc thi KHKT cấp quốc gia, em sẽ chọn hướng nào:", "options": [{"opt": "A", "text": "Thiết kế hệ thống cánh tay robot hỗ trợ người khuyết tật ứng dụng trí tuệ nhân tạo và vi điều khiển.", "next_id": "Q7", "scores": {"Tin": 3, "Lý": 3, "Toán": 1}}, {"opt": "B", "text": "Nghiên cứu chế tạo màng bọc thực phẩm sinh học tự phân hủy từ tinh bột vỏ sầu riêng.", "next_id": "Q7", "scores": {"Hóa": 3, "Sinh": 3}}, {"opt": "C", "text": "Xây dựng thuật toán mật mã lượng tử mô phỏng trên nền tảng máy tính cổ điển.", "next_id": "Q7", "scores": {"Toán": 4, "Tin": 3}}, {"opt": "D", "text": "Hệ thống lọc nước biển thành nước ngọt ứng dụng năng lượng mặt trời và ống mao dẫn nano.", "next_id": "Q7", "scores": {"Lý": 3, "Hóa": 3, "Địa": 1}}]}, "Q6B": {"question_id": "Q6B", "phase": 2, "title": "Dự án KHXH & Cộng đồng — Ý tưởng Dự án Xã hội & Nhân văn", "scenario": "Nếu chủ trì một dự án truyền thông học đường có sức ảnh hưởng lớn, em sẽ chọn chủ đề nào:", "options": [{"opt": "A", "text": "Chiến dịch lan tỏa văn hóa đọc, tổ chức các buổi tọa đàm về vẻ đẹp của ngôn từ và sự thấu cảm trong học đường.", "next_id": "Q7", "scores": {"Văn": 4, "Anh": 1}}, {"opt": "B", "text": "Dự án số hóa di tích lịch sử địa phương thành bảo tàng ảo 3D và phụ đề song ngữ Anh - Việt.", "next_id": "Q7", "scores": {"Sử": 4, "Anh": 2, "Tin": 1}}, {"opt": "C", "text": "Khảo sát và xây dựng bản đồ số cảnh báo điểm đen rác thải nhựa trong khu dân cư thành phố.", "next_id": "Q7", "scores": {"Địa": 4, "Tin": 2}}, {"opt": "D", "text": "Câu lạc bộ tranh biện tiếng Anh về các Mục tiêu Phát triển Bền vững của Liên Hợp Quốc (UN SDGs).", "next_id": "Q7", "scores": {"Anh": 4, "Địa": 1, "Sử": 1}}]}, "Q7": {"question_id": "Q7", "phase": 3, "title": "Tác phong giải quyết vấn đề — Phản xạ trước ngõ cụt học thuật", "scenario": "Khi đã dành trọn 2 tiếng giải một bài tập mà vẫn không ra kết quả, phản xạ tự nhiên của em là:", "options": [{"opt": "A", "text": "Xóa hết làm lại từ đầu bằng một hướng tiếp cận hoàn toàn mới, kiểm tra lại từng giả thiết xem có bị ngộ nhận điều gì.", "next_id": "Q8A", "scores": {"Toán": 3, "Lý": 2}}, {"opt": "B", "text": "Viết chương trình máy tính hoặc lập bảng thử nghiệm các trường hợp nhỏ n = 1, 2, 3... để tìm quy luật ẩn.", "next_id": "Q8A", "scores": {"Tin": 3, "Toán": 2}}, {"opt": "C", "text": "Đứng dậy đi dạo, để não bộ ở trạng thái thả lỏng ủ ý tưởng, ghi chép lại những dòng suy nghĩ bất chợt nảy sinh.", "next_id": "Q8B", "scores": {"Văn": 3, "Sinh": 1}}, {"opt": "D", "text": "Mở rộng tra cứu tài liệu nước ngoài trên Google Scholar hoặc diễn đàn học thuật quốc tế bằng tiếng Anh.", "next_id": "Q8A", "scores": {"Anh": 3, "Sử": 1}}]}, "Q8A": {"question_id": "Q8A", "phase": 3, "title": "Môi trường Flow Tự nhiên — Điều kiện kích hoạt tập trung cao độ", "scenario": "Không gian và điều kiện học tập nào khiến em tập trung cao độ đến mức quên cả thời gian ăn ngủ:", "options": [{"opt": "A", "text": "Góc bàn học tĩnh lặng tuyệt đối về đêm, chỉ có cây bút chì, tập giấy nháp trắng và đề thi học sinh giỏi toán/lý.", "next_id": "Q9A", "scores": {"Toán": 4, "Lý": 3}}, {"opt": "B", "text": "Trước màn hình máy tính với bộ gõ code, hai tai đeo tai nghe nhạc không lời, liên tục gõ phím và test lệnh.", "next_id": "Q9A", "scores": {"Tin": 4}}, {"opt": "C", "text": "Phòng thí nghiệm KHTN với đầy đủ ống nghiệm, cân điện tử, kính hiển vi và những thí nghiệm đang diễn ra.", "next_id": "Q9A", "scores": {"Hóa": 3, "Sinh": 3, "Lý": 2}}, {"opt": "D", "text": "Bàn làm việc với một tấm bản đồ lớn, quả địa cầu và các bảng dữ liệu thống kê mở sẵn trên máy tính.", "next_id": "Q9B", "scores": {"Địa": 4, "Tin": 1}}]}, "Q8B": {"question_id": "Q8B", "phase": 3, "title": "Môi trường Flow Xã hội — Không gian sáng tạo & Nghiên cứu Nhân văn", "scenario": "Không gian nào đem lại cho em nhiều nguồn cảm hứng nhất để học tập và sáng tạo:", "options": [{"opt": "A", "text": "Một quán cà phê sách cổ kính hoặc góc thư viện ngập tràn ánh nắng, mùi giấy thơm và cuốn tiểu thuyết hay.", "next_id": "Q9B", "scores": {"Văn": 4}}, {"opt": "B", "text": "Bảo tàng lịch sử với những hiện vật trầm mặc, các bức ảnh tư liệu đen trắng và không khí trang nghiêm.", "next_id": "Q9B", "scores": {"Sử": 4}}, {"opt": "C", "text": "Phòng thảo luận nhóm sôi nổi, nơi mọi người tự do phản biện, bảo vệ ý kiến bằng cả tiếng Anh và tiếng Việt.", "next_id": "Q9B", "scores": {"Anh": 3, "Văn": 2}}, {"opt": "D", "text": "Không gian mở trên sân thượng nhìn ra toàn cảnh thành phố với những dòng xe cộ tấp nập và quy hoạch đô thị.", "next_id": "Q9B", "scores": {"Địa": 3, "Văn": 2}}]}, "Q9A": {"question_id": "Q9A", "phase": 3, "title": "Nguồn tri thức Tự nhiên — Kênh thông tin tự giác tìm đọc", "scenario": "Kênh YouTube hoặc loại sách báo em thường chủ động theo dõi nhiều nhất vào cuối tuần là:", "options": [{"opt": "A", "text": "3Blue1Brown, Numberphile (những video trực quan hóa vẻ đẹp kỳ vĩ của toán học đỉnh cao).", "next_id": "Q10", "scores": {"Toán": 4, "Tin": 2}}, {"opt": "B", "text": "Veritasium, Kurzgesagt, NileRed (các video giải thích hiện tượng vật lý, phản ứng hóa học thú vị).", "next_id": "Q10", "scores": {"Lý": 3, "Hóa": 3, "Sinh": 2}}, {"opt": "C", "text": "Joma Tech, Fireship, CS50 (các kênh về công nghệ, lập trình viên, xu hướng trí tuệ nhân tạo).", "next_id": "Q10", "scores": {"Tin": 4, "Anh": 1}}, {"opt": "D", "text": "National Geographic, BBC Earth (các bộ phim tài liệu về thế giới hoang dã, đại dương và địa lý).", "next_id": "Q10", "scores": {"Sinh": 3, "Địa": 3}}]}, "Q9B": {"question_id": "Q9B", "phase": 3, "title": "Nguồn tri thức Xã hội — Thế giới quan & Nguồn cảm hứng Nhân văn", "scenario": "Loại ấn phẩm hoặc chương trình nào thu hút sự chú ý của em lâu nhất:", "options": [{"opt": "A", "text": "Các tập tản văn sâu sắc, tác phẩm đoạt giải Nobel văn học hoặc các bài phê bình nghệ thuật sâu sắc.", "next_id": "Q10", "scores": {"Văn": 4}}, {"opt": "B", "text": "Sách sử ký, hồi ký của các danh nhân lịch sử, tư liệu về các cuộc chiến tranh và bang giao thế giới.", "next_id": "Q10", "scores": {"Sử": 4}}, {"opt": "C", "text": "Các podcast TED Talks, The Economist, BBC 6 Minute English về những xu hướng chuyển dịch toàn cầu.", "next_id": "Q10", "scores": {"Anh": 4, "Địa": 1}}, {"opt": "D", "text": "Các chuyên đề về địa chính trị, quy hoạch đô thị và biến đổi khí hậu trên tạp chí địa lý.", "next_id": "Q10", "scores": {"Địa": 4, "Sử": 1}}]}, "Q10": {"question_id": "Q10", "phase": 4, "title": "Sức bền học thuật — Thái độ trước bài toán chuyên sâu kéo dài", "scenario": "Thầy cô giao một chuyên đề nâng cao yêu cầu nghiên cứu ròng rã suốt 1 tháng. Thái độ thật sự của em là:", "options": [{"opt": "A", "text": "Càng khó càng kích thích! Em sẽ không chịu bỏ cuộc cho đến khi tìm ra lời giải triệt để nhất.", "next_id": "Q11", "scores": {"Toán": 3, "Tin": 3, "Lý": 2}}, {"opt": "B", "text": "Lên kế hoạch chia nhỏ mục tiêu mỗi ngày, tỉ mỉ thực hiện từng công đoạn thí nghiệm/khảo sát.", "next_id": "Q11", "scores": {"Hóa": 3, "Sinh": 3, "Địa": 2}}, {"opt": "C", "text": "Đắm chìm vào việc đọc hàng chục cuốn sách và tài liệu liên quan để bài viết đạt độ dày dặn và chiều sâu.", "next_id": "Q11", "scores": {"Văn": 3, "Sử": 3}}, {"opt": "D", "text": "Hào hứng liên hệ kết nối với các bạn giỏi và tham khảo nguồn tài liệu quốc tế để hoàn thiện bài xuất sắc.", "next_id": "Q11", "scores": {"Anh": 3, "Tin": 2}}]}, "Q11": {"question_id": "Q11", "phase": 4, "title": "Năng lực hệ thống hóa — Tổ chức khối lượng tri thức đồ sộ", "scenario": "Trước kỳ thi HSG với lượng kiến thức khổng lồ gấp 5 lần chương trình thường, phương pháp ghi nhớ của em là:", "options": [{"opt": "A", "text": "Hiểu sâu sắc bản chất và cấu trúc logic cốt lõi. Từ 1 định luật gốc có thể tự suy diễn ra toàn bộ công thức còn lại.", "next_id": "Q12", "scores": {"Toán": 4, "Lý": 3}}, {"opt": "B", "text": "Vẽ bản đồ tư duy (Mindmap) nhiều nhánh, kết hợp màu sắc và bảng phân loại hệ thống (bảng tuần hoàn, cây phân loại).", "next_id": "Q12", "scores": {"Hóa": 3, "Sinh": 3, "Địa": 2}}, {"opt": "C", "text": "Xây dựng bảng niên biểu dòng thời gian, sơ đồ nguyên nhân - kết quả và rút ra quy luật so sánh.", "next_id": "Q12", "scores": {"Sử": 4, "Địa": 2}}, {"opt": "D", "text": "Ghi chép dưới dạng các đoạn văn bình luận súc tích, lưu lại những câu trích dẫn đắt giá và cảm nhận tâm đắc.", "next_id": "Q12", "scores": {"Văn": 4, "Anh": 2}}]}, "Q12": {"question_id": "Q12", "phase": 4, "title": "Kỹ năng mài giũa — Kỹ năng cốt lõi muốn tôi luyện ở trường Chuyên", "scenario": "Bước vào môi trường trường Chuyên với những bạn bè xuất sắc nhất, kỹ năng em khát khao mài giũa nhất là:", "options": [{"opt": "A", "text": "Tư duy trừu tượng cấp cao, năng lực mô hình hóa toán học và thuật toán giải quyết các bài toán tối ưu cực hạn.", "next_id": "Q13A", "scores": {"Toán": 4, "Tin": 3}}, {"opt": "B", "text": "Kỹ năng nghiên cứu khoa học thực nghiệm độc lập, thao tác lab chuẩn mực và năng lực viết báo cáo khoa học.", "next_id": "Q13A", "scores": {"Lý": 2, "Hóa": 3, "Sinh": 3}}, {"opt": "C", "text": "Tư duy phản biện (Critical Thinking), năng lực lập luận sắc bén và cảm thụ nhân sinh quan sâu sắc.", "next_id": "Q13B", "scores": {"Văn": 4, "Sử": 2}}, {"opt": "D", "text": "Năng lực lãnh đạo toàn cầu, hùng biện quốc tế và kỹ năng nghiên cứu liên ngành trong thế giới phẳng.", "next_id": "Q13B", "scores": {"Anh": 4, "Địa": 2}}]}, "Q13A": {"question_id": "Q13A", "phase": 5, "title": "Nghề nghiệp KHTN & Công nghệ — Bức tranh 10-15 năm tới", "scenario": "Hãy tưởng tượng em ở tuổi 25, vị trí công việc nào làm em cảm thấy tự hào và cống hiến nhất:", "options": [{"opt": "A", "text": "Kỹ sư Trí tuệ Nhân tạo (AI Engineer) hoặc Kiến trúc sư Hệ thống phần mềm tại các tập đoàn công nghệ lớn.", "next_id": "Q14", "scores": {"Tin": 4, "Toán": 3}}, {"opt": "B", "text": "Nhà nghiên cứu Vi mạch Bán dẫn, Kỹ sư Cơ điện tử hoặc Chuyên gia Năng lượng hạt nhân.", "next_id": "Q14", "scores": {"Lý": 4, "Toán": 2}}, {"opt": "C", "text": "Bác sĩ Ngoại khoa / Nội khoa, Dược sĩ bào chế thuốc hoặc Nhà khoa học Công nghệ Sinh học Tế bào gốc.", "next_id": "Q14", "scores": {"Sinh": 4, "Hóa": 3}}, {"opt": "D", "text": "Kỹ sư Hóa dầu, Vật liệu mới hoặc Chuyên gia Phân tích Dữ liệu Không gian & Môi trường.", "next_id": "Q14", "scores": {"Hóa": 3, "Địa": 3}}]}, "Q13B": {"question_id": "Q13B", "phase": 5, "title": "Nghề nghiệp KHXH & Nhân văn — Bức tranh 10-15 năm tới", "scenario": "Hãy tưởng tượng em ở tuổi 25, vai trò xã hội nào thôi thúc ngọn lửa đam mê của em nhất:", "options": [{"opt": "A", "text": "Nhà báo điều tra, Nhà văn, Giám đốc Sáng tạo Nội dung hoặc Chuyên gia Truyền thông chiến lược.", "next_id": "Q14", "scores": {"Văn": 4, "Anh": 1}}, {"opt": "B", "text": "Nhà Ngoại giao, Chuyên viên Phân tích Chính sách Quốc tế hoặc Luật sư Tranh tụng.", "next_id": "Q14", "scores": {"Anh": 3, "Sử": 3, "Văn": 2}}, {"opt": "C", "text": "Nhà nghiên cứu Lịch sử Văn hóa, Quản lý Bảo tàng hoặc Cố vấn Bảo tồn Di sản Thế giới.", "next_id": "Q14", "scores": {"Sử": 4, "Văn": 2}}, {"opt": "D", "text": "Chuyên gia Kinh tế Vĩ mô, Nhà Quy hoạch Đô thị hoặc Chuyên gia Biến đổi Khí hậu của Liên Hợp Quốc.", "next_id": "Q14", "scores": {"Địa": 4, "Anh": 2, "Toán": 1}}]}, "Q14": {"question_id": "Q14", "phase": 5, "title": "Hình mẫu truyền cảm hứng — Danh nhân trong lịch sử nhân loại", "scenario": "Trong lịch sử nhân loại, cuộc đời và sự nghiệp của danh nhân nào truyền cho em nhiều ngọn lửa nhiệt huyết nhất:", "options": [{"opt": "A", "text": "Alan Turing (cha đẻ khoa học máy tính) hoặc Terence Tao / Ngô Bảo Châu (những bộ óc toán học thiên tài).", "next_id": "Q15", "scores": {"Toán": 4, "Tin": 4}}, {"opt": "B", "text": "Albert Einstein, Richard Feynman hoặc Marie Curie (những nhà khoa học vật lý - hóa học khai phá vũ trụ).", "next_id": "Q15", "scores": {"Lý": 4, "Hóa": 3}}, {"opt": "C", "text": "Charles Darwin (thuyết tiến hóa), Louis Pasteur (y học vi sinh) hoặc Tôn Thất Tùng (bác sĩ đại tài).", "next_id": "Q15", "scores": {"Sinh": 4, "Hóa": 2}}, {"opt": "D", "text": "Đại tướng Võ Nguyên Giáp, Chủ tịch Hồ Chí Minh, hoặc các đại văn hào như Lev Tolstoy, Nguyễn Du.", "next_id": "Q15", "scores": {"Sử": 3, "Văn": 3, "Anh": 2}}]}, "Q15": {"question_id": "Q15", "phase": 5, "title": "Đích đến & Động lực nội tại — Lý do chọn trường THPT Chuyên", "scenario": "Sau tất cả, lý do sâu sắc nhất khiến em quyết tâm thi đỗ vào một lớp Chuyên trường Chuyên là:", "options": [{"opt": "A", "text": "Khát vọng chinh phục những đỉnh cao học thuật, giải các bài toán tầm cỡ Olympic và khẳng định bản lĩnh trí tuệ.", "next_id": "END", "scores": {"Toán": 3, "Lý": 3, "Tin": 2}}, {"opt": "B", "text": "Được đắm chìm trong niềm đam mê khoa học thuần khiết, tự do nghiên cứu, làm thí nghiệm và sáng tạo không giới hạn.", "next_id": "END", "scores": {"Hóa": 3, "Sinh": 3, "Lý": 2}}, {"opt": "C", "text": "Môi trường bạn bè cùng chí hướng, mở rộng tầm nhìn nhân văn, nuôi dưỡng tâm hồn và bản lĩnh sống tử tế.", "next_id": "END", "scores": {"Văn": 3, "Sử": 3, "Địa": 2}}, {"opt": "D", "text": "Tấm vé hội nhập toàn cầu, săn học bổng du học quốc tế và chuẩn bị hành trang trở thành công dân toàn cầu.", "next_id": "END", "scores": {"Anh": 4, "Tin": 2, "Địa": 1}}]}}, "max_possible": {"Toán": 55, "Tin": 49, "Lý": 47, "Hóa": 45, "Sinh": 47, "Văn": 55, "Sử": 49, "Địa": 42, "Anh": 47}, "tang_mo_ta": {"1": "Tầng 1: Nhận diện Trục năng khiếu & Tư duy tổng quan", "2": "Tầng 2: Bóc tách Phân môn chuyên sâu (KHTN / KHXH / Toán-Tin / Văn-Anh)", "3": "Tầng 3: Tác phong học thuật & Môi trường làm việc ưa thích", "4": "Tầng 4: Sức bền tư duy & Bản lĩnh trước bài toán chuyên sâu", "5": "Tầng 5: Khát vọng nghề nghiệp & Đích đến tương lai"}, "chuyen_9_mon": ["Toán", "Tin", "Lý", "Hóa", "Sinh", "Văn", "Sử", "Địa", "Anh"]};
+
+    const MON_6 = [
+      ["toan", "Toán"],
+      ["van", "Ngữ văn"],
+      ["anh", "Tiếng Anh"],
+      ["khtn", "KHTN (Lý-Hóa-Sinh)"],
+      ["khxh", "KHXH (Sử-Địa)"],
+      ["tin", "Tin học"]
+    ];
+
+    const CHUYEN_9 = EMBEDDED_BUNDLE.chuyen_9_mon;
+    let QUESTION_BANK = EMBEDDED_BUNDLE.question_bank;
+    let MAX_POSSIBLE = EMBEDDED_BUNDLE.max_possible;
+    let TANG_MO_TA = EMBEDDED_BUNDLE.tang_mo_ta;
+    const LR_FALLBACK = EMBEDDED_BUNDLE.lr_fallback;
+
+    const $ = (id) => document.getElementById(id);
+    const S = {
+      buoc: 0,
+      currentQId: "Q1",
+      answers: [], // [{ qId, opt }]
+      serverOn: false,
+      lastDiem: null
+    };
+
+    // ---------- Kiểm tra server.py ----------
+    async function kiemTraServer() {
+      const pill = $("pillConn");
+      try {
+        const res = await fetch(API_BASE + "/api/info");
+        const j = await res.json();
+        if (j && j.success) {
+          S.serverOn = true;
+          if (j.question_bank) QUESTION_BANK = j.question_bank;
+          if (j.max_possible) MAX_POSSIBLE = j.max_possible;
+          if (j.tang_mo_ta) TANG_MO_TA = j.tang_mo_ta;
+          pill.className = "pill ok";
+          pill.textContent = "🟢 Kết nối server.py (Voting LR+RF+ET + Rẽ nhánh 15 câu)";
+          if (j.metrics) {
+            const m = j.metrics;
+            $("pillModel").textContent = `${m.so_phieu} phiếu (${m.so_mau_sau_nang} mẫu 6 môn) · Đúng nhóm ML: ${m.top1_nhom}% · Top-3: ${m.top3}%`;
+          }
+          return;
+        }
+      } catch (_) {}
+      S.serverOn = false;
+      pill.className = "pill warn";
+      pill.textContent = "🟡 Offline JS (chỉ LR + Rẽ nhánh — chạy py server.py để dùng Full RF+ET)";
+    }
+    kiemTraServer();
+
+    // ---------- Ô nhập 6 điểm ----------
+    $("luoiDiem").innerHTML = MON_6.map(([k, t]) =>
+      `<div class="o-diem">
+        <label for="d_${k}">${t} *</label>
+        <input type="text" id="d_${k}" inputmode="decimal" placeholder="0 - 10">
+      </div>`
+    ).join("");
+
+    function docDiem() {
+      const d = {};
+      MON_6.forEach(([k]) => {
+        const el = $("d_" + k);
+        const raw = el.value.trim();
+        if (raw === "") {
+          el.classList.remove("sai");
+          d[k] = null;
+        } else {
+          const v = Number(raw.replace(",", "."));
+          const hopLe = Number.isFinite(v) && v >= 0 && v <= 10;
+          el.classList.toggle("sai", !hopLe);
+          d[k] = hopLe ? v : "loi";
+        }
+      });
+      return d;
+    }
+
+    // ---------- Biểu đồ Radar tổng quát ----------
+    function veRadar(svg, labels, vals, maxVal = 10) {
+      const cx = 160, cy = 150, R = 96, n = labels.length;
+      const goc = (i) => -Math.PI / 2 + (i * 2 * Math.PI) / n;
+      const diem = (i, r) => [cx + r * Math.cos(goc(i)), cy + r * Math.sin(goc(i))];
+      let h = "";
+      [0.25, 0.5, 0.75, 1].forEach((m) => {
+        h += `<polygon points="${labels.map((_, i) => diem(i, R * m).join(",")).join(" ")}" fill="none" stroke="#c4cdea" stroke-width="1"/>`;
+      });
+      labels.forEach((lbl, i) => {
+        const [x, y] = diem(i, R), [lx, ly] = diem(i, R + 22);
+        h += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#c4cdea"/>`;
+        h += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700" fill="#0f1b3d">${lbl}</text>`;
+      });
+      if (vals.some((v) => v > 0)) {
+        const pts = vals.map((v, i) => diem(i, (R * Math.min(maxVal, v)) / maxVal));
+        h += `<polygon points="${pts.map((p) => p.join(",")).join(" ")}" fill="rgba(58,91,255,.26)" stroke="#3a5bff" stroke-width="3" stroke-linejoin="round"/>`;
+        pts.forEach((p, i) => {
+          if (vals[i] > 0) h += `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#ffc93c" stroke="#0f1b3d" stroke-width="2"/>`;
+        });
+      }
+      svg.innerHTML = h;
+    }
+
+    const NHAN_6_NGAN = ["Toán", "Văn", "Anh", "KHTN", "KHXH", "Tin"];
+    function capNhatRadar6() {
+      const d = docDiem();
+      const vals = MON_6.map(([k]) => (typeof d[k] === "number" ? d[k] : 0));
+      veRadar($("radar"), NHAN_6_NGAN, vals, 10);
+      let best = null;
+      MON_6.forEach(([k, t]) => {
+        if (typeof d[k] === "number" && (best === null || d[k] > best.v)) best = { t, v: d[k] };
+      });
+      $("radarChu").innerHTML = best ? `Điểm cao nhất hiện tại: <b>${best.t} (${best.v})</b>.` : "Nhập đủ 6 điểm để bắt đầu.";
+    }
+    $("luoiDiem").addEventListener("input", capNhatRadar6);
+    capNhatRadar6();
+
+    // ---------- Điều hướng Bước 1 & Bước 2 ----------
+    const buocs = [...document.querySelectorAll(".buoc")];
+    const vach = [...$("tienDo").children];
+
+    function hienBuoc(chiMuc) {
+      S.buoc = chiMuc;
+      $("form").hidden = false;
+      $("tienDo").hidden = false;
+      $("ketQua").hidden = true;
+      buocs.forEach((b, i) => b.classList.toggle("hien", i === S.buoc));
+      vach.forEach((v, i) => { v.className = i < S.buoc ? "xong" : i === S.buoc ? "dang" : ""; });
+      $("loi1").textContent = "";
+      $("loi2").textContent = "";
+    }
+
+    $("btnSangBuoc2").onclick = () => {
+      const d = docDiem();
+      if (Object.values(d).includes("loi")) {
+        $("loi1").textContent = "Điểm phải nằm trong khoảng 0 đến 10.";
+        return;
+      }
+      if (MON_6.some(([k]) => d[k] === null)) {
+        $("loi1").textContent = "Vui lòng nhập đủ cả 6 đầu điểm (Toán, Văn, Anh, KHTN, KHXH, Tin).";
+        return;
+      }
+      S.lastDiem = d;
+      if (S.answers.length === 0) S.currentQId = "Q1";
+      hienBuoc(1);
+      renderCauHoi();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    function renderCauHoi() {
+      const q = QUESTION_BANK[S.currentQId];
+      const stepNum = S.answers.length + 1;
+      $("quizStepPill").textContent = `Câu ${stepNum} / 15 · ${q.question_id}`;
+      $("quizTang").textContent = TANG_MO_TA[String(q.phase)] || TANG_MO_TA[q.phase] || "";
+      $("bar15Fill").style.width = `${((stepNum - 1) / 15) * 100 + 4}%`;
+
+      $("cauTieu").textContent = q.title;
+      $("cauHoi").textContent = q.scenario;
+      $("dsOpt").innerHTML = q.options.map((o) => `
+        <button type="button" class="opt-btn" data-opt="${o.opt}">
+          <span class="opt-chu">${o.opt}</span>
+          <span class="opt-text">${o.text}</span>
+        </button>
+      `).join("");
+
+      $("btnQuayLaiCau").disabled = S.answers.length === 0;
+    }
+
+    $("dsOpt").addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-opt]");
+      if (!btn) return;
+      const optLetter = btn.dataset.opt;
+      const q = QUESTION_BANK[S.currentQId];
+      const optObj = q.options.find((o) => o.opt === optLetter);
+      if (!optObj) return;
+
+      btn.classList.add("da-chon");
+      S.answers.push({ qId: S.currentQId, opt: optLetter });
+
+      setTimeout(() => {
+        if (S.answers.length >= 15 || optObj.next_id === "END") {
+          $("bar15Fill").style.width = "100%";
+          chayDuDoan(S.lastDiem || docDiem(), S.answers);
+        } else {
+          S.currentQId = optObj.next_id;
+          renderCauHoi();
+        }
+      }, 110);
+    });
+
+    $("btnQuayLaiCau").onclick = () => {
+      if (S.answers.length === 0) return;
+      const prev = S.answers.pop();
+      S.currentQId = prev.qId;
+      renderCauHoi();
+    };
+
+    $("btnVeDiem").onclick = () => {
+      hienBuoc(0);
+    };
+
+    // ---------- Offline Fallback (y hệt công thức server.py) ----------
+    function duDoanOffline(d, answers) {
+      const raw = {};
+      CHUYEN_9.forEach((m) => { raw[m] = 0; });
+      const phaseScores = {};
+      CHUYEN_9.forEach((m) => { phaseScores[m] = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }; });
+
+      let cur = "Q1";
+      answers.forEach((a) => {
+        const q = QUESTION_BANK[cur];
+        const o = q.options.find((x) => x.opt === a.opt);
+        Object.entries(o.scores).forEach(([mon, pts]) => {
+          raw[mon] += pts;
+          phaseScores[mon][q.phase] += pts;
+        });
+        cur = o.next_id;
+      });
+
+      const surveyNorm = {};
+      CHUYEN_9.forEach((m) => {
+        surveyNorm[m] = Math.min(100, (raw[m] / MAX_POSSIBLE[m]) * 100);
+      });
+
+      const eps = 1.0;
+      const sumKhtn = raw["Lý"] + raw["Hóa"] + raw["Sinh"] + 3 * eps;
+      const sumKhxh = raw["Sử"] + raw["Địa"] + 2 * eps;
+      const acad = {
+        "Toán": Math.min(100, d.toan * 10),
+        "Tin": Math.min(100, d.tin * 10),
+        "Văn": Math.min(100, d.van * 10),
+        "Anh": Math.min(100, d.anh * 10),
+      };
+      const heSo = { "Toán": 1, "Tin": 1, "Văn": 1, "Anh": 1 };
+      ["Lý", "Hóa", "Sinh"].forEach((m) => {
+        const mult = Math.max(0.4, Math.min(1.5, 3 * ((raw[m] + eps) / sumKhtn)));
+        heSo[m] = Math.round(mult * 100) / 100;
+        acad[m] = Math.min(100, d.khtn * 10 * mult);
+      });
+      ["Sử", "Địa"].forEach((m) => {
+        const mult = Math.max(0.4, Math.min(1.5, 2 * ((raw[m] + eps) / sumKhxh)));
+        heSo[m] = Math.round(mult * 100) / 100;
+        acad[m] = Math.min(100, d.khxh * 10 * mult);
+      });
+
+      // LR 6 môn
+      const vals6 = MON_6.map(([k]) => d[k]);
+      const mean6 = vals6.reduce((a, b) => a + b, 0) / 6;
+      const fmap = {
+        mean_6: mean6,
+        max_6: Math.max(...vals6),
+        min_6: Math.min(...vals6),
+        chenh_khtn_khxh: d.khtn - d.khxh,
+        toan_vs_khtn: d.toan - d.khtn,
+        tin_vs_toan: d.tin - d.toan,
+      };
+      MON_6.forEach(([k]) => {
+        fmap["diem_" + k] = d[k];
+        fmap["diff_diem_" + k] = d[k] - mean6;
+      });
+
+      const xScaled = LR_FALLBACK.feat_cols.map((c, idx) => (fmap[c] - LR_FALLBACK.mean[idx]) / LR_FALLBACK.scale[idx]);
+      const logits = LR_FALLBACK.coef.map((row, ci) => row.reduce((sum, w, fi) => sum + w * xScaled[fi], LR_FALLBACK.intercept[ci]));
+      const maxL = Math.max(...logits);
+      const exps = logits.map((z) => Math.exp(z - maxL));
+      const sumE = exps.reduce((a, b) => a + b, 0);
+      const mlMap = {};
+      LR_FALLBACK.classes.forEach((cls, idx) => { mlMap[cls] = exps[idx] / sumE; });
+
+      const ml9Max = Math.max(...CHUYEN_9.map((m) => mlMap[m] || 0)) || 1;
+      const list = CHUYEN_9.map((m) => {
+        const scoreDoc = 0.40 * acad[m] + 0.60 * surveyNorm[m];
+        const mlNorm = ((mlMap[m] || 0) / ml9Max) * 100;
+        const scFinal = 0.78 * scoreDoc + 0.22 * mlNorm;
+
+        const lyDo = [];
+        if (["Lý", "Hóa", "Sinh"].includes(m)) {
+          lyDo.push(`Học bạ KHTN ${d.khtn.toFixed(1)} × hệ số bóc tách ${heSo[m]} → ${acad[m].toFixed(1)}/100`);
+        } else if (["Sử", "Địa"].includes(m)) {
+          lyDo.push(`Học bạ KHXH ${d.khxh.toFixed(1)} × hệ số bóc tách ${heSo[m]} → ${acad[m].toFixed(1)}/100`);
+        } else {
+          const mapK = { "Toán": "toan", "Tin": "tin", "Văn": "van", "Anh": "anh" };
+          lyDo.push(`Điểm học bạ ${m}: ${d[mapK[m]].toFixed(1)}/10 → ${acad[m].toFixed(1)}/100`);
+        }
+        lyDo.push(`Khảo sát 15 câu: ${raw[m]}/${MAX_POSSIBLE[m]} điểm thô (${surveyNorm[m].toFixed(1)}%)`);
+        lyDo.push(`Ủng hộ từ ML (137 phiếu thực tế): ${((mlMap[m] || 0) * 100).toFixed(1)}%`);
+
+        return {
+          mon: m,
+          diem_tong_hop: Math.round(scFinal * 10) / 10,
+          xac_suat: Math.round(scFinal * 10) / 10,
+          diem_doc: Math.round(scoreDoc * 10) / 10,
+          academic: Math.round(acad[m] * 10) / 10,
+          survey_norm: Math.round(surveyNorm[m] * 10) / 10,
+          raw_khao_sat: raw[m],
+          max_khao_sat: MAX_POSSIBLE[m],
+          he_so_boc_tach: heSo[m],
+          ml_pct: Math.round((mlMap[m] || 0) * 1000) / 10,
+          ly_do: lyDo,
+        };
+      }).sort((a, b) =>
+        (b.diem_tong_hop - a.diem_tong_hop) || (b.survey_norm - a.survey_norm) || (b.academic - a.academic)
+      );
+
+      const daiTraPct = Math.round((mlMap["Không học chuyên"] || 0) * 1000) / 10;
+      return {
+        che_do: "offline-lr-branching",
+        top3: list.slice(0, 3),
+        tat_ca: list,
+        tom_tat: {
+          mean_6: Math.round(mean6 * 100) / 100,
+          diem_6: d,
+          dai_tra_pct: daiTraPct,
+          goi_y_dai_tra: daiTraPct >= 35 || mean6 < 7.5,
+          raw_scores: raw,
+          phase_scores: phaseScores,
+        },
+      };
+    }
+
+    async function chayDuDoan(d, answers) {
+      let kq = null;
+      try {
+        const res = await fetch(API_BASE + "/api/du-doan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ diem: d, answers }),
+        });
+        const j = await res.json();
+        if (!j.success) throw new Error(j.message || "Lỗi server");
+        kq = j;
+        S.serverOn = true;
+      } catch (_) {
+        kq = duDoanOffline(d, answers);
+        S.serverOn = false;
+      }
+      veKetQua(kq, answers);
+    }
+
+    function veKetQua(kq, answers) {
+      $("form").hidden = true;
+      $("tienDo").hidden = true;
+      $("ketQua").hidden = false;
+
+      const cheDo = $("pillCheDo");
+      if (kq.che_do === "full-hybrid-branching") {
+        cheDo.className = "pill ok";
+        cheDo.textContent = "Server: Rẽ nhánh 15 câu + ML (LR+RF+ET)";
+      } else {
+        cheDo.className = "pill warn";
+        cheDo.textContent = "Offline JS: Rẽ nhánh 15 câu + LR";
+      }
+
+      const cb = $("canhBaoDaiTra");
+      if (kq.tom_tat.goi_y_dai_tra) {
+        cb.hidden = false;
+        cb.innerHTML = `⚠️ <b>Gợi ý cân nhắc lớp Đại trà (Không chuyên):</b> Điểm TB 6 môn hiện là <b>${kq.tom_tat.mean_6}</b> và mô hình ML (từ 137 phiếu thực tế) đánh giá xác suất hợp lớp đại trà là <b>${kq.tom_tat.dai_tra_pct}%</b>. Bạn nên cân nhắc song song nguyện vọng đại trà bên cạnh Top 3 môn chuyên dưới đây.`;
+      } else {
+        cb.hidden = true;
+      }
+
+      const hangNhan = ["🏆 Top 1 · Nguyện vọng chính", "🥈 Top 2 · Nguyện vọng dự phòng", "✨ Top 3 · Tiềm năng mở rộng"];
+      $("top3Box").innerHTML = kq.top3.map((item, idx) => `
+        <article class="goi-y-card ${idx === 0 ? "top1" : ""}">
+          <div class="goi-y-top">
+            <div class="goi-y-ten">
+              <span class="goi-y-hang">${hangNhan[idx]}</span>
+              Chuyên ${item.mon}
+            </div>
+            <div class="goi-y-pct">${item.diem_tong_hop} đ</div>
+          </div>
+          <div class="thanh-xs"><i style="width:${Math.min(100, Math.max(4, item.diem_tong_hop))}%"></i></div>
+          <ul class="ly-do-ds">${(item.ly_do || []).map((x) => `<li>${x}</li>`).join("")}</ul>
+        </article>
+      `).join("");
+
+      // Radar 9 môn chuyên (theo thứ tự CHUYEN_9)
+      const mapMonScore = {};
+      kq.tat_ca.forEach((x) => { mapMonScore[x.mon] = x.diem_tong_hop; });
+      veRadar($("radar2"), CHUYEN_9, CHUYEN_9.map((m) => mapMonScore[m] || 0), 100);
+
+      const d6 = kq.tom_tat.diem_6;
+      $("tomTatBox").innerHTML = `
+        <h3>Hồ sơ 6 môn & Lộ trình 15 câu</h3>
+        <p><b>Toán:</b> ${d6.toan} · <b>Văn:</b> ${d6.van} · <b>Anh:</b> ${d6.anh}</p>
+        <p><b>KHTN:</b> ${d6.khtn} · <b>KHXH:</b> ${d6.khxh} · <b>Tin:</b> ${d6.tin}</p>
+        <p><b>Trung bình 6 môn:</b> ${kq.tom_tat.mean_6} · <b>ML Đại trà:</b> ${kq.tom_tat.dai_tra_pct}%</p>
+        <div class="path-chips">
+          ${answers.map((a) => `<span class="path-chip">${a.qId}:${a.opt}</span>`).join("")}
+        </div>
+      `;
+
+      $("bangTatCa").innerHTML = kq.tat_ca.map((item, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td><b>${item.mon}</b></td>
+          <td>
+            <span class="mini-bar" style="width:${Math.max(4, item.diem_tong_hop * 1.1)}px"></span>
+            <b>${item.diem_tong_hop}</b>
+          </td>
+          <td>${item.academic} <small style="color:var(--nhat)">(×${item.he_so_boc_tach})</small></td>
+          <td>${item.survey_norm}% <small style="color:var(--nhat)">(${item.raw_khao_sat}/${item.max_khao_sat})</small></td>
+          <td>${item.ml_pct}%</td>
+        </tr>
+      `).join("");
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // ---------- Hồ sơ test nhanh (10 mẫu tiêu biểu) ----------
+    function timLoTrinhMau(targetMon) {
+      const memo = {};
+      function dp(qid) {
+        if (qid === "END") return [0, []];
+        if (memo[qid]) return memo[qid];
+        let bestV = -1, bestP = [];
+        QUESTION_BANK[qid].options.forEach((o) => {
+          const [subV, subP] = dp(o.next_id);
+          const v = (o.scores[targetMon] || 0) + subV;
+          if (v > bestV) {
+            bestV = v;
+            bestP = [{ qId: qid, opt: o.opt }, ...subP];
+          }
+        });
+        return (memo[qid] = [bestV, bestP]);
+      }
+      return dp("Q1")[1];
+    }
+
+    const MAU_THU = [
+      { ten: "Thiên Toán", diem: { toan: 9.8, van: 8.2, anh: 9.0, khtn: 9.0, khxh: 9.0, tin: 9.2 }, target: "Toán" },
+      { ten: "Thiên Tin", diem: { toan: 9.4, van: 7.2, anh: 8.8, khtn: 8.0, khxh: 7.2, tin: 9.5 }, target: "Tin" },
+      { ten: "Thiên Lý (KHTN 9.5)", diem: { toan: 9.1, van: 8.2, anh: 8.5, khtn: 9.5, khxh: 9.0, tin: 8.9 }, target: "Lý" },
+      { ten: "Thiên Hóa (KHTN 9.5)", diem: { toan: 9.0, van: 8.0, anh: 8.5, khtn: 9.5, khxh: 9.0, tin: 8.8 }, target: "Hóa" },
+      { ten: "Thiên Sinh (KHTN 9.5)", diem: { toan: 8.6, van: 8.2, anh: 8.4, khtn: 9.5, khxh: 9.0, tin: 8.5 }, target: "Sinh" },
+      { ten: "Thiên Văn", diem: { toan: 8.4, van: 9.6, anh: 8.8, khtn: 8.0, khxh: 9.5, tin: 8.3 }, target: "Văn" },
+      { ten: "Thiên Sử (KHXH 9.6)", diem: { toan: 8.0, van: 9.0, anh: 8.3, khtn: 8.0, khxh: 9.6, tin: 8.2 }, target: "Sử" },
+      { ten: "Thiên Địa (KHXH 9.6)", diem: { toan: 8.2, van: 8.6, anh: 8.8, khtn: 8.3, khxh: 9.6, tin: 8.2 }, target: "Địa" },
+      { ten: "Thiên Anh", diem: { toan: 8.5, van: 8.5, anh: 9.9, khtn: 8.6, khxh: 9.0, tin: 8.8 }, target: "Anh" },
+      { ten: "Đại trà (Điểm TB 7.1)", diem: { toan: 7.0, van: 7.2, anh: 6.8, khtn: 7.1, khxh: 7.4, tin: 7.2 }, target: "Văn" },
+    ];
+
+    $("dsMau").innerHTML = MAU_THU.map((m, i) =>
+      `<button type="button" class="chip" data-mau="${i}">${m.ten}</button>`
+    ).join("");
+
+    $("dsMau").addEventListener("click", (e) => {
+      const nut = e.target.closest("[data-mau]");
+      if (!nut) return;
+      const mau = MAU_THU[+nut.dataset.mau];
+      MON_6.forEach(([k]) => { $("d_" + k).value = mau.diem[k]; $("d_" + k).classList.remove("sai"); });
+      capNhatRadar6();
+      S.lastDiem = { ...mau.diem };
+      S.answers = timLoTrinhMau(mau.target);
+      chayDuDoan(S.lastDiem, S.answers);
+    });
+
+    $("btnLamLai15").onclick = () => {
+      S.answers = [];
+      S.currentQId = "Q1";
+      hienBuoc(1);
+      renderCauHoi();
+    };
+    $("btnNhapMoi").onclick = () => {
+      MON_6.forEach(([k]) => { $("d_" + k).value = ""; $("d_" + k).classList.remove("sai"); });
+      S.answers = [];
+      S.currentQId = "Q1";
+      S.lastDiem = null;
+      capNhatRadar6();
+      hienBuoc(0);
+    };
+
+    hienBuoc(0);
+  </script>
+</body>
+
+</html>

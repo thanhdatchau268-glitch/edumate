@@ -1,0 +1,82 @@
+{
+  "bai_tap": [
+    {
+      "id": "1",
+      "ten": "Đề Thi Hương - Thời gian làm bài 30 phút",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Điều kiện xác định của biểu thức $\\sqrt{2x - 4}$ là:",
+          "dap_an": [
+            "$x \\ge 2$",
+            "$x \\le 2$",
+            "$x > 2$",
+            "$x < 2$"
+          ],
+          "diem": 10
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Đường thẳng $y = (m - 1)x + 2$ song song với đường thẳng $y = 2x - 3$ khi giá trị của $m$ là:",
+          "dap_an": [
+            "$m = 1$",
+            "$m = 3$",
+            "$m = -1$",
+            "$m = 2$"
+          ],
+          "diem": 10
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Hệ phương trình $\\begin{cases} x + y = 5 \\\\ 2x - y = 4 \\end{cases}$ có nghiệm duy nhất $(x; y)$ là:",
+          "dap_an": [
+            "$(2; 3)$",
+            "$(1; 4)$",
+            "$(3; 2)$",
+            "$(4; 1)$"
+          ],
+          "diem": 10
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Cho tam giác $ABC$ vuông tại $A$, có $AB = 6\\text{ cm}, AC = 8\\text{ cm}$. Độ dài cạnh huyền $BC$ bằng:",
+          "dap_an": [
+            "$10\\text{ cm}$",
+            "$14\\text{ cm}$",
+            "$7\\text{ cm}$",
+            "$12\\text{ cm}$"
+          ],
+          "diem": 10
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Giá trị của biểu thức $P = \\sqrt{9} + \\sqrt{16}$ là:",
+          "dap_an": [
+            "$5$",
+            "$7$",
+            "$25$",
+            "$12$"
+          ],
+          "diem": 10
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Khẳng định nào sau đây về hàm số $y = 3x - 5$ là đúng?",
+          "dap_an": [
+            "Hàm số nghịch biến trên $\\mathbb{R}$ vì hệ số tự do âm",
+            "Đồ thị hàm số đi qua gốc tọa độ $O(0;0)$",
+            "Hàm số cắt trục tung tại điểm $(3; 0)$",
+            "Hàm số đồng biến trên $\\mathbb{R}$ vì hệ số $a = 3 > 0$"
+          ],
+          "diem": 10
+        }
+      ]
+    }
+  ]
+}

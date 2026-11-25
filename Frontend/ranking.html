@@ -4,15 +4,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=2"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
   <title>VnStarL</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=11" />
   <link rel="stylesheet" href="style2.css" />
   <link rel="stylesheet" href="style3.css" />
-  <link rel="stylesheet" href="ranking.css" />
+  <link rel="stylesheet" href="huy-hieu-khung.css" />
+  <link rel="stylesheet" href="ranking.css?v=6" />
+  <link rel="stylesheet" href="tour-personal.css?v=6" />
 </head>
 
-<body>
+<body class="ranking-page-body">
   <header id="header">
     <div id="header-inner">
       <section class="right">
@@ -36,9 +41,19 @@
             <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
           </a>
         </li>
+        <li id="nav-khoa-bang">
+          <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+            <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+          </a>
+        </li>
         <li id="nav-xep-hang">
           <a href="ranking.html" id="link-xep-hang" class="active" title="Xếp hạng" aria-label="Xếp hạng">
             <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+          </a>
+        </li>
+        <li id="nav-vuon-saoladou">
+          <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+            <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
           </a>
         </li>
       </ul>
@@ -50,7 +65,7 @@
         </div>
         <!-- 2. Khi đã đăng nhập (mặc định thêm class hidden) -->
         <div id="user-profile" class="hidden">
-          <div class="streak-box">🔥 <span>0</span></div>
+          <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
           <span class="username">Username</span>
           <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
         </div>
@@ -58,49 +73,326 @@
     </div>
   </header>
 
-  <div class="leaderboard-container">
-    <!-- Thanh chọn: bảng nào + kỳ nào (JS tự vẽ nút từ server) -->
-    <div class="rk-bar">
-      <div id="rk-bang" class="rk-chips" role="tablist" aria-label="Chọn bảng xếp hạng"></div>
-      <div id="rk-ky" class="rk-seg" role="tablist" aria-label="Chọn kỳ xếp hạng"></div>
-    </div>
-    <p id="rk-ghi" class="rk-ghi"></p>
+  <main class="ranking-master-wrapper">
+    <div class="leaderboard-container-1col">
 
-    <div class="podium-section">
-      <div class="podium-card silver" id="podium-2">
-        <img class="avatar" src="img/avartar.webp" alt="Avatar Top 2">
-        <span class="podium-name"></span>
-        <div class="step">2</div>
-      </div>
-      <div class="podium-card gold" id="podium-1">
-        <img class="avatar" src="img/avartar.webp" alt="Avatar Top 1">
-        <span class="podium-name"></span>
-        <div class="step">1</div>
-      </div>
-      <div class="podium-card bronze" id="podium-3">
-        <img class="avatar" src="img/avartar.webp" alt="Avatar Top 3">
-        <span class="podium-name"></span>
-        <div class="step">3</div>
-      </div>
+      <!-- ==================== KHUNG XẾP HẠNG HỢP NHẤT (V13) ==================== -->
+      <section class="rk-center-hero">
+        <!-- Thanh chọn: bảng nào + kỳ nào + nút xổ Quy tắc tính điểm -->
+        <div class="rk-bar">
+          <div id="rk-bang" class="rk-chips" role="tablist" aria-label="Chọn bảng xếp hạng"></div>
+          <div class="rk-bar-right">
+            <div id="rk-ky" class="rk-seg" role="tablist" aria-label="Chọn kỳ xếp hạng"></div>
+            <button
+              type="button"
+              id="btn-toggle-rules"
+              class="rk-rules-btn"
+              aria-expanded="false"
+              aria-controls="rk-rules-drawer"
+            >
+              <i class="fa-solid fa-scale-balanced"></i>
+              <span>Cách tính điểm</span>
+              <i class="fa-solid fa-chevron-down rk-rules-arrow"></i>
+            </button>
+            <button type="button" id="btn-mo-tour-rk" class="btn-tour-replay" title="Xem lại hướng dẫn Xếp hạng">
+              <i class="fa-regular fa-circle-question"></i> Hướng dẫn
+            </button>
+          </div>
+        </div>
+
+        <!-- Ngăn trượt Quy tắc tính điểm (gập gọn mặc định, bấm nút trên để mở) -->
+        <div id="rk-rules-drawer" class="rk-rules-drawer" hidden>
+          <ul class="rules-list">
+            <li class="rule-item rule-blue">
+              <span class="rule-ico"><i class="fa-solid fa-circle-check"></i></span>
+              <span><b>Làm bài lần đầu (tối đa 100đ):</b> Trắc nghiệm <b>2đ/câu</b> · Đúng/Sai <b>2,5đ/ý</b> · Trả lời ngắn <b>6đ/câu</b> <i>(Tự luận chấm theo ý)</i></span>
+            </li>
+            <li class="rule-item rule-indigo">
+              <span class="rule-ico"><i class="fa-solid fa-rotate-right"></i></span>
+              <span><b>Làm lại bài đã làm:</b> Chỉ nhận <b>50%</b> số điểm đạt được</span>
+            </li>
+            <li class="rule-item rule-amber">
+              <span class="rule-ico"><img src="img/icon-streak.png" alt="Streak" class="vn-ico" /></span>
+              <span><b>Chuỗi Streak:</b> Mỗi ngày <b>+0,1%</b> buff điểm (tối đa <b>+5%</b>); quên 1 ngày không có thẻ bảo hộ sẽ tính lại từ <b>0,1%</b> <i>(buff ×1,5 cộng thêm +50%)</i></span>
+            </li>
+            <li class="rule-item rule-green">
+              <span class="rule-ico"><i class="fa-solid fa-scroll"></i></span>
+              <span><b>Khoa Bảng cộng thẳng BXH:</b> Thi Hương <b>100%</b> (100đ KB = 100đ BXH) · Thi Hội <b>+20%</b> · Thi Đình <b>+50%</b></span>
+            </li>
+            <li class="rule-item rule-purple">
+              <span class="rule-ico"><img src="img/icon-hop-qua.png" alt="Quà" class="vn-ico" /></span>
+              <span><b>Điểm danh &amp; Nhiệm vụ:</b> Điểm danh 7 ngày <b>+20~60đ</b>, quay thưởng <b>+10/20/50đ</b>; Nhiệm vụ ngày <b>+5/12/25đ</b>; Sổ lỗi sai <b>+5/8/12đ</b> (+10đ nhớ lâu)</span>
+            </li>
+          </ul>
+        </div>
+
+        <p id="rk-ghi" class="rk-ghi"></p>
+
+        <div class="podium-wrap">
+          <!-- Nền dải lụa ánh sáng uốn lượn & chùm sao 4 cánh sắc nét chuẩn Ảnh 2 -->
+          <div class="podium-ambient-decor" aria-hidden="true">
+            <svg class="podium-bg-ribbons" viewBox="0 0 420 250" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="ribbonGradL" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55" />
+                  <stop offset="55%" stop-color="#dbeafe" stop-opacity="0.28" />
+                  <stop offset="100%" stop-color="#93c5fd" stop-opacity="0" />
+                </linearGradient>
+                <linearGradient id="ribbonGradR" x1="100%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55" />
+                  <stop offset="55%" stop-color="#dbeafe" stop-opacity="0.28" />
+                  <stop offset="100%" stop-color="#93c5fd" stop-opacity="0" />
+                </linearGradient>
+                <linearGradient id="ribbonStrokeL" x1="0%" y1="0%" x2="90%" y2="0%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85" />
+                  <stop offset="65%" stop-color="#ffffff" stop-opacity="0.45" />
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+                </linearGradient>
+                <linearGradient id="ribbonStrokeR" x1="100%" y1="0%" x2="10%" y2="0%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85" />
+                  <stop offset="65%" stop-color="#ffffff" stop-opacity="0.45" />
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+                </linearGradient>
+                <!-- Định nghĩa ngôi sao 4 cánh tia mảnh sắc nét -->
+                <g id="sharpStar">
+                  <path d="M0,-12 C0.6,-3 3,-0.6 12,0 C3,0.6 0.6,3 0,12 C-0.6,3 -3,0.6 -12,0 C-3,-0.6 -0.6,-3 0,-12 Z" fill="#ffffff" />
+                  <circle cx="0" cy="0" r="2.2" fill="#ffffff" filter="blur(0.5px)" />
+                </g>
+              </defs>
+
+              <!-- Dải lụa ánh sáng bên trái uốn lượn -->
+              <path d="M-10,128 C55,118 115,155 185,198 L-10,235 Z" fill="url(#ribbonGradL)" />
+              <path d="M-10,128 C55,118 115,155 185,198" fill="none" stroke="url(#ribbonStrokeL)" stroke-width="1.6" />
+
+              <!-- Dải lụa ánh sáng bên phải uốn lượn -->
+              <path d="M430,88 C355,102 305,148 235,196 L430,230 Z" fill="url(#ribbonGradR)" />
+              <path d="M430,88 C355,102 305,148 235,196" fill="none" stroke="url(#ribbonStrokeR)" stroke-width="1.6" />
+
+              <!-- Dải sóng mờ tầng dưới -->
+              <path d="M-10,185 C65,168 140,210 230,215 C315,218 370,175 430,168 L430,250 L-10,250 Z" fill="rgba(255,255,255,0.22)" />
+
+              <!-- Các ngôi sao 4 cánh sắc nét xung quanh -->
+              <!-- Cụm sao trái -->
+              <use href="#sharpStar" transform="translate(46, 165) scale(0.72)" class="svg-star st-1" />
+              <use href="#sharpStar" transform="translate(34, 174) scale(0.35)" class="svg-star st-2" />
+              <!-- Cụm sao phải -->
+              <use href="#sharpStar" transform="translate(372, 154) scale(0.75)" class="svg-star st-3" />
+              <use href="#sharpStar" transform="translate(384, 143) scale(0.36)" class="svg-star st-4" />
+              <!-- Cụm sao quanh hào quang Top 1 -->
+              <use href="#sharpStar" transform="translate(158, 22) scale(0.5)" class="svg-star st-5" />
+              <use href="#sharpStar" transform="translate(262, 24) scale(0.55)" class="svg-star st-6" />
+              <use href="#sharpStar" transform="translate(148, 65) scale(0.62)" class="svg-star st-2" />
+              <use href="#sharpStar" transform="translate(272, 62) scale(0.62)" class="svg-star st-4" />
+              <!-- Các hạt sáng bokeh nhỏ -->
+              <circle cx="176" cy="14" r="1.8" fill="#ffffff" opacity="0.85" />
+              <circle cx="244" cy="14" r="1.8" fill="#ffffff" opacity="0.85" />
+              <circle cx="105" cy="135" r="1.5" fill="#ffffff" opacity="0.6" />
+              <circle cx="315" cy="130" r="1.5" fill="#ffffff" opacity="0.6" />
+            </svg>
+          </div>
+
+          <div class="podium-section">
+            <!-- TOP 2 - BĂNG LAM ÁNH BẠC -->
+            <div class="podium-card silver" id="podium-2">
+              <div class="avatar-group">
+                <img class="avatar" src="img/avartar.webp" alt="Avatar Top 2">
+                <span class="rank-badge">2</span>
+              </div>
+              <div class="podium-info">
+                <span class="podium-name"></span>
+              </div>
+              <div class="step">
+                <span class="step-shine" aria-hidden="true"></span>
+                <span class="step-num">2</span>
+                <svg class="step-sub-waves" viewBox="0 0 100 32" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M0,22 C35,14 65,28 100,18 L100,32 L0,32 Z" fill="rgba(255, 255, 255, 0.22)" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- TOP 1: XANH HOÀNG GIA + VƯƠNG MIỆN + SAO LẤP LÁNH + LỤA VÀNG 3D -->
+            <div class="podium-card gold" id="podium-1">
+              <div class="crown-badge" aria-hidden="true">
+                <!-- Vương miện SVG mạ vàng 3D sắc nét có đính ngọc trên đỉnh -->
+                <svg class="crown-svg" viewBox="0 0 48 36" fill="none">
+                  <defs>
+                    <linearGradient id="crownGold" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#fde047" />
+                      <stop offset="50%" stop-color="#f59e0b" />
+                      <stop offset="100%" stop-color="#d97706" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M6 28L3 11L15 18L24 6L33 18L45 11L42 28H6Z" fill="url(#crownGold)" stroke="#fef08a" stroke-width="1.2" stroke-linejoin="round"/>
+                  <rect x="6" y="29" width="36" height="4" rx="2" fill="#d97706" stroke="#fef08a" stroke-width="0.8"/>
+                  <circle cx="24" cy="4.5" r="2.5" fill="#fef08a" />
+                  <circle cx="3" cy="9.5" r="2" fill="#fef08a" />
+                  <circle cx="45" cy="9.5" r="2" fill="#fef08a" />
+                </svg>
+              </div>
+              <div class="avatar-group">
+                <img class="avatar" src="img/avartar.webp" alt="Avatar Top 1">
+                <span class="rank-badge">1</span>
+              </div>
+              <div class="podium-info">
+                <span class="podium-name"></span>
+              </div>
+              <div class="step">
+                <span class="step-shine" aria-hidden="true"></span>
+                <!-- Ngôi sao 4 cánh phát sáng vàng kim góc phải trên -->
+                <svg class="sparkle-star-svg" viewBox="-14 -14 28 28" aria-hidden="true">
+                  <circle cx="0" cy="0" r="6" fill="rgba(254, 240, 138, 0.35)" filter="blur(2px)" />
+                  <path d="M0,-12 C0.7,-2.8 2.8,-0.7 12,0 C2.8,0.7 0.7,2.8 0,12 C-0.7,2.8 -2.8,0.7 -12,0 C-2.8,-0.7 -0.7,-2.8 0,-12 Z" fill="#fffbeb" />
+                  <circle cx="0" cy="0" r="2" fill="#ffffff" />
+                </svg>
+                <span class="step-num">1</span>
+                <!-- Dải lụa sóng ánh sáng vàng kim uốn lượn mềm mại chuẩn Ảnh 2 -->
+                <svg class="step-gold-waves" viewBox="0 0 120 48" preserveAspectRatio="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="silkWave1" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.65" />
+                      <stop offset="50%" stop-color="#f59e0b" stop-opacity="0.28" />
+                      <stop offset="100%" stop-color="#b45309" stop-opacity="0.1" />
+                    </linearGradient>
+                    <linearGradient id="silkWave2" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#fef9c3" stop-opacity="0.55" />
+                      <stop offset="55%" stop-color="#fbbf24" stop-opacity="0.32" />
+                      <stop offset="100%" stop-color="#d97706" stop-opacity="0.15" />
+                    </linearGradient>
+                    <linearGradient id="silkWaveFront" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#fde68a" stop-opacity="0.75" />
+                      <stop offset="50%" stop-color="#fef08a" stop-opacity="0.9" />
+                      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.75" />
+                    </linearGradient>
+                  </defs>
+                  <!-- Tầng sóng lụa sau bên trái -->
+                  <path d="M-5,34 C15,16 42,16 68,32 C88,44 105,36 125,28 L125,48 L-5,48 Z" fill="url(#silkWave1)" />
+                  <path d="M-5,34 C15,16 42,16 68,32 C88,44 105,36 125,28" fill="none" stroke="rgba(254, 249, 195, 0.85)" stroke-width="1.3" />
+
+                  <!-- Tầng sóng lụa sau bên phải giao thoa -->
+                  <path d="M-5,40 C25,38 52,26 82,16 C100,10 114,18 125,24 L125,48 L-5,48 Z" fill="url(#silkWave2)" />
+                  <path d="M-5,40 C25,38 52,26 82,16 C100,10 114,18 125,24" fill="none" stroke="rgba(254, 240, 138, 0.8)" stroke-width="1.2" />
+
+                  <!-- Tầng sóng lụa tiền cảnh sáng rực ở đáy -->
+                  <path d="M-5,42 C18,30 40,30 62,39 C82,47 102,32 125,36 L125,48 L-5,48 Z" fill="url(#silkWaveFront)" />
+                  <path d="M-5,42 C18,30 40,30 62,39 C82,47 102,32 125,36" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-opacity="0.9" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- TOP 3 - XANH SAPPHIRE -->
+            <div class="podium-card bronze" id="podium-3">
+              <div class="avatar-group">
+                <img class="avatar" src="img/avartar.webp" alt="Avatar Top 3">
+                <span class="rank-badge">3</span>
+              </div>
+              <div class="podium-info">
+                <span class="podium-name"></span>
+              </div>
+              <div class="step">
+                <span class="step-shine" aria-hidden="true"></span>
+                <span class="step-num">3</span>
+                <svg class="step-sub-waves" viewBox="0 0 100 32" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M0,18 C35,28 65,14 100,22 L100,32 L0,32 Z" fill="rgba(147, 197, 253, 0.18)" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Bệ sân khấu đĩa tròn 3D nhiều tầng nâng đỡ 3 bục -->
+            <div class="podium-stage-base" aria-hidden="true">
+              <svg class="stage-svg" viewBox="0 0 380 44" preserveAspectRatio="none">
+                <defs>
+                  <radialGradient id="stageTop" cx="50%" cy="45%" r="52%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95" />
+                    <stop offset="55%" stop-color="#dbeafe" stop-opacity="0.88" />
+                    <stop offset="88%" stop-color="#93c5fd" stop-opacity="0.55" />
+                    <stop offset="100%" stop-color="#60a5fa" stop-opacity="0" />
+                  </radialGradient>
+                  <linearGradient id="stageRim" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#93c5fd" stop-opacity="0.1" />
+                    <stop offset="20%" stop-color="#ffffff" stop-opacity="0.9" />
+                    <stop offset="50%" stop-color="#bfdbfe" stop-opacity="0.95" />
+                    <stop offset="80%" stop-color="#ffffff" stop-opacity="0.9" />
+                    <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.1" />
+                  </linearGradient>
+                </defs>
+                <!-- Bóng đổ sâu dưới đáy bệ -->
+                <ellipse cx="190" cy="30" rx="172" ry="12" fill="rgba(30, 64, 175, 0.18)" filter="blur(4px)" />
+                <!-- Cạnh dày 3D của bệ đĩa -->
+                <ellipse cx="190" cy="25" rx="164" ry="12" fill="url(#stageRim)" />
+                <!-- Mặt trên của bệ đĩa -->
+                <ellipse cx="190" cy="22" rx="164" ry="11.5" fill="url(#stageTop)" stroke="rgba(255,255,255,0.9)" stroke-width="1" />
+                <!-- Bóng tiếp xúc dưới chân 3 bục -->
+                <ellipse cx="190" cy="20" rx="125" ry="5.5" fill="rgba(30, 58, 138, 0.16)" filter="blur(2px)" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Dải Cơ cấu giải thưởng tháng gắn trực tiếp dưới Bục Top 1-2-3 -->
+          <div class="podium-rewards-dock" aria-label="Cơ cấu giải thưởng tháng">
+            <div class="podium-reward-chips">
+              <div class="podium-reward-chip reward-silver">
+                <span class="rw-rank">Top 2</span>
+                <span class="rw-prize"><b>Huy chương Bạc</b> · +300 <img src="img/icon-diem.png" alt="Điểm" class="vn-ico" /> · +2 Streak</span>
+              </div>
+              <div class="podium-reward-chip reward-gold">
+                <span class="rw-rank">Top 1</span>
+                <span class="rw-prize"><b>Cúp Vàng</b> · +500 <img src="img/icon-diem.png" alt="Điểm" class="vn-ico" /> · +3 Streak</span>
+              </div>
+              <div class="podium-reward-chip reward-bronze">
+                <span class="rw-rank">Top 3</span>
+                <span class="rw-prize"><b>Huy chương Đồng</b> · +200 <img src="img/icon-diem.png" alt="Điểm" class="vn-ico" /> · +1 Streak</span>
+              </div>
+            </div>
+            <p class="podium-rewards-note">
+              <img src="img/icon-hop-qua.png" alt="Quà" class="vn-ico" />
+              <span>Chốt bảng vàng <b>23:59 ngày cuối tháng</b> · <b>Top 4 – 10:</b> +100 <img src="img/icon-diem.png" alt="Điểm" class="vn-ico" /> + 500 XP bảng vàng</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- BẢNG DANH SÁCH SĨ TỬ KÍNH MỜ + THANH VỊ TRÍ CỦA BẠN GẮN LIỀN Ở ĐẦU BẢNG -->
+        <div class="table-section">
+          <div class="my-standing-strip" id="my-standing-strip">
+            <div class="my-strip-left">
+              <span class="my-strip-label">Vị trí của bạn:</span>
+              <span class="my-strip-rank" id="my-standing-rank">--</span>
+              <span class="my-strip-avatar" id="my-standing-avatar"></span>
+              <span class="my-strip-name" id="my-standing-name">--</span>
+              <span class="my-strip-dot" aria-hidden="true">·</span>
+              <span class="my-strip-pts"><b id="my-pts-val">0</b> điểm</span>
+            </div>
+            <div class="my-strip-gap">
+              <span class="my-strip-gap-text" id="my-gap-text">Cách Top 1: <b id="my-gap-val">--</b></span>
+              <div class="my-strip-track">
+                <div class="gap-fill" id="my-gap-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <table class="user-table rk-table">
+            <thead>
+              <tr>
+                <th class="col-hang">Hạng</th>
+                <th class="col-user">Sĩ tử</th>
+                <th class="col-bio rk-bio">Giới thiệu</th>
+                <th class="col-diem">Điểm</th>
+              </tr>
+            </thead>
+            <tbody id="ranking-list"></tbody>
+          </table>
+        </div>
+      </section>
+
     </div>
 
-    <div class="table-section">
-      <table class="user-table rk-table">
-        <thead>
-          <tr>
-            <th>Hạng</th>
-            <th>Username</th>
-            <th class="rk-bio">Giới thiệu</th>
-            <th>Điểm</th>
-          </tr>
-        </thead>
-        <tbody id="ranking-list"></tbody>
-      </table>
-    </div>
-  </div>
+    <!-- Thanh ghim vị trí bản thân trên Mobile -->
+    <div id="rk-my-sticky" class="rk-my-sticky hidden"></div>
+  </main>
 
-  <script src="script.js"></script>
-  <script src="ranking.js"></script>
+  <script src="script.js?v=17"></script>
+  <script src="huy-hieu-khung.js"></script>
+  <script src="ranking.js?v=3"></script>
+  <script src="tour-xep-hang.js?v=4"></script>
 </body>
 
 </html>

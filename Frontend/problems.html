@@ -4,18 +4,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=2"></script>
   <script>
     if (localStorage.getItem("isLoggedIn") !== "true") location.replace("subjects.html");
   </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
   <title>VnStarL</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=11" />
   <link rel="stylesheet" href="style2.css" />
   <link rel="stylesheet" href="style3.css" />
-  <link rel="stylesheet" href="tien-do.css" />
+  <link rel="stylesheet" href="tien-do.css?v=9" />
+  <link rel="stylesheet" href="tour-personal.css?v=6" />
 </head>
 
-<body>
+<body class="pl-page">
   <header id="header">
     <div id="header-inner">
       <section class="right">
@@ -37,9 +41,19 @@
             <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
           </a>
         </li>
+        <li id="nav-khoa-bang">
+          <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+            <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+          </a>
+        </li>
         <li id="nav-xep-hang">
           <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
             <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+          </a>
+        </li>
+        <li id="nav-vuon-saoladou">
+          <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+            <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
           </a>
         </li>
       </ul>
@@ -50,7 +64,7 @@
           <a href="register.html" class="auth-link">Đăng ký</a>
         </div>
         <div id="user-profile" class="hidden">
-          <div class="streak-box">🔥 <span>0</span></div>
+          <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
           <span class="username">Username</span>
           <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
         </div>
@@ -61,12 +75,19 @@
   <main class="pl-wrap">
     <div class="pl-hero">
       <h1 id="ten-mon">Bài tập</h1>
-      <p>Chọn chương ở bên phải, rồi chọn bài học. Mỗi bài học có nhiều bài tập nhỏ để luyện.</p>
+      <p>
+        <span class="pl-chi-pc">Chọn chương ở bên phải, rồi chọn bài học. Mỗi bài học có nhiều bài tập nhỏ để luyện.</span>
+        <span class="pl-chi-dt">Chọn chương, rồi chọn bài học để luyện.</span>
+      </p>
     </div>
+
+    <!-- Chỉ hiện trên điện thoại: bai-tap.js đổ các viên chọn chương vào đây -->
+    <nav class="pl-chips" id="chuong-chips" aria-label="Chọn chương"></nav>
 
     <div class="pl-layout">
       <div class="pl-main">
-        <!-- bai-tap.js đổ tổng điểm của chương và danh sách bài học vào 2 chỗ này -->
+        <!-- bai-tap.js đổ tên chương (điện thoại), tổng điểm của chương và danh sách bài học vào 3 chỗ này -->
+        <div class="pl-chap-ten" id="pl-chap-ten"></div>
         <div class="pl-tong" id="pl-tong"></div>
         <div class="pl-ds" id="problem-list"></div>
       </div>
@@ -78,9 +99,10 @@
     </div>
   </main>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=17"></script>
   <script src="hang.js"></script>
-  <script src="bai-tap.js"></script>
+  <script src="bai-tap.js?v=6"></script>
+  <script src="tour-bai-tap.js?v=6"></script>
 </body>
 
 </html>

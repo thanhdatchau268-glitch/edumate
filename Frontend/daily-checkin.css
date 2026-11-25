@@ -1,0 +1,637 @@
+/* ==========================================================
+   daily-checkin.css - Điểm danh 7 ngày nhận quà & vòng quay
+   Phong cách: Modern Cosmic Glassmorphism, Frosted Glass (blur 14px)
+   Tối ưu mượt mà và thích ứng hoàn hảo trên mọi kích thước màn hình
+   ========================================================== */
+
+/* ---------- Lớp phủ làm mờ nền (Backdrop Overlay) ---------- */
+.daily-checkin-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+  box-sizing: border-box;
+}
+
+.daily-checkin-backdrop.hidden {
+  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.daily-checkin-backdrop.closing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- Khung Modal Frosted Glass ---------- */
+.daily-checkin-modal {
+  position: relative;
+  width: 580px !important;
+  max-width: 95vw;
+  max-height: 92vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.96) 0%,
+    rgba(240, 246, 255, 0.92) 100%
+  );
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 28px;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 24px 48px -12px rgba(37, 99, 235, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset,
+    0 8px 32px rgba(37, 99, 235, 0.15);
+  padding: 26px 28px;
+  box-sizing: border-box;
+  animation: dailyModalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  font-family: inherit;
+  color: #1e293b;
+}
+
+.daily-checkin-backdrop.closing .daily-checkin-modal {
+  animation: dailyModalOut 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dailyModalPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes dailyModalOut {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.94) translateY(14px);
+  }
+}
+
+/* ---------- Nút đóng (Close Button ✕) ---------- */
+.daily-checkin-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  background: rgba(255, 255, 255, 0.85);
+  color: #64748b;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.daily-checkin-close:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.35);
+  transform: rotate(90deg);
+}
+
+/* ---------- Tiêu đề & Lời dẫn ---------- */
+.daily-checkin-header {
+  text-align: center;
+  margin-bottom: 16px;
+  padding: 0 24px;
+}
+
+.daily-checkin-title {
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.daily-checkin-title .daily-icon-gift {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  animation: dailyGiftBounce 2.4s infinite ease-in-out;
+}
+
+.daily-checkin-title .daily-icon-gift .vn-ico {
+  width: 36px;
+  height: 36px;
+}
+
+@keyframes dailyGiftBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-3px) rotate(-4deg); }
+  75% { transform: translateY(-2px) rotate(4deg); }
+}
+
+.daily-checkin-subtitle {
+  margin: 0;
+  font-size: 0.86rem;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+/* ---------- Hàng chỉ số (Stats Row: Điểm, Khiên, Vé quay) ---------- */
+.daily-checkin-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.daily-stat-card {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 14px;
+  padding: 10px 4px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.daily-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.08);
+}
+
+.daily-stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  font-size: 1.3rem;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.daily-stat-icon .vn-ico {
+  width: 36px;
+  height: 36px;
+}
+
+.daily-stat-icon .vn-ico-ve {
+  width: 44px;
+  height: 36px;
+}
+
+.daily-stat-val {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.daily-stat-lbl {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* ========================================================
+   LỘ TRÌNH 7 TRẠM (JOURNEY TRACK)
+   ======================================================== */
+.journey-path-container,
+.daily-checkin-track {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 32px 0 24px 0 !important;
+  padding: 10px 4px 6px 4px !important;
+  box-sizing: border-box;
+}
+
+/* Đường nối giữa các trạm */
+.journey-line-bg {
+  position: absolute;
+  top: 36px;
+  left: 32px;
+  right: 32px;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  z-index: 1;
+}
+
+.journey-line-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%);
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+/* TRẠM NGÀY */
+.station-node,
+.daily-day-cell {
+  position: relative;
+  z-index: 2;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 6px !important;
+  width: 68px !important; /* Đủ rộng để chữ không bao giờ bị cắt */
+  min-height: auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.station-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2.5px solid #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  z-index: 2;
+}
+
+.station-circle-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Trạm đã điểm danh (Completed) */
+.station-node.completed .station-circle,
+.daily-day-cell.is-checked .station-circle {
+  background: #ecfdf5;
+  border-color: #10b981;
+  color: #059669;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+}
+
+.station-node.just-checked .station-circle,
+.daily-day-cell.just-checked .station-circle {
+  animation: dailyCheckPop 0.45s cubic-bezier(0.22, 1.25, 0.36, 1) forwards;
+}
+
+@keyframes dailyCheckPop {
+  0% { transform: scale(0.72); }
+  55% { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+
+/* TRẠM HÔM NAY: HÀO QUANG PHÁT SÁNG & SAO LA VẪY TAY */
+.station-node.is-today .station-circle,
+.daily-day-cell.is-today .station-circle {
+  background: #eff6ff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2), 0 8px 18px rgba(37, 99, 235, 0.35);
+  transform: scale(1.12);
+}
+
+.station-mascot-pin {
+  position: absolute;
+  top: -24px;
+  width: 28px;
+  height: auto;
+  z-index: 10;
+  animation: bouncePin 1.5s infinite ease-in-out;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+}
+
+@keyframes bouncePin {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* TIÊU ĐỀ & PHẦN THƯỞNG: CHỐNG RỚT VÀ CẮT CHỮ 100% */
+.station-label-title,
+.daily-day-num {
+  font-size: 0.74rem !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  text-overflow: clip !important;
+  overflow: visible !important;
+  margin: 0 !important;
+}
+
+.station-reward-val,
+.daily-day-reward {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 3px !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  color: #2563eb !important;
+  background: rgba(37, 99, 235, 0.08) !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  text-overflow: clip !important;
+  overflow: visible !important;
+  max-width: none !important;
+}
+
+.station-node.completed .station-reward-val,
+.daily-day-cell.is-checked .daily-day-reward {
+  background: #10b981 !important;
+  color: #ffffff !important;
+}
+
+/* NÚT ĐIỂM DANH GRADIENT 3D */
+.btn-checkin-3d,
+.daily-btn-primary {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.45);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-checkin-3d:hover:not(:disabled),
+.daily-btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -4px rgba(37, 99, 235, 0.55);
+}
+
+.btn-checkin-3d:active:not(:disabled),
+.daily-btn-primary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* ---------- Banner Thông báo / Ăn mừng (Notification Toast) ---------- */
+.daily-notification {
+  display: none;
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 1px solid #10b981;
+  color: #065f46;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 14px;
+  animation: dailySlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.daily-notification.active {
+  display: block;
+}
+
+.daily-notification.error {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-color: #ef4444;
+  color: #b91c1c;
+}
+
+@keyframes dailySlideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Các nút thao tác (Primary & Secondary Buttons) ---------- */
+.daily-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.daily-btn-primary {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 14px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.45);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.daily-btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px -4px rgba(37, 99, 235, 0.55);
+}
+
+.daily-btn-primary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.daily-btn-primary:disabled {
+  background: #e2e8f0;
+  color: #94a3b8;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.daily-btn-primary.is-claimed {
+  background: #e6f6ee;
+  color: #16a34a;
+  border: 1px solid #10b981;
+}
+
+.daily-btn-secondary {
+  width: 100%;
+  padding: 9px 16px;
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.daily-btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #1e293b;
+}
+
+/* ---------- Hiệu ứng pháo hoa tia sáng (Sparkles Animation) ---------- */
+.daily-sparkle-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 24px;
+  z-index: 10;
+}
+
+.daily-sparkle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: dailySparkleFly 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes dailySparkleFly {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.2);
+  }
+}
+
+/* ---------- Tối ưu hóa trên điện thoại di động (Mobile <= 640px) ---------- */
+@media (max-width: 640px) {
+  .daily-checkin-modal {
+    padding: 20px 14px 16px;
+    border-radius: 20px;
+    max-width: 420px;
+  }
+
+  .daily-checkin-header {
+    margin-bottom: 12px;
+    padding: 0 20px;
+  }
+
+  .daily-checkin-title {
+    font-size: 1.15rem;
+  }
+
+  .daily-checkin-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .daily-checkin-stats {
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .daily-stat-card {
+    padding: 8px 2px;
+    border-radius: 10px;
+  }
+
+  .daily-stat-icon {
+    font-size: 1rem;
+  }
+
+  .daily-stat-val {
+    font-size: 1.02rem;
+  }
+
+  .daily-stat-lbl {
+    font-size: 0.68rem;
+  }
+
+  .daily-checkin-track {
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  .daily-day-cell {
+    min-height: 70px;
+    padding: 6px 1px 4px;
+    border-radius: 8px;
+  }
+
+  .daily-day-num {
+    font-size: 0.65rem;
+  }
+
+  .daily-day-icon {
+    font-size: 1rem;
+    margin: 1px 0;
+  }
+
+  .daily-day-reward {
+    font-size: 0.62rem;
+    padding: 1px 2px;
+  }
+
+  .daily-day-badge {
+    font-size: 0.55rem;
+    padding: 1px 2px;
+  }
+
+  .daily-btn-primary {
+    padding: 12px 14px;
+    font-size: 0.92rem;
+    border-radius: 12px;
+  }
+
+  .daily-btn-secondary {
+    padding: 8px 12px;
+    font-size: 0.82rem;
+  }
+}
+
+/* Màn hình siêu nhỏ (<= 360px: iPhone SE, v.v.) */
+@media (max-width: 360px) {
+  .daily-checkin-modal {
+    padding: 16px 10px 14px;
+  }
+
+  .daily-checkin-track {
+    gap: 3px;
+  }
+
+  .daily-day-cell {
+    min-height: 64px;
+  }
+
+  .daily-day-num {
+    font-size: 0.6rem;
+  }
+
+  .daily-day-reward {
+    font-size: 0.58rem;
+  }
+}

@@ -1,4 +1,4 @@
-// pet-ho-so.js - thẻ "Sao La" trong hồ sơ: chọn giới tính giọng nói (3c) + chọn trang phục/skin (3b)
+// pet-ho-so.js - thẻ "Sao La" trong hồ sơ: chọn trang phục/skin (3b)
 // Cần pet.js nạp trước (profile.html đã xếp đúng thứ tự).
 //
 // Màn hình chọn đồ CHỈ nạp ảnh _xem_truoc.webp của từng skin, không nạp sprite.
@@ -10,9 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const API = typeof API_SERVER === "string" ? API_SERVER : "http://127.0.0.1:5000";
   const $ = (id) => document.getElementById(id);
   const luoi = $("sl-skin-luoi");
-  const ttGt = $("sl-gt-tt");
   const ttSkin = $("sl-skin-tt");
-  const radios = [...the.querySelectorAll('input[name="sl-gt"]')];
 
   let tt = null; // trạng thái pet mới nhất từ server
 
@@ -40,32 +38,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!kq.success) throw new Error(kq.message || "Có lỗi xảy ra, thử lại sau nhé.");
     return kq.data;
   }
-
-  // ---------- giới tính ----------
-  function veGioiTinh() {
-    radios.forEach((r) => { r.checked = r.value === tt.gioi_tinh; });
-  }
-
-  radios.forEach((r) =>
-    r.addEventListener("change", async () => {
-      if (!r.checked || r.value === tt.gioi_tinh) return;
-      const cu = tt.gioi_tinh;
-      radios.forEach((x) => (x.disabled = true));
-      bao(ttGt, "Đang lưu...");
-      try {
-        tt = await goi("/api/pet", { gioi_tinh: r.value });
-        await SAOLA.ap(tt);
-        bao(ttGt, "Đã đổi giọng của Sao La ✔", "ok");
-        SAOLA.noi("chao"); // nghe thử ngay (đang có thao tác bấm nên trình duyệt cho phát tiếng)
-      } catch (err) {
-        tt.gioi_tinh = cu;
-        bao(ttGt, err.message, "loi");
-      } finally {
-        radios.forEach((x) => (x.disabled = false));
-        veGioiTinh();
-      }
-    }),
-  );
 
   // ---------- trang phục ----------
   function veSkin() {
@@ -122,11 +94,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const ban = await SAOLA.sanSang;
   if (!ban) {
     bao(ttSkin, "Không tải được dữ liệu Sao La. Bật app.py nhé!", "loi");
-    radios.forEach((x) => (x.disabled = true));
     return;
   }
   tt = ban;
   bao(ttSkin, "");
-  veGioiTinh();
   veSkin();
 });

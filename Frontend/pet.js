@@ -28,14 +28,18 @@
 
   // ---------- cấu hình ----------
   const KHOA_TAT_TIENG = "saola_tat_tieng";        // "1" = đã tắt tiếng (nhớ lâu dài)
+  const KHOA_THU_GON = "saola_thu_gon";            // "1" = thu gọn Sao La vào mép phải
   const KHOA_SKIN_GAN_DAY = "saola_skin_gan_day";  // các skin vừa mặc, để dặn sw.js giữ cache
+  const KHOA_TT_CACHE = "saola_tt_cache_" + userId;// cache trạng thái pet để hiện & nói ngay tức thì
+  const KHOA_LOI_CACHE = "saola_loi_cache_v3";     // cache manifest lời thoại khỏi chờ fetch
+  const KHOA_THI_CACHE = "saola_thi_cache";        // cache kiểm tra cuộc thi trong phiên
+  const KHOA_AM_THIEU = "saola_am_thieu_v3";       // nhớ các file mp3 không tồn tại trong phiên
   const SO_SKIN_GIU_CACHE = 2;                     // chỉ giữ cache cho skin đang mặc + 1 skin gần nhất
   const THU_MUC_AM = "audio/pet/";
-  const TOI_DA_TAI_TRUOC = 2;                      // tải trước tối đa 2 lời kế tiếp
   const HAN_NHO_CUOC_THI = 60 * 1000;              // nhớ kết quả "có cuộc thi không" 60 giây
   const THOI_GIAN_BONG_BONG = 4500;
   const THOI_GIAN_HANH_DONG = 3000;
-  const LA_FORM = trang === "form.html";           // form.html: pet không phát tiếng
+  const LA_FORM = trang === "form.html" && /[?&]subject=contest\b/.test(location.search); // chỉ ẩn/tắt tiếng khi đang thi cuộc thi trên form.html
 
   const giamChuyenDong = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -47,21 +51,31 @@
     hieuUng: { thu_muc: "img/pet/hieu_ung/", ds: [], theo_hanh_dong: {} },
 
     skin: null,              // {id, thu_muc, hanh_dong}
+    skinCho: null,           // skin chờ nạp khi Sao La đang thu gọn
     anhSkin: new Map(),      // hành động -> Image  (CHỈ của skin đang mặc)
     anhHu: new Map(),        // tên hiệu ứng -> Image
     luotSkin: 0, luotHanhDong: 0, henVeIdle: 0,
+    dangChayLoop: false,     // chỉ chạy requestAnimationFrame khi mở & tab đang hiển thị
 
     loi: {},                 // mã lời -> chữ thoại
     hangCham: [],            // hàng đợi lời "chạm vào" (xáo trộn, không lặp liên tục)
     tuongTac: false,         // người dùng đã bấm/gõ phím chưa (trình duyệt chặn tự phát tiếng)
+    choPhat: null,           // {ma, chu, ts} câu vừa bị trình duyệt chặn autoplay, phát ngay khi chạm
     thi: { t: 0, v: false, p: null }, // có cuộc thi đang diễn ra không (nhớ 60 giây)
 
-    am: new Map(),           // đường dẫn mp3 -> {u: objectURL, p: Promise, huy: bool}
     amThieu: new Set(),      // mp3 không tồn tại (khỏi hỏi lại)
-    hangTaiTruoc: [],        // mp3 đã tải trước
     luotGiong: 0, amDangPhat: null,
     henBongBong: 0,
   };
+  try {
+    const amCu = JSON.parse(luu.docSS(KHOA_AM_THIEU) || "[]");
+    if (Array.isArray(amCu)) amCu.forEach((dd) => S.amThieu.add(dd));
+    const thiCu = JSON.parse(luu.docSS(KHOA_THI_CACHE) || "null");
+    if (thiCu && typeof thiCu.t === "number" && Date.now() - thiCu.t < HAN_NHO_CUOC_THI) {
+      S.thi.t = thiCu.t;
+      S.thi.v = !!thiCu.v;
+    }
+  } catch (e) { /* bỏ qua */ }
   const ELM = {};            // các phần tử giao diện
 
   // =====================================================================
@@ -70,7 +84,7 @@
   function dungGiaoDien() {
     if (!document.querySelector('link[href^="pet.css"]')) {
       const l = document.createElement("link");
-      l.rel = "stylesheet"; l.href = "pet.css?v=2";
+      l.rel = "stylesheet"; l.href = "pet.css?v=3";
       document.head.appendChild(l);
     }
     const goc = document.createElement("div");
@@ -79,6 +93,7 @@
     goc.innerHTML =
       '<div class="sl-dat" aria-hidden="true"></div>' +
       '<div class="sl-bong" hidden role="status" aria-live="polite"></div>' +
+      '<button type="button" class="sl-thu" aria-label="Thu gọn hoặc mở lại Sao La"></button>' +
       '<button type="button" class="sl-tieng" aria-label="Bật hoặc tắt tiếng Sao La"></button>' +
       '<div class="sl-pet"><div class="sl-than"></div><div class="sl-hu"></div>' +
       '<div class="sl-hit" role="button" tabindex="0" aria-label="Sao La, chạm để trò chuyện"></div></div>';
@@ -86,10 +101,33 @@
 
     ELM.goc = goc;
     ELM.bong = goc.querySelector(".sl-bong");
+    ELM.thu = goc.querySelector(".sl-thu");
     ELM.tieng = goc.querySelector(".sl-tieng");
     ELM.hit = goc.querySelector(".sl-hit");
     ELM.than = { el: goc.querySelector(".sl-than"), anh: null, n: 1, i: 0 };
     ELM.hu = { el: goc.querySelector(".sl-hu"), anh: null, n: 1, i: 0 };
+
+    const capNhatThuGon = () => {
+      const thu = luu.doc(KHOA_THU_GON) === "1";
+      goc.classList.toggle("thu-gon", thu);
+      ELM.thu.textContent = thu ? "🦌" : "›";
+      ELM.thu.title = thu ? "Mở lại Sao La" : "Thu gọn Sao La vào góc màn hình";
+      ELM.thu.setAttribute("aria-expanded", String(!thu));
+    };
+    capNhatThuGon();
+    ELM.thu.addEventListener("click", () => {
+      const moi = luu.doc(KHOA_THU_GON) === "1" ? "0" : "1";
+      luu.ghi(KHOA_THU_GON, moi);
+      if (moi === "1") dungGiong();
+      capNhatThuGon();
+      if (moi === "0" && S.skinCho && !S.skin) {
+        const cho = S.skinCho;
+        S.skinCho = null;
+        apDungSkin(cho).then((ok) => { if (ok) batLoop(); });
+      } else {
+        batLoop();
+      }
+    });
 
     ELM.tieng.hidden = LA_FORM; // form.html không có tiếng nên khỏi hiện nút
     veNutTieng();
@@ -174,17 +212,29 @@
     } else { h.left = h.top = "0"; h.width = h.height = "100%"; }
   }
 
-  // 1 bộ đếm giờ chung cho cả pet và hiệu ứng; tab ẩn thì đứng im cho đỡ tốn pin
+  // 1 bộ đếm giờ chung cho cả pet và hiệu ứng; tự dừng khi ẩn tab hoặc đang thu gọn (tiết kiệm pin điện thoại)
   let tgTruoc = 0;
-  function lap(t) {
+  function daMoRong() {
+    return luu.doc(KHOA_THU_GON) !== "1";
+  }
+  function nenChayLoop() {
+    return !document.hidden && !giamChuyenDong && daMoRong() && !!S.skin;
+  }
+  function batLoop() {
+    if (S.dangChayLoop || !nenChayLoop()) return;
+    S.dangChayLoop = true;
     requestAnimationFrame(lap);
-    if (document.hidden || giamChuyenDong) return;
+  }
+  function lap(t) {
+    if (!nenChayLoop()) { S.dangChayLoop = false; return; }
+    requestAnimationFrame(lap);
     if (t - tgTruoc < 1000 / S.fps) return;
     tgTruoc = t;
     [ELM.than, ELM.hu].forEach((nc) => {
       if (nc.anh && nc.n > 1) { nc.i = (nc.i + 1) % nc.n; veKhung(nc); }
     });
   }
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) batLoop(); });
 
   // =====================================================================
   // NẠP SPRITE (lười) + ĐỔI SKIN
@@ -307,82 +357,79 @@
     ELM.tieng.title = tat ? "Đang tắt tiếng (vẫn hiện chữ)" : "Đang bật tiếng";
   }
 
-  // Có cuộc thi đang diễn ra không? (hỏi server, nhớ 60 giây; lỗi mạng coi như không có)
+  // Có cuộc thi đang diễn ra không? (dùng cache sessionStorage 60s để không làm trễ lúc mở trang)
   function dangCoCuocThi() {
-    if (S.thi.p && Date.now() - S.thi.t < HAN_NHO_CUOC_THI) return S.thi.p; // nhiều lời gọi cùng lúc dùng chung 1 lần hỏi
+    if (S.thi.p && Date.now() - S.thi.t < HAN_NHO_CUOC_THI) return S.thi.p;
     S.thi.t = Date.now();
     S.thi.p = fetch(API + "/api/contests")
       .then((res) => res.json())
       .then((kq) => !!(kq && Array.isArray(kq.data) && kq.data.some((c) => c.trang_thai === "dang-dien-ra")))
       .catch(() => false)
-      .then((v) => { S.thi.v = v; return v; });
+      .then((v) => {
+        S.thi.v = v;
+        luu.ghiSS(KHOA_THI_CACHE, JSON.stringify({ t: S.thi.t, v }));
+        return v;
+      });
     return S.thi.p;
   }
-  async function imLang() { return LA_FORM || (await dangCoCuocThi()); }
+  function imLangNhanh() {
+    if (LA_FORM) return true;
+    if (Date.now() - S.thi.t < HAN_NHO_CUOC_THI) return S.thi.v;
+    dangCoCuocThi(); // làm mới ngầm cho lần gọi sau, không chặn phát tiếng ngay lập tức
+    return S.thi.v;
+  }
 
-  // ----- tải mp3 (lười): fetch -> blob -> objectURL, để còn giải phóng được -----
-  function layAm(duongDan) {
-    if (S.amThieu.has(duongDan)) return Promise.resolve(null);
-    let e = S.am.get(duongDan);
-    if (!e) {
-      e = { u: null, huy: false, p: null };
-      e.p = fetch(duongDan)
-        .then((r) => {
-          const loai = r.headers.get("content-type") || "";
-          return r.ok && !loai.includes("text/html") ? r.blob() : null; // server trả trang lỗi HTML = không có file
-        })
-        .then((b) => (b && b.size ? URL.createObjectURL(b) : null))
-        .catch(() => null)
-        .then((u) => {
-          if (!u) { S.am.delete(duongDan); S.amThieu.add(duongDan); return null; }
-          if (e.huy) { URL.revokeObjectURL(u); return null; }
-          e.u = u;
-          return u;
-        });
-      S.am.set(duongDan, e);
-    }
-    return e.p;
+  function nhoAmThieu(dd) {
+    S.amThieu.add(dd);
+    try { luu.ghiSS(KHOA_AM_THIEU, JSON.stringify(Array.from(S.amThieu).slice(-50))); } catch (e) { /* bỏ qua */ }
   }
-  function boAm(duongDan) {
-    S.hangTaiTruoc = S.hangTaiTruoc.filter((x) => x !== duongDan); // luôn gỡ khỏi hàng, kể cả khi file không tồn tại
-    const e = S.am.get(duongDan);
-    if (!e) return;
-    e.huy = true;
-    if (e.u) URL.revokeObjectURL(e.u);
-    S.am.delete(duongDan);
-  }
-  function duongDanAm(gioiTinh, ma) { return THU_MUC_AM + gioiTinh + "/" + ma + ".mp3"; }
-
-  // Tải trước tối đa 1-2 lời kế tiếp (chỉ khi thật sự có thể phát)
-  function taiTruoc(ma) {
-    if (!ma || LA_FORM || dangTatTieng() || !S.tuongTac || S.thi.v) return;
-    const dd = duongDanAm(S.gioiTinh, ma);
-    if (S.hangTaiTruoc.includes(dd) || S.amThieu.has(dd)) return;
-    S.hangTaiTruoc.push(dd);
-    while (S.hangTaiTruoc.length > TOI_DA_TAI_TRUOC) boAm(S.hangTaiTruoc[0]);
-    layAm(dd);
-  }
+  function duongDanAm(gioiTinh, ma) { return THU_MUC_AM + gioiTinh + "/" + ma + ".mp3?v=3"; }
 
   function dungGiong() {
     ++S.luotGiong;
+    S.choPhat = null;
     if (S.amDangPhat) {
-      S.amDangPhat.a.pause();
-      boAm(S.amDangPhat.dd);
+      try { S.amDangPhat.a.pause(); S.amDangPhat.a.src = ""; } catch (e) { /* bỏ qua */ }
       S.amDangPhat = null;
     }
     try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) { /* bỏ qua */ }
   }
 
-  // Phát 1 file. Trả true nếu đã bắt đầu phát, false nếu bị trình duyệt chặn.
-  function phatFile(url, dd, luot) {
+  // Phát thẳng qua Audio stream (nghe ngay khi tải được những byte đầu, không chờ tải xong cả file mới phát)
+  function phatTrucTiep(dd, ma, chu, luot) {
     return new Promise((ok) => {
-      const a = new Audio(url);
+      const a = new Audio(dd);
+      a.preload = "auto";
+      a.volume = 1.0;
       S.amDangPhat = { a, dd };
-      const xong = () => { if (S.amDangPhat && S.amDangPhat.a === a) S.amDangPhat = null; boAm(dd); };
-      a.addEventListener("ended", xong);
-      a.addEventListener("error", xong);
-      if (luot !== S.luotGiong) { xong(); ok(false); return; }
-      a.play().then(() => ok(true), () => { xong(); ok(false); });
+      let daXong = false;
+      const don = () => {
+        if (daXong) return;
+        daXong = true;
+        if (S.amDangPhat && S.amDangPhat.a === a) S.amDangPhat = null;
+      };
+      a.addEventListener("ended", don, { once: true });
+      a.addEventListener("error", () => {
+        don();
+        nhoAmThieu(dd);
+        if (luot === S.luotGiong) ok(noiBangTrinhDuyet(chu));
+        else ok(false);
+      }, { once: true });
+      if (luot !== S.luotGiong) { don(); ok(false); return; }
+      a.play().then(
+        () => {
+          S.tuongTac = true;
+          S.choPhat = null;
+          ok(true);
+        },
+        (err) => {
+          don();
+          if (luot === S.luotGiong && err && err.name === "NotAllowedError" && !S.tuongTac) {
+            S.choPhat = { ma, chu, ts: Date.now() };
+          }
+          ok(false);
+        }
+      );
     });
   }
 
@@ -394,48 +441,41 @@
       if (!giong) return false;
       const u = new SpeechSynthesisUtterance(chu);
       u.voice = giong; u.lang = giong.lang;
-      u.pitch = S.gioiTinh === "nam" ? 0.8 : 1.15;
+      u.pitch = 1.15;
       speechSynthesis.speak(u);
       return true;
     } catch (e) { return false; }
   }
 
-  // Thứ tự: giọng đúng giới tính -> giọng giới tính còn lại -> giọng trình duyệt -> chỉ chữ (không báo lỗi)
+  // Thứ tự: giọng nữ mp3 (stream tức thì) -> giọng trình duyệt -> chỉ chữ
   async function phatGiong(ma, chu) {
     dungGiong();
-    if (!ma || dangTatTieng() || !S.tuongTac) return false;
+    if (!ma || dangTatTieng() || imLangNhanh()) return false;
     const luot = S.luotGiong;
-    if (await imLang()) return false;
-    if (luot !== S.luotGiong) return false;
-
-    const khac = S.gioiTinh === "nam" ? "nu" : "nam";
-    for (const gt of [S.gioiTinh, khac]) {
-      const dd = duongDanAm(gt, ma);
-      const u = await layAm(dd);
-      if (luot !== S.luotGiong) return false;
-      if (u) return phatFile(u, dd, luot);
-    }
-    return noiBangTrinhDuyet(chu);
+    const dd = duongDanAm("nu", ma);
+    if (S.amThieu.has(dd)) return S.tuongTac ? noiBangTrinhDuyet(chu) : false;
+    return phatTrucTiep(dd, ma, chu, luot);
   }
 
   // =====================================================================
   // LỜI THOẠI
   // =====================================================================
+  function docLoiCache() {
+    try {
+      const cu = JSON.parse(luu.doc(KHOA_LOI_CACHE) || "null");
+      if (cu && typeof cu === "object") S.loi = cu;
+    } catch (e) { /* bỏ qua */ }
+  }
   async function napLoi() {
     try {
-      const res = await fetch(THU_MUC_AM + "manifest.json");
+      const res = await fetch(THU_MUC_AM + "manifest.json?v=3");
       if (!res.ok) return;
       const kq = await res.json();
-      if (kq && kq.loi && typeof kq.loi === "object") S.loi = kq.loi;
+      if (kq && kq.loi && typeof kq.loi === "object") {
+        S.loi = kq.loi;
+        luu.ghi(KHOA_LOI_CACHE, JSON.stringify(kq.loi));
+      }
     } catch (e) { /* không có lời thoại thì pet vẫn chạy, chỉ im lặng */ }
-  }
-
-  // nv07 -> nv08 (nếu có), cham_vao_1 -> cham_vao_2
-  function maKeTiep(ma) {
-    const m = /^(.*?)(\d+)$/.exec(ma || "");
-    if (!m) return null;
-    const moi = m[1] + String(Number(m[2]) + 1).padStart(m[2].length, "0");
-    return moi in S.loi ? moi : null;
   }
 
   function xaoTron(ds) {
@@ -449,12 +489,10 @@
     if (S.hangCham.length === 0) {
       S.hangCham = xaoTron(Object.keys(S.loi).filter((k) => k.startsWith("cham_vao_") && S.loi[k]));
     }
-    const ma = S.hangCham.shift() || null;
-    taiTruoc(S.hangCham[0]); // lời chạm kế tiếp
-    return ma;
+    return S.hangCham.shift() || null;
   }
 
-  // Nói 1 lời: hiện chữ + (nếu được phép) phát giọng. Trả true nếu có gì để nói.
+  // Nói 1 lời: hiện chữ + (nếu được phép) tải & phát giọng On-Demand. Trả true nếu có gì để nói.
   // Miệng pet: nếu skin có hành động "noi" riêng thì dùng, không thì giữ hành động đang chạy.
   function noi(ma, tuyChon) {
     const chu = (tuyChon && tuyChon.chu) || (ma && S.loi[ma]) || "";
@@ -462,7 +500,6 @@
     if (chu) hienChu(chu);
     if (S.skin && S.skin.hanh_dong.includes("noi")) datHanhDong("noi", 2500);
     phatGiong(ma, chu);
-    taiTruoc(maKeTiep(ma));
     return !!chu;
   }
 
@@ -471,44 +508,97 @@
   // =====================================================================
   function apTrangThai(tt) {
     S.ttServer = tt;
-    S.gioiTinh = tt.gioi_tinh === "nam" ? "nam" : "nu";
+    S.gioiTinh = "nu";
     S.soKhung = tt.so_khung || 6;
     S.fps = tt.fps || 6;
     if (tt.hieu_ung) S.hieuUng = tt.hieu_ung;
-    return apDungSkin(tt.skin_hien_tai);
+    // Nếu đang thu gọn trên mobile thì chỉ hiện nút 🦌, chưa tải sprite nặng cho tới khi người dùng bấm mở
+    if (!daMoRong() && !S.skin) {
+      S.skinCho = tt.skin_hien_tai;
+      if (ELM.goc) ELM.goc.hidden = false;
+      return Promise.resolve(true);
+    }
+    S.skinCho = null;
+    return apDungSkin(tt.skin_hien_tai).then((ok) => { if (ok) batLoop(); return ok; });
+  }
+
+  function docTtCache() {
+    try {
+      const c = JSON.parse(luu.doc(KHOA_TT_CACHE) || "null");
+      return c && c.skin_hien_tai ? c : null;
+    } catch (e) { return null; }
   }
 
   async function taiTrangThai() {
     try {
       const res = await fetch(API + "/api/pet?user_id=" + encodeURIComponent(userId));
       const kq = await res.json();
-      return kq && kq.success ? kq.data : null;
-    } catch (e) { return null; } // server tắt: pet im lặng biến mất, không làm hỏng trang
+      if (kq && kq.success && kq.data) {
+        luu.ghi(KHOA_TT_CACHE, JSON.stringify(kq.data));
+        return kq.data;
+      }
+      return null;
+    } catch (e) { return null; }
   }
 
-  // Lần đầu bấm/gõ phím: từ lúc này trình duyệt mới cho phát tiếng
-  function ghiNhanTuongTac() { S.tuongTac = true; }
+  // Lần đầu bấm/gõ phím: từ lúc này trình duyệt chắc chắn cho phát tiếng; phát nốt câu vừa bị chặn (nếu mới < 8s)
+  function ghiNhanTuongTac() {
+    S.tuongTac = true;
+    if (S.choPhat) {
+      const c = S.choPhat;
+      S.choPhat = null;
+      if (Date.now() - c.ts < 8000) phatGiong(c.ma, c.chu);
+    }
+  }
   ["pointerdown", "keydown", "touchstart"].forEach((s) =>
     window.addEventListener(s, ghiNhanTuongTac, { once: true, capture: true, passive: true }));
 
   let dungXong;
   const sanSang = new Promise((ok) => { dungXong = ok; });
 
+  function xuLyChaoVaSanSang(tt) {
+    window.SAOLA.vuaChaoMoi = false;
+    if (daMoRong() && S.skin) {
+      const khoaMoi = "saola_da_chao_moi_" + userId;
+      if (!luu.doc(khoaMoi) && S.loi.chao_moi) {
+        luu.ghi(khoaMoi, "1");
+        luu.ghiSS("saola_da_chao", "1");
+        window.SAOLA.vuaChaoMoi = true;
+        noi("chao_moi");
+      } else if (!luu.docSS("saola_da_chao") && S.loi.chao) {
+        luu.ghiSS("saola_da_chao", "1");
+        hienChu(S.loi.chao);
+      }
+    }
+    dungXong(tt);
+    window.dispatchEvent(new CustomEvent("saola-san-sang", { detail: tt }));
+  }
+
   async function khoiDong() {
     dungGiaoDien();
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => { });
-    requestAnimationFrame(lap);
+    docLoiCache();
 
+    const ttCache = docTtCache();
+    if (ttCache) {
+      // Hiện Sao La & phát thoại ngay lập tức từ cache (< 50ms), rồi đồng bộ ngầm với server
+      await apTrangThai(ttCache);
+      xuLyChaoVaSanSang(ttCache);
+      Promise.all([taiTrangThai(), napLoi()]).then(([ttMoi]) => {
+        if (ttMoi && (!S.skin || (ttMoi.skin_hien_tai && ttMoi.skin_hien_tai.id !== S.skin.id))) {
+          apTrangThai(ttMoi);
+        }
+      });
+      if (!LA_FORM && Date.now() - S.thi.t >= HAN_NHO_CUOC_THI) dangCoCuocThi();
+      return;
+    }
+
+    // Lần đầu tiên vào web chưa có cache: tải song song ngay, không chờ delay
     const [tt] = await Promise.all([taiTrangThai(), napLoi()]);
     if (!tt) { dungXong(null); return; }
     await apTrangThai(tt);
-    dungXong(tt);
-
-    // Chào bằng chữ 1 lần mỗi phiên. KHÔNG phát tiếng: vừa mở trang là bị trình duyệt chặn.
-    if (!luu.docSS("saola_da_chao") && S.loi.chao && S.skin) {
-      luu.ghiSS("saola_da_chao", "1");
-      hienChu(S.loi.chao);
-    }
+    xuLyChaoVaSanSang(tt);
+    if (!LA_FORM && Date.now() - S.thi.t >= HAN_NHO_CUOC_THI) dangCoCuocThi();
   }
 
   window.SAOLA = {

@@ -1,0 +1,941 @@
+/* dinh-huong.css - Trang Định hướng môn chuyên lần đầu (VnStarL) */
+.dh-page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #eff6ff 0%, #f8fbff 55%, #ffffff 100%);
+    color: #0f172a;
+}
+
+.dh-shell {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px 16px 64px;
+}
+
+/* ---------- Đầu trang ---------- */
+.dh-hero {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.dh-eyebrow {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 0.78rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.dh-hero h1 {
+    font-size: clamp(1.55rem, 4vw, 2.15rem);
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 6px;
+}
+
+.dh-hero p {
+    margin: 0;
+    max-width: 58ch;
+    color: #475569;
+    font-size: 0.94rem;
+    line-height: 1.5;
+}
+
+.dh-skip-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border-radius: 12px;
+    border: 1.5px solid #bfdbfe;
+    background: #ffffff;
+    color: #2457d6;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.18s ease, transform 0.18s ease;
+}
+
+.dh-skip-link:hover {
+    background: #eff6ff;
+    transform: translateY(-1px);
+}
+
+/* ---------- Thanh 2 bước ---------- */
+.dh-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.dh-step-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #ffffff;
+    border: 1.5px solid #dbeafe;
+    color: #64748b;
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.dh-step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #e2e8f0;
+    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.dh-step-tab.is-active {
+    border-color: #2457d6;
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.dh-step-tab.is-active .dh-step-num {
+    background: #2457d6;
+    color: #ffffff;
+}
+
+.dh-step-tab.is-done .dh-step-num {
+    background: #10b981;
+    color: #ffffff;
+}
+
+.dh-step-line {
+    flex: 1;
+    height: 2px;
+    background: #dbeafe;
+    border-radius: 999px;
+}
+
+/* ---------- Thẻ form chính (kính mờ VnStarL) ---------- */
+.dh-card {
+    background: rgba(255, 255, 255, 0.94);
+    border: 1.5px solid #dbeafe;
+    border-radius: 22px;
+    padding: 26px 24px;
+    box-shadow: 0 10px 30px rgba(36, 87, 214, 0.08);
+}
+
+.dh-pane {
+    display: none;
+}
+
+.dh-pane.is-visible {
+    display: block;
+    animation: dh-fade 0.25s ease;
+}
+
+@keyframes dh-fade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dh-pane-head h2 {
+    margin: 0 0 4px;
+    font-size: 1.28rem;
+    font-weight: 800;
+}
+
+.dh-pane-head p {
+    margin: 0 0 18px;
+    font-size: 0.9rem;
+    color: #475569;
+}
+
+/* ---------- Bước 1: Lưới điểm 9 môn + Radar ---------- */
+.dh-diem-wrap {
+    display: grid;
+    gap: 20px;
+}
+
+@media (min-width: 720px) {
+    .dh-diem-wrap {
+        grid-template-columns: 1.05fr 0.95fr;
+        align-items: start;
+    }
+}
+
+.dh-luoi-diem {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.dh-o-diem label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 5px;
+}
+
+.dh-o-diem label span.req {
+    color: #dc2626;
+}
+
+.dh-o-diem input {
+    width: 100%;
+    padding: 10px 8px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 12px;
+    background: #ffffff;
+    font-family: inherit;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-align: center;
+    color: #0f172a;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.dh-o-diem input:focus {
+    outline: none;
+    border-color: #2457d6;
+    box-shadow: 0 0 0 3px rgba(36, 87, 214, 0.14);
+}
+
+.dh-o-diem input.sai {
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+
+.dh-tien-ich {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.dh-nut-nho {
+    padding: 7px 12px;
+    border-radius: 10px;
+    border: 1px solid #bfdbfe;
+    background: #f8fbff;
+    color: #2457d6;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s ease;
+}
+
+.dh-nut-nho:hover {
+    background: #e0edff;
+}
+
+.dh-radar-box {
+    background: linear-gradient(180deg, #eff6ff 0%, #f8fbff 100%);
+    border: 1px solid #dbeafe;
+    border-radius: 18px;
+    padding: 14px;
+    text-align: center;
+}
+
+.dh-radar-box svg {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+}
+
+.dh-radar-chu {
+    margin: 4px 0 0;
+    font-size: 0.84rem;
+    color: #475569;
+}
+
+.dh-radar-chu b {
+    color: #2457d6;
+}
+
+/* ---------- Bước 2: Thẻ trượt Sở thích (1/7 -> 7/7) ---------- */
+.dh-so-thich-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.dh-q-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #2457d6;
+    font-size: 0.76rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.dh-so-thich-top h2 {
+    margin: 0;
+    font-size: 1.24rem;
+    font-weight: 800;
+}
+
+.dh-q-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.dh-q-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid #cbd5e1;
+    background: #ffffff;
+    color: #64748b;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.dh-q-dot.is-answered {
+    border-color: #93c5fd;
+    background: #eff6ff;
+    color: #2457d6;
+}
+
+.dh-q-dot.is-current {
+    border-color: #2457d6;
+    background: #2457d6;
+    color: #ffffff;
+    transform: scale(1.08);
+}
+
+.dh-q-bar {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 22px;
+}
+
+.dh-q-bar-fill {
+    display: block;
+    height: 100%;
+    width: 14%;
+    background: linear-gradient(90deg, #2563eb, #38bdf8);
+    border-radius: 999px;
+    transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dh-q-stage {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 28px 24px;
+    border-radius: 20px;
+    background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+    border: 1.5px solid #dbeafe;
+    text-align: center;
+    animation: dh-fade 0.24s ease;
+}
+
+.dh-q-prompt {
+    margin: 0 0 22px;
+    font-size: clamp(1.08rem, 2.6vw, 1.32rem);
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.45;
+}
+
+.dh-q-scale {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.dh-q-scale.is-khtn-opts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dh-khtn-opt.is-wide {
+    grid-column: 1 / -1;
+}
+
+.dh-khtn-opt {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1.5px solid #dbeafe;
+    background: #ffffff;
+    color: #0f172a;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+}
+
+.dh-khtn-opt:hover {
+    transform: translateY(-2px);
+    border-color: #60a5fa;
+    background: #f0f7ff;
+}
+
+.dh-khtn-opt[aria-checked="true"] {
+    border-color: #2457d6;
+    background: #2457d6;
+    color: #ffffff;
+    box-shadow: 0 10px 20px rgba(36, 87, 214, 0.24);
+}
+
+.dh-khtn-opt-title {
+    font-size: 0.96rem;
+    font-weight: 800;
+}
+
+.dh-khtn-opt-sub {
+    font-size: 0.78rem;
+    color: #64748b;
+    line-height: 1.35;
+}
+
+.dh-khtn-opt[aria-checked="true"] .dh-khtn-opt-sub {
+    color: #dbeafe;
+}
+
+.dh-scale-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 6px;
+    border-radius: 16px;
+    border: 1.5px solid #dbeafe;
+    background: #ffffff;
+    color: #334155;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+}
+
+.dh-scale-btn:hover {
+    transform: translateY(-2px);
+    border-color: #60a5fa;
+    background: #f0f7ff;
+}
+
+.dh-scale-btn[aria-checked="true"] {
+    border-color: #2457d6;
+    background: #2457d6;
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(36, 87, 214, 0.24);
+}
+
+.dh-scale-val {
+    font-size: 1.18rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.dh-scale-lbl {
+    font-size: 0.76rem;
+    font-weight: 600;
+    opacity: 0.88;
+}
+
+.dh-q-hints {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.dh-q-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    max-width: 680px;
+    margin: 14px auto 0;
+}
+
+.dh-q-status {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin-left: auto;
+}
+
+/* ---------- Nút hành động ---------- */
+.dh-loi {
+    margin: 14px 0 0;
+    min-height: 1.3em;
+    color: #dc2626;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.dh-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+.dh-nut-chinh,
+.dh-nut-phu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.dh-nut-chinh {
+    border: none;
+    background: #2457d6;
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(36, 87, 214, 0.25);
+}
+
+.dh-nut-chinh:hover:not(:disabled) {
+    background: #1d49b8;
+    transform: translateY(-2px);
+}
+
+.dh-nut-chinh:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.dh-nut-phu {
+    border: 1.5px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
+}
+
+.dh-nut-phu:hover {
+    border-color: #93c5fd;
+    color: #2457d6;
+}
+
+/* ==========================================================================
+   BƯỚC 3: CHỌN MÔN MUỐN CHUYÊN + KẾT QUẢ ĐÁNH GIÁ ĐẦU VÀO (CÓ / KHÔNG)
+   ========================================================================== */
+.dh-mon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(156px, 1fr));
+    gap: 12px;
+}
+
+.dh-mon-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 16px 12px;
+    border-radius: 16px;
+    border: 1.5px solid #dbeafe;
+    background: #ffffff;
+    color: #0f172a;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+}
+
+.dh-mon-btn:hover {
+    transform: translateY(-2px);
+    border-color: #60a5fa;
+    background: #f0f7ff;
+}
+
+.dh-mon-btn[aria-checked="true"] {
+    border-color: #2457d6;
+    background: #2457d6;
+    color: #ffffff;
+    box-shadow: 0 10px 22px rgba(36, 87, 214, 0.24);
+}
+
+.dh-mon-ico {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: #eff6ff;
+    color: #2457d6;
+    font-size: 1.05rem;
+}
+
+.dh-mon-btn[aria-checked="true"] .dh-mon-ico {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+.dh-mon-ten {
+    font-size: 0.96rem;
+    font-weight: 800;
+}
+
+.dh-mon-nhom {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.dh-mon-btn[aria-checked="true"] .dh-mon-nhom {
+    color: #dbeafe;
+}
+
+.dh-result-panel {
+    padding: 24px;
+    animation: dh-fade 0.25s ease;
+}
+
+.dh-verdict {
+    border-radius: 18px;
+    padding: 20px 22px;
+    margin-bottom: 18px;
+    border: 1.5px solid #dbeafe;
+}
+
+.dh-verdict.is-yes {
+    background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+    border-color: #6ee7b7;
+}
+
+.dh-verdict.is-no {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef2f2 100%);
+    border-color: #fca5a5;
+}
+
+.dh-verdict-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.dh-verdict-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 96px;
+    padding: 10px 18px;
+    border-radius: 14px;
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+}
+
+.dh-verdict.is-yes .dh-verdict-badge {
+    background: #059669;
+    box-shadow: 0 8px 18px rgba(5, 150, 105, 0.25);
+}
+
+.dh-verdict.is-no .dh-verdict-badge {
+    background: #dc2626;
+    box-shadow: 0 8px 18px rgba(220, 38, 38, 0.24);
+}
+
+.dh-verdict-top h2 {
+    margin: 0 0 4px;
+    font-size: 1.24rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.dh-verdict-top p {
+    margin: 0;
+    color: #334155;
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+.dh-verdict-reasons {
+    margin: 12px 0 0;
+    padding-left: 20px;
+    color: #475569;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.dh-goiy-khung {
+    margin-bottom: 18px;
+    padding: 18px;
+    border-radius: 18px;
+    background: #f8fbff;
+    border: 1.5px solid #dbeafe;
+}
+
+.dh-goiy-head h3 {
+    margin: 0 0 4px;
+    font-size: 1.06rem;
+    font-weight: 800;
+    color: #1e3a8a;
+}
+
+.dh-goiy-head p {
+    margin: 0 0 14px;
+    font-size: 0.86rem;
+    color: #475569;
+}
+
+.dh-goiy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.dh-goiy-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1.5px solid #bfdbfe;
+    background: #ffffff;
+    color: #0f172a;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.dh-goiy-card:hover {
+    transform: translateY(-2px);
+    border-color: #2457d6;
+}
+
+.dh-goiy-card.is-selected {
+    border-color: #2457d6;
+    background: #eff6ff;
+    box-shadow: 0 0 0 3px rgba(36, 87, 214, 0.14);
+}
+
+.dh-goiy-rank {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.dh-goiy-name {
+    font-size: 1.04rem;
+    font-weight: 800;
+    margin-top: 2px;
+}
+
+.dh-goiy-pct {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #2457d6;
+}
+
+.dh-nut-daitra {
+    font-size: 0.84rem;
+    padding: 9px 14px;
+}
+
+/* ---------- Hộp chi tiết & Chốt mục tiêu ---------- */
+.dh-result-sheet {
+    background: #ffffff;
+    color: #0f172a;
+    padding: 4px 0 0;
+}
+
+.dh-result-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.dh-result-info {
+    flex: 1 1 360px;
+}
+
+.dh-result-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #2457d6;
+    font-size: 0.76rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.dh-result-info h3 {
+    margin: 0 0 8px;
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.dh-reasons {
+    margin: 0;
+    padding-left: 18px;
+    color: #475569;
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.dh-result-cta-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.dh-save-msg {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #2457d6;
+    min-height: 1.1em;
+}
+
+.dh-result-footer {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed #dbeafe;
+}
+
+.dh-result-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.dh-link-plain {
+    color: #475569;
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* ---------- Bảng gập 10 môn + Radar ---------- */
+.dh-tech-details {
+    margin-top: 16px;
+    border: 1px solid #dbeafe;
+    border-radius: 14px;
+    background: #f8fbff;
+}
+
+.dh-tech-details summary {
+    padding: 11px 16px;
+    cursor: pointer;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: #2457d6;
+}
+
+.dh-tech-body {
+    display: grid;
+    gap: 16px;
+    padding: 0 16px 16px;
+}
+
+@media (min-width: 720px) {
+    .dh-tech-body {
+        grid-template-columns: 0.9fr 1.1fr;
+        align-items: start;
+    }
+}
+
+.dh-all10-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.dh-all10-table th,
+.dh-all10-table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.dh-mini-bar {
+    display: inline-block;
+    height: 7px;
+    border-radius: 999px;
+    background: #2563eb;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+/* ---------- Mobile Responsive ---------- */
+@media (max-width: 640px) {
+    .dh-card {
+        padding: 18px 14px;
+    }
+
+    .dh-luoi-diem {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .dh-q-stage {
+        padding: 20px 14px;
+    }
+
+    .dh-q-scale {
+        gap: 6px;
+    }
+
+    .dh-q-scale.is-khtn-opts {
+        grid-template-columns: 1fr;
+    }
+
+    .dh-scale-lbl {
+        font-size: 0.66rem;
+    }
+
+    .dh-goiy-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dh-mon-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .dh-result-cta-box {
+        width: 100%;
+        align-items: stretch;
+    }
+}

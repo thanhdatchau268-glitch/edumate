@@ -209,14 +209,6 @@
       "diem_2025": 10.75
     },
     {
-      "id": 27,
-      "ten_truong": "THPT Đốc Binh Kiều",
-      "vi_do": null,
-      "kinh_do": null,
-      "diem_2026": null,
-      "diem_2025": null
-    },
-    {
       "id": 28,
       "ten_truong": "THPT TP Cao Lãnh",
       "vi_do": 10.463219,
@@ -366,14 +358,6 @@
       "vi_do": 10.3452772,
       "kinh_do": 106.0344832,
       "diem_2026": 19.5,
-      "diem_2025": null
-    },
-    {
-      "id": 47,
-      "ten_truong": "THPT Phạm Thành Trung",
-      "vi_do": null,
-      "kinh_do": null,
-      "diem_2026": null,
       "diem_2025": null
     },
     {

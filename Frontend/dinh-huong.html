@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=3"></script>
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") location.replace("login.html");
+  </script>
+  <title>Đánh giá đầu vào - VnStarL</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
+  <link rel="stylesheet" href="style.css?v=11" />
+  <link rel="stylesheet" href="style3.css" />
+  <link rel="stylesheet" href="dinh-huong.css?v=4" />
+</head>
+
+<body class="dh-page">
+  <header id="header">
+    <div id="header-inner">
+      <section class="right">
+        <a href="index.html" id="logo">
+          <img src="img/logo.webp" alt="Logo" />
+          <span>Vn<span id="logo-span">StarL</span></span>
+        </a>
+      </section>
+      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">☰</button>
+      <ul id="nav" class="center">
+        <li id="nav-gioi-thieu">
+          <a href="personal.html" id="link-gioi-thieu" title="Cá nhân hóa" aria-label="Cá nhân hóa">
+            <i class="fa-solid fa-graduation-cap"></i><span class="nav-chu">Cá nhân hóa</span>
+          </a>
+        </li>
+        <li id="nav-bai-tap">
+          <a href="subjects.html" id="link-bai-tap" title="Bài tập" aria-label="Bài tập">
+            <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
+          </a>
+        </li>
+        <li id="nav-khoa-bang">
+          <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+            <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+          </a>
+        </li>
+        <li id="nav-xep-hang">
+          <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
+            <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+          </a>
+        </li>
+        <li id="nav-vuon-saoladou">
+          <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+            <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
+          </a>
+        </li>
+      </ul>
+      <div class="user-account-area">
+        <div id="auth-buttons">
+          <a href="login.html" class="auth-link">Đăng nhập</a>
+          <a href="register.html" class="auth-link">Đăng ký</a>
+        </div>
+        <div id="user-profile" class="hidden">
+          <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
+          <span class="username">Username</span>
+          <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="dh-shell">
+    <!-- Thanh đầu trang + Lối tắt cho người đã chọn sẵn -->
+    <section class="dh-hero" id="dhHero">
+      <div class="dh-hero-text">
+        <span class="dh-eyebrow">✦ Chào mừng tân binh VnStarL</span>
+        <h1>Đánh giá đầu vào</h1>
+        <p>Nhập điểm 6 môn chuẩn GDPT 2018 (đã gộp Lý–Hóa–Sinh thành KHTN và Sử–Địa thành LS&amp;ĐL), trả lời 9 câu thói quen &amp; sở thích rồi chọn môn chuyên muốn theo đuổi để kiểm tra mức độ phù hợp.</p>
+      </div>
+      <a href="khaosat.html" class="dh-skip-link" id="btnDaChonSan">
+        Tôi đã chọn sẵn môn chuyên <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </section>
+
+    <!-- Thanh 3 bước khi nhập liệu -->
+    <div class="dh-progress" id="dhProgress" aria-label="Tiến độ đánh giá đầu vào">
+      <div class="dh-step-tab is-active" data-step-tab="0">
+        <span class="dh-step-num">1</span>
+        <span>Điểm 6 môn học</span>
+      </div>
+      <div class="dh-step-line" aria-hidden="true"></div>
+      <div class="dh-step-tab" data-step-tab="1">
+        <span class="dh-step-num">2</span>
+        <span>Sở thích &amp; Tư duy (9 câu)</span>
+      </div>
+      <div class="dh-step-line" aria-hidden="true"></div>
+      <div class="dh-step-tab" data-step-tab="2">
+        <span class="dh-step-num">3</span>
+        <span>Chọn môn muốn chuyên</span>
+      </div>
+    </div>
+
+    <!-- KHỐI FORM NHẬP LIỆU (Bước 1 + Bước 2 + Bước 3) -->
+    <form class="dh-card" id="dhForm" autocomplete="off" novalidate>
+      <!-- BƯỚC 1: GIỮ BỐ CỤC ĐIỂM + RADAR, 6 MÔN GDPT 2018 (GỘP KHTN & LS&ĐL) -->
+      <section class="dh-pane is-visible" data-buoc="0">
+        <div class="dh-pane-head">
+          <h2>Bước 1: Nhập đủ điểm trung bình 6 môn</h2>
+          <p>Điền điểm trung bình (0–10) của <strong>6 môn</strong> lớp 8 hoặc kỳ gần nhất (<strong>KHTN</strong> gộp Lý–Hóa–Sinh và <strong>LS&amp;ĐL</strong> gộp Sử–Địa theo chương trình mới).</p>
+        </div>
+
+        <div class="dh-diem-wrap">
+          <div>
+            <div class="dh-luoi-diem" id="luoiDiem"></div>
+          </div>
+
+          <div class="dh-radar-box">
+            <svg id="radar" viewBox="0 0 320 300" role="img" aria-label="Biểu đồ Radar 6 môn"></svg>
+            <p class="dh-radar-chu" id="radarChu">Nhập đủ điểm 6 môn để phác họa biểu đồ năng lực của bạn.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- BƯỚC 2: THẺ TRƯỢT TỪNG CÂU SỞ THÍCH & PHÂN MÔN KHTN + LS&ĐL (1/9 -> 9/9) -->
+      <section class="dh-pane" data-buoc="1">
+        <div class="dh-so-thich-top">
+          <div>
+            <span class="dh-q-badge" id="qCounter">Câu 1 / 9</span>
+            <h2>Tính cách &amp; Thói quen học</h2>
+          </div>
+          <div class="dh-q-dots" id="qDots" aria-label="Chọn nhanh câu hỏi"></div>
+        </div>
+
+        <div class="dh-q-bar" aria-hidden="true">
+          <span class="dh-q-bar-fill" id="qBarFill"></span>
+        </div>
+
+        <!-- Khung trượt 1 câu duy nhất -->
+        <div class="dh-q-stage" id="qStage">
+          <p class="dh-q-prompt" id="qPrompt"></p>
+          <div class="dh-q-scale" id="qScale" role="radiogroup" aria-labelledby="qPrompt"></div>
+          <div class="dh-q-hints" id="qHints">
+            <span>Hoàn toàn không giống</span>
+            <span>Rất giống mình</span>
+          </div>
+        </div>
+
+        <div class="dh-q-nav">
+          <button type="button" class="dh-nut-phu" id="btnCauTruoc" hidden>
+            <i class="fa-solid fa-chevron-left"></i> Câu trước
+          </button>
+          <span class="dh-q-status" id="qStatus">Chọn một mức để tự chuyển câu tiếp theo</span>
+        </div>
+      </section>
+
+      <!-- BƯỚC 3: CHỌN MÔN MUỐN THI CHUYÊN -->
+      <section class="dh-pane" data-buoc="2">
+        <div class="dh-pane-head">
+          <h2>Bước 3: Bạn muốn theo môn chuyên nào?</h2>
+          <p>Chọn môn bạn dự định đăng ký. Hệ thống sẽ trả lời <strong>CÓ</strong> hoặc <strong>KHÔNG</strong> dựa trên hồ sơ vừa nhập, và gợi ý 3 môn chuyên phù hợp nhất nếu cần đổi hướng.</p>
+        </div>
+        <div class="dh-mon-grid" id="chonMonGrid" role="radiogroup" aria-label="Chọn môn muốn chuyên"></div>
+      </section>
+
+      <p class="dh-loi" id="loi" role="alert"></p>
+
+      <div class="dh-actions">
+        <button type="button" class="dh-nut-phu" id="btnLui" hidden>
+          <i class="fa-solid fa-arrow-left"></i> Quay lại
+        </button>
+        <button type="button" class="dh-nut-chinh" id="btnTiep">
+          Tiếp tục sang Sở thích <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </form>
+
+    <!-- KẾT QUẢ ĐÁNH GIÁ ĐẦU VÀO (CÓ / KHÔNG + GỢI Ý 3 MÔN NẾU KHÔNG) -->
+    <section class="dh-card dh-result-panel" id="resultPanel" hidden aria-live="polite">
+      <div id="verdictBox"></div>
+
+      <div class="dh-goiy-khung" id="goiYKhung" hidden>
+        <div class="dh-goiy-head">
+          <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Gợi ý 3 môn chuyên phù hợp nhất với bạn</h3>
+          <p>Chọn 1 trong 3 môn bên dưới để xem lý do chi tiết và đặt làm mục tiêu:</p>
+        </div>
+        <div class="dh-goiy-grid" id="goiYGrid"></div>
+      </div>
+
+      <div class="dh-result-sheet" id="resultSheet">
+        <div class="dh-result-main" id="resultDetail"></div>
+
+        <div class="dh-result-footer">
+          <div class="dh-result-secondary">
+            <button type="button" class="dh-nut-phu" id="btnSuaLai">
+              <i class="fa-solid fa-rotate-left"></i> Sửa điểm / Đánh giá lại
+            </button>
+            <a href="khaosat.html" class="dh-link-plain">Tự chọn môn khác ở Khảo sát trường</a>
+          </div>
+        </div>
+
+        <!-- Gập gọn Bảng 10 môn & Radar -->
+        <details class="dh-tech-details" id="techDetails">
+          <summary><i class="fa-solid fa-chart-radar"></i> Xem lại Biểu đồ Radar &amp; Độ hợp 10 hướng</summary>
+          <div class="dh-tech-body">
+            <div class="dh-radar-box dh-radar-mini">
+              <svg id="radar2" viewBox="0 0 320 300" role="img" aria-label="Biểu đồ Radar tổng hợp"></svg>
+              <p class="dh-radar-chu" id="radarChu2"></p>
+            </div>
+            <div class="dh-all10-wrap">
+              <table class="dh-all10-table">
+                <thead>
+                  <tr><th>#</th><th>Hướng / Môn</th><th>Độ phù hợp</th></tr>
+                </thead>
+                <tbody id="bangTatCa"></tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <script src="ky-thi.js"></script>
+  <script src="dinh-huong-model-v2.js?v=1"></script>
+  <script src="dinh-huong.js?v=5"></script>
+  <script src="script.js?v=17"></script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+{
+  "ly_thuyet": "<p>Chưa có lý thuyết.</p>",
+  "bai_tap": [
+    {
+      "id": "1.1",
+      "do_kho": 3,
+      "ten": "Đề thi chuyên 2026-2027",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "tu-luan",
+          "de_bai": "<b>a)</b> Phân tích tác động của đặc điểm địa hình đồi núi và khí hậu nhiệt đới ẩm gió mùa đến mạng lưới và chế độ nước sông ngòi Việt Nam.<br><b>b)</b> So sánh đặc điểm tự nhiên cơ bản giữa khu vực Đông Bắc và Tây Bắc thuộc vùng Trung du và miền núi phía Bắc.",
+          "diem": 30
+        },
+        {
+          "id": "3",
+          "type": "tu-luan",
+          "de_bai": "<b>a)</b> Tính cơ cấu sản lượng thủy sản phân theo khai thác và nuôi trồng giai đoạn 2010 - 2024 từ số liệu cho trước.<br><b>b)</b> Nhận xét và giải thích sự chuyển dịch cơ cấu sản lượng thủy sản nước ta.",
+          "diem": 20
+        },
+        {
+          "id": "4",
+          "type": "tu-luan",
+          "de_bai": "<b>a)</b> Phân tích thế mạnh về điều kiện tự nhiên đối với phát triển nông nghiệp ở vùng Đồng bằng sông Hồng.<br><b>b)</b> Trình bày vị trí địa lí và đặc điểm phát triển công nghiệp vùng Đông Nam Bộ.",
+          "diem": 30
+        },
+        {
+          "id": "5",
+          "type": "tu-luan",
+          "de_bai": "<b>a)</b> Trình bày tiềm năng và thực trạng ngành du lịch biển đảo ở nước ta.<br><b>b)</b> Đề xuất các giải pháp chiến lược phát triển bền vững kinh tế biển gắn với bảo vệ môi trường và chủ quyền quốc gia.",
+          "diem": 10
+        }
+      ]
+    }
+  ]
+}

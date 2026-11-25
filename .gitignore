@@ -1,12 +1,15 @@
-Frontend/file_de/
+# File nguồn thô, đáp án bí mật, dữ liệu DB và model AI nặng (KHÔNG đẩy lên GitHub)
 de/
 Backend/Dap_an/
 ly_thuyet/
-
-Frontend/audio/pet/
-Frontend/img/pet/
+Backend/Database/edumate.db
+Backend/Database/csv_export/
+Backend/Database/kb_secret.key
+Backend/database.db
+Backend/script/smtp_config.json
+Backend/uploads/
+AppsScript/DapAnData.gs
 
 **/model_cache/**
 pet_goc/
-
-
+.netlify/

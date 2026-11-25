@@ -39,8 +39,14 @@ from khoa_bang import kb_bp, ghi_hoat_dong, tao_token
 app.register_blueprint(kb_bp)
 from pet import pet_bp   # Sao La: skin (trang phục) + giới tính giọng nói
 app.register_blueprint(pet_bp)
+from vuon import vuon_bp   # Vườn Saoladou: chăm sóc, cửa hàng EduCoin
+app.register_blueprint(vuon_bp)
 from huy_hieu import huy_hieu_bp, cap_nhat_huy_hieu, dam_bao_bang_tren_conn as dam_bao_huy_hieu_conn
 app.register_blueprint(huy_hieu_bp)
+from muc_tieu import muc_tieu_bp   # Độ sẵn sàng mục tiêu trường & năng lực môn chuyên tự động (V30)
+app.register_blueprint(muc_tieu_bp)
+from luyen_tap import luyen_tap_bp  # Game hóa bài tập V31: chấm tức thì theo độ tự tin & Focus Combo
+app.register_blueprint(luyen_tap_bp)
 
 # Giới hạn dung lượng 1 request là 3MB (ảnh đã được trình duyệt thu nhỏ nên rất nhẹ)
 app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024
@@ -178,11 +184,8 @@ def login():
         conn.close()
         return jsonify({"success": False, "message": "Sai email hoặc mật khẩu!"}), 401
 
-    # chưa khảo sát lần nào thì đánh dấu luôn: các lần đăng nhập sau không hiện khảo sát nữa
+    # Chỉ đánh dấu đã khảo sát khi người dùng bấm "Chốt 3 nguyện vọng" ở khaosat.js
     can_khao_sat = (row['da_khao_sat'] == 0)
-    if can_khao_sat:
-        conn.execute("UPDATE users SET da_khao_sat = 1 WHERE id = ?", (row['id'],))
-        conn.commit()
     conn.close()
 
     streak_dang_nhap = streak_hien_thi(row['streak'] or 0, row['last_active_date'], row['the_bao_ho'] or 0)
@@ -689,7 +692,9 @@ def submit():
             he_so = round(1 + min(streak * 0.001, 0.05) + he_so_x15(user_id), 4)
             # Làm lần đầu: 100% điểm; làm lại lần sau: 50% điểm
             he_so_lan_lam = 1.0 if da_luu else 0.5
-            diem_cong = round(diem_dat * he_so_lan_lam * he_so)
+            # V31: Luyện tập đã thưởng dần từng câu -> thưởng tổng kết bài nhân 0.45 để cân bằng ~100-110 điểm/bài
+            he_so_thuong_cau = 0.45 if bool(data.get('da_thuong_theo_cau', False)) else 1.0
+            diem_cong = round(diem_dat * he_so_lan_lam * he_so * he_so_thuong_cau)
             if diem_cong > 0:
                 update_user_score(user_id, diem_cong)
         # ---- Sổ lỗi sai + nhiệm vụ hằng ngày ----
@@ -735,11 +740,12 @@ def save_mon_chuyen(user_id):
     if not isinstance(data, dict):
         data = {}
     mon = data.get('mon_chuyen', '')
+    hoan_thanh = bool(data.get('hoan_thanh_khao_sat', False))
 
     if not isinstance(mon, str) or mon not in MON_CHUYEN_HOP_LE:
         return jsonify({"success": False, "message": "Môn chuyên không hợp lệ!"}), 400
 
-    update_mon_chuyen(user_id, mon)
+    update_mon_chuyen(user_id, mon, hoan_thanh_khao_sat=hoan_thanh)
     return jsonify({"success": True, "message": "Đã lưu môn chuyên!"}), 200
 
 # 9. API xem hồ sơ

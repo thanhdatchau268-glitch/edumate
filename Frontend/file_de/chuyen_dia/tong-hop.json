@@ -1,0 +1,26 @@
+{
+    "mon": "Chuyên Địa",
+    "chuong_list": [
+        {
+            "id_chuong": "chuong-1",
+            "ten_chuong": "Chương 1: Địa lí dân cư Việt Nam",
+            "danh_sach_bai": [
+                {
+                    "id": "01",
+                    "ten_bai": "Dân cư và dân số",
+                    "diem": 100
+                }
+            ]
+        },
+        {
+            "id_chuong": "chuong-2",
+            "ten_chuong": "Chương 2: Địa lí các ngành kinh tế",
+            "danh_sach_bai": []
+        },
+        {
+            "id_chuong": "chuong-3",
+            "ten_chuong": "Chương 3: Địa lí các vùng kinh tế - xã hội",
+            "danh_sach_bai": []
+        }
+    ]
+}

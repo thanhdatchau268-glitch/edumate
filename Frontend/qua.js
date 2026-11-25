@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  const API = "http://127.0.0.1:5000";
+  const API = typeof API_SERVER === "string" ? API_SERVER : "http://127.0.0.1:5000";
   const $ = (id) => document.getElementById(id);
 
   // chữ ngắn gọn ghi trên từng múi của vòng quay (id lấy từ server)
@@ -58,8 +58,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       o.style.transform = `rotate(${(i + 0.5) * mui
         }deg)`;
       const sp = document.createElement("span");
-      sp.textContent = NHAN_MUI[m.id
-      ] || m.ten; // textContent: không chạy được code lạ
+      if (m.id === "diem10" || m.id === "diem20" || m.id === "diem50") {
+        const ico = document.createElement("img");
+        ico.className = "vn-ico";
+        ico.src = "img/icon-diem.png";
+        ico.alt = "Điểm";
+        sp.appendChild(ico);
+        sp.appendChild(document.createTextNode(" " + (NHAN_MUI[m.id] || m.ten)));
+      } else if (m.id === "bao_ho") {
+        const ico = document.createElement("img");
+        ico.className = "vn-ico";
+        ico.src = "img/icon-bao-ho.png";
+        ico.alt = "Bảo hộ streak";
+        sp.appendChild(ico);
+        sp.appendChild(document.createTextNode(" Thẻ bảo hộ"));
+      } else if (m.id === "them_luot") {
+        const ico = document.createElement("img");
+        ico.className = "vn-ico";
+        ico.src = "img/icon-ve.png";
+        ico.alt = "Vé quay";
+        sp.appendChild(ico);
+        sp.appendChild(document.createTextNode(" +1 lượt"));
+      } else {
+        sp.textContent = NHAN_MUI[m.id] || m.ten; // textContent: không chạy được code lạ
+      }
       o.appendChild(sp);
       banh.appendChild(o);
     });
@@ -99,32 +121,62 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ----- Đổ trạng thái lên trang -----
   function hienTrangThai() {
     $("qua-diem").textContent = tt.score;
-    $("qua-bao-ho").textContent = `${tt.the_bao_ho
-      }/${tt.toi_da_bao_ho
-      }`;
+    $("qua-bao-ho").textContent = `${tt.the_bao_ho}/${tt.toi_da_bao_ho}`;
     $("qua-luot").textContent = tt.luot_quay;
+    const spinBadge = $("wheel-spins-val");
+    if (spinBadge) spinBadge.textContent = tt.luot_quay;
     localStorage.setItem("streak", tt.streak); // đồng bộ chuỗi ngày lên thanh menu
+    if (window.capNhatIconStreak) window.capNhatIconStreak(tt.streak);
 
     $("qua-mo-ta").textContent = tt.tuan_dau
-      ? "Điểm danh 7 ngày đầu để nhận quà. Bỏ lỡ một ngày cũng không mất tiến độ." : `Đã điểm danh ${tt.tong_ngay
-      } ngày. Điểm danh đủ 7 ô để nhận thêm 1 lượt quay.`;
+      ? "Điểm danh 7 ngày đầu để nhận quà. Bỏ lỡ một ngày cũng không mất tiến độ." : `Đã điểm danh ${tt.tong_ngay} ngày. Điểm danh đủ 7 ô để nhận thêm 1 lượt quay.`;
 
     const lich = $("qua-lich");
     lich.innerHTML = "";
+
+    const daNhanCount = tt.lich.filter((o) => o.da_nhan).length;
+    const fillPct = daNhanCount >= 7 ? 100 : daNhanCount <= 0 ? 0 : Math.min(100, Math.round((Math.max(0, daNhanCount - 0.5) / 6) * 100));
+
+    const lineBg = document.createElement("div");
+    lineBg.className = "journey-line-bg";
+    lineBg.innerHTML = `<div class="journey-line-fill" style="width: ${fillPct}%;"></div>`;
+    lich.appendChild(lineBg);
+
+    const todayDayNum = tt.da_diem_danh_hom_nay
+      ? (tt.tien_do > 0 ? tt.tien_do : 1)
+      : ((tt.tien_do || 0) % 7) + 1;
+
     tt.lich.forEach((o) => {
       const d = document.createElement("div");
-      d.className = "qua-o" + (o.da_nhan ? " da-nhan" : "");
-      const b = document.createElement("b");
-      b.textContent = `Ngày ${o.ngay
-        }`;
-      d.appendChild(b);
-      d.appendChild(document.createTextNode(o.da_nhan ? "✔ " + o.ten : o.ten));
+      const isToday = !tt.da_diem_danh_hom_nay && o.ngay === todayDayNum;
+      d.className = `station-node qua-o ${o.da_nhan ? "completed da-nhan is-checked" : ""} ${isToday ? "is-today" : ""}`;
+
+      const tenL = (o.ten || "").toLowerCase();
+      let icon = '<img src="img/icon-diem.png" alt="Điểm" class="vn-ico vn-ico-xl">';
+      if (tenL.includes("bảo hộ") || tenL.includes("khiên")) icon = '<img src="img/icon-bao-ho.png" alt="Bảo hộ streak" class="vn-ico vn-ico-xl">';
+      else if (tenL.includes("quay")) icon = '<img src="img/icon-hop-qua.png" alt="Vòng quay" class="vn-ico vn-ico-xl">';
+      else if (tenL === "điểm danh") icon = '<img src="img/icon-diem.png" alt="Điểm danh" class="vn-ico vn-ico-xl">';
+
+      const pinHtml = isToday
+        ? `<img src="img/pet/than/mac_dinh/_xem_truoc.webp" alt="Sao La" class="station-mascot-pin" loading="lazy" decoding="async" onerror="this.src='img/logo.webp'">`
+        : "";
+
+      d.innerHTML = `
+        ${pinHtml}
+        <div class="station-circle">
+          <span class="station-circle-icon">${o.da_nhan ? '<i class="fa-solid fa-check text-emerald-600 font-bold"></i>' : icon}</span>
+        </div>
+        <span class="station-label-title">Ngày ${o.ngay}</span>
+        <span class="station-reward-val" title="${o.ten}">${o.da_nhan ? "Đã nhận" : o.ten}</span>
+      `;
       lich.appendChild(d);
     });
 
     const nutDD = $("btn-diem-danh");
     nutDD.disabled = tt.da_diem_danh_hom_nay;
-    nutDD.textContent = tt.da_diem_danh_hom_nay ? "✔ Hôm nay đã điểm danh" : "✅ Điểm danh hôm nay";
+    nutDD.innerHTML = tt.da_diem_danh_hom_nay
+      ? '<i class="fa-solid fa-circle-check"></i> Hôm nay đã điểm danh'
+      : '<i class="fa-solid fa-calendar-check"></i> Điểm danh hôm nay';
     $("btn-quay").disabled = dangQuay || tt.luot_quay <= 0;
     hienX15();
   }
@@ -164,10 +216,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!kq.success) throw new Error(kq.message);
       tt = Object.assign(tt, kq.trang_thai);
       hienTrangThai();
+      if (window.AmThanh && window.AmThanh.diemDanh) window.AmThanh.diemDanh(tt.tien_do === 7);
       baoLoi($("qua-dd-tb"),
         "🎉 Bạn nhận được: " + kq.nhan.join(", "),
         "#178a5a");
     } catch (err) {
+      if (window.AmThanh && window.AmThanh.loi) window.AmThanh.loi();
       baoLoi($("qua-dd-tb"), err.message);
       hienTrangThai(); // trả nút về đúng trạng thái
     }
@@ -201,6 +255,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       goc = goc - (goc % 360) + 360 * 5 + (360 - tam) + lech;
       $("qua-banh").style.transform = `rotate(${goc
         }deg)`;
+      if (window.AmThanh && window.AmThanh.quay) window.AmThanh.quay(4.2);
 
       // đợi quay xong (4.2s) mới hiện kết quả
       setTimeout(() => {
@@ -208,6 +263,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         tt = Object.assign(tt, kq.trang_thai);
         hienTrangThai();
         const trung = kq.trung !== "hut";
+        if (window.AmThanh && window.AmThanh.trungQua) window.AmThanh.trungQua(trung);
         baoLoi(
           $("qua-quay-tb"),
           (trung ? "🎉 Bạn trúng: " : "😢 ") + kq.ten + (kq.ghi_chu ? ` (${kq.ghi_chu
@@ -218,6 +274,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         4300);
     } catch (err) {
       dangQuay = false;
+      if (window.AmThanh && window.AmThanh.loi) window.AmThanh.loi();
       baoLoi($("qua-quay-tb"), err.message);
       hienTrangThai();
     }

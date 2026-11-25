@@ -4,20 +4,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=2"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
   <title>VnStarL</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=11" />
   <link rel="stylesheet" href="style2.css" />
   <link rel="stylesheet" href="style3.css" />
+  <link rel="stylesheet" href="huy-hieu-khung.css" />
   <!-- Kiểu riêng cho trang cuộc thi -->
   <link rel="stylesheet" href="contest.css" />
   <link rel="stylesheet" href="gate.css" />
 
 </head>
 
-<body data-gate="cuoc-thi"></body>
-
-<body>
+<body data-gate="cuoc-thi">
   <header id="header">
     <div id="header-inner">
       <section class="right">
@@ -41,10 +43,19 @@
             <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
           </a>
         </li>
+        <li id="nav-khoa-bang">
+          <a href="khoa-bang.html" id="link-khoa-bang" class="active" title="Khoa cử" aria-label="Khoa cử">
+            <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+          </a>
         </li>
         <li id="nav-xep-hang">
           <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
             <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+          </a>
+        </li>
+        <li id="nav-vuon-saoladou">
+          <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+            <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
           </a>
         </li>
       </ul>
@@ -56,7 +67,7 @@
         </div>
         <!-- Khi đã đăng nhập (mặc định thêm class hidden) -->
         <div id="user-profile" class="hidden">
-          <div class="streak-box">🔥 <span>0</span></div>
+          <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
           <span class="username">Username</span>
           <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
         </div>
@@ -68,7 +79,7 @@
   <div class="contest-head">
     <i class="fa-solid fa-trophy"></i>
     <h1>Cuộc thi</h1>
-    <p>Chọn một cuộc thi để cùng tranh tài với các anh/chị khác</p>
+    <p>Chọn một cuộc thi để cùng tranh tài với các bạn khác</p>
   </div>
 
   <!-- Bảng danh sách cuộc thi: contest.js sẽ tự điền các dòng vào #contest-list -->
@@ -102,9 +113,10 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=17"></script>
+  <script src="huy-hieu-khung.js"></script>
   <script src="gate.js"></script>
-  <script src="contest.js"></script>
+  <script src="contest.js?v=2"></script>
 </body>
 
 </html>

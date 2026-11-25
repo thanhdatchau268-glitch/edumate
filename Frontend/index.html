@@ -4,13 +4,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=2"></script>
   <!-- Đã đăng nhập thì chuyển sang trang Học tập cá nhân hoá, chưa đăng nhập thì vẫn ở trang giới thiệu -->
   <script>
     if (localStorage.getItem("isLoggedIn") === "true") location.replace("personal.html");
   </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
   <title>VnStarL</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=11" />
   <link rel="stylesheet" href="style2.css" />
   <link rel="stylesheet" href="style3.css" />
 </head>
@@ -36,9 +39,19 @@
             <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
           </a>
         </li>
+        <li id="nav-khoa-bang">
+          <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+            <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+          </a>
+        </li>
         <li id="nav-xep-hang">
           <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
             <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+          </a>
+        </li>
+        <li id="nav-vuon-saoladou">
+          <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+            <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
           </a>
         </li>
       </ul>
@@ -50,7 +63,7 @@
         </div>
         <!-- 2. Khi đã đăng nhập (mặc định thêm class hidden) -->
         <div id="user-profile" class="hidden">
-          <div class="streak-box">🔥 <span>0</span></div>
+          <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
           <span class="username">Username</span>
           <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
         </div>
@@ -58,55 +71,71 @@
     </div>
   </header>
 
-  <div class="container">
+  <div class="container home-container">
     <!-- Phần Hero -->
     <div class="hero">
+      <div class="hero-badge">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Đồng hành ôn thi vào lớp 10
+      </div>
       <h1>VnStarL - Giải pháp ôn tập cho học sinh lớp 9</h1>
-      <p>
-        VnStarL là một trang web học tập đồng hành như <b>một người anh/chị học thân thiện</b>. Web có kho <b>tài liệu
-          học
-          tập
-          phong phú</b>, đi kèm với tính năng <b>gợi ý trường cấp ba</b> phù hợp.
+      <p class="hero-desc">
+        VnStarL là một trang web học tập đồng hành như <b>một người bạn học thân thiện</b>. Web có kho <b>tài liệu
+          học tập phong phú</b>, đi kèm với tính năng <b>gợi ý trường cấp ba</b> phù hợp.
       </p>
+      <div class="hero-actions">
+        <a href="subjects.html" class="hero-btn-primary">
+          <i class="fa-solid fa-rocket"></i> Khám phá bài tập ngay
+        </a>
+        <a href="register.html" class="hero-btn-secondary">
+          <i class="fa-solid fa-user-plus"></i> Tạo tài khoản miễn phí
+        </a>
+      </div>
     </div>
 
-    <!-- Phần Lý do chọn -->
-    <h1 class="section-title">Tại sao lại chọn VnStarL?</h1>
-    <div class="features-grid">
-      <div class="feature-card">
+    <!-- Phần Lý do chọn: BỐ CỤC BENTO GRID TRÊN MOBILE (1 Ô TO + 2 Ô VUÔNG NHỎ) -->
+    <h2 class="section-title">Tại sao lại chọn VnStarL?</h2>
+    <div class="features-grid bento-layout">
+      <!-- Ô 1 TO: NẰM TRỌN CHIỀU NGANG (MÀU XANH THƯƠNG HIỆU) -->
+      <div class="feature-card bento-wide" style="--fc: #2457d6; --fc-bg: #eef4ff;">
+        <div class="feature-top">
+          <div class="feature-icon"><i class="fa-solid fa-book-open-reader"></i></div>
+          <span class="feature-tag">Học liệu chuẩn</span>
+        </div>
         <h2>Kho tài liệu đa dạng</h2>
-        <p>Tổng hợp tài liệu ôn tập theo từng môn, phù hợp với nhu cầu của người dùng, bám sát với đề thi thực tế.</p>
+        <p>Tổng hợp bộ đề bám sát kỳ thi vào 10 thực tế, phân chia rõ ràng theo từng môn học.</p>
       </div>
 
-      <div class="feature-card">
-        <h2>Thiếu định hướng rõ ràng</h2>
-        <p>Gợi ý trường trung học phổ thông dựa trên thông tin người dùng cung cấp, để đưa ra gợi ý phù hợp.</p>
+      <!-- Ô 2 VUÔNG NHỎ: GỠ RỐI CHỌN TRƯỜNG (MÀU XANH NGỌC) -->
+      <div class="feature-card bento-square" style="--fc: #0e9aa7; --fc-bg: #e6f8fa;">
+        <div class="feature-top">
+          <div class="feature-icon"><i class="fa-solid fa-compass"></i></div>
+          <span class="feature-tag">Định hướng</span>
+        </div>
+        <h2>Gợi ý chọn trường</h2>
+        <p>Tìm trường THPT phù hợp năng lực & điểm chuẩn.</p>
       </div>
 
-      <div class="feature-card">
-        <h2>Thiếu thói quen & Động lực</h2>
-        <p>Game hóa việc học với nhiều cơ chế như đua top, streak (chuỗi ngày học), giúp tạo động lực học tập, tạo môi
-          trường thân thiện với giới trẻ.</p>
+      <!-- Ô 3 VUÔNG NHỎ: ĐUA TOP & ĐỘNG LỰC (MÀU CAM CHÁY) -->
+      <div class="feature-card bento-square" style="--fc: #e07a1f; --fc-bg: #fff4e8;">
+        <div class="feature-top">
+          <div class="feature-icon"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-lg" /></div>
+          <span class="feature-tag">Bứt phá</span>
+        </div>
+        <h2>Đua top & Chuỗi <img src="img/icon-streak.png" alt="Streak" class="vn-ico" /></h2>
+        <p>Học vui mỗi ngày, cày điểm và giữ chuỗi streak.</p>
       </div>
     </div>
-    <!--
-      Phần Thống kê
-      <div class="stats-section">
-        <h1>Thống kê từ người dùng</h1>
-        <p class="stats-note">(thống kê từ 50 người dùng bản thử nghiệm)</p>
-        <p>100+ bộ đề thi thử</p>
-        <p>Hơn 85% người dùng cảm thấy hài lòng</p>
-        <p>Hơn 89% có tiến bộ trong học tập</p>
-      </div>
-      -->
+
     <!-- Phần Thông điệp -->
     <div class="message-section">
-      <h1>Thông điệp từ nhà phát triển</h1>
-      <p>Được xây dựng bởi chính những học sinh lớp 9, VnStarL ra đời với mong muốn biến chặng đường ôn thi căng thẳng
-        thành một trải nghiệm kết nối và bứt phá dễ dàng.</p>
+      <div class="message-icon"><i class="fa-solid fa-heart"></i></div>
+      <div class="message-body">
+        <h2>Thông điệp từ nhà phát triển</h2>
+        <p>Được xây dựng bởi chính những học sinh lớp 9, VnStarL ra đời nhằm biến chặng đường ôn thi căng thẳng thành một trải nghiệm kết nối và bứt phá dễ dàng.</p>
+      </div>
     </div>
   </div>
-  <script src="script.js"></script>
+  <script src="script.js?v=17"></script>
 </body>
 
 </html>

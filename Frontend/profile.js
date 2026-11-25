@@ -9,7 +9,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const API = "http://127.0.0.1:5000";
   const $ = (id) => document.getElementById(id);
-  const TEN_MON = { toan: "Chuyên Toán", ly: "Chuyên Lý", dia: "Chuyên Địa" };
+  const TEN_MON = {
+    toan: "Chuyên Toán",
+    ly: "Chuyên Vật Lý",
+    hoa: "Chuyên Hóa Học",
+    sinh: "Chuyên Sinh Học",
+    van: "Chuyên Ngữ Văn",
+    anh: "Chuyên Tiếng Anh",
+    su: "Chuyên Lịch Sử",
+    dia: "Chuyên Địa Lí",
+  };
 
   // các mốc điểm (phải giống số bên app.py)
   const DIEM_MO_KHOA = 500;         // mở "Sửa hồ sơ"
@@ -21,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (typeof dangXuat === "function") {
       dangXuat(); // hàm nằm trong script.js
     } else {
-      ["isLoggedIn", "username", "userId", "streak", "monChuyen", "avatar"].forEach((k) =>
+      ["isLoggedIn", "username", "userId", "streak", "monChuyen", "avatar", "huyHieu"].forEach((k) =>
         localStorage.removeItem(k),
       );
       window.location.replace("index.html");
@@ -36,21 +45,48 @@ document.addEventListener("DOMContentLoaded", async () => {
     $("pf-streak").textContent = u.streak;
     $("pf-baoho").textContent = u.the_bao_ho ?? 0;
     $("pf-chuyen").textContent = TEN_MON[u.mon_chuyen] || "Không";
+    const streakIco = $("pf-streak-ico");
+    if (streakIco) {
+      const mat = Number(u.streak || 0) <= 0;
+      streakIco.src = mat ? "img/icon-streak-mat.png" : "img/icon-streak.png";
+      streakIco.alt = mat ? "Mất chuỗi" : "Streak";
+    }
+    if (window.capNhatIconStreak) window.capNhatIconStreak(u.streak || 0);
     datAvatar($("pf-avatar"), u.avatar); // hàm nằm trong script.js
   }
 
   let user = null; // nhớ thông tin hiện tại để điền sẵn vào form
 
+  // Nạp song song thông tin user và danh sách huy hiệu (có timeout 8s để không treo vô hạn)
+  function fetchCoTimeout(url, options = {}, ms = 8000) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ms);
+    return fetch(url, { ...options, signal: ctrl.signal }).finally(() => clearTimeout(timer));
+  }
+
+  const huyHieuReq = fetchCoTimeout(`${API}/api/huy-hieu/${userId}`)
+    .then((r) => r.json())
+    .catch((err) => ({ success: false, message: err && err.name === "AbortError" ? "Server phản hồi quá lâu (timeout)." : err.message }));
+
   try {
-    const res = await fetch(`${API}/api/users/${userId}`);
+    const res = await fetchCoTimeout(`${API}/api/users/${userId}`);
     const kq = await res.json();
     if (!kq.success) throw new Error(kq.message);
     user = kq.data;
     hienThongTin(user);
     localStorage.setItem("avatar", user.avatar || ""); // đồng bộ lại cho thanh menu
+    localStorage.setItem("huyHieu", user.huy_hieu || "");
   } catch (err) {
     // Chỉ thay phần thẻ hồ sơ, KHÔNG xoá nút Đăng xuất
     document.querySelector(".profile-card").textContent = "Lỗi: " + err.message;
+    const gridEl = $("pf-trophy-grid");
+    if (gridEl) {
+      gridEl.innerHTML = "";
+      const p = document.createElement("p");
+      p.className = "pf-trophy-empty";
+      p.textContent = "Chưa kết nối được server. Hãy bật hoặc khởi động lại Backend/script/app.py nhé!";
+      gridEl.appendChild(p);
+    }
     return;
   }
 
@@ -68,13 +104,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (duSua) delete nutSua.dataset.tip;
     else nutSua.dataset.tip = `Bạn phải đủ ${DIEM_MO_KHOA} điểm mới mở khóa tính năng này`;
 
-    // nút "Tải ảnh của anh/chị"
+    // nút "Tải ảnh của bạn"
     const duAnh = user.score >= DIEM_TAI_ANH;
     nutTaiAnh.classList.toggle("da-khoa", !duAnh);
     ttKhoa.style.color = "#5b6b82";
     ttKhoa.textContent = duAnh
       ? ""
-      : `🔒 Tải ảnh riêng sẽ mở khóa khi đạt ${DIEM_TAI_ANH} điểm (anh/chị đang có ${user.score}).`;
+      : `🔒 Tải ảnh riêng sẽ mở khóa khi đạt ${DIEM_TAI_ANH} điểm (bạn đang có ${user.score}).`;
 
     // thanh tiến độ mở khóa
     const pt = Math.min(100, Math.round((user.score / DIEM_MO_KHOA) * 100));
@@ -118,6 +154,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     localStorage.setItem("avatar", ten);
     datAvatar($("pf-avatar"), ten); // ảnh to trong hồ sơ
     document.querySelectorAll(".user-avatar").forEach((i) => datAvatar(i, ten)); // ảnh trên menu
+    if (typeof dongBoNavbarHuyHieu === "function") {
+      dongBoNavbarHuyHieu(user.huy_hieu || "");
+    }
     danhDauAvatar();
     dongAvatar();
   }
@@ -153,6 +192,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const img = document.createElement("img");
         img.alt = "";
         img.loading = "lazy";
+        img.decoding = "async";
         img.style.width = "100%";
         img.style.height = "100%";
         img.style.objectFit = "cover";
@@ -428,33 +468,450 @@ document.addEventListener("DOMContentLoaded", async () => {
   veThongBao();
 
   // =========================================================
-  // NÚT BUFF +500 ĐIỂM (thử nghiệm, chỉ hiện khi chạy ở localhost)
+  // CHUYỂN TAB MOBILE 2.0 (Segmented Control)
   // =========================================================
-  const nutBuff = $("btn-buff");
-  const laMayLocal = ["localhost", "127.0.0.1", ""].includes(location.hostname);
-  if (laMayLocal) nutBuff.classList.remove("hidden");
-
-  nutBuff.addEventListener("click", async () => {
-    nutBuff.disabled = true;
-    try {
-      const res = await fetch(`${API}/api/dev/buff-diem`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: Number(userId) }),
+  document.querySelectorAll(".pf-tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const target = btn.dataset.tab;
+      // Đổi active button
+      document.querySelectorAll(".pf-tab-btn").forEach((b) => {
+        const isActive = b === btn;
+        b.classList.toggle("active", isActive);
+        b.setAttribute("aria-selected", isActive ? "true" : "false");
       });
-      const kq = await res.json();
-      if (!kq.success) throw new Error(kq.message);
-
-      user.score = kq.score;   // điểm mới từ server
-      hienThongTin(user);
-      capNhatKhoa();           // đủ điểm thì mở khóa luôn, không cần tải lại trang
-    } catch (err) {
-      alert("Không buff được: " + err.message);
-    } finally {
-      nutBuff.disabled = false;
-    }
+      // Đổi hiển thị nội dung tab
+      document.querySelectorAll(".pf-tab-pane").forEach((pane) => {
+        pane.classList.toggle("active", pane.id === `tab-${target}`);
+      });
+    });
   });
 
-  // chạy lần đầu để áp trạng thái khóa theo điểm hiện có
+  // =========================================================
+  // HỆ THỐNG HUY HIỆU CHÍNH THỨC & KHUNG AVATAR (PC + MOBILE)
+  // =========================================================
+  const HUY_HIEU_TOA_DO = {
+    "buoc-chan-dau-tien": { cx: 49.91, cy: 49.16, d: 55.49 },
+    "chuyen-can": { cx: 49.95, cy: 49.7, d: 57.5 },
+    "tich-tieu-thanh-dai": { cx: 49.97, cy: 49.55, d: 64.57 },
+    "bach-phat-bach-trung": { cx: 49.98, cy: 49.87, d: 57.98 },
+    "giai-nguyen": { cx: 49.96, cy: 49.98, d: 52.19 },
+    "hoi-nguyen": { cx: 49.98, cy: 49.95, d: 60.84 },
+    "trang-nguyen": { cx: 49.98, cy: 49.94, d: 56.91 },
+  };
+
+  const avatarBox = $("pf-avatar-box");
+  const khungHuyHieu = $("pf-khung-huy-hieu");
+  const trophyCountEl = $("pf-trophy-count");
+  const trophyGridEl = $("pf-trophy-grid");
+  const badgeToastEl = $("pf-badge-toast");
+  const badgeToastTitleEl = $("pf-badge-toast-title");
+  const badgeToastDescEl = $("pf-badge-toast-desc");
+  const badgeToastCloseEl = $("pf-badge-toast-close");
+
+  let dsHuyHieu = [];
+  let dangLuuHuyHieu = false;
+  let trophyFeedbackEl = null;
+
+  function layThongTinKhung(badgeId) {
+    if (!badgeId) return null;
+    if (window.HUY_HIEU_KHUNG && typeof window.HUY_HIEU_KHUNG.layThongTinKhung === "function") {
+      const info = window.HUY_HIEU_KHUNG.layThongTinKhung(badgeId);
+      if (info) return info;
+    }
+    const td = HUY_HIEU_TOA_DO[badgeId];
+    if (!td) return null;
+    const item = dsHuyHieu.find((b) => b.id === badgeId);
+    return {
+      id: badgeId,
+      ten: item ? item.ten : badgeId,
+      anh: item && item.anh ? item.anh : `img/huy-hieu/${badgeId}.webp`,
+      cx: td.cx,
+      cy: td.cy,
+      d: td.d,
+    };
+  }
+
+  function dongBoNavbarHuyHieu(badgeId) {
+    const cleanId = badgeId || "";
+    localStorage.setItem("huyHieu", cleanId);
+    if (typeof window.capNhatHuyHieuNavbar === "function") {
+      window.capNhatHuyHieuNavbar(cleanId);
+    } else if (
+      window.HUY_HIEU_KHUNG &&
+      typeof window.HUY_HIEU_KHUNG.capNhatAvatarNavbar === "function"
+    ) {
+      window.HUY_HIEU_KHUNG.capNhatAvatarNavbar(cleanId);
+    }
+  }
+
+  function datPhanHoiHuyHieu(msg) {
+    if (!trophyGridEl) return;
+    if (!trophyFeedbackEl) {
+      trophyFeedbackEl = document.createElement("p");
+      trophyFeedbackEl.id = "pf-trophy-feedback";
+      trophyFeedbackEl.className = "pf-trophy-feedback";
+      trophyFeedbackEl.setAttribute("aria-live", "polite");
+      trophyGridEl.after(trophyFeedbackEl);
+    }
+    trophyFeedbackEl.textContent = msg || "";
+  }
+
+  function apDungKhungHuyHieu(badgeId) {
+    const cleanId = badgeId || "";
+    const info = layThongTinKhung(cleanId);
+
+    user.huy_hieu = info ? info.id : "";
+    dongBoNavbarHuyHieu(user.huy_hieu);
+    localStorage.removeItem(`huyHieuDangDeo_${userId}`);
+
+    if (avatarBox && khungHuyHieu) {
+      if (info) {
+        khungHuyHieu.src = info.anh;
+        khungHuyHieu.alt = info.ten || info.id;
+        avatarBox.style.setProperty("--hh-cx", `${info.cx}%`);
+        avatarBox.style.setProperty("--hh-cy", `${info.cy}%`);
+        avatarBox.style.setProperty("--hh-d", `${info.d}%`);
+        avatarBox.classList.add("co-khung");
+      } else {
+        khungHuyHieu.removeAttribute("src");
+        khungHuyHieu.alt = "";
+        avatarBox.style.removeProperty("--hh-cx");
+        avatarBox.style.removeProperty("--hh-cy");
+        avatarBox.style.removeProperty("--hh-d");
+        avatarBox.classList.remove("co-khung");
+      }
+    }
+
+    if (trophyGridEl) {
+      trophyGridEl.querySelectorAll(".pf-trophy-item.unlocked").forEach((card) => {
+        const khop = Boolean(user.huy_hieu) && card.dataset.badgeId === user.huy_hieu;
+        card.classList.toggle("dang-deo", khop);
+        card.setAttribute("aria-pressed", khop ? "true" : "false");
+        const st = card.querySelector(".pf-trophy-status");
+        if (st) st.textContent = khop ? "Đang đeo · Bấm để tháo" : "Đã đạt · Bấm để đeo";
+      });
+    }
+  }
+
+  function hienToastHuyHieuMoi(moiMo) {
+    if (!badgeToastEl || !Array.isArray(moiMo) || moiMo.length === 0) return;
+    const tongDiem = moiMo.reduce((sum, item) => sum + (Number(item.diem_thuong) || 0), 0);
+    const dsTen = moiMo.map((item) => item.ten || item.id).join(", ");
+    if (badgeToastTitleEl) {
+      badgeToastTitleEl.textContent =
+        moiMo.length === 1
+          ? `Chúc mừng! Mở khóa huy hiệu "${moiMo[0].ten || moiMo[0].id}"`
+          : `Chúc mừng! Mở khóa ${moiMo.length} huy hiệu mới`;
+    }
+    if (badgeToastDescEl) {
+      badgeToastDescEl.textContent =
+        `${dsTen} — Đã cộng +${tongDiem} điểm vào Điểm tích lũy và Bảng xếp hạng tháng!`;
+    }
+    badgeToastEl.classList.remove("hidden");
+  }
+
+  if (badgeToastCloseEl && badgeToastEl) {
+    badgeToastCloseEl.addEventListener("click", () => {
+      badgeToastEl.classList.add("hidden");
+    });
+  }
+
+  async function chonDeoHuyHieu(badgeId) {
+    if (dangLuuHuyHieu) return;
+    dangLuuHuyHieu = true;
+    datPhanHoiHuyHieu("");
+
+    const nextId = user.huy_hieu === badgeId ? "" : badgeId;
+    try {
+      const res = await fetch(`${API}/api/huy-hieu/deo`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: Number(userId), huy_hieu: nextId }),
+      });
+      const kq = await res.json();
+      if (!kq.success) throw new Error(kq.message || "Không cập nhật được huy hiệu.");
+
+      const equipped =
+        typeof kq.huy_hieu === "string"
+          ? kq.huy_hieu
+          : (kq.data && (kq.data.huy_hieu ?? kq.data.dang_deo)) || "";
+      dsHuyHieu.forEach((b) => {
+        b.dang_deo = Boolean(equipped) && b.id === equipped;
+      });
+      apDungKhungHuyHieu(equipped);
+    } catch (err) {
+      datPhanHoiHuyHieu(err.message || "Không thể thay đổi khung huy hiệu lúc này.");
+    } finally {
+      dangLuuHuyHieu = false;
+    }
+  }
+
+  function taoTheHuyHieu(badge) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `pf-trophy-item ${badge.da_mo ? "unlocked co-khung" : "locked"}${badge.dang_deo ? " dang-deo" : ""}`;
+    btn.dataset.badgeId = badge.id;
+
+    const rewardText = `+${Number(badge.diem_thuong) || 0} điểm`;
+    if (badge.da_mo) {
+      btn.setAttribute("aria-pressed", badge.dang_deo ? "true" : "false");
+      btn.title = `${badge.ten} — ${badge.mo_ta} (${rewardText}). ${badge.dang_deo ? "Bấm để tháo khung" : "Bấm để đeo lên avatar"}`;
+    } else {
+      btn.setAttribute("aria-disabled", "true");
+      btn.title = `Chưa mở khóa: ${badge.mo_ta} (${rewardText})`;
+    }
+
+    const badgeBox = document.createElement("div");
+    badgeBox.className = "pf-trophy-badge img-badge";
+
+    const img = document.createElement("img");
+    img.src = badge.anh || `img/huy-hieu/${badge.id}.webp`;
+    img.alt = badge.ten || badge.id;
+    img.loading = "lazy";
+    img.decoding = "async";
+    badgeBox.appendChild(img);
+
+    if (!badge.da_mo) {
+      const lockSpan = document.createElement("span");
+      lockSpan.className = "pf-lock-icon";
+      lockSpan.setAttribute("aria-hidden", "true");
+      lockSpan.innerHTML = '<i class="fa-solid fa-lock"></i>';
+      badgeBox.appendChild(lockSpan);
+    }
+
+    const nameEl = document.createElement("span");
+    nameEl.className = "pf-trophy-name";
+    nameEl.textContent = badge.ten || badge.id;
+
+    const rewardEl = document.createElement("span");
+    rewardEl.className = "pf-trophy-reward";
+    rewardEl.textContent = rewardText;
+
+    const condEl = document.createElement("p");
+    condEl.className = "pf-trophy-cond";
+    condEl.textContent = badge.mo_ta || "";
+
+    const statusEl = document.createElement("small");
+    statusEl.className = "pf-trophy-status";
+    if (badge.da_mo) {
+      statusEl.textContent = badge.dang_deo ? "Đang đeo · Bấm để tháo" : "Đã đạt · Bấm để đeo";
+    } else {
+      const mucTieu = Number(badge.muc_tieu) || 1;
+      const tienDo = Number(badge.tien_do) || 0;
+      statusEl.textContent = mucTieu > 1 ? `Tiến độ: ${tienDo}/${mucTieu}` : "Chưa đạt";
+    }
+
+    btn.append(badgeBox, nameEl, rewardEl, condEl, statusEl);
+    if (badge.da_mo) {
+      btn.addEventListener("click", () => chonDeoHuyHieu(badge.id));
+    }
+    return btn;
+  }
+
+  function veTuHuyHieu() {
+    if (!trophyGridEl) return;
+    const daMo = dsHuyHieu.filter((b) => b.da_mo).length;
+    if (trophyCountEl) {
+      trophyCountEl.textContent = `${daMo}/${dsHuyHieu.length} Đã mở`;
+    }
+
+    trophyGridEl.innerHTML = "";
+    if (dsHuyHieu.length === 0) {
+      const p = document.createElement("p");
+      p.className = "pf-trophy-empty";
+      p.textContent = "Chưa có dữ liệu huy hiệu.";
+      trophyGridEl.appendChild(p);
+      return;
+    }
+
+    dsHuyHieu.forEach((badge) => {
+      trophyGridEl.appendChild(taoTheHuyHieu(badge));
+    });
+  }
+
+  async function taiHuyHieu() {
+    try {
+      // Áp dụng trước từ thông tin user để tránh nhấp nháy khung avatar
+      apDungKhungHuyHieu(user.huy_hieu || "");
+
+      const kq = await huyHieuReq;
+      if (!kq || !kq.success || !kq.data) throw new Error((kq && kq.message) || "Không tải được huy hiệu.");
+
+      const data = kq.data;
+      dsHuyHieu = Array.isArray(data.ds) ? data.ds : [];
+
+      if (typeof data.score === "number" && data.score !== user.score) {
+        user.score = data.score;
+        $("pf-score").textContent = user.score;
+        capNhatKhoa();
+      }
+
+      veTuHuyHieu();
+      apDungKhungHuyHieu(data.dang_deo || "");
+      hienToastHuyHieuMoi(data.moi_mo);
+    } catch (err) {
+      if (trophyGridEl) {
+        trophyGridEl.innerHTML = "";
+        const p = document.createElement("p");
+        p.className = "pf-trophy-empty";
+        p.textContent = "Không tải được danh sách huy hiệu. Kiểm tra lại kết nối server nhé!";
+        trophyGridEl.appendChild(p);
+      }
+    }
+  }
+
+  // =========================================================
+  // TƯƠNG TÁC DẢI 3 CHỈ SỐ (Điểm tích lũy / Chuỗi ngày / Bảo hộ)
+  // =========================================================
+  const statNen = $("pf-stat-nen");
+  const statTieuDe = $("pf-stat-tieu-de");
+  const statBody = $("pf-stat-body");
+  const statTb = $("pf-stat-tb");
+  const statActions = $("pf-stat-actions");
+  const btnDongStat = $("btn-dong-stat");
+
+  function dongStatModal() {
+    if (!statNen) return;
+    statNen.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+
+  function moStatModal(loai) {
+    if (!statNen || !user) return;
+    if (statTb) {
+      statTb.textContent = "";
+      statTb.className = "pf-stat-tb";
+    }
+    statBody.innerHTML = "";
+    statActions.innerHTML = "";
+
+    const score = Number(user.score || 0);
+    const streak = Number(user.streak || 0);
+    const baoHo = Number(user.the_bao_ho || 0);
+    const toiDaBaoHo = 3;
+
+    if (loai === "diem") {
+      statTieuDe.innerHTML = '<img src="img/icon-diem.png" alt="Điểm" class="vn-ico vn-ico-lg" /> Điểm tích lũy';
+      statBody.innerHTML = `
+        <div class="pf-stat-hero">
+          <img src="img/icon-diem.png" alt="Điểm" class="vn-ico vn-ico-2xl" />
+          <div>
+            <b>${score} điểm</b>
+            <span>Dùng để mở khóa Sửa hồ sơ (${DIEM_MO_KHOA}đ), đổi Thẻ bảo hộ (100đ) và đua Bảng xếp hạng.</span>
+          </div>
+        </div>
+        <p class="pf-stat-desc">Mẹo: Làm bài lần đầu được 100% điểm, hoàn thành Nhiệm vụ hôm nay và Điểm danh 7 ngày để tích điểm nhanh.</p>
+      `;
+      statActions.innerHTML = `
+        <a href="subjects.html" class="btn">Làm bài kiếm điểm</a>
+        <a href="qua.html" class="btn btn-phu">Vào Quà tặng</a>
+      `;
+    } else if (loai === "streak") {
+      const matChuoi = streak <= 0;
+      const icoSrc = matChuoi ? "img/icon-streak-mat.png" : "img/icon-streak.png";
+      const buffPct = Math.min(streak * 0.1, 5).toFixed(1).replace(".", ",");
+      statTieuDe.innerHTML = `<img src="${icoSrc}" alt="Streak" class="vn-ico vn-ico-lg" /> Chuỗi ngày học`;
+      statBody.innerHTML = `
+        <div class="pf-stat-hero ${matChuoi ? "is-lost" : ""}">
+          <img src="${icoSrc}" alt="Streak" class="vn-ico vn-ico-2xl" />
+          <div>
+            <b>${streak} ngày liên tục</b>
+            <span>${matChuoi
+              ? "Bạn chưa có chuỗi (hoặc đã mất chuỗi). Làm 1 bài tập bất kỳ hôm nay để thắp lại ngọn lửa!"
+              : `Đang cộng thưởng +${buffPct}% điểm mỗi lần nộp bài (tối đa +5%).`}</span>
+          </div>
+        </div>
+        <p class="pf-stat-desc">Nếu lỡ quên 1 ngày mà trong túi có <b>Thẻ bảo hộ (${baoHo}/${toiDaBaoHo})</b>, hệ thống sẽ tự động dùng 1 thẻ để giữ nguyên chuỗi của bạn.</p>
+      `;
+      statActions.innerHTML = `
+        <a href="subjects.html" class="btn">Làm bài giữ chuỗi</a>
+        <button type="button" class="btn btn-phu" id="btn-stat-xem-baoho">Xem Thẻ bảo hộ</button>
+      `;
+      const xemBhBtn = $("btn-stat-xem-baoho");
+      if (xemBhBtn) xemBhBtn.addEventListener("click", () => moStatModal("baoho"));
+    } else if (loai === "baoho") {
+      statTieuDe.innerHTML = '<img src="img/icon-bao-ho.png" alt="Bảo hộ" class="vn-ico vn-ico-lg" /> Thẻ bảo hộ streak';
+      const coTheDoi = baoHo < toiDaBaoHo && score >= 100;
+      statBody.innerHTML = `
+        <div class="pf-stat-hero">
+          <img src="img/icon-bao-ho.png" alt="Bảo hộ" class="vn-ico vn-ico-2xl" />
+          <div>
+            <b>${baoHo} / ${toiDaBaoHo} thẻ đang giữ</b>
+            <span>Tự động kích hoạt khi bạn bỏ lỡ 1 ngày học để bảo toàn chuỗi ngày.</span>
+          </div>
+        </div>
+        <p class="pf-stat-desc">Bạn có thể nhận miễn phí ở <b>Điểm danh ngày 4 / Vòng quay</b> hoặc đổi <b>100 điểm</b> lấy 1 thẻ ngay tại đây.</p>
+      `;
+
+      const doiBtn = document.createElement("button");
+      doiBtn.type = "button";
+      doiBtn.className = "btn";
+      doiBtn.disabled = !coTheDoi;
+      doiBtn.textContent = baoHo >= toiDaBaoHo
+        ? `Đã đầy (${toiDaBaoHo}/${toiDaBaoHo})`
+        : score < 100
+          ? `Cần 100 điểm (đang có ${score})`
+          : "Đổi 100 điểm lấy +1 Bảo hộ";
+      doiBtn.addEventListener("click", async () => {
+        if (doiBtn.disabled) return;
+        doiBtn.disabled = true;
+        doiBtn.textContent = "Đang đổi...";
+        if (statTb) { statTb.textContent = ""; statTb.className = "pf-stat-tb"; }
+        try {
+          const resp = await fetchCoTimeout(`${API}/api/bao-ho/doi`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: Number(userId) }),
+          });
+          const resJson = await resp.json();
+          if (!resp.ok || !resJson.success) {
+            throw new Error(resJson.message || "Không thể đổi thẻ bảo hộ!");
+          }
+          user.score = resJson.score;
+          user.the_bao_ho = resJson.the_bao_ho;
+          hienThongTin(user);
+          capNhatKhoa();
+          if (window.AmThanh && window.AmThanh.diemDanh) window.AmThanh.diemDanh(false);
+          moStatModal("baoho");
+          if (statTb) {
+            statTb.textContent = resJson.message || "Đổi thành công!";
+            statTb.className = "pf-stat-tb ok";
+          }
+        } catch (err) {
+          if (window.AmThanh && window.AmThanh.loi) window.AmThanh.loi();
+          if (statTb) {
+            statTb.textContent = err.message || "Lỗi khi đổi thẻ!";
+            statTb.className = "pf-stat-tb loi";
+          }
+          doiBtn.disabled = false;
+          doiBtn.textContent = "Đổi 100 điểm lấy +1 Bảo hộ";
+        }
+      });
+
+      const quaLink = document.createElement("a");
+      quaLink.href = "qua.html";
+      quaLink.className = "btn btn-phu";
+      quaLink.textContent = "Mở Quà tặng";
+
+      statActions.appendChild(doiBtn);
+      statActions.appendChild(quaLink);
+    }
+
+    statNen.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+
+  document.querySelectorAll(".pf-vip-btn[data-stat]").forEach((btn) => {
+    btn.addEventListener("click", () => moStatModal(btn.dataset.stat));
+  });
+  if (btnDongStat) btnDongStat.addEventListener("click", dongStatModal);
+  if (statNen) {
+    statNen.addEventListener("click", (e) => {
+      if (e.target === statNen) dongStatModal();
+    });
+  }
+
+  // chạy lần đầu để áp trạng thái khóa theo điểm hiện có và tải tủ huy hiệu
   capNhatKhoa();
+  taiHuyHieu();
 });

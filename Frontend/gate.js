@@ -25,9 +25,17 @@
   const dongCuoi = (tieu, phu) =>
     `<section class="gt-cuoi"><h2>${tieu}</h2><p>${phu}</p>${cta}</section>`;
 
-  const buoc = (ds) => `<ol class="gt-buoc">${ds.map(([icon, t, m], i) => `
-    <li><span class="gt-buoc-so"><i class="fa-solid ${icon}"></i></span>
-      <b>${i + 1}. ${t}</b><small>${m}</small></li>`).join("")}</ol>`;
+  const buoc = (ds) => `<div class="interactive-steps-container" id="interactive-steps">${ds.map(([icon, t, m], i) => `
+    <div class="step-card" data-step="${i + 1}">
+      <div class="step-summary">
+        <span class="step-badge">${i + 1}</span>
+        <i class="step-ico fa-solid ${icon}"></i>
+        <b class="step-name">${t}</b>
+      </div>
+      <div class="step-detail">
+        <p>${m}</p>
+      </div>
+    </div>`).join("")}</div>`;
 
   const tinhNang = (ds) => `<div class="gt-tn">${ds.map(([icon, c, t, m]) => `
     <article style="--c:${c}"><i class="fa-solid ${icon}"></i><b>${t}</b><p>${m}</p></article>`).join("")}</div>`;
@@ -38,13 +46,10 @@
   // ======================================================
   // TRANG BÀI TẬP
   // ======================================================
-  const theMon = (ten, anh, icon, phu) => `
-    <div class="subject-card gt-the-mon" tabindex="0"
-         data-khoa="Đăng nhập để vào kho bài tập môn ${ten}.">
-      <div class="subject-img"><img src="img/subject/${anh}.webp" alt="${ten}" data-icon="${icon}"></div>
+  const theMon = (ten, icon) => `
+    <div class="subject-card gt-the-mon" tabindex="0" data-khoa="Đăng nhập để vào kho bài tập môn ${ten}.">
+      <div class="subject-ico-box"><i class="fa-solid ${icon}"></i></div>
       <span class="subject-name">${ten}</span>
-      <small class="gt-phu">${phu}</small>
-      <span class="subject-badge"><i class="fa-solid fa-lock"></i> Cần đăng nhập</span>
     </div>`;
 
   // Bài học mẫu: [số, tên, [% điểm của từng bài tập nhỏ]]
@@ -83,36 +88,28 @@
     <section class="gt-hero">
      <span class="gt-nhan"><i class="fa-solid fa-lock"></i> Dành cho thành viên VnStarL</span>
       <h1>Kho bài tập luyện thi vào lớp 10</h1>
-      <p>Học lý thuyết, luyện từng dạng câu hỏi, xem lời giải chi tiết và leo hạng sau mỗi lần làm lại.
-         Tạo tài khoản miễn phí để mở khóa toàn bộ.</p>
       ${cta}
-      ${chipDong(["3 dạng câu hỏi như đề thi", "Lời giải chi tiết", "5 hạng thành tích", "Sổ lỗi sai ôn đúng chỗ hổng"])}
     </section>
 
-    <section class="gt-khoi">
-      <h2>Luyện tập theo lộ trình rõ ràng</h2>
-      <p class="gt-sub">Mỗi bài học đều đi qua 4 bước, anh/chị luôn biết mình đang ở đâu.</p>
-      ${buoc([
-      ["fa-book-open", "Chọn môn và chương", "Mỗi chương gồm nhiều bài học, sắp theo thứ tự nên học."],
-      ["fa-lightbulb", "Đọc lý thuyết", "Tóm tắt kiến thức, có mô phỏng thực hành ở một số bài."],
-      ["fa-pen", "Làm bài tập", "Trắc nghiệm, đúng sai và trả lời ngắn, xếp từ dễ đến khó."],
-      ["fa-medal", "Xem lời giải, nâng hạng", "Làm lại để đạt % cao hơn và lên hạng."],
-    ])}
-    </section>
-
-    <section class="gt-khoi">
+    <section class="gt-khoi gt-khoi-mon">
       <h2>Các môn đang có</h2>
-      <p class="gt-sub">Bấm vào một môn để thử, hệ thống sẽ mời anh/chị đăng nhập.</p>
+      <p class="gt-sub">Bấm vào một môn để thử, hệ thống sẽ mời bạn đăng nhập.</p>
       <div class="subject-grid">
-        ${theMon("Toán", "toan", "fa-calculator", "Đại số · Hình học")}
-        ${theMon("Ngữ Văn", "ngu_van", "fa-feather-pointed", "Đọc hiểu · Tác phẩm")}
-        ${theMon("Môn chuyên", "chuyen_toan", "fa-shapes", "Toán · Vật lý · Địa lý")}
+        ${theMon("Toán", "fa-calculator")}
+        ${theMon("Ngữ Văn", "fa-feather-pointed")}
+        ${theMon("Môn chuyên", "fa-shapes")}
       </div>
     </section>
 
-    <section class="gt-khoi">
+    <section class="gt-khoi gt-khoi-buoc">
+      <h2>Luyện tập theo lộ trình rõ ràng</h2>
+      <p class="gt-sub">Mỗi bài học đều đi qua 4 bước, bạn luôn biết mình đang ở đâu.</p>
+      <div class="split-stage-container" id="split-stage"></div>
+    </section>
+
+    <section class="gt-khoi gt-khoi-xem">
       <h2>Xem trước bên trong</h2>
-      <p class="gt-sub">Đây là giao diện anh/chị sẽ dùng hằng ngày. Thử làm ngay câu hỏi bên phải nhé!</p>
+      <p class="gt-sub">Đây là giao diện bạn sẽ dùng hằng ngày. Thử làm ngay câu hỏi bên phải nhé!</p>
       <div class="gt-xem">
 
         <div class="gt-cua-so">
@@ -159,23 +156,374 @@
       <div class="chu-giai">${chuGiai}</div>
     </section>
 
-    <section class="gt-khoi">
-      <h2>Không chỉ là làm bài</h2>
-      <p class="gt-sub">Những thứ giúp anh/chị học đều và nhớ lâu.</p>
-      ${tinhNang([
-      ["fa-circle-check", "#178a5a", "Lời giải chi tiết", "Nộp bài là có kết quả từng câu, kèm lời giải để hiểu vì sao."],
-      ["fa-book-bookmark", "#c27410", "Sổ lỗi sai", "Câu sai tự vào sổ, ôn lại cách 1, 3, 7 ngày để nhớ thật."],
-      ["fa-fire", "#d9480f", "Chuỗi ngày và nhiệm vụ", "Mỗi ngày 3 nhiệm vụ, điểm danh và quay thưởng."],
-      ["fa-ranking-star", "#2457d6", "Bảng xếp hạng", "Tích điểm từ bài tập và so tài cùng anh/chị bè."],
-    ])}
+    <!-- KHU VỰC BỘ 5 THẺ CÁNH QUẠT 3D TÁI SINH (PERFECT 5-CARD FAN DECK) -->
+    <section class="gt-khoi gt-khoi--deck">
+      <h2>VnStarL có gì cho sĩ tử lớp 9?</h2>
+      <p class="gt-sub">5 vũ khí bí truyền giúp bạn tự tin đỗ trường cấp ba mơ ước.</p>
+
+      <div class="fan-deck-wrapper" id="vnstarl-fan-deck">
+        <div class="fan-card-container">
+          <!-- THẺ 1: SỔ LỖI SAI -->
+          <div class="fan-card" data-card="1">
+            <div class="card-inner">
+              <span class="card-watermark">1</span>
+              <div class="card-icon-box"><i class="fa-solid fa-book-bookmark"></i></div>
+              <b class="card-title">Sổ Lỗi Sai</b>
+              <span class="card-tag">Ôn ngắt quãng</span>
+            </div>
+          </div>
+
+          <!-- THẺ 2: LỜI GIẢI CHI TIẾT -->
+          <div class="fan-card" data-card="2">
+            <div class="card-inner">
+              <span class="card-watermark">2</span>
+              <div class="card-icon-box"><i class="fa-solid fa-circle-check"></i></div>
+              <b class="card-title">Lời Giải Chi Tiết</b>
+              <span class="card-tag">Từng bước hiểu sâu</span>
+            </div>
+          </div>
+
+          <!-- THẺ 3 (TRUNG TÂM): KHOA BẢNG KỲ THI -->
+          <div class="fan-card active" data-card="3">
+            <div class="card-inner">
+              <span class="center-crown">👑</span>
+              <span class="card-watermark">★</span>
+              <div class="card-icon-box"><i class="fa-solid fa-scroll"></i></div>
+              <b class="card-title">Khoa Bảng</b>
+              <span class="card-tag">Đấu trường vinh danh</span>
+            </div>
+          </div>
+
+          <!-- THẺ 4: CHUỖI & NHIỆM VỤ -->
+          <div class="fan-card" data-card="4">
+            <div class="card-inner">
+              <span class="card-watermark">4</span>
+              <div class="card-icon-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-lg" /></div>
+              <b class="card-title">Chuỗi Ngày</b>
+              <span class="card-tag">Quay thưởng mỗi ngày</span>
+            </div>
+          </div>
+
+          <!-- THẺ 5: BẢNG XẾP HẠNG -->
+          <div class="fan-card" data-card="5">
+            <div class="card-inner">
+              <span class="card-watermark">5</span>
+              <div class="card-icon-box"><i class="fa-solid fa-ranking-star"></i></div>
+              <b class="card-title">Bảng Vàng</b>
+              <span class="card-tag">Đua Top sĩ tử</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dải sáng phản chiếu dưới đáy -->
+        <div class="deck-floor-light" aria-hidden="true"></div>
+      </div>
+
+      <div class="deck-scrubber-wrap">
+        <input type="range" min="1" max="5" step="1" id="deck-scrubber" class="deck-scrubber" value="3" aria-label="Chọn thẻ vũ khí">
+      </div>
+
+      <!-- Mô tả khi chạm vào từng thẻ -->
+      <div class="deck-card-caption" id="deck-caption">
+        <b class="caption-title">🏛️ Khoa Bảng Kỳ Thi</b>
+        <p class="caption-desc">Hệ thống phân định học vị từ Thi Hương, Thi Hội đến Thi Đình. Ghi danh bảng vàng và khắc tên trên bia đá vinh dự.</p>
+      </div>
     </section>
 
     ${dongCuoi("Sẵn sàng bắt đầu?", "Tạo tài khoản chỉ mất chưa đến 1 phút, hoàn toàn miễn phí.")}`;
   }
 
+  // Tương tác 4 bước lộ trình: PC dùng thanh ngang 1-4 + hộp chi tiết; Mobile giữ nguyên Split-Stage 2x2
+  function ganSplitStage(goc) {
+    const container = $("#split-stage", goc);
+    if (!container) return;
+
+    const STEPS = [
+      { id: 1, icon: "fa-book-open", title: "Chọn môn và chương", shortHint: "Đúng trọng tâm lớp 9", desc: "Mỗi chương gồm nhiều bài học phân theo chuẩn chương trình lớp 9. Giúp sĩ tử nắm chắc kiến thức trọng tâm từng phần trước khi làm đề.", cta: "Xem danh sách bài ➔" },
+      { id: 2, icon: "fa-lightbulb", title: "Đọc lý thuyết", shortHint: "Cô đọng, dễ hiểu", desc: "Tóm tắt cô đọng lý thuyết trọng tâm, kèm các hình ảnh minh họa và mô phỏng trực quan giúp bạn hiểu sâu bản chất vấn đề.", cta: "Khám phá lý thuyết ➔" },
+      { id: 3, icon: "fa-pen", title: "Làm bài tập", shortHint: "Từ dễ đến khó", desc: "Trắc nghiệm, đúng sai và trả lời ngắn, xếp từ dễ đến khó bám sát ma trận đề thi vào 10 mới nhất.", cta: "Bắt đầu luyện tập ➔" },
+      { id: 4, icon: "fa-medal", title: "Xem lời giải & lên hạng", shortHint: "Vá lỗi & bứt top", desc: "Xem phương pháp giải chi tiết từng bước, khắc phục lỗi sai tức thì và leo hạng sau mỗi lần luyện lại.", cta: "Xem bảng vinh danh ➔" }
+    ];
+
+    const mqMobile = window.matchMedia("(max-width: 640px)");
+    let desktopStep = 1;
+
+    // 1. GIAO DIỆN PC (>= 641px): Thanh lộ trình 4 bước nằm ngang + Hộp chi tiết mở sẵn
+    function renderDesktopStepper(activeStep) {
+      desktopStep = STEPS.some((s) => s.id === activeStep) ? activeStep : 1;
+      const item = STEPS.find((s) => s.id === desktopStep) || STEPS[0];
+
+      container.removeAttribute("data-dir");
+      container.classList.add("is-desktop-stepper");
+      container.innerHTML = `
+        <div class="gt-stepper-wrap">
+          <div class="gt-stepper-track" role="tablist" aria-label="4 bước luyện tập">
+            ${STEPS.map((s) => {
+              const active = s.id === desktopStep;
+              return `
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected="${active}"
+                  class="gt-step-pill ${active ? "is-active" : ""}"
+                  data-step="${s.id}">
+                  <span class="gt-step-top">
+                    <span class="gt-step-num">${s.id}</span>
+                    <span class="gt-step-ico-box" aria-hidden="true">
+                      <i class="fa-solid ${s.icon}"></i>
+                    </span>
+                  </span>
+                  <b class="gt-step-name">${s.title}</b>
+                  <span class="gt-step-hint">${s.shortHint}</span>
+                </button>
+              `;
+            }).join("")}
+          </div>
+
+          <div class="gt-step-panel" role="tabpanel" aria-live="polite">
+            <div class="gt-step-panel-left">
+              <div class="gt-step-panel-eyebrow">
+                <span class="gt-step-panel-badge">Bước 0${item.id} / 04</span>
+                <span class="gt-step-panel-dots" aria-hidden="true">
+                  ${STEPS.map((s) => `<i class="${s.id === item.id ? "is-on" : ""}"></i>`).join("")}
+                </span>
+              </div>
+              <div class="gt-step-panel-heading">
+                <span class="gt-step-panel-ico" aria-hidden="true">
+                  <i class="fa-solid ${item.icon}"></i>
+                </span>
+                <h3>${item.title}</h3>
+              </div>
+              <p class="gt-step-panel-desc">${item.desc}</p>
+            </div>
+            <div class="gt-step-panel-right">
+              <button
+                type="button"
+                class="gt-step-panel-cta"
+                data-khoa="Đăng nhập để trải nghiệm: ${item.title}">
+                ${item.cta}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const pills = Array.from(container.querySelectorAll(".gt-step-pill"));
+      pills.forEach((btn, idx) => {
+        btn.addEventListener("click", () => {
+          const nextId = Number(btn.dataset.step);
+          if (nextId !== desktopStep) renderDesktopStepper(nextId);
+        });
+        btn.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+            e.preventDefault();
+            const offset = e.key === "ArrowRight" ? 1 : -1;
+            const targetIdx = (idx + offset + STEPS.length) % STEPS.length;
+            renderDesktopStepper(STEPS[targetIdx].id);
+            const focusTarget = container.querySelector(`.gt-step-pill[data-step="${STEPS[targetIdx].id}"]`);
+            if (focusTarget) focusTarget.focus();
+          }
+        });
+      });
+    }
+
+    // 2. GIAO DIỆN MOBILE (<= 640px): Giữ nguyên hoàn toàn Split-Stage 2x2 hiện có
+    function renderGrid() {
+      container.classList.remove("is-desktop-stepper");
+      container.removeAttribute("data-dir");
+      container.innerHTML = `
+        <div class="split-stage-grid">
+          ${STEPS.map((s) => `
+            <div class="stage-grid-card" role="button" tabindex="0" data-step="${s.id}" title="Bấm để xem chi tiết bước ${s.id}">
+              <div class="stage-grid-header">
+                <span class="stage-badge">${s.id}</span>
+                <i class="fa-solid ${s.icon} stage-ico"></i>
+              </div>
+              <b class="stage-grid-title">${s.title}</b>
+            </div>
+          `).join("")}
+        </div>
+      `;
+
+      container.querySelectorAll(".stage-grid-card").forEach((card) => {
+        const stepId = Number(card.dataset.step);
+        card.addEventListener("click", () => renderSplit(stepId));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            renderSplit(stepId);
+          }
+        });
+      });
+    }
+
+    function renderSplit(activeStep) {
+      container.classList.remove("is-desktop-stepper");
+      if (activeStep === 1 || activeStep === 3) {
+        container.setAttribute("data-dir", "left");
+      } else {
+        container.setAttribute("data-dir", "right");
+      }
+
+      const item = STEPS.find((s) => s.id === activeStep) || STEPS[0];
+      const other3 = STEPS.filter((s) => s.id !== item.id);
+
+      container.innerHTML = `
+        <div class="stage-main-card" role="button" tabindex="0" title="Bấm vào thẻ để thu gọn về 4 bước">
+          <div class="stage-main-header">
+            <span class="stage-badge">${item.id}</span>
+            <i class="fa-solid ${item.icon} stage-ico"></i>
+            <b class="stage-title">${item.title}</b>
+            <button type="button" class="stage-back-btn" title="Thu gọn về 4 bước" aria-label="Thu gọn về 4 bước">
+              <i class="fa-solid fa-table-cells-large"></i> <span>Thu gọn</span>
+            </button>
+          </div>
+          <p class="stage-desc">${item.desc}</p>
+          <button type="button" class="stage-cta-btn" data-khoa="Đăng nhập để trải nghiệm: ${item.title}">${item.cta}</button>
+        </div>
+        <div class="stage-side-stack">
+          ${other3.map((s) => `
+            <button type="button" class="stage-side-btn" data-step="${s.id}" title="${s.title}">
+              <span class="side-badge">${s.id}</span>
+              <i class="fa-solid ${s.icon} side-ico"></i>
+            </button>
+          `).join("")}
+        </div>`;
+
+      const backBtn = container.querySelector(".stage-back-btn");
+      if (backBtn) {
+        backBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          renderGrid();
+        });
+      }
+
+      const mainCard = container.querySelector(".stage-main-card");
+      if (mainCard) {
+        mainCard.addEventListener("click", (e) => {
+          if (e.target.closest("[data-khoa]")) return;
+          renderGrid();
+        });
+      }
+
+      container.querySelectorAll(".stage-side-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          renderSplit(Number(btn.dataset.step));
+        });
+      });
+    }
+
+    function syncViewportMode() {
+      if (mqMobile.matches) {
+        renderGrid();
+      } else {
+        renderDesktopStepper(desktopStep);
+      }
+    }
+
+    if (typeof mqMobile.addEventListener === "function") {
+      mqMobile.addEventListener("change", syncViewportMode);
+    }
+    syncViewportMode();
+  }
+
+  // Tương tác Bộ 5 thẻ xòe quạt 3D
+  function ganFanDeck(goc) {
+    const deck = $("#vnstarl-fan-deck", goc);
+    const caption = $("#deck-caption", goc);
+    const scrubber = $("#deck-scrubber", goc);
+    if (!deck || !caption) return;
+
+    const DETAILS = {
+      1: { title: "📜 Sổ Lỗi Sai Thông Minh", desc: "Tự động ghi nhớ câu làm sai, lên lịch ôn lại cách 1, 3, 7 ngày để vá đúng lỗ hổng kiến thức." },
+      2: { title: "💡 Lời Giải Chi Tiết Từng Câu", desc: "Nộp bài xong là có phân tích phương pháp giải chi tiết, không chỉ biết đáp án mà hiểu vì sao làm vậy." },
+      3: { title: "🏛️ Khoa Bảng & Kỳ Thi Đấu Trường", desc: "Hệ thống thi cử mô phỏng khoa cử truyền thống: Thi Hương, Thi Hội, Thi Đình ghi danh bảng vàng." },
+      4: { title: "🔥 Chuỗi Ngày & Nhiệm Vụ", desc: "Duy trì streak đều đặn mỗi ngày, hoàn thành 3 nhiệm vụ để mở rương và quay thưởng hấp dẫn." },
+      5: { title: "🏆 Bảng Vàng Xếp Hạng Toàn Quốc", desc: "Tích điểm từ từng bài tập rèn luyện, so tài cao thấp cùng hàng ngàn sĩ tử lớp 9 trên bục vinh danh." }
+    };
+
+    let activeCardIndex = 3;
+    const cards = deck.querySelectorAll(".fan-card");
+
+    function setActiveCard(idx) {
+      activeCardIndex = Number(idx) || 1;
+      cards.forEach((c) => {
+        const isMatch = Number(c.dataset.card) === activeCardIndex;
+        c.classList.toggle("active", isMatch);
+      });
+
+      // Ensure active card has crown: dynamically add <span class="center-crown">👑</span>
+      deck.querySelectorAll(".center-crown").forEach((el) => el.remove());
+      const activeCard = deck.querySelector(`.fan-card[data-card="${activeCardIndex}"]`);
+      if (activeCard) {
+        const inner = activeCard.querySelector(".card-inner") || activeCard;
+        const crown = document.createElement("span");
+        crown.className = "center-crown";
+        crown.textContent = "👑";
+        inner.prepend(crown);
+      }
+
+      // Update caption
+      if (DETAILS[activeCardIndex]) {
+        caption.innerHTML = `<b class="caption-title">${DETAILS[activeCardIndex].title}</b><p class="caption-desc">${DETAILS[activeCardIndex].desc}</p>`;
+      }
+
+      // Update scrubber slider value
+      if (scrubber) {
+        scrubber.value = activeCardIndex;
+      }
+    }
+
+    let rotateTimer = null;
+
+    function startAutoRotate() {
+      stopAutoRotate();
+      rotateTimer = setInterval(() => {
+        const next = (activeCardIndex % 5) + 1;
+        setActiveCard(next);
+      }, 5000);
+    }
+
+    function stopAutoRotate() {
+      if (rotateTimer) {
+        clearInterval(rotateTimer);
+        rotateTimer = null;
+      }
+    }
+
+    cards.forEach((card) => {
+      card.addEventListener("click", () => {
+        setActiveCard(Number(card.dataset.card));
+      });
+    });
+
+    if (scrubber) {
+      ["input", "change"].forEach((evt) => {
+        scrubber.addEventListener(evt, () => {
+          setActiveCard(Number(scrubber.value));
+        });
+      });
+    }
+
+    const interactTargets = [deck, scrubber].filter(Boolean);
+    interactTargets.forEach((target) => {
+      ["pointerdown", "touchstart", "mouseenter"].forEach((evt) => {
+        target.addEventListener(evt, stopAutoRotate);
+      });
+      ["pointerup", "touchend", "mouseleave"].forEach((evt) => {
+        target.addEventListener(evt, startAutoRotate);
+      });
+    });
+
+    setActiveCard(3);
+    startAutoRotate();
+  }
+
   // Câu hỏi dùng thử: chấm ngay trên trình duyệt, chỉ là 1 câu mẫu cố định
   function ganDemo(goc) {
-    $("#gt-kt", goc).addEventListener("click", () => {
+    const btn = $("#gt-kt", goc);
+    if (!btn) return;
+    btn.addEventListener("click", () => {
       const kq = $("#gt-kq", goc);
       const chon = $("#gt-demo input:checked", goc);
       if (!chon) { kq.innerHTML = `<div class="kq kq-chua">Hãy chọn một đáp án trước nhé.</div>`; return; }
@@ -186,7 +534,7 @@
       kq.innerHTML =
         (dung ? `<div class="kq kq-dung">✔ Đúng! +2 điểm</div>` : `<div class="kq kq-sai">✘ Chưa đúng. Đáp án là B.</div>`) +
         `<div class="kq-loi-giai"><b>Lời giải:</b> 2x = 11 − 3 = 8, suy ra x = 4.</div>
-         <div class="gt-demo-moi">Thích chứ? Đăng ký để làm tiếp các bài tập thật và lưu điểm của anh/chị.${cta}</div>`;
+         <div class="gt-demo-moi">Thích chứ? Đăng ký để làm tiếp các bài tập thật và lưu điểm của bạn.${cta}</div>`;
     });
   }
 
@@ -237,7 +585,7 @@
           <div class="podium-card bronze"><img class="avatar" src="img/avartar.webp" alt="Top 3">
             <span class="podium-name">Thí sinh C - 240</span><div class="step">3</div></div>
         </div>
-        <p class="gt-ghi">Tên của anh/chị có thể ở đây. Điểm lên bảng ngay sau khi nộp bài.</p>
+        <p class="gt-ghi">Tên của bạn có thể ở đây. Điểm lên bảng ngay sau khi nộp bài.</p>
       </div>`,
   };
 
@@ -245,7 +593,7 @@
     return `
     <section class="gt-hero">
      <span class="gt-nhan"><i class="fa-solid fa-lock"></i> Dành cho thành viên VnStarL</span>
-      <h1>Tranh tài cùng anh/chị bè</h1>
+      <h1>Tranh tài cùng bạn bè</h1>
       <p>Mỗi cuộc thi có khung giờ riêng, đề riêng và bảng xếp hạng riêng.
          Đăng nhập để vào thi, ghi tên mình lên bục vinh danh.</p>
       ${cta}
@@ -388,17 +736,8 @@
 
   if (loai === "bai-tap") {
     ganDemo(main);
-    // ô môn chưa có ảnh thì hiện icon giữ chỗ (giống subjects.js)
-    main.querySelectorAll(".subject-img img").forEach((img) => {
-      const thayBangIcon = () => {
-        const ph = document.createElement("div");
-        ph.className = "subject-placeholder";
-        ph.innerHTML = `<i class="fa-solid ${img.dataset.icon}"></i>`;
-        img.replaceWith(ph);
-      };
-      img.addEventListener("error", thayBangIcon);
-      if (img.complete && img.naturalWidth === 0) thayBangIcon();
-    });
+    ganSplitStage(main);
+    ganFanDeck(main);
   } else {
     taiLichThi();
     veTabMau("thong-tin");

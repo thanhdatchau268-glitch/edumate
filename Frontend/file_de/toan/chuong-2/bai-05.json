@@ -1,0 +1,851 @@
+{
+  "ly_thuyet": "<h3>1. Khái niệm bất đẳng thức</h3><h4>Nhắc lại về thứ tự trên tập số thực</h4><ul><li>Trên tập số thực, khi so sánh hai số $a$ và $b$, ta có một trong ba trường hợp sau:<ul><li>$a$ bằng $b$, kí hiệu $a = b$.</li><li>$a$ lớn hơn $b$, kí hiệu $a &gt; b$.</li><li>$a$ nhỏ hơn $b$, kí hiệu $a &lt; b$.</li></ul></li><li>Số $a$ lớn hơn hoặc bằng $b$, kí hiệu $a \\geq b$ ($a &gt; b$ hoặc $a = b$).</li><li>Số $a$ nhỏ hơn hoặc bằng $b$, kí hiệu $a \\leq b$ ($a &lt; b$ hoặc $a = b$).</li></ul><h4>Khái niệm bất đẳng thức</h4><ul><li>Ta gọi hệ thức dạng $a &gt; b$ (hay $a &lt; b$, $a \\geq b$, $a \\leq b$) là <b>bất đẳng thức</b> và gọi $a$ là vế trái, $b$ là vế phải của bất đẳng thức.</li></ul><blockquote><p><b>Lưu ý:</b> - Hai bất đẳng thức $a &lt; b$ và $c &lt; d$ (hoặc $a &gt; b$ và $c &gt; d$) được gọi là hai bất đẳng thức <b>cùng chiều</b>. - Hai bất đẳng thức $a &lt; b$ và $c &gt; d$ (hoặc $a &gt; b$ và $c &lt; d$) được gọi là hai bất đẳng thức <b>ngược chiều</b>.</p></blockquote><h4>Tính chất bắc cầu của bất đẳng thức</h4><ul><li>Với ba số $a, b, c$, nếu $a &lt; b$ và $b &lt; c$ thì $a &lt; c$ (<b>tính chất bắc cầu</b>).</li><li>Tương tự, các thứ tự $&gt;$, $\\geq$, $\\leq$ cũng có tính chất bắc cầu.</li></ul><h3>2. Liên hệ giữa thứ tự và phép cộng</h3><h4>Tính chất</h4><ul><li>Khi cộng cùng một số vào hai vế của một bất đẳng thức, ta được bất đẳng thức mới <b>cùng chiều</b> với bất đẳng thức đã cho.</li><li>Với ba số $a, b, c$:<ul><li>Nếu $a &lt; b$ thì $a + c &lt; b + c$.</li><li>Nếu $a \\leq b$ thì $a + c \\leq b + c$.</li><li>Nếu $a &gt; b$ thì $a + c &gt; b + c$.</li><li>Nếu $a \\geq b$ thì $a + c \\geq b + c$.</li></ul></li></ul><h3>3. Liên hệ giữa thứ tự và phép nhân</h3><h4>Nhân hai vế với cùng một số dương</h4><ul><li>Khi nhân cả hai vế của một bất đẳng thức với cùng một <b>số dương</b>, ta được bất đẳng thức mới <b>cùng chiều</b> với bất đẳng thức đã cho.</li><li>Với ba số $a, b, c$ và $c &gt; 0$:<ul><li>Nếu $a &lt; b$ thì $ac &lt; bc$.</li><li>Nếu $a \\leq b$ thì $ac \\leq bc$.</li><li>Nếu $a &gt; b$ thì $ac &gt; bc$.</li><li>Nếu $a \\geq b$ thì $ac \\geq bc$.</li></ul></li></ul><h4>Nhân hai vế với cùng một số âm</h4><ul><li>Khi nhân cả hai vế của một bất đẳng thức với cùng một <b>số âm</b>, ta được bất đẳng thức mới <b>ngược chiều</b> với bất đẳng thức đã cho.</li><li>Với ba số $a, b, c$ và $c &lt; 0$:<ul><li>Nếu $a &lt; b$ thì $ac &gt; bc$.</li><li>Nếu $a \\leq b$ thì $ac \\geq bc$.</li><li>Nếu $a &gt; b$ thì $ac &lt; bc$.</li><li>Nếu $a \\geq b$ thì $ac \\leq bc$.</li></ul></li></ul>",
+  "bai_tap": [
+    {
+      "id": "5.1",
+      "do_kho": 1,
+      "ten": "Bất đẳng thức và tính chất",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Bất đẳng thức nào sau đây biểu diễn phát biểu \"x nhỏ hơn y\"?",
+          "dap_an": [
+            "$x &lt; y$",
+            "$x &gt; y$",
+            "$x \\le y$",
+            "$x \\ge y$"
+          ],
+          "diem": 2,
+          "goi_y": "Ký hiệu nhỏ hơn là $&lt;$."
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Bất đẳng thức nào sau đây biểu diễn phát biểu \"m không nhỏ hơn n\"?",
+          "dap_an": [
+            "$m &lt; n$",
+            "$m &gt; n$",
+            "$m \\le n$",
+            "$m \\ge n$"
+          ],
+          "diem": 2,
+          "goi_y": "\"Không nhỏ hơn\" nghĩa là \"lớn hơn hoặc bằng\" (ký hiệu $\\ge$)."
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Bất đẳng thức nào sau đây biểu diễn phát biểu \"a không vượt quá b\"?",
+          "dap_an": [
+            "$a &lt; b$",
+            "$a \\le b$",
+            "$a &gt; b$",
+            "$a \\ge b$"
+          ],
+          "diem": 2,
+          "goi_y": "\"Không vượt quá\" nghĩa là \"nhỏ hơn hoặc bằng\" (ký hiệu $\\le$)."
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Vế trái của bất đẳng thức $2x + 1 &gt; 5$ là biểu thức nào?",
+          "dap_an": [
+            "$2x + 1$",
+            "$5$",
+            "$2x$",
+            "$x + 1$"
+          ],
+          "diem": 2,
+          "goi_y": "Vế trái là biểu thức nằm ở bên trái dấu bất đẳng thức."
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Vế phải của bất đẳng thức $a - 3 \\le 2b$ là biểu thức nào?",
+          "dap_an": [
+            "$a - 3$",
+            "$a$",
+            "$2b$",
+            "$b$"
+          ],
+          "diem": 2,
+          "goi_y": "Vế phải là biểu thức nằm ở bên phải dấu bất đẳng thức."
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Cho hai số $a$ và $b$ thỏa mãn $a - b = 5$. Kết luận nào sau đây là đúng khi so sánh $a$ và $b$?",
+          "dap_an": [
+            "$a &gt; b$",
+            "$a &lt; b$",
+            "$a = b$",
+            "$a \\le b$"
+          ],
+          "diem": 2,
+          "goi_y": "Vì $a - b = 5 &gt; 0$ nên $a &gt; b$."
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Cho hai số $x$ và $y$ thỏa mãn $x - y = -3$. Khẳng định nào sau đây là đúng?",
+          "dap_an": [
+            "$x &gt; y$",
+            "$x &lt; y$",
+            "$x = y$",
+            "$x \\ge y$"
+          ],
+          "diem": 2,
+          "goi_y": "Vì $x - y = -3 &lt; 0$ nên $x &lt; y$."
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Bất đẳng thức nào sau đây là đúng khi so sánh hai số $-3$ và $-5$?",
+          "dap_an": [
+            "$-3 &gt; -5$",
+            "$-3 &lt; -5$",
+            "$-3 = -5$",
+            "$-3 \\le -5$"
+          ],
+          "diem": 2,
+          "goi_y": "Trên trục số, $-3$ nằm bên phải $-5$ nên $-3 &gt; -5$."
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Cho bất đẳng thức $a &lt; b$. Khi cộng số $c$ vào cả hai vế của bất đẳng thức, ta được bất đẳng thức nào?",
+          "dap_an": [
+            "$a + c &lt; b + c$",
+            "$a + c &gt; b + c$",
+            "$a + c = b + c$",
+            "$a + c \\le b + c$"
+          ],
+          "diem": 2,
+          "goi_y": "Khi cộng cùng một số vào hai vế của bất đẳng thức, chiều bất đẳng thức không thay đổi."
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $x &gt; y$. Khi trừ cả hai vế của bất đẳng thức cho $4$, ta thu được bất đẳng thức nào?",
+          "dap_an": [
+            "$x - 4 &lt; y - 4$",
+            "$x - 4 &gt; y - 4$",
+            "$x - 4 = y - 4$",
+            "$x - 4 \\le y - 4$"
+          ],
+          "diem": 2,
+          "goi_y": "Trừ cả hai vế cho $4$ giữ nguyên chiều của bất đẳng thức."
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a \\le b$. Bất đẳng thức nào sau đây luôn đúng?",
+          "dap_an": [
+            "$a + 2 \\le b + 2$",
+            "$a + 2 \\ge b + 2$",
+            "$a + 2 &lt; b + 2$",
+            "$a + 2 &gt; b + 2$"
+          ],
+          "diem": 2,
+          "goi_y": "Cộng $2$ vào hai vế giữ nguyên chiều bất đẳng thức."
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $m \\ge n$. Bất đẳng thức nào sau đây là đúng?",
+          "dap_an": [
+            "$m - 5 &lt; n - 5$",
+            "$m - 5 \\le n - 5$",
+            "$m - 5 \\ge n - 5$",
+            "$m - 5 &gt; n - 5$"
+          ],
+          "diem": 2,
+          "goi_y": "Trừ $5$ ở cả hai vế giữ nguyên chiều bất đẳng thức."
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a &lt; b$ và $c &gt; 0$. Bất đẳng thức nào sau đây là đúng?",
+          "dap_an": [
+            "$ac &lt; bc$",
+            "$ac &gt; bc$",
+            "$ac = bc$",
+            "$ac \\ge bc$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhân cả hai vế với số dương $c$ thì giữ nguyên chiều bất đẳng thức."
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $x &gt; y$ và số $c &lt; 0$. Bất đẳng thức nào sau đây là đúng?",
+          "dap_an": [
+            "$cx &gt; cy$",
+            "$cx &lt; cy$",
+            "$cx = cy$",
+            "$cx \\ge cy$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhân cả hai vế với số âm $c$ thì bất đẳng thức đổi chiều."
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a &lt; b$. Khi nhân cả hai vế của bất đẳng thức với $-2$, ta được bất đẳng thức nào?",
+          "dap_an": [
+            "$-2a &lt; -2b$",
+            "$-2a &gt; -2b$",
+            "$-2a = -2b$",
+            "$-2a \\le -2b$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhân cả hai vế với số âm $-2$ phải đổi chiều bất đẳng thức."
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $m &gt; n$. Chia cả hai vế của bất đẳng thức cho số dương $3$, ta thu được bất đẳng thức nào?",
+          "dap_an": [
+            "$\\frac{m}{3} &gt; \\frac{n}{3}$",
+            "$\\frac{m}{3} &lt; \\frac{n}{3}$",
+            "$\\frac{m}{3} = \\frac{n}{3}$",
+            "$\\frac{m}{3} \\le \\frac{n}{3}$"
+          ],
+          "diem": 2,
+          "goi_y": "Chia cả hai vế cho số dương giữ nguyên chiều bất đẳng thức."
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $x \\le y$. Chia cả hai vế của bất đẳng thức cho số âm $-4$, ta thu được bất đẳng thức nào?",
+          "dap_an": [
+            "$\\frac{x}{-4} \\le \\frac{y}{-4}$",
+            "$\\frac{x}{-4} \\ge \\frac{y}{-4}$",
+            "$\\frac{x}{-4} &lt; \\frac{y}{-4}$",
+            "$\\frac{x}{-4} = \\frac{y}{-4}$"
+          ],
+          "diem": 2,
+          "goi_y": "Chia cả hai vế cho số âm phải đổi chiều bất đẳng thức."
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Cho ba số $a, b, c$ thỏa mãn $a &lt; b$ và $b &lt; c$. Theo tính chất bắc cầu, ta suy ra được bất đẳng thức nào?",
+          "dap_an": [
+            "$a &lt; c$",
+            "$a &gt; c$",
+            "$a = c$",
+            "$b &lt; a$"
+          ],
+          "diem": 2,
+          "goi_y": "Áp dụng tính chất bắc cầu: nếu $a &lt; b$ và $b &lt; c$ thì $a &lt; c$."
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $x - 3 &gt; 2$. Cộng $3$ vào hai vế của bất đẳng thức ta thu được kết quả nào?",
+          "dap_an": [
+            "$x &gt; 2$",
+            "$x &gt; 5$",
+            "$x &lt; 5$",
+            "$x &gt; -1$"
+          ],
+          "diem": 2,
+          "goi_y": "Cộng $3$ vào hai vế: $x - 3 + 3 &gt; 2 + 3 \\Leftrightarrow x &gt; 5$."
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $2y &lt; 8$. Chia cả hai vế cho $2$ ta thu được kết quả nào?",
+          "dap_an": [
+            "$y &lt; 4$",
+            "$y &gt; 4$",
+            "$y &lt; 16$",
+            "$y &gt; 16$"
+          ],
+          "diem": 2,
+          "goi_y": "Chia cả hai vế cho $2 &gt; 0$: $y &lt; 4$."
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $-3x \\le 6$. Chia cả hai vế cho $-3$ ta thu được kết quả nào?",
+          "dap_an": [
+            "$x \\le -2$",
+            "$x \\ge -2$",
+            "$x \\ge 2$",
+            "$x \\le 2$"
+          ],
+          "diem": 2,
+          "goi_y": "Chia hai vế cho số âm $-3$ và đổi chiều bất đẳng thức: $x \\ge -2$."
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Cho biết $a + 1 &gt; b + 1$. Khẳng định nào sau đây là đúng khi so sánh $a$ và $b$?",
+          "dap_an": [
+            "$a &gt; b$",
+            "$a &lt; b$",
+            "$a = b$",
+            "$a \\le b$"
+          ],
+          "diem": 2,
+          "goi_y": "Trừ $1$ ở cả hai vế ta được $a &gt; b$."
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Cho biết $-5a &lt; -5b$. Khẳng định nào sau đây là đúng khi so sánh $a$ và $b$?",
+          "dap_an": [
+            "$a &gt; b$",
+            "$a &lt; b$",
+            "$a = b$",
+            "$a \\ge b$"
+          ],
+          "diem": 2,
+          "goi_y": "Chia hai vế cho $-5 &lt; 0$ và đổi chiều bất đẳng thức ta được $a &gt; b$."
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Cho biết $3a - 2 \\ge 3b - 2$. Khẳng định nào sau đây là đúng?",
+          "dap_an": [
+            "$a \\le b$",
+            "$a \\ge b$",
+            "$a &lt; b$",
+            "$a &gt; b$"
+          ],
+          "diem": 2,
+          "goi_y": "Cộng $2$ rồi chia hai vế cho $3 &gt; 0$ ta được $a \\ge b$."
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Với mọi số thực $a$, khẳng định nào sau đây luôn đúng?",
+          "dap_an": [
+            "$a^2 \\ge 0$",
+            "$a^2 &gt; 0$",
+            "$a^2 &lt; 0$",
+            "$a^2 \\le 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Bình phương của một số thực bất kỳ luôn không âm ($a^2 \\ge 0$)."
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Cho bất đẳng thức $a &lt; b$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> $a + 5 &lt; b + 5$.",
+          "diem": 2.5,
+          "goi_y": "Sử dụng quy tắc cộng/nhân cả hai vế của bất đẳng thức với một số thực (chú ý đổi chiều khi nhân/chia số âm)."
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> $a - 3 &gt; b - 3$.",
+          "diem": 2.5,
+          "goi_y": "Sử dụng quy tắc cộng/nhân cả hai vế của bất đẳng thức với một số thực (chú ý đổi chiều khi nhân/chia số âm)."
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> $-2a &gt; -2b$.",
+          "diem": 2.5,
+          "goi_y": "Sử dụng quy tắc cộng/nhân cả hai vế của bất đẳng thức với một số thực (chú ý đổi chiều khi nhân/chia số âm)."
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> $3a + 1 &lt; 3b + 1$.",
+          "diem": 2.5,
+          "goi_y": "Sử dụng quy tắc cộng/nhân cả hai vế của bất đẳng thức với một số thực (chú ý đổi chiều khi nhân/chia số âm)."
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Cho hai số thực $x, y$ thỏa mãn $x \\ge y$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> $x - y \\ge 0$.",
+          "diem": 2.5,
+          "goi_y": "Áp dụng các tính chất cơ bản của bất đẳng thức để biến đổi từng ý."
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> $-x \\le -y$.",
+          "diem": 2.5,
+          "goi_y": "Áp dụng các tính chất cơ bản của bất đẳng thức để biến đổi từng ý."
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> $2x + 1 \\le 2y + 1$.",
+          "diem": 2.5,
+          "goi_y": "Áp dụng các tính chất cơ bản của bất đẳng thức để biến đổi từng ý."
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> $-5x + 3 \\le -5y + 3$.",
+          "diem": 2.5,
+          "goi_y": "Áp dụng các tính chất cơ bản của bất đẳng thức để biến đổi từng ý."
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Cho biết $a - 4 &gt; b - 4$ và $b &gt; 3$. Theo tính chất bắc cầu, số $a$ lớn hơn số nào?",
+          "diem": 6,
+          "goi_y": "Suy ra $a &gt; b$ từ bất đẳng thức thứ nhất. Kết hợp $b &gt; 3$ suy ra $a &gt; 3$."
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm số nguyên $x$ nhỏ nhất thỏa mãn bất đẳng thức $x &gt; 2$.",
+          "diem": 6,
+          "goi_y": "Các số nguyên lớn hơn $2$ là $3, 4, 5,...$. Số nguyên nhỏ nhất trong các số đó là $3$."
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Cho bất đẳng thức $-4x &lt; 12$. Số nguyên $x$ nhỏ nhất thỏa mãn bất đẳng thức trên bằng bao nhiêu?",
+          "diem": 6,
+          "goi_y": "Chia hai vế cho $-4 &lt; 0$ thu được $x &gt; -3$. Số nguyên nhỏ nhất lớn hơn $-3$ là $-2$."
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Cho biểu thức $P = 5 - x^2$. Vì $x^2 \\ge 0$ với mọi $x$ nên giá trị lớn nhất của $P$ bằng bao nhiêu?",
+          "diem": 6,
+          "goi_y": "$P = 5 - x^2 \\le 5$. Giá trị lớn nhất đạt được khi $x = 0$."
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Cho $a &gt; b$. Bất đẳng thức $2a - k &gt; 2b - 3$ đúng với mọi $a &gt; b$ khi số nguyên $k$ bằng bao nhiêu?",
+          "diem": 6,
+          "goi_y": "Từ $a &gt; b \\Rightarrow 2a &gt; 2b \\Rightarrow 2a - 3 &gt; 2b - 3$. Vậy $k = 3$."
+        }
+      ]
+    },
+    {
+      "id": "5.2",
+      "do_kho": 1.5,
+      "ten": "Bất đẳng thức và tính chất",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a &lt; b$. Khẳng định nào sau đây là đúng khi cộng $-3$ vào hai vế của bất đẳng thức?",
+          "dap_an": [
+            "$a - 3 &lt; b - 3$",
+            "$a - 3 &gt; b - 3$",
+            "$a - 3 \\ge b - 3$",
+            "$a - 3 = b - 3$"
+          ],
+          "diem": 2,
+          "goi_y": "Áp dụng tính chất liên hệ giữa thứ tự và phép cộng (cộng cùng một số vào hai vế giữ nguyên chiều bất đẳng thức)."
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a &gt; b$. Bất đẳng thức nào sau đây đúng khi nhân hai vế với $-5$ rồi cộng thêm $2$?",
+          "dap_an": [
+            "$-5a + 2 &gt; -5b + 2$",
+            "$-5a + 2 &lt; -5b + 2$",
+            "$-5a + 2 = -5b + 2$",
+            "$-5a + 2 \\ge -5b + 2$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhân hai vế với số âm $-5$ làm đổi chiều bất đẳng thức, sau đó cộng $2$ vào hai vế giữ nguyên chiều mới."
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Từ bất đẳng thức $2a - 5 &gt; 2b - 5$, ta suy ra được kết quả so sánh giữa $a$ và $b$ là:",
+          "dap_an": [
+            "$a &gt; b$",
+            "$a &lt; b$",
+            "$a = b$",
+            "$a \\le b$"
+          ],
+          "diem": 2,
+          "goi_y": "Cộng $5$ vào hai vế thu được $2a &gt; 2b$, sau đó chia hai vế cho $2 &gt; 0$ thu được kết quả."
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $-3a + 4 \\ge -3b + 4$. So sánh hai số $a$ và $b$.",
+          "dap_an": [
+            "$a \\ge b$",
+            "$a \\le b$",
+            "$a &gt; b$",
+            "$a &lt; b$"
+          ],
+          "diem": 2,
+          "goi_y": "Trừ $4$ ở hai vế thu được $-3a \\ge -3b$. Chia hai vế cho $-3 &lt; 0$ và đổi chiều bất đẳng thức."
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $x - 2024 &lt; y - 2024$. So sánh hai số $x$ và $y$.",
+          "dap_an": [
+            "$x &lt; y$",
+            "$x &gt; y$",
+            "$x = y$",
+            "$x \\ge y$"
+          ],
+          "diem": 2,
+          "goi_y": "Cộng $2024$ vào hai vế của bất đẳng thức đã cho."
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a &gt; b &gt; 0$. Khẳng định nào sau đây là <b>sai</b>?",
+          "dap_an": [
+            "$a + 1 &gt; b + 1$",
+            "$a^2 &gt; b^2$",
+            "$-a &gt; -b$",
+            "$\\frac{1}{a} &lt; \\frac{1}{b}$"
+          ],
+          "diem": 2,
+          "goi_y": "Kiểm tra từng phương án: nhân với số âm $-1$ sẽ đảo chiều $a &gt; b \\Rightarrow -a &lt; -b$."
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Bất đẳng thức nào sau đây luôn đúng với mọi số thực $a, b$?",
+          "dap_an": [
+            "$a^2 + b^2 \\ge 2ab$",
+            "$a^2 + b^2 &lt; 2ab$",
+            "$a^2 + b^2 \\le ab$",
+            "$a^2 + b^2 = 2ab$"
+          ],
+          "diem": 2,
+          "goi_y": "Biến đổi tương đương $(a - b)^2 \\ge 0 \\Leftrightarrow a^2 - 2ab + b^2 \\ge 0 \\Leftrightarrow a^2 + b^2 \\ge 2ab$."
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a \\ge b$. Khẳng định nào sau đây luôn đúng?",
+          "dap_an": [
+            "$3a + 1 &lt; 3b + 1$",
+            "$3a + 1 \\ge 3b + 1$",
+            "$3a + 1 \\le 3b + 1$",
+            "$-3a + 1 \\ge -3b + 1$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhân hai vế với $3 &gt; 0$ thu được $3a \\ge 3b$, sau đó cộng $1$ vào hai vế."
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Nhân hai vế của bất đẳng thức $3 &lt; 5$ với $-2$ ta được bất đẳng thức nào?",
+          "dap_an": [
+            "$(-2) \\cdot 3 &lt; (-2) \\cdot 5$",
+            "$(-2) \\cdot 3 &gt; (-2) \\cdot 5$",
+            "$(-2) \\cdot 3 = (-2) \\cdot 5$",
+            "$(-2) \\cdot 3 \\le (-2) \\cdot 5$"
+          ],
+          "diem": 2,
+          "goi_y": "Khi nhân hai vế của một bất đẳng thức với số âm $-2$, ta phải đổi chiều bất đẳng thức."
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a &lt; b$. Khẳng định nào sau đây là <b>đúng</b>?",
+          "dap_an": [
+            "$-2a - 1 &gt; -2b - 1$",
+            "$-2a - 1 &lt; -2b - 1$",
+            "$2a + 1 &gt; 2b + 1$",
+            "$-2a + 1 &lt; -2b + 1$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhân hai vế với $-2 &lt; 0$ ta được $-2a &gt; -2b$, sau đó trừ $1$ ở hai vế thu được $-2a - 1 &gt; -2b - 1$."
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a, b$ là hai số thực thỏa mãn $a &gt; b$. Khẳng định nào sau đây luôn đúng?",
+          "dap_an": [
+            "$a - b &gt; 0$",
+            "$a - b &lt; 0$",
+            "$a - b = 0$",
+            "$b - a &gt; 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Chuyển $b$ sang vế trái bằng cách trừ $b$ ở cả hai vế của $a &gt; b$."
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Giá trị nhỏ nhất của biểu thức $A = x^2 - 4x + 5$ là bao nhiêu?",
+          "dap_an": [
+            "$0$",
+            "$1$",
+            "$5$",
+            "$2$"
+          ],
+          "diem": 2,
+          "goi_y": "Biến đổi $A = (x - 2)^2 + 1$. Vì $(x - 2)^2 \\ge 0$ với mọi $x$ nên $A \\ge 1$."
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a &gt; b$. Kết quả so sánh giữa $-4a + 3$ và $-4b + 3$ là:",
+          "dap_an": [
+            "$-4a + 3 &gt; -4b + 3$",
+            "$-4a + 3 &lt; -4b + 3$",
+            "$-4a + 3 = -4b + 3$",
+            "$-4a + 3 \\ge -4b + 3$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhân hai vế của $a &gt; b$ với $-4 &lt; 0$ được $-4a &lt; -4b$, sau đó cộng $3$ vào hai vế."
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Với mọi số thực $a$, khẳng định nào sau đây luôn <b>đúng</b>?",
+          "dap_an": [
+            "$a^2 + 1 &gt; 0$",
+            "$a^2 + 1 &lt; 0$",
+            "$a^2 - 1 &gt; 0$",
+            "$a^2 + 1 = 0$"
+          ],
+          "diem": 2,
+          "goi_y": "Vì $a^2 \\ge 0$ với mọi $a$ nên $a^2 + 1 \\ge 1 &gt; 0$."
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a, b$ là hai số thực không âm ($a \\ge 0, b \\ge 0$). Bất đẳng thức Cô-si (Cauchy) cho hai số $a, b$ là:",
+          "dap_an": [
+            "$a + b \\ge 2\\sqrt{ab}$",
+            "$a + b \\le 2\\sqrt{ab}$",
+            "$a + b \\ge \\sqrt{ab}$",
+            "$ab \\ge 2(a + b)$"
+          ],
+          "diem": 2,
+          "goi_y": "Bất đẳng thức Cô-si phát biểu tổng hai số không âm luôn lớn hơn hoặc bằng hai lần căn bậc hai của tích hai số đó."
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Nếu $a &gt; b$ và $c &lt; 0$ thì khẳng định nào sau đây là đúng?",
+          "dap_an": [
+            "$ac &gt; bc$",
+            "$ac &lt; bc$",
+            "$ac = bc$",
+            "$a + c &gt; b$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhân hai vế của bất đẳng thức với số âm $c$ đảo chiều bất đẳng thức."
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $x + 2 &lt; y + 2$ và $y - 3 &lt; z - 3$. Khẳng định nào sau đây đúng?",
+          "dap_an": [
+            "$x &lt; z$",
+            "$x &gt; z$",
+            "$x = z$",
+            "$x \\ge z$"
+          ],
+          "diem": 2,
+          "goi_y": "Rút ra $x &lt; y$ và $y &lt; z$, sau đó áp dụng tính chất bắc cầu."
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Với hai số thực bất kỳ $a, b$, khẳng định nào sau đây luôn đúng?",
+          "dap_an": [
+            "$(a + b)^2 \\ge 4ab$",
+            "$(a + b)^2 \\le 4ab$",
+            "$(a + b)^2 &lt; 2ab$",
+            "$(a + b)^2 = 4ab$"
+          ],
+          "diem": 2,
+          "goi_y": "Khai triển $(a + b)^2 = a^2 + 2ab + b^2$ và so sánh với $4ab$ bằng cách xét hiệu $(a - b)^2 \\ge 0$."
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a &lt; b &lt; 0$. So sánh $a^2$ và $b^2$.",
+          "dap_an": [
+            "$a^2 &gt; b^2$",
+            "$a^2 &lt; b^2$",
+            "$a^2 = b^2$",
+            "$a^2 \\le b^2$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhân cả hai vế của $a &lt; b$ với số âm $a$ được $a^2 &gt; ab$; nhân hai vế với số âm $b$ được $ab &gt; b^2$. Áp dụng tính chất bắc cầu."
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a \\ge b$. Khẳng định nào sau đây đúng?",
+          "dap_an": [
+            "$-5a + 10 \\ge -5b + 10$",
+            "$-5a + 10 \\le -5b + 10$",
+            "$-5a + 10 &gt; -5b + 10$",
+            "$-5a + 10 = -5b + 10$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhân hai vế với $-5 &lt; 0$ làm đảo chiều thành $-5a \\le -5b$, sau đó cộng $10$ vào hai vế."
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $x &gt; 0$. So sánh biểu thức $x + \\frac{1}{x}$ và $2$.",
+          "dap_an": [
+            "$x + \\frac{1}{x} \\ge 2$",
+            "$x + \\frac{1}{x} \\le 2$",
+            "$x + \\frac{1}{x} &lt; 2$",
+            "$x + \\frac{1}{x} = 1$"
+          ],
+          "diem": 2,
+          "goi_y": "Áp dụng bất đẳng thức Cô-si cho hai số dương $x$ và $\\frac{1}{x}$: $x + \\frac{1}{x} \\ge 2\\sqrt{x \\cdot \\frac{1}{x}} = 2$."
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a + 2025 \\le b + 2025$. Khẳng định nào sau đây là đúng khi so sánh $-2a$ và $-2b$?",
+          "dap_an": [
+            "$-2a \\ge -2b$",
+            "$-2a \\le -2b$",
+            "$-2a &lt; -2b$",
+            "$-2a = -2b$"
+          ],
+          "diem": 2,
+          "goi_y": "Trừ $2025$ ở hai vế thu được $a \\le b$. Sau đó nhân hai vế với $-2 &lt; 0$ và đảo chiều bất đẳng thức."
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $m &gt; n$. Khẳng định nào sau đây là <b>đúng</b>?",
+          "dap_an": [
+            "$2m - 1 &gt; 2n - 1$",
+            "$2m - 1 &lt; 2n - 1$",
+            "$-2m - 1 &gt; -2n - 1$",
+            "$1 - 2m &gt; 1 - 2n$"
+          ],
+          "diem": 2,
+          "goi_y": "Nhân hai vế của $m &gt; n$ với $2 &gt; 0$ giữ nguyên chiều $2m &gt; 2n$, sau đó trừ $1$ ở hai vế."
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Cho $a \\ge 2$. Giá trị nhỏ nhất của biểu thức $P = a^2 - 2a + 3$ là bao nhiêu?",
+          "dap_an": [
+            "$2$",
+            "$3$",
+            "$1$",
+            "$4$"
+          ],
+          "diem": 2,
+          "goi_y": "Biến đổi $P = (a - 1)^2 + 2$. Với $a \\ge 2 \\Rightarrow a - 1 \\ge 1 \\Rightarrow (a - 1)^2 \\ge 1 \\Rightarrow P \\ge 3$."
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Với hai số thực $x, y$ bất kỳ, bất đẳng thức nào sau đây luôn đúng?",
+          "dap_an": [
+            "$x^2 + y^2 + 1 \\ge 2x$",
+            "$x^2 + y^2 + 1 &lt; 2x$",
+            "$x^2 + y^2 + 1 \\le 0$",
+            "$x^2 + y^2 + 1 = 2x$"
+          ],
+          "diem": 2,
+          "goi_y": "Biến đổi $x^2 - 2x + 1 + y^2 = (x - 1)^2 + y^2 \\ge 0$ luôn đúng với mọi $x, y$."
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Cho hai số thực $a, b$ thỏa mãn $a &gt; b$. Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> $a - 5 &gt; b - 5$.",
+          "diem": 2.5,
+          "goi_y": "Sử dụng tính chất cộng/trừ cùng một số và nhân/chia với số dương hoặc số âm để kiểm tra từng ý."
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> $-3a &lt; -3b$.",
+          "diem": 2.5,
+          "goi_y": "Sử dụng tính chất cộng/trừ cùng một số và nhân/chia với số dương hoặc số âm để kiểm tra từng ý."
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> $2a + 1 &lt; 2b + 1$.",
+          "diem": 2.5,
+          "goi_y": "Sử dụng tính chất cộng/trừ cùng một số và nhân/chia với số dương hoặc số âm để kiểm tra từng ý."
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> $-4a + 7 &lt; -4b + 7$.",
+          "diem": 2.5,
+          "goi_y": "Sử dụng tính chất cộng/trừ cùng một số và nhân/chia với số dương hoặc số âm để kiểm tra từng ý."
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Cho $x, y$ là hai số thực dương ($x &gt; 0, y &gt; 0$). Xét tính đúng/sai của các khẳng định sau:<br><b>a)</b> $x^2 + y^2 \\ge 2xy$.",
+          "diem": 2.5,
+          "goi_y": "Dùng các biến đổi tương đương $(x - y)^2 \\ge 0$, tính chất đổi chiều khi lấy nghịch đảo hai số dương và bất đẳng thức Cô-si."
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Biểu thức $(x + y)^2 \\ge 4xy$ đúng với mọi $x, y &gt; 0$.",
+          "diem": 2.5,
+          "goi_y": "Dùng các biến đổi tương đương $(x - y)^2 \\ge 0$, tính chất đổi chiều khi lấy nghịch đảo hai số dương và bất đẳng thức Cô-si."
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Nếu $x &gt; y$ thì $\\frac{1}{x} &gt; \\frac{1}{y}$.",
+          "diem": 2.5,
+          "goi_y": "Dùng các biến đổi tương đương $(x - y)^2 \\ge 0$, tính chất đổi chiều khi lấy nghịch đảo hai số dương và bất đẳng thức Cô-si."
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Giá trị nhỏ nhất của $A = x + \\frac{4}{x}$ với $x &gt; 0$ là $4$.",
+          "diem": 2.5,
+          "goi_y": "Dùng các biến đổi tương đương $(x - y)^2 \\ge 0$, tính chất đổi chiều khi lấy nghịch đảo hai số dương và bất đẳng thức Cô-si."
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Cho bất đẳng thức $3a - 7 &gt; 3b - 7$. Nếu $a = 5$ thì số nguyên $b$ lớn nhất có thể nhận giá trị bằng bao nhiêu?",
+          "diem": 6,
+          "goi_y": "Từ $3a - 7 &gt; 3b - 7 \\Rightarrow a &gt; b$. Với $a = 5 \\Rightarrow b &lt; 5$. Số nguyên $b$ lớn nhất thỏa mãn là $4$."
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Tìm giá trị nhỏ nhất của biểu thức $A = x^2 - 6x + 10$.",
+          "diem": 6,
+          "goi_y": "Biến đổi $A = (x - 3)^2 + 1 \\ge 1$. Giá trị nhỏ nhất đạt được khi $x = 3$."
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Cho hai số thực dương $x, y$ thỏa mãn $x \\cdot y = 9$. Tìm giá trị nhỏ nhất của tổng $S = x + y$.",
+          "diem": 6,
+          "goi_y": "Áp dụng bất đẳng thức Cô-si $x + y \\ge 2\\sqrt{xy} = 2\\sqrt{9} = 6$. Dấu bằng xảy ra khi $x = y = 3$."
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Cho $a \\ge 3$. Giá trị nhỏ nhất của biểu thức $B = a^2 - 4a + 5$ bằng bao nhiêu?",
+          "diem": 6,
+          "goi_y": "Biến đổi $B = (a - 2)^2 + 1$. Vì $a \\ge 3 \\Rightarrow a - 2 \\ge 1 \\Rightarrow (a - 2)^2 \\ge 1 \\Rightarrow B \\ge 1 + 1 = 2$. Dấu bằng xảy ra khi $a = 3$."
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Cho $a, b$ là hai số thực không âm thỏa mãn $a + b = 6$. Tìm giá trị lớn nhất của tích $P = a \\cdot b$.",
+          "diem": 6,
+          "goi_y": "Áp dụng bất đẳng thức Cô-si $a + b \\ge 2\\sqrt{ab} \\Rightarrow 6 \\ge 2\\sqrt{P} \\Rightarrow \\sqrt{P} \\le 3 \\Rightarrow P \\le 9$. Dấu bằng xảy ra khi $a = b = 3$."
+        }
+      ]
+    }
+  ]
+}

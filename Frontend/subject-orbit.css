@@ -1,0 +1,2006 @@
+/* ==========================================================
+   subject-orbit.css - trang chọn môn (subjects.html) trên điện thoại (<= 640px)
+   Phong cách: Cosmic Knowledge Solar System (Hệ Mặt Trời Tri Thức).
+   - Mặt trời tri thức trung tâm: Quyển sách tỏa sáng, vầng hào quang đa tầng breathing nhịp nhàng.
+   - 3 hành tinh môn học: Toán (top-left), Ngữ Văn (top-right), Chuyên (bottom-center), kích thước nổi bật.
+   - Hiệu ứng đổ bóng vũ trụ 3D soft cosmic drop shadow, nhấp nhô lơ lửng nhẹ nhàng (gentle floating).
+   - Vòng quỹ đạo elip nét đứt phát sáng neon huyền ảo cùng bụi sao lấp lánh (twinkling dust stars).
+   - Hoàn toàn scoped cho mobile (<= 640px) và .orbit, giữ nguyên layout desktop!
+   ========================================================== */
+
+/* Chặn tràn màn hình ngang triệt để */
+html,
+body,
+.subject-page {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+}
+
+/* Nền xanh mờ vũ trụ thanh lịch cho trang chọn môn */
+.subject-page,
+body.subject-page-body {
+    background:
+        radial-gradient(ellipse 100% 55% at 50% 100%, rgba(37, 99, 235, 0.22) 0%, transparent 70%),
+        linear-gradient(180deg, #f5f9ff 0%, #d8eaff 45%, #8cbdfa 100%) !important;
+    background-attachment: fixed !important;
+    min-height: calc(100vh - 54px);
+}
+
+/* Mặc định trên máy tính: ẩn khối orbit (máy tính hiển thị .subject-grid) */
+.orbit {
+    display: none;
+    position: relative;
+    width: min(100%, 390px);
+    aspect-ratio: 1 / 1.05;
+    margin: 16px auto 0;
+    container-type: inline-size;
+    --by: 50%;
+}
+
+/* ---------- Vầng sáng mờ tinh vân & Bụi sao lấp lánh ---------- */
+.orbit-glow {
+    position: absolute;
+    left: 50%;
+    top: var(--by);
+    width: 90%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.16) 0%, rgba(59, 130, 246, 0.08) 45%, transparent 72%);
+    pointer-events: none;
+    filter: blur(12px);
+}
+
+.orbit-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(2px 2px at 14% 22%, #60a5fa 100%, transparent),
+        radial-gradient(1.5px 1.5px at 86% 16%, #38bdf8 100%, transparent),
+        radial-gradient(2px 2px at 82% 76%, #a78bfa 100%, transparent),
+        radial-gradient(1.5px 1.5px at 18% 82%, #60a5fa 100%, transparent),
+        radial-gradient(2px 2px at 50% 8%, #93c5fd 100%, transparent),
+        radial-gradient(1.5px 1.5px at 88% 48%, #3b82f6 100%, transparent),
+        radial-gradient(1.5px 1.5px at 10% 52%, #c084fc 100%, transparent),
+        radial-gradient(2px 2px at 35% 92%, #38bdf8 100%, transparent),
+        radial-gradient(1.5px 1.5px at 68% 90%, #818cf8 100%, transparent),
+        radial-gradient(1px 1px at 30% 12%, #93c5fd 100%, transparent),
+        radial-gradient(1.5px 1.5px at 72% 10%, #38bdf8 100%, transparent),
+        radial-gradient(1px 1px at 52% 94%, #60a5fa 100%, transparent);
+    opacity: 0.75;
+    animation: stars-twinkle 4s ease-in-out infinite alternate;
+}
+
+/* ---------- Vòng quỹ đạo elip thiên thể (Celestial elliptical orbit dashed rings) ---------- */
+.orbit-ring {
+    position: absolute;
+    left: 50%;
+    top: var(--by);
+    translate: -50% -50%;
+    border-radius: 50%;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+/* 2 môn: các vòng quỹ đạo elip phát sáng nối 2 môn */
+.orbit--doi .orbit-ring.r1 {
+    width: 86%;
+    height: 76%;
+    rotate: 46deg;
+    border: 1.5px dashed rgba(37, 99, 235, 0.4);
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+}
+
+.orbit--doi .orbit-ring.r2 {
+    width: 52%;
+    height: 48%;
+    rotate: -15deg;
+    border: 1.5px dashed rgba(2, 132, 199, 0.35);
+    box-shadow: 0 0 10px rgba(2, 132, 199, 0.16);
+}
+
+.orbit--doi .orbit-ring.r3 {
+    width: 96%;
+    height: 90%;
+    border: 1px dotted rgba(59, 130, 246, 0.22);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.12);
+}
+
+/* 3 môn: các vòng elip quỹ đạo thiên thể hệ mặt trời với faint neon glow */
+.orbit--ba .orbit-ring.r1 {
+    width: 58%;
+    height: 52%;
+    rotate: -6deg;
+    border: 1.5px dashed rgba(37, 99, 235, 0.4);
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.22), inset 0 0 10px rgba(37, 99, 235, 0.1);
+}
+
+.orbit--ba .orbit-ring.r2 {
+    width: 78%;
+    height: 70%;
+    rotate: 8deg;
+    border: 1.5px dashed rgba(2, 132, 199, 0.36);
+    box-shadow: 0 0 12px rgba(2, 132, 199, 0.18), inset 0 0 10px rgba(2, 132, 199, 0.08);
+}
+
+.orbit--ba .orbit-ring.r3 {
+    width: 95%;
+    height: 86%;
+    rotate: -4deg;
+    border: 1.5px dashed rgba(124, 58, 237, 0.32);
+    box-shadow: 0 0 14px rgba(124, 58, 237, 0.18), inset 0 0 12px rgba(124, 58, 237, 0.08);
+}
+
+.orbit--mot .orbit-ring.r1 {
+    width: 56%;
+    height: 50%;
+    border: 1.5px dashed rgba(37, 99, 235, 0.4);
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.2);
+}
+
+/* ---------- Mặt trời tri thức trung tâm (Center Sun Core) ---------- */
+.orbit-core {
+    position: absolute;
+    left: 50%;
+    top: var(--by);
+    translate: -50% -50%;
+    z-index: 3;
+    width: clamp(76px, 22cqw, 88px);
+    aspect-ratio: 1;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Vầng hào quang nhật hoa đa tầng (Multi-layered glowing corona) */
+.orbit-core::before {
+    content: "";
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.38) 0%, rgba(37, 99, 235, 0.18) 45%, rgba(2, 132, 199, 0.08) 70%, transparent 85%);
+    animation: solar-corona 3.6s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.orbit-core-spin {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    color: #ffffff;
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 55%, #38bdf8 100%);
+    border: 3.5px solid #ffffff;
+    box-shadow:
+        0 0 0 4px rgba(255, 255, 255, 0.85),
+        0 0 0 9px rgba(37, 99, 235, 0.28),
+        0 0 0 18px rgba(37, 99, 235, 0.12),
+        0 0 32px rgba(37, 99, 235, 0.45),
+        0 8px 22px rgba(29, 78, 216, 0.35);
+    animation: solar-breathing 3.6s ease-in-out infinite alternate;
+}
+
+/* Biểu tượng quyển sách phát sáng ở trung tâm (Glowing book icon) */
+.orbit-core-spin i {
+    display: block;
+    font-size: clamp(28px, 8cqw, 36px);
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 14px rgba(186, 230, 253, 0.85));
+    animation: book-glow 3s ease-in-out infinite alternate;
+}
+
+/* ---------- 3 Hành tinh môn học (Subject Planet Satellites) ---------- */
+.orbit-arm {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.orbit-sat {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    z-index: 4;
+    display: block;
+    width: clamp(110px, 31cqw, 126px);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    color: var(--c);
+    text-decoration: none;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.orbit-sat:active {
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+.orbit-counter {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Thân hành tinh với đổ bóng 3D soft cosmic drop shadow & floating animation */
+.orbit-body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5px;
+    width: 100%;
+    height: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    background: linear-gradient(150deg, #ffffff 0%, #f0f7ff 55%, #e0effe 100%);
+    border: 3.5px solid var(--c);
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.95),
+        0 4px 10px rgba(15, 23, 42, 0.06),
+        0 12px 24px -4px rgba(24, 49, 89, 0.18),
+        0 16px 32px -4px var(--c-glow, rgba(37, 99, 235, 0.25)),
+        inset 0 -3px 8px rgba(37, 99, 235, 0.08),
+        inset 0 3px 6px rgba(255, 255, 255, 0.9);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    animation: sat-float 4.5s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i, 0) * -1.5s);
+}
+
+.orbit-sat:hover .orbit-body,
+.orbit-sat:focus-visible .orbit-body {
+    box-shadow:
+        0 0 0 4px rgba(255, 255, 255, 1),
+        0 8px 20px rgba(15, 23, 42, 0.1),
+        0 16px 32px -4px rgba(24, 49, 89, 0.24),
+        0 22px 42px -6px var(--c-glow, rgba(37, 99, 235, 0.35)),
+        inset 0 -3px 8px rgba(37, 99, 235, 0.12),
+        inset 0 4px 8px #ffffff;
+}
+
+/* Vòng cung tiến độ SVG phát sáng Neon (SVG progress arc with neon glow) */
+.orbit-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    rotate: -90deg;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.orbit-track {
+    fill: none;
+    stroke: rgba(219, 234, 254, 0.65);
+    stroke-width: 4;
+}
+
+.orbit-arc {
+    fill: none;
+    stroke: var(--c);
+    stroke-width: 4.5;
+    stroke-linecap: round;
+    stroke-dashoffset: calc(289.03px * (1 - var(--p)));
+    transition: stroke-dashoffset 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+    filter: drop-shadow(0 0 3px var(--c)) drop-shadow(0 0 7px var(--c));
+}
+
+.orbit-ico {
+    font-size: clamp(24px, 7cqw, 30px);
+    line-height: 1;
+    color: var(--c);
+    filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.12));
+    transition: transform 0.25s ease;
+}
+
+.orbit-sat:hover .orbit-ico {
+    transform: scale(1.08);
+}
+
+/* Tiêu đề môn học - Cân đối, không rớt chữ (Balanced text wrap) */
+.orbit-ten {
+    display: block;
+    max-width: 88%;
+    margin-top: 2px;
+    font-size: clamp(12.5px, 3.6cqw, 15px);
+    font-weight: 800;
+    line-height: 1.18;
+    text-align: center;
+    color: #0b3289;
+    word-break: keep-all;
+    overflow-wrap: normal;
+    white-space: normal;
+    text-wrap: balance;
+    -webkit-text-wrap: balance;
+}
+
+.orbit-pt {
+    font-size: clamp(11px, 3.2cqw, 13.5px);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--c);
+    padding: 1.5px 8px;
+    background: rgba(239, 246, 255, 0.92);
+    border: 1px solid rgba(219, 234, 254, 0.8);
+    border-radius: 999px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+}
+
+/* Môn chưa có bài */
+.orbit-sat--soon {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+/* ---------- Hiệu ứng xuất hiện ban đầu (Chạy 1 lần dứt khoát) ---------- */
+.orbit.is-play .orbit-glow {
+    animation: so-fade 0.5s ease both;
+}
+
+.orbit.is-play .orbit-ring {
+    animation: so-fade 0.6s ease both;
+}
+
+.orbit.is-play .orbit-core-spin {
+    animation: core-swirl 0.65s cubic-bezier(0.16, 1, 0.3, 1) both, solar-breathing 3.6s ease-in-out 0.65s infinite alternate;
+}
+
+.orbit.is-play .orbit-sat {
+    animation: sat-swirl-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(0.1s + 0.12s * var(--i, 0));
+}
+
+@keyframes core-swirl {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) rotate(-140deg);
+    }
+
+    70% {
+        transform: scale(1.06) rotate(8deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes sat-swirl-in {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.3) rotate(-45deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    }
+}
+
+@keyframes so-fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes solar-corona {
+    0% {
+        transform: scale(0.92);
+        opacity: 0.55;
+    }
+
+    100% {
+        transform: scale(1.18);
+        opacity: 0.95;
+    }
+}
+
+@keyframes solar-breathing {
+    0% {
+        box-shadow:
+            0 0 0 4px rgba(255, 255, 255, 0.85),
+            0 0 0 8px rgba(37, 99, 235, 0.25),
+            0 0 0 16px rgba(37, 99, 235, 0.1),
+            0 0 26px rgba(37, 99, 235, 0.35),
+            0 6px 18px rgba(29, 78, 216, 0.3);
+    }
+
+    100% {
+        box-shadow:
+            0 0 0 4.5px #ffffff,
+            0 0 0 12px rgba(37, 99, 235, 0.35),
+            0 0 0 22px rgba(56, 189, 248, 0.18),
+            0 0 40px rgba(56, 189, 248, 0.5),
+            0 8px 24px rgba(29, 78, 216, 0.45);
+    }
+}
+
+@keyframes book-glow {
+    0% {
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 10px rgba(186, 230, 253, 0.6));
+        transform: scale(0.98);
+    }
+
+    100% {
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 1)) drop-shadow(0 0 18px rgba(186, 230, 253, 0.95));
+        transform: scale(1.03);
+    }
+}
+
+@keyframes sat-float {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes stars-twinkle {
+    0% {
+        opacity: 0.45;
+        transform: scale(0.99);
+    }
+
+    50% {
+        opacity: 0.9;
+    }
+
+    100% {
+        opacity: 0.6;
+        transform: scale(1.01);
+    }
+}
+
+/* ---------- Responsive cho điện thoại (<= 640px) ---------- */
+@media (max-width: 640px) {
+    .subject-page {
+        padding: 24px 12px 36px;
+        overflow-x: clip;
+    }
+
+    .subject-page .subject-head {
+        text-align: center;
+    }
+
+    .subject-page .subject-head i {
+        display: none;
+        /* Quyển sách đã có ở mặt trời trung tâm */
+    }
+
+    .subject-page .subject-head h1 {
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: #0b3289;
+        margin: 0 0 4px;
+        word-break: keep-all;
+        text-wrap: balance;
+        -webkit-text-wrap: balance;
+    }
+
+    .subject-page .subject-head p {
+        font-size: 0.88rem;
+        color: #1e40af;
+        word-break: keep-all;
+        text-wrap: balance;
+        -webkit-text-wrap: balance;
+    }
+
+    .orbit-ten {
+        max-width: 90%;
+        font-size: clamp(12px, 3.5cqw, 14.5px);
+        line-height: 1.16;
+        text-align: center;
+        word-break: keep-all;
+        overflow-wrap: normal;
+        white-space: normal;
+        text-wrap: balance;
+        -webkit-text-wrap: balance;
+    }
+
+    /* 1. Ẩn hoàn toàn khối PC trên mobile */
+    .hub-container-3col,
+    .col-mascot-hub,
+    .col-left-schedule,
+    .col-center-hub,
+    .col-right-social,
+    .hub-welcome,
+    .resume-learning-card,
+    .resume-card-v2,
+    .resume-section-compact,
+    .resume-section-slim,
+    #resume-section,
+    .subject-page .subject-grid {
+        display: none !important;
+    }
+
+    /* 2. Khối Mobile wrapper căn giữa tuyệt đối */
+    .mobile-subject-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 20px 12px 36px !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 3. Tiêu đề không bị lệch chữ */
+    .mobile-head-only {
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+        margin: 0 auto 10px !important;
+        padding: 0 !important;
+    }
+
+    .mobile-head-only h1 {
+        font-size: 1.5rem !important;
+        font-weight: 800 !important;
+        color: #0b3289 !important;
+        margin: 0 0 6px 0 !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    .mobile-head-only p {
+        font-size: 0.9rem !important;
+        color: #1e40af !important;
+        margin: 0 auto !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    /* 4. Vòng Orbit hiển thị trở lại */
+    .orbit {
+        display: block !important;
+        margin: 12px auto 0 !important;
+    }
+}
+
+/* ==========================================================
+   BỐ CỤC PC / LAPTOP V2 (3-COLUMN BALANCED ARCHITECTURE)
+   Áp dụng trên màn hình >= 641px
+   ========================================================== */
+@media (min-width: 641px) {
+
+    /* Ẩn khối Mobile trên PC */
+    .mobile-subject-wrapper,
+    .mobile-head-only,
+    .orbit {
+        display: none !important;
+    }
+
+    /* Nền tổng thể kèm họa tiết chiều sâu không gian (Atmospheric Subtle Texture) */
+    body.subject-page-body {
+        background-image:
+            radial-gradient(rgba(37, 99, 235, 0.08) 1.2px, transparent 1.2px),
+            radial-gradient(ellipse 100% 55% at 50% 100%, rgba(37, 99, 235, 0.22) 0%, transparent 70%),
+            linear-gradient(180deg, #f5f9ff 0%, #d8eaff 45%, #8cbdfa 100%) !important;
+        background-size: 24px 24px, 100% 100%, 100% 100% !important;
+        background-attachment: fixed !important;
+    }
+
+    /* ========================================================
+       V7 MASTER: FROSTED GLASS CONSOLE & BALANCED 3 COLUMNS
+       ======================================================== */
+    .hub-container-3col {
+        width: min(1520px, calc(100% - 32px)) !important;
+        max-width: 1520px !important;
+        margin: 14px auto 26px auto !important;
+        padding: 28px 34px !important;
+        display: grid !important;
+        grid-template-columns: 272px minmax(0, 1fr) 335px !important;
+        gap: 24px !important;
+        align-items: stretch !important;
+        /* Đảm bảo cả 3 cột cao bằng nhau */
+        background: rgba(255, 255, 255, 0.65) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.85) !important;
+        border-radius: 28px !important;
+        box-shadow: 0 16px 40px -12px rgba(37, 99, 235, 0.08), 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+        box-sizing: border-box !important;
+    }
+
+    /* ========================================================
+       CỘT 1 (TRÁI): SÂN KHẤU LINH VẬT SAO LA
+       ======================================================== */
+    .col-mascot-hub {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        background: rgba(255, 255, 255, 0.55) !important;
+        border: 1px solid rgba(226, 232, 240, 0.8) !important;
+        border-radius: 20px !important;
+        padding: 18px 14px !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Bong bóng thoại */
+    .mascot-speech-bubble {
+        position: relative;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 12px 14px;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.06);
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .mascot-speech-bubble .bubble-greeting {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0 0 4px 0;
+    }
+
+    .mascot-speech-bubble .bubble-sub {
+        font-size: 0.78rem;
+        color: #64748b;
+        line-height: 1.35;
+        margin: 0;
+    }
+
+    .mascot-speech-bubble .bubble-tail {
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid #ffffff;
+    }
+
+    /* Khung hình ảnh linh vật (Phóng to Sao La rõ nét trên PC) */
+    .mascot-avatar-container {
+        flex: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 0;
+    }
+
+    .mascot-img-render {
+        width: 234px;
+        max-width: 100%;
+        height: auto;
+        max-height: 295px;
+        object-fit: contain;
+        filter: drop-shadow(0 10px 16px rgba(15, 23, 42, 0.12));
+        transition: transform 0.3s ease;
+    }
+
+    .mascot-img-render:hover {
+        transform: translateY(-4px) scale(1.03);
+    }
+
+    .mascot-shadow-pedestal {
+        width: 148px;
+        height: 15px;
+        background: radial-gradient(ellipse at center, rgba(30, 41, 59, 0.18) 0%, rgba(30, 41, 59, 0) 70%);
+        border-radius: 50%;
+        margin-top: 2px;
+    }
+
+    .mascot-cheer-badge {
+        font-size: 0.76rem;
+        font-weight: 600;
+        color: #2563eb;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        padding: 5px 10px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    /* ========================================================
+       CỘT 2 (GIỮA): 3 THẺ MÔN HỌC & BÀI DỞ DANG
+       ======================================================== */
+    .col-center-hub {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+        min-width: 0 !important;
+    }
+
+    /* ========================================================
+       CỘT 3 (PHẢI): 2 CARD HỌC TẬP TỈ LỆ 50/50 (CAO BẰNG CỘT GIỮA)
+       ======================================================== */
+    .col-right-social {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+        justify-content: space-between !important;
+        height: 100% !important;
+    }
+
+    /* Card cơ sở dùng chung: Nền trắng, viền thanh thoát, bóng êm */
+    .card-schedule-today,
+    .card-month-calendar,
+    .card-quests-real,
+    .card-weekly-goal,
+    .card-ranking-monthly,
+    .resume-card-v2 {
+        background: #ffffff;
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        border-radius: 20px;
+        padding: 16px 18px;
+        box-shadow: 0 4px 18px rgba(27, 42, 65, 0.04);
+        box-sizing: border-box;
+    }
+
+    /* ==========================================================
+       CHUẨN HÓA TIÊU ĐỀ & CHỐNG GÃY CHỮ CHO MỌI WIDGET
+       ========================================================== */
+    .widget-head {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+        margin-bottom: 12px !important;
+        padding-bottom: 8px !important;
+        border-bottom: 1px solid rgba(37, 99, 235, 0.08) !important;
+    }
+
+    .widget-head-title {
+        display: flex !important;
+        align-items: center !important;
+        gap: 9px !important;
+        min-width: 0 !important;
+        flex: 1 !important;
+    }
+
+    /* KHÔNG BAO GIỜ BẺ DÒNG CHỮ TIÊU ĐỀ & KHÔNG BỊ CẮT CHỮ */
+    .widget-title-nowrap,
+    .widget-head-title h3 {
+        font-size: 0.98rem !important;
+        font-weight: 800 !important;
+        color: #0f172a !important;
+        white-space: nowrap !important;
+        word-break: keep-all !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        margin: 0 !important;
+    }
+
+    .widget-head-actions {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Hộp icon chuẩn đồng đều */
+    .widget-ico-box {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.92rem;
+        flex-shrink: 0;
+    }
+
+    .widget-ico-box i {
+        padding: 0 !important;
+        background: transparent !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* ----------------------------------------------------------
+       4 MÀU NHẤN (ACCENT THEMES) CHUẨN XÁC THEO YÊU CẦU:
+       ---------------------------------------------------------- */
+
+    /* 1. LỊCH HỌC HÔM NAY: XANH LÁ (EMERALD GREEN) */
+    .widget-accent-green,
+    .card-schedule-today {
+        border-top: 3px solid #10b981 !important;
+    }
+
+    .ico-green {
+        color: #059669 !important;
+        background: #ecfdf5 !important;
+    }
+
+    /* 2. LỊCH THI KHOA BẢNG: CAM HOÀNG KIM (AMBER BRONZE) */
+    .widget-accent-orange,
+    .card-month-calendar {
+        border-top: 3px solid #f59e0b !important;
+    }
+
+    .ico-orange {
+        color: #d97706 !important;
+        background: #fffbeb !important;
+    }
+
+    /* 3. NHIỆM VỤ HÔM NAY: ĐỎ HỒNG NĂNG LƯỢNG (ROSE CRIMSON) */
+    .widget-accent-red,
+    .card-quests-real {
+        border-top: 3px solid #f43f5e !important;
+    }
+
+    .ico-red {
+        color: #e11d48 !important;
+        background: #fff1f2 !important;
+    }
+
+    /* CARD 2: MỤC TIÊU TUẦN - XANH DƯƠNG NĂNG ĐỘNG */
+    .widget-accent-blue,
+    .card-weekly-goal {
+        border-top: 3px solid #2563eb !important;
+    }
+
+    .ico-blue {
+        color: #2563eb !important;
+        background: #eff6ff !important;
+    }
+
+    /* 4. XẾP HẠNG THÁNG: VÀNG CÚP VINH DANH (TROPHY GOLD) */
+    .widget-accent-yellow,
+    .card-ranking-monthly {
+        border-top: 3px solid #eab308 !important;
+    }
+
+    .ico-yellow {
+        color: #ca8a04 !important;
+        background: #fefce8 !important;
+    }
+
+    /* ------------------------------------------------------
+       1. CỘT TRÁI: LỊCH HỌC HÔM NAY (edumate_hoctap_<userId>)
+       ------------------------------------------------------ */
+    .today-subtext {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #2563eb;
+        background: #eff6ff;
+        padding: 4px 10px;
+        border-radius: 8px;
+        display: inline-block;
+        margin: 0 0 10px 0;
+    }
+
+    .today-tasks-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .today-task-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 9px 10px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none;
+    }
+
+    .today-task-item:hover {
+        background: #eff6ff;
+        border-color: rgba(37, 99, 235, 0.25);
+    }
+
+    .task-check-circle {
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        border: 2px solid #cbd5e1;
+        display: grid;
+        place-items: center;
+        font-size: 9px;
+        color: transparent;
+        flex-shrink: 0;
+        margin-top: 2px;
+        transition: all 0.2s;
+    }
+
+    .today-task-item.task-completed .task-check-circle {
+        background: #16a34a;
+        border-color: #16a34a;
+        color: #ffffff;
+    }
+
+    .today-task-item.task-completed .task-title {
+        text-decoration: line-through;
+        color: #94a3b8;
+    }
+
+    .task-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .task-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #1e293b;
+        line-height: 1.35;
+    }
+
+    .task-meta {
+        font-size: 0.72rem;
+        color: #64748b;
+    }
+
+    .today-empty-state {
+        text-align: center;
+        padding: 14px 8px;
+        color: #64748b;
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+
+    .today-empty-state i {
+        font-size: 22px;
+        color: #3b82f6;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    /* ------------------------------------------------------
+       2. CỘT TRÁI: LỊCH THÁNG KHOA BẢNG (MINI DOT CALENDAR)
+       ------------------------------------------------------ */
+    .calendar-month-title {
+        font-size: 0.84rem;
+        font-weight: 800;
+        color: #1e40af;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+
+    .mini-calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 3px;
+    }
+
+    .cal-col-header {
+        text-align: center;
+        font-size: 0.68rem;
+        font-weight: 800;
+        color: #64748b;
+        padding: 3px 0;
+    }
+
+    .cal-day-cell {
+        position: relative;
+        text-align: center;
+        padding: 5px 0 9px;
+        font-size: 0.76rem;
+        font-weight: 600;
+        color: #334155;
+        border-radius: 7px;
+        transition: background 0.15s;
+    }
+
+    .cal-day-cell:hover:not(.cal-empty) {
+        background: #eef2ff;
+    }
+
+    .cal-day-cell.today {
+        background: #2563eb !important;
+        color: #ffffff !important;
+        font-weight: 800;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+    }
+
+    .cal-day-cell.today .day-num {
+        color: #ffffff;
+    }
+
+    .day-dot {
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+    }
+
+    .dot-huong {
+        background: #2563eb;
+    }
+
+    .dot-hoi {
+        background: #f59e0b;
+    }
+
+    .dot-dinh {
+        width: auto;
+        height: auto;
+        font-size: 9px;
+        line-height: 1;
+        bottom: 1px;
+    }
+
+    .cal-legend {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 10px;
+        padding-top: 8px;
+        border-top: 1px dashed rgba(37, 99, 235, 0.12);
+        font-size: 0.72rem;
+        color: #475569;
+    }
+
+    .lg-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .lg-item .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .lg-item .dot-dinh {
+        width: auto;
+        height: auto;
+        font-size: 9px;
+    }
+
+    /* ------------------------------------------------------
+       3. CỘT GIỮA: TRUNG TÂM LUYỆN TẬP (SUBJECTS & RESUME)
+       ------------------------------------------------------ */
+    /* ==========================================================
+       TIÊU ĐỀ CỘT GIỮA: CĂN GIỮA TUYỆT ĐỐI & CHỮ TIẾNG VIỆT NÉT CĂNG
+       ========================================================== */
+    .hub-welcome {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin: 0 auto 16px auto !important;
+        text-align: center !important;
+        padding: 0 !important;
+    }
+
+    .hub-welcome-text {
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    .hub-welcome-text h1 {
+        font-size: 1.6rem !important;
+        font-weight: 800 !important;
+        color: #0f172a !important;
+        margin: 0 0 4px 0 !important;
+        letter-spacing: normal !important;
+        line-height: 1.3 !important;
+        text-align: center !important;
+    }
+
+    .hub-sub-welcome {
+        font-size: 0.88rem !important;
+        color: #64748b !important;
+        margin: 0 !important;
+        text-align: center !important;
+        display: block !important;
+    }
+
+    /* 3 thẻ môn học luôn nằm ngang cân xứng */
+    .subject-grid-v2 {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 16px !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .rich-card {
+        background: #ffffff;
+        border: 1px solid rgba(37, 99, 235, 0.14);
+        border-radius: 20px;
+        padding: 20px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        text-decoration: none;
+        box-shadow: 0 6px 20px rgba(27, 42, 65, 0.05);
+        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s, border-color 0.28s;
+        position: relative;
+        cursor: pointer;
+        color: inherit;
+        box-sizing: border-box;
+    }
+
+    .rich-card:hover {
+        transform: translateY(-6px);
+        border-color: #2563eb;
+        box-shadow: 0 16px 36px rgba(37, 99, 235, 0.14);
+    }
+
+    .rich-card-badge {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: #2563eb;
+        border: 1px solid rgba(37, 99, 235, 0.16);
+    }
+
+    .rich-card-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
+        background: repeating-linear-gradient(135deg, #e8eefc 0 10px, #f2f5fc 10px 20px);
+        display: grid;
+        place-items: center;
+        font-size: 22px;
+        border: 1px solid rgba(37, 99, 235, 0.15);
+        transition: transform 0.3s ease;
+    }
+
+    .rich-card:hover .rich-card-icon {
+        transform: scale(1.08) rotate(-4deg);
+    }
+
+    .rich-card-title {
+        font-size: 1.18rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 2px 0 0;
+    }
+
+    .rich-card-progress {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .rich-card-progress .progress-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #64748b;
+    }
+
+    .rich-card-progress .progress-val {
+        color: #2563eb;
+        font-weight: 800;
+        font-size: 0.85rem;
+    }
+
+    .rich-card-progress .progress-track {
+        height: 6px;
+        background: #e8eefc;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .rich-card-progress .progress-fill {
+        height: 100%;
+        border-radius: 999px;
+        transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .rich-card-progress .progress-sub {
+        font-size: 0.75rem;
+        color: #64748b;
+        margin-top: 1px;
+    }
+
+    .rich-card-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.78rem;
+        color: #475569;
+        font-weight: 600;
+        padding-top: 8px;
+        border-top: 1px dashed rgba(37, 99, 235, 0.14);
+    }
+
+    .rich-card-meta span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .rich-card-meta i {
+        color: #3b82f6;
+        font-size: 0.8rem;
+    }
+
+    .rich-card-cta {
+        margin-top: auto;
+        padding: 9px 12px;
+        background: #f8fafc;
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        border-radius: 12px;
+        color: #2563eb;
+        font-weight: 700;
+        font-size: 0.84rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 0.25s ease;
+    }
+
+    .rich-card:hover .rich-card-cta {
+        background: #2563eb;
+        color: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .rich-card:hover .rich-card-cta i {
+        transform: translateX(4px);
+    }
+
+    /* ========================================================
+       KHU VỰC CÁC MÔN ĐANG LÀM DỞ THANH MẢNH (#resume-section)
+       ======================================================== */
+    .resume-section-slim {
+        background: #ffffff !important;
+        border: 1px solid #bfdbfe !important;
+        border-radius: 16px !important;
+        padding: 12px 18px !important;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.05) !important;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        box-sizing: border-box;
+    }
+
+    .resume-slim-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .resume-badge-tag {
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: #1d4ed8;
+        background: #dbeafe;
+        padding: 3px 10px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        letter-spacing: 0.03em;
+    }
+
+    .resume-note-text {
+        font-size: 0.74rem;
+        color: #94a3b8;
+    }
+
+    .resume-items-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .resume-row-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 8px 12px;
+        transition: all 0.2s ease;
+    }
+
+    .resume-row-item:hover {
+        background: #f0f7ff;
+        border-color: #93c5fd;
+    }
+
+    .resume-row-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        overflow: hidden;
+    }
+
+    .resume-row-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: #eff6ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.82rem;
+        flex-shrink: 0;
+    }
+
+    .resume-row-subject {
+        font-size: 0.86rem;
+        font-weight: 700;
+        color: #1e293b;
+        flex-shrink: 0;
+    }
+
+    .resume-row-title {
+        font-size: 0.82rem;
+        color: #475569;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 320px;
+    }
+
+    .resume-row-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+    }
+
+    .resume-remain-badge {
+        font-size: 0.74rem;
+        font-weight: 600;
+        color: #b45309;
+        background: #fef3c7;
+        padding: 3px 8px;
+        border-radius: 6px;
+    }
+
+    .resume-btn-sm {
+        background: #2563eb;
+        color: #ffffff;
+        font-size: 0.78rem;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: background 0.2s ease;
+    }
+
+    .resume-btn-sm:hover {
+        background: #1d4ed8;
+    }
+
+    /* ========================================================
+       CỘT 3 (PHẢI): CARD 1 & CARD 2 (MỖI CARD ~50% CHIỀU CAO)
+       ======================================================== */
+    .card-quests-real {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 20px !important;
+        padding: 16px 18px !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        gap: 0 !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        box-sizing: border-box !important;
+        text-align: left !important;
+    }
+
+    .card-quests-real .widget-head {
+        margin-bottom: 10px !important;
+        flex-shrink: 0;
+    }
+
+    .card-quests-real .quest-mini-track {
+        margin-bottom: 10px !important;
+        flex-shrink: 0;
+    }
+
+    .card-weekly-goal {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 20px !important;
+        padding: 16px 18px !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Badge phần trăm mục tiêu tuần */
+    .goal-percent-badge {
+        font-size: 0.76rem;
+        font-weight: 800;
+        color: #2563eb;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        padding: 2px 8px;
+        border-radius: 8px;
+    }
+
+    .goal-edit-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 8px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #475569;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .goal-edit-btn:hover {
+        background: #eff6ff;
+        color: #1d4ed8;
+        border-color: #93c5fd;
+    }
+
+    .weekly-goal-editor {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 8px;
+        margin-bottom: 8px;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        font-size: 0.76rem;
+        color: #334155;
+    }
+
+    .weekly-goal-editor[hidden] {
+        display: none;
+    }
+
+    .weekly-goal-editor input {
+        width: 58px;
+        padding: 3px 6px;
+        border: 1px solid #93c5fd;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .goal-save-btn,
+    .goal-cancel-btn {
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 0.74rem;
+        font-weight: 700;
+        cursor: pointer;
+        border: 1px solid transparent;
+    }
+
+    .goal-save-btn {
+        background: #2563eb;
+        color: #ffffff;
+    }
+
+    .goal-cancel-btn {
+        background: #ffffff;
+        color: #64748b;
+        border-color: #cbd5e1;
+    }
+
+    .weekly-goal-progress-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 8px;
+    }
+
+    .weekly-goal-labels {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+    }
+
+    .weekly-goal-title {
+        color: #334155;
+        font-weight: 600;
+    }
+
+    .weekly-goal-title b {
+        color: #2563eb;
+        font-weight: 800;
+    }
+
+    .weekly-remain-text {
+        font-size: 0.74rem;
+        color: #64748b;
+        background: #f1f5f9;
+        padding: 2px 7px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+
+    .goal-track-bar {
+        width: 100%;
+        height: 6px;
+        background: #e2e8f0;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .goal-fill-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+        border-radius: 999px;
+        transition: width 0.4s ease;
+    }
+
+    /* Mini chart 7 ngày (T2 -> CN) */
+    .weekly-mini-chart {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 6px;
+        height: 52px;
+        padding: 6px 10px 4px 10px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        box-sizing: border-box;
+    }
+
+    .chart-day-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        height: 100%;
+        flex: 1;
+        gap: 3px;
+    }
+
+    .chart-day-col .chart-bar {
+        width: 100%;
+        max-width: 14px;
+        min-height: 4px;
+        background: #cbd5e1;
+        border-radius: 4px 4px 2px 2px;
+        transition: height 0.3s ease, background 0.2s ease;
+    }
+
+    .chart-day-col:hover .chart-bar {
+        background: #93c5fd;
+    }
+
+    .chart-day-col.is-today .chart-bar {
+        background: linear-gradient(180deg, #2563eb, #1d4ed8);
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
+    }
+
+    .chart-day-col .day-lbl {
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: #64748b;
+        user-select: none;
+    }
+
+    .chart-day-col.is-today .day-lbl {
+        color: #2563eb;
+        font-weight: 800;
+    }
+
+    .weekly-streak-footer {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.78rem;
+        color: #475569;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        padding: 6px 10px;
+        border-radius: 8px;
+    }
+
+    .weekly-streak-footer.is-lost {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        color: #64748b;
+    }
+
+    .weekly-streak-footer.is-lost b {
+        color: #475569;
+    }
+
+    .weekly-streak-footer .vn-ico {
+        width: 24px;
+        height: 24px;
+    }
+
+    .weekly-streak-footer i {
+        font-size: 0.88rem;
+    }
+
+    .weekly-streak-footer b {
+        color: #b45309;
+        font-weight: 800;
+    }
+
+    .quest-card-footer {
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px dashed #e2e8f0;
+    }
+
+    .quest-streak-pill {
+        font-size: 0.76rem;
+        color: #475569;
+        background: #f8fafc;
+        padding: 8px 12px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* ------------------------------------------------------
+       4. CỘT PHẢI: NHIỆM VỤ HÔM NAY (API /api/nhiem-vu/${userId})
+       ------------------------------------------------------ */
+    .quest-mini-track {
+        width: 100%;
+        height: 4px;
+        background: #e8eefc;
+        border-radius: 999px;
+        margin-bottom: 14px;
+        overflow: hidden;
+    }
+
+    .quest-mini-bar {
+        height: 100%;
+        background: #2563eb;
+        border-radius: 999px;
+        transition: width 0.4s ease;
+    }
+
+    .quest-count-badge {
+        font-size: 0.74rem;
+        font-weight: 800;
+        color: #2563eb;
+        background: #eff6ff;
+        padding: 2px 8px;
+        border-radius: 8px;
+    }
+
+    .real-quest-list {
+        list-style: none;
+        padding: 4px 0;
+        margin: 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: 10px;
+    }
+
+    .quest-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 12px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #334155;
+        text-align: left;
+    }
+
+    .quest-row i {
+        font-size: 0.95rem;
+        color: #94a3b8;
+        flex-shrink: 0;
+    }
+
+    .quest-row.done {
+        background: #f0fdf4;
+        border-color: #bbf7d0;
+        color: #15803d;
+    }
+
+    .quest-row.done i {
+        color: #16a34a;
+    }
+
+    .quest-row.done .q-name {
+        text-decoration: line-through;
+        opacity: 0.85;
+    }
+
+    .q-name {
+        flex: 1;
+        min-width: 0;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .q-claimed {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #16a34a;
+        background: #dcfce7;
+        padding: 2px 7px;
+        border-radius: 6px;
+        white-space: nowrap;
+        min-width: 62px;
+        text-align: center;
+        flex-shrink: 0;
+        box-sizing: border-box;
+    }
+
+    .btn-claim-xp {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #ffffff;
+        border: none;
+        padding: 4px 9px;
+        border-radius: 7px;
+        font-weight: 700;
+        font-size: 0.74rem;
+        cursor: pointer;
+        white-space: nowrap;
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+        transition: transform 0.15s;
+    }
+
+    .btn-claim-xp:hover {
+        transform: scale(1.04);
+        background: #1d4ed8;
+    }
+
+    .q-col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+        text-align: left;
+    }
+
+    .q-track {
+        height: 5px;
+        background: #e2e8f0;
+        border-radius: 999px;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .q-fill {
+        height: 100%;
+        background: #3b82f6;
+        border-radius: 999px;
+        transition: width 0.3s ease;
+    }
+
+    .q-xp {
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: #2563eb;
+        background: #eff6ff;
+        padding: 2px 6px;
+        border-radius: 6px;
+        white-space: nowrap;
+        min-width: 62px;
+        text-align: center;
+        flex-shrink: 0;
+        box-sizing: border-box;
+    }
+
+    /* ------------------------------------------------------
+       5. CỘT PHẢI: XẾP HẠNG THÁNG (API /api/ranking?ky=thang)
+       ------------------------------------------------------ */
+    .widget-link {
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: #2563eb;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: opacity 0.15s;
+    }
+
+    .widget-link:hover {
+        opacity: 0.8;
+    }
+
+    .mini-podium-v2 {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        margin-bottom: 10px;
+    }
+
+    .podium-item {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 6px 8px;
+        background: #f8fafc;
+        border-radius: 12px;
+        transition: background 0.15s;
+    }
+
+    .podium-item:hover {
+        background: #f1f5f9;
+    }
+
+    .podium-badge {
+        font-size: 1.1rem;
+        min-width: 22px;
+        text-align: center;
+    }
+
+    .podium-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1.5px solid #dbeafe;
+    }
+
+    .podium-info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .podium-name {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #0f172a;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .podium-sub {
+        font-size: 0.68rem;
+        color: #64748b;
+    }
+
+    .podium-score {
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: #2563eb;
+        white-space: nowrap;
+    }
+
+    .my-rank-sticky-box {
+        background: #eff6ff;
+        border: 1.5px solid rgba(37, 99, 235, 0.35);
+        border-radius: 14px;
+        padding: 9px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 2px 10px rgba(37, 99, 235, 0.08);
+    }
+
+    .my-rank-badge {
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: #1d4ed8;
+        background: #dbeafe;
+        padding: 2px 7px;
+        border-radius: 7px;
+        min-width: 26px;
+        text-align: center;
+    }
+
+    .my-rank-name {
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: #1e40af;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+    }
+
+    .my-rank-score {
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: #2563eb;
+        white-space: nowrap;
+    }
+}
+
+/* ========================================================
+   RESPONSIVE DESIGN CHO TABLET & MOBILE
+   ======================================================== */
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .hub-container-3col {
+        grid-template-columns: 238px minmax(0, 1fr) 300px !important;
+        padding: 22px 24px !important;
+        gap: 18px !important;
+    }
+
+    .mascot-img-render {
+        width: 204px;
+        max-height: 255px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .hub-container-3col {
+        grid-template-columns: 1fr 280px !important;
+    }
+
+    .col-mascot-hub {
+        display: none !important;
+        /* Ẩn linh vật trên tablet để ưu tiên môn học */
+    }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+    .hub-container-3col {
+        grid-template-columns: 1fr !important;
+        padding: 20px 20px !important;
+        gap: 18px !important;
+        /* 641px-768px vẫn dùng bố cục desktop 1 cột thay vì ẩn cả 2 giao diện */
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .orbit *,
+    .orbit-sat,
+    .orbit-body,
+    .orbit-core::before,
+    .orbit-core-spin,
+    .orbit-core-spin i,
+    .orbit-stars {
+        animation: none !important;
+        transition: none !important;
+    }
+}

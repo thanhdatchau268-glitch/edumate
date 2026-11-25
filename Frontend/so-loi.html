@@ -4,22 +4,26 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=2"></script>
     <script>
         if (localStorage.getItem("isLoggedIn") !== "true") location.replace("subjects.html");
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
     <title>VnStarL - Sổ lỗi sai</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=11" />
     <link rel="stylesheet" href="style3.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
     <link rel="stylesheet" href="form.css" />
-    <link rel="stylesheet" href="so-loi.css" />
+    <link rel="stylesheet" href="so-loi.css?v=12" />
+    <link rel="stylesheet" href="notched-nav.css?v=3" />
+    <link rel="stylesheet" href="tour-personal.css?v=6" />
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
-    <script defer src="math.js"></script>
 </head>
 
-<body>
+<body class="so-loi-body">
     <header id="header">
         <div id="header-inner">
             <section class="right">
@@ -41,15 +45,20 @@
                         <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
                     </a>
                 </li>
-                <li id="nav-cuoc-thi">
-                    <a href="contest.html" id="link-cuoc-thi" title="Tranh tài" aria-label="Tranh tài">
-                        <i class="fa-solid fa-trophy"></i><span class="nav-chu">Tranh tài</span>
+                <li id="nav-khoa-bang">
+                    <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+                        <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
                     </a>
                 </li>
                 <li id="nav-xep-hang">
                     <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
                         <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
                     </a>
+                </li>
+                <li id="nav-vuon-saoladou">
+                  <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+                    <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
+                  </a>
                 </li>
             </ul>
 
@@ -59,7 +68,7 @@
                     <a href="register.html" class="auth-link">Đăng ký</a>
                 </div>
                 <div id="user-profile" class="hidden">
-                    <div class="streak-box">🔥 <span>0</span></div>
+                    <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
                     <span class="username">Username</span>
                     <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
                 </div>
@@ -69,23 +78,63 @@
 
     <main class="sl-wrap">
         <!-- ===== Bản đồ kỹ năng ===== -->
-        <section id="sl-ban-do">
-            <div class="sl-hero">
-                <h1>Sổ lỗi sai</h1>
-                <p>Mỗi kỹ năng anh/chị từng làm sai nằm ở đây. Sửa lỗi, rồi chứng minh bằng câu mới, cách nhau 1, 3 và 7
-                    ngày để nhớ thật.</p>
+        <section id="sl-ban-do" class="sl-console">
+            <div class="sl-layout-2col">
+                <div class="sl-col-left">
+                    <div class="sl-hero">
+                        <div class="sl-hero-compact">
+                            <h1>Sổ lỗi sai</h1>
+                            <span class="sl-badge-sub">✦ Vá lỗ hổng · Ghi nhớ dài lâu ✦</span>
+                            <button type="button" id="btn-mo-tour-sl" class="btn-tour-replay" title="Xem lại hướng dẫn Sổ lỗi sai">
+                                <i class="fa-regular fa-circle-question"></i> Hướng dẫn
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="sl-toolbar" id="sl-toolbar">
+                        <div class="sl-search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="search" id="sl-search" placeholder="Tìm tên bài học (VD: Lão Hạc, phương trình)..." autocomplete="off" />
+                        </div>
+                        <div class="sl-filter-row">
+                            <div id="sl-mon-tabs" class="sl-mon-tabs" role="tablist" aria-label="Lọc theo môn học"></div>
+                            <button type="button" id="sl-only-due" class="sl-due-toggle" aria-pressed="false">
+                                <i class="fa-solid fa-bolt"></i> Cần làm ngay
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="sl-ds"></div>
+                </div>
+
+                <aside class="sl-col-right">
+                    <div id="sl-tom-tat" class="sl-tom-tat"></div>
+                    <div class="sl-guide-card">
+                        <div class="sl-mascot-tip">
+                            <img src="img/pet/than/mac_dinh/_xem_truoc.webp" alt="Sao La" class="sl-mascot-mini" loading="lazy" decoding="async" onerror="this.src='img/logo.webp'" />
+                            <div class="sl-mascot-bubble" id="sl-mascot-msg">Mỗi ngày sửa vài câu là lỗ hổng kiến thức tự biến mất ngay!</div>
+                        </div>
+                        <div class="sl-cycle-box">
+                            <div class="sl-cycle-title">Lộ trình ghi nhớ thật</div>
+                            <ol class="sl-cycle-steps">
+                                <li>Sửa lại câu bạn từng làm sai</li>
+                                <li>Chứng minh bằng câu mới (1 – 3 – 7 ngày)</li>
+                                <li>Chuyển sang mức <b>Thông thạo</b></li>
+                            </ol>
+                        </div>
+                    </div>
+                </aside>
             </div>
-            <div id="sl-tom-tat" class="sl-tom-tat"></div>
-            <div id="sl-ds"></div>
         </section>
 
         <!-- ===== Thẻ ôn (sửa lỗi / chứng minh) ===== -->
-        <section id="sl-the" class="hidden" aria-live="polite"></section>
+        <section id="sl-the" class="hidden sl-focus-stage" aria-live="polite"></section>
     </main>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=17"></script>
     <script src="so-loi-chung.js"></script>
-    <script src="so-loi.js"></script>
+    <script src="so-loi.js?v=13"></script>
+    <script src="tour-so-loi.js?v=2"></script>
 </body>
 
 </html>

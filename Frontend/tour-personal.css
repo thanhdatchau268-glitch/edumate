@@ -1,0 +1,425 @@
+/* tour-personal.css - Hướng dẫn tương tác kiểu Game cho personal.html (PC trước) */
+.hoctap-head-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-tour-replay {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    border: 1.5px solid #bfdbfe;
+    background: rgba(255, 255, 255, 0.9);
+    color: #2457d6;
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.18s ease;
+}
+
+.btn-tour-replay:hover {
+    background: #eff6ff;
+    transform: translateY(-1px);
+}
+
+/* Tạm ẩn visual Sao La góc trên khi Tour đang chạy để tránh hiện 2 Sao La cùng lúc (vẫn giữ âm thanh) */
+body.tour-dang-chay #sao-la {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Khóa cuộn / vuốt trang của người dùng trong lúc đang chạy Tour (chương trình vẫn tự cuộn tới từng bước) */
+html.tour-dang-chay,
+body.tour-dang-chay {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    touch-action: none !important;
+}
+
+/* Lỗ khoét sáng Spotlight phủ nền tối xám xung quanh */
+.tour-hole {
+    position: fixed;
+    z-index: 9990;
+    pointer-events: none;
+    border-radius: 16px;
+    box-shadow:
+        0 0 0 9999px rgba(15, 23, 42, 0.64),
+        0 0 0 3px #38bdf8,
+        0 0 28px rgba(56, 189, 248, 0.55);
+    transition: top 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+                left 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+                width 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+                height 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.tour-hole.is-center {
+    top: 50% !important;
+    left: 50% !important;
+    width: 0 !important;
+    height: 0 !important;
+    box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.68);
+}
+
+/* Nhấp nháy nhẹ ở nút bắt buộc phải bấm */
+@keyframes tour-tab-ring {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.55); }
+    50% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+}
+
+.tour-must-click {
+    position: relative;
+    z-index: 9994 !important;
+    outline: 2.5px solid #2563eb !important;
+    outline-offset: 2px;
+    animation: tour-tab-ring 1.35s ease-in-out infinite;
+}
+
+/* Tắt sticky tạm thời trong lúc chạy Tour để dock 3 tab không che các khung spotlight bên dưới */
+body.tour-dang-chay .tab-chinh {
+    position: static !important;
+}
+
+/* Chừa khoảng header khi tour tự cuộn vào các khối spotlight */
+body.tour-dang-chay #nhiem-vu,
+body.tour-dang-chay .tab-chinh,
+body.tour-dang-chay #pn-lich,
+body.tour-dang-chay #pn-setup .setup-card,
+body.tour-dang-chay #pn-diem .khung {
+    scroll-margin-top: 84px;
+}
+
+/* Nâng khung .tab-chinh chứa nút bắt buộc phải bấm lên trên nền tối Spotlight */
+body.tour-dang-chay .tab-chinh.tour-must-parent {
+    position: relative !important;
+    z-index: 9994 !important;
+}
+
+body.tour-dang-chay .tab-chinh.tour-must-parent .tab-pill:not(.tour-must-click) {
+    opacity: 0.36;
+    pointer-events: none;
+}
+
+body.tour-dang-chay .tab-chinh.tour-must-parent .tab-pill.tour-must-click {
+    opacity: 1;
+    background: #eff6ff !important;
+    border-color: #2563eb !important;
+}
+
+body.tour-dang-chay .tab-chinh.tour-must-parent .tab-pill.tour-must-click.on {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+}
+
+/* Khi bắt buộc bấm tab trên thanh Header (#link-bai-tap, #link-khoa-bang, #link-xep-hang) */
+body.tour-must-header #header {
+    z-index: 9994 !important;
+}
+
+body.tour-must-header #nav a:not(.tour-must-click) {
+    opacity: 0.28;
+    pointer-events: none;
+}
+
+body.tour-must-header .tour-must-click {
+    background: #eff6ff !important;
+    color: #1d4ed8 !important;
+    border-radius: 10px !important;
+    outline: 2.5px solid #38bdf8 !important;
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.38) !important;
+}
+
+/* Bung sẵn tên tab trên Header để nhìn rõ đường bấm */
+body.tour-must-header .tour-must-click .nav-chu {
+    max-width: 180px !important;
+    margin-left: 8px !important;
+    opacity: 1 !important;
+    transition: none !important;
+}
+
+/* Hộp Saoladuo + Bong bóng thoại đi kèm */
+.tour-mascot-wrap {
+    position: fixed;
+    z-index: 9996;
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    max-width: min(630px, calc(100vw - 32px));
+    transition: top 0.25s ease, left 0.25s ease, transform 0.25s ease;
+}
+
+.tour-mascot-wrap.is-flipped {
+    flex-direction: row-reverse;
+}
+
+/* MÀN CHÀO MỞ ĐẦU MỖI TRANG: Card 2 cột ngang sang trọng (Trái: ảnh tự do · Phải: nội dung) */
+.tour-mascot-wrap.is-center-modal {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(760px, calc(100vw - 32px));
+    max-width: 760px;
+    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 55%);
+    border: 1.5px solid #bfdbfe;
+    border-radius: 26px;
+    padding: 26px 28px;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.36), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 26px;
+    text-align: left;
+}
+
+/* Sân khấu hào quang mềm cho Saoladuo ở màn mở đầu (KHÔNG đóng khung vuông) */
+.tour-mascot-wrap.is-center-modal .tour-saola-avatar {
+    position: relative;
+    min-width: 245px;
+    height: 235px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 56%, rgba(191, 219, 254, 0.6) 0%, rgba(239, 246, 255, 0.25) 55%, transparent 74%);
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+}
+
+.tour-mascot-wrap.is-center-modal .tour-bubble {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    min-width: 0;
+    max-width: none;
+}
+
+.tour-mascot-wrap.is-center-modal .tour-bubble h3 {
+    font-size: 1.32rem;
+    margin-bottom: 8px;
+}
+
+.tour-mascot-wrap.is-center-modal .tour-bubble p {
+    font-size: 0.94rem;
+    margin-bottom: 18px;
+}
+
+/* NHÂN VẬT CẦM THƯỚC ĐỨNG TỰ DO BÊN CẠNH BONG BÓNG Ở BƯỚC SPOTLIGHT (KHÔNG HỘP VUÔNG) */
+.tour-mascot-wrap:not(.is-center-modal) .tour-saola-avatar {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+    padding-bottom: 4px;
+}
+
+.tour-mascot-wrap:not(.is-center-modal) .tour-saola-avatar::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 112px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(15, 23, 42, 0.34), transparent);
+    pointer-events: none;
+}
+
+.tour-saola-avatar img {
+    display: block;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 16px rgba(15, 23, 42, 0.24));
+    transition: transform 0.2s ease;
+}
+
+/* THỐNG NHẤT ĐỘ CAO SAOLADUO THEO TỪNG TỪ THẾ (cân bằng với khung thoại) */
+.tour-saola-avatar img[data-pose="chao"] {
+    height: 210px;
+}
+
+.tour-saola-avatar img[data-pose="sach"] {
+    height: 215px;
+    max-width: 300px;
+}
+
+.tour-saola-avatar img[data-pose="khoabang"] {
+    height: 218px;
+    max-width: 300px;
+}
+
+.tour-saola-avatar img[data-pose="xephang"] {
+    height: 225px;
+    max-width: 310px;
+}
+
+/* Ảnh gốc 1024x571 có lề rỗng 2 bên -> không giới hạn max-width để chiều cao đạt đủ ~204px ngang bằng khung thoại */
+.tour-saola-avatar img[data-pose="thuoc"] {
+    height: 204px;
+    width: auto;
+    max-width: none;
+    margin: 0 -64px;
+}
+
+/* Lật ngang để cây thước chỉ đúng về ô nằm bên PHẢI Saoladuo */
+.tour-saola-avatar img.is-ruler-right {
+    transform: scaleX(-1);
+}
+
+/* Bong bóng thoại cho bước Spotlight */
+.tour-bubble {
+    background: #ffffff;
+    color: #0f172a;
+    border: 1.5px solid #bfdbfe;
+    border-radius: 20px;
+    padding: 16px 18px;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.34);
+    min-width: 280px;
+    max-width: 390px;
+}
+
+.tour-bubble-step {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #2457d6;
+    font-size: 0.72rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.tour-bubble h3 {
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.tour-bubble p {
+    margin: 0 0 12px;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: #475569;
+}
+
+.tour-action-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 11px;
+    border-radius: 10px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.tour-bubble-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.tour-btn-skip {
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 4px;
+}
+
+.tour-btn-skip:hover {
+    color: #0f172a;
+    text-decoration: underline;
+}
+
+.tour-btn-next {
+    margin-left: auto;
+    padding: 9px 16px;
+    border-radius: 12px;
+    border: none;
+    background: #2457d6;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(36, 87, 214, 0.28);
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.tour-btn-next:hover {
+    background: #1d49b8;
+    transform: translateY(-1px);
+}
+
+@keyframes tour-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.tour-bubble.is-shaking {
+    animation: tour-shake 0.28s ease;
+}
+
+@media (max-width: 640px) {
+    .hoctap-head-row {
+        order: -1;
+    }
+
+    .btn-tour-replay {
+        display: none;
+    }
+}
+
+.hub-welcome-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Phóng nổi nút chuyển tab trên #header khi kết thúc tour mỗi trang */
+#nav-bai-tap.tour-must-click,
+#link-bai-tap.tour-must-click,
+#nav-khoa-bang.tour-must-click,
+#link-khoa-bang.tour-must-click,
+#nav-xep-hang.tour-must-click,
+#link-xep-hang.tour-must-click {
+    transform: scale(1.14);
+    border-radius: 12px;
+    background: #eff6ff;
+    color: #2457d6;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.btn-tour-kb {
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+}
+
+.btn-tour-kb:hover {
+    background: rgba(255, 255, 255, 0.24);
+}

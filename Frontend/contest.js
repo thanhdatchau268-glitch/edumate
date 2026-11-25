@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function veBaiTap(c, luot) {
     // Chưa tới giờ thì không cho xem đề
     if (c.trang_thai === "sap-dien-ra") {
-      baoTrongO("Đề thi sẽ mở khi cuộc thi bắt đầu, anh/chị quay lại sau nhé!");
+      baoTrongO("Đề thi sẽ mở khi cuộc thi bắt đầu, bạn quay lại sau nhé!");
       return;
     }
 
@@ -89,7 +89,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (luot !== luotMo) return; // đã bấm sang tab khác thì bỏ kết quả này
 
-      const dsBai = data.bai_tap || [];
+      const dsBaiRaw = Array.isArray(data.bai_tap)
+        ? data.bai_tap
+        : (Array.isArray(data.cau_hoi) && data.cau_hoi.length > 0
+            ? [{ id: "1", ten: c.ten || "Đề thi", cau_hoi: data.cau_hoi }]
+            : []);
+      // Tạm thời mỗi cuộc thi chỉ có đúng 1 bài tập duy nhất để tránh khóa lượt nộp các bài sau
+      const dsBai = dsBaiRaw.slice(0, 1);
       if (dsBai.length === 0) throw new Error("Cuộc thi này chưa có bài nào.");
 
       noiDung.innerHTML = `
@@ -114,8 +120,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (c.trang_thai === "dang-dien-ra") {
           // Đang diễn ra: bấm vào để làm bài
           const a = document.createElement("a");
+          a.className = "contest-btn-thi";
           a.href = `form.html?subject=contest&chapter=${c.id}&article=${c.id}&q=${bai.id}`;
-          a.textContent = ten;
+          const ico = document.createElement("i");
+          ico.className = "fa-solid fa-play";
+          a.append(ico, " " + ten);
           tdTen.appendChild(a);
         } else {
           // Đã kết thúc: chỉ xem tên, không làm được nữa
@@ -173,17 +182,48 @@ document.addEventListener("DOMContentLoaded", async () => {
         const u = kq.data[viTri];
         ten[i].textContent = u ? `${u.username} - ${u.diem}` : "";
         datAvatar(anh[i], u ? u.avatar : ""); // hàm nằm trong script.js
+        if (window.HUY_HIEU_KHUNG) {
+          window.HUY_HIEU_KHUNG.bocKhungAvatar(anh[i], u ? (u.huy_hieu || "") : "", {
+            sizeClass: viTri === 0 ? "hh-contest-gold" : "hh-contest-sub",
+          });
+        }
       });
 
-      // Mỗi người = 1 dòng: Hạng, Username, Điểm
+      // Mỗi người = 1 dòng: Hạng, Username (kèm avatar + khung huy hiệu), Điểm
       const body = noiDung.querySelector("tbody");
       kq.data.forEach((u, i) => {
         const tr = document.createElement("tr");
-        [i + 1, u.username, u.diem].forEach((chu) => {
-          const td = document.createElement("td");
-          td.textContent = chu; // textContent để tên không chạy được code lạ
-          tr.appendChild(td);
-        });
+
+        const tdHang = document.createElement("td");
+        tdHang.textContent = i + 1;
+
+        const tdUser = document.createElement("td");
+        const cell = document.createElement("div");
+        cell.className = "ct-user-cell";
+        if (window.HUY_HIEU_KHUNG) {
+          cell.innerHTML = window.HUY_HIEU_KHUNG.taoKhungAvatar(
+            u.avatar,
+            u.huy_hieu,
+            "hh-sm",
+            { alt: u.username },
+          );
+        } else {
+          const img = document.createElement("img");
+          img.className = "ct-av-fallback";
+          img.alt = u.username || "";
+          datAvatar(img, u.avatar);
+          cell.appendChild(img);
+        }
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "ct-user-name";
+        nameSpan.textContent = u.username;
+        cell.appendChild(nameSpan);
+        tdUser.appendChild(cell);
+
+        const tdDiem = document.createElement("td");
+        tdDiem.textContent = u.diem;
+
+        tr.append(tdHang, tdUser, tdDiem);
         body.appendChild(tr);
       });
     } catch (err) {
@@ -212,10 +252,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     cuocThiDangMo = c;
     nen.classList.remove("hidden");          // hiện nền mờ + ô
     document.body.style.overflow = "hidden"; // khóa cuộn trang phía sau
+    if (window.AmThanh && window.AmThanh.mo) window.AmThanh.mo();
     chonTab("thong-tin");                    // luôn mở tab đầu tiên
   }
 
   function dongCuocThi() {
+    if (cuocThiDangMo && window.AmThanh && window.AmThanh.dong) window.AmThanh.dong();
     nen.classList.add("hidden");
     document.body.style.overflow = "";
     cuocThiDangMo = null;
@@ -237,7 +279,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const kq = await res.json();
 
     if (!kq.data || kq.data.length === 0) {
-      baoDong("Chưa có cuộc thi nào, anh/chị quay lại sau nhé!");
+      baoDong("Chưa có cuộc thi nào, bạn quay lại sau nhé!");
       return;
     }
 
@@ -280,6 +322,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       tbody.appendChild(tr);
     });
+
+    const noiCuocThi = (tt) => {
+      if (!tt || !window.SAOLA || window.SAOLA.vuaChaoMoi) return;
+      const uid = localStorage.getItem("userId") || "khach";
+      const kSs = "saola_da_contest_" + uid;
+      if (sessionStorage.getItem(kSs)) return;
+      if (kq.data.some((c) => c.trang_thai === "dang-dien-ra")) return;
+      sessionStorage.setItem(kSs, "1");
+      window.SAOLA.noi("thi_chao");
+    };
+    if (window.SAOLA) window.SAOLA.sanSang.then(noiCuocThi);
+    else window.addEventListener("saola-san-sang", (e) => noiCuocThi(e.detail), { once: true });
   } catch (err) {
     baoDong("Không kết nối được server. Bật app.py nhé!");
   }

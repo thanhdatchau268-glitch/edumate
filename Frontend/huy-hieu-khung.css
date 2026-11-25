@@ -1,0 +1,262 @@
+/* ==========================================================================
+   huy-hieu-khung.css — Hệ thống khung huy hiệu avatar dùng chung toàn site
+   Dùng biến CSS (--hh-cx, --hh-cy, --hh-d) để căn avatar khít vòng trong
+   của từng huy hiệu trên cả Desktop, Tablet và Mobile.
+   ========================================================================== */
+
+.hh-khung-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  vertical-align: middle;
+  line-height: 0;
+  user-select: none;
+}
+
+/* Khi KHÔNG đeo huy hiệu: hiển thị avatar tròn tiêu chuẩn */
+.hh-khung-wrap:not(.co-khung) .hh-khung-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  background: #e2e8f0;
+}
+
+.hh-khung-wrap:not(.co-khung) .hh-khung-vien {
+  display: none;
+}
+
+/* Khi ĐEO huy hiệu: avatar nằm gọn trong vòng tròn tối bên trong khung */
+.hh-khung-wrap.co-khung .hh-khung-vien {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 3px 8px rgba(15, 23, 42, 0.28));
+}
+
+.hh-khung-wrap.co-khung .hh-khung-avatar {
+  position: absolute !important;
+  left: var(--hh-cx, 50%) !important;
+  top: var(--hh-cy, 50%) !important;
+  width: var(--hh-d, 56%) !important;
+  height: var(--hh-d, 56%) !important;
+  transform: translate(-50%, -50%) !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #0f172a;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.58) !important;
+  z-index: 3;
+}
+
+/* ==========================================================================
+   CÁC KÍCH THƯỚC CHUẨN (RESPONSIVE PC + MOBILE)
+   ========================================================================== */
+
+/* 1. Navbar (.user-avatar) — vừa khít chiều cao #header-inner (52px desktop, 54px mobile) */
+.hh-khung-wrap.hh-nav {
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.hh-khung-wrap.hh-nav.co-khung {
+  width: 46px;
+  height: 46px;
+}
+
+.hh-khung-wrap.hh-nav.co-khung .hh-khung-vien {
+  filter: drop-shadow(0 2px 5px rgba(15, 23, 42, 0.25));
+}
+
+/* 2. Bảng / danh sách nhỏ (ranking table, khoa-bang table, contest table) */
+.hh-khung-wrap.hh-sm {
+  width: 34px;
+  height: 34px;
+}
+
+.hh-khung-wrap.hh-sm.co-khung {
+  width: 46px;
+  height: 46px;
+}
+
+.hh-khung-wrap.hh-sm:not(.co-khung) .hh-khung-avatar {
+  border: 1.5px solid #cbd5e1;
+}
+
+/* 3. Cực nhỏ (thanh "Vị trí của bạn", mobile sticky bar) */
+.hh-khung-wrap.hh-xs {
+  width: 28px;
+  height: 28px;
+}
+
+.hh-khung-wrap.hh-xs.co-khung {
+  width: 36px;
+  height: 36px;
+}
+
+.hh-khung-wrap.hh-xs:not(.co-khung) .hh-khung-avatar {
+  border: 1.5px solid #93c5fd;
+}
+
+/* 4. Podium trang Xếp hạng (ranking.html) */
+.hh-khung-wrap.hh-podium-gold {
+  width: 72px;
+  height: 72px;
+}
+
+.hh-khung-wrap.hh-podium-gold.co-khung {
+  width: 96px;
+  height: 96px;
+}
+
+.hh-khung-wrap.hh-podium-sub {
+  width: 58px;
+  height: 58px;
+}
+
+.hh-khung-wrap.hh-podium-sub.co-khung {
+  width: 78px;
+  height: 78px;
+}
+
+/* 5. Khoa bảng (.kb-av & .kb-av.lon) */
+.hh-khung-wrap.hh-kb {
+  width: 40px;
+  height: 40px;
+}
+
+.hh-khung-wrap.hh-kb.co-khung {
+  width: 50px;
+  height: 50px;
+}
+
+.hh-khung-wrap.hh-kb-lon {
+  width: 76px;
+  height: 76px;
+}
+
+.hh-khung-wrap.hh-kb-lon.co-khung {
+  width: 96px;
+  height: 96px;
+}
+
+/* 6. Podium Cuộc thi (contest.html) */
+.hh-khung-wrap.hh-contest-gold {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 10px;
+}
+
+.hh-khung-wrap.hh-contest-gold.co-khung {
+  width: 92px;
+  height: 92px;
+}
+
+.hh-khung-wrap.hh-contest-sub {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 10px;
+}
+
+.hh-khung-wrap.hh-contest-sub.co-khung {
+  width: 82px;
+  height: 82px;
+}
+
+/* 7. Cỡ lớn (tái sử dụng cho hồ sơ / modal nếu cần) */
+.hh-khung-wrap.hh-lg {
+  width: 112px;
+  height: 112px;
+}
+
+.hh-khung-wrap.hh-lg.co-khung {
+  width: 148px;
+  height: 148px;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVE (<= 640px)
+   ========================================================================== */
+@media (max-width: 640px) {
+  .hh-khung-wrap.hh-nav.co-khung {
+    width: 42px;
+    height: 42px;
+  }
+
+  .hh-khung-wrap.hh-sm {
+    width: 30px;
+    height: 30px;
+  }
+
+  .hh-khung-wrap.hh-sm.co-khung {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hh-khung-wrap.hh-podium-gold {
+    width: 62px;
+    height: 62px;
+  }
+
+  .hh-khung-wrap.hh-podium-gold.co-khung {
+    width: 78px;
+    height: 78px;
+  }
+
+  .hh-khung-wrap.hh-podium-sub {
+    width: 48px;
+    height: 48px;
+  }
+
+  .hh-khung-wrap.hh-podium-sub.co-khung {
+    width: 64px;
+    height: 64px;
+  }
+
+  .hh-khung-wrap.hh-kb {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hh-khung-wrap.hh-kb.co-khung {
+    width: 44px;
+    height: 44px;
+  }
+
+  .hh-khung-wrap.hh-kb-lon {
+    width: 68px;
+    height: 68px;
+  }
+
+  .hh-khung-wrap.hh-kb-lon.co-khung {
+    width: 84px;
+    height: 84px;
+  }
+
+  .hh-khung-wrap.hh-contest-gold,
+  .hh-khung-wrap.hh-contest-sub {
+    width: 56px;
+    height: 56px;
+  }
+
+  .hh-khung-wrap.hh-contest-gold.co-khung {
+    width: 74px;
+    height: 74px;
+  }
+
+  .hh-khung-wrap.hh-contest-sub.co-khung {
+    width: 66px;
+    height: 66px;
+  }
+}

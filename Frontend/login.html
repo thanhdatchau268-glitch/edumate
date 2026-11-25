@@ -4,12 +4,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=2"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
   <title>Đăng nhập - VnStarL</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="style2.css" />
-  <link rel="stylesheet" href="style3.css" />
-  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="style.css?v=11" />
+  <link rel="stylesheet" href="style2.css?v=4" />
+  <link rel="stylesheet" href="style3.css?v=4" />
+  <link rel="stylesheet" href="auth.css?v=5" />
+  <!-- Google Identity Services (Hỗ trợ Google One Tap & Chọn tài khoản Google) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body>
@@ -34,9 +39,19 @@
             <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
           </a>
         </li>
+        <li id="nav-khoa-bang">
+          <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+            <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+          </a>
+        </li>
         <li id="nav-xep-hang">
           <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
             <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+          </a>
+        </li>
+        <li id="nav-vuon-saoladou">
+          <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+            <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
           </a>
         </li>
       </ul>
@@ -47,7 +62,7 @@
           <a href="register.html" class="auth-link">Đăng ký</a>
         </div>
         <div id="user-profile" class="hidden">
-          <div class="streak-box">🔥 <span>0</span></div>
+          <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
           <span class="username">Username</span>
           <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
         </div>
@@ -61,7 +76,7 @@
       <!-- Cột trái: giới thiệu -->
       <aside class="auth-side">
         <div>
-          <h2>Chào mừng anh/chị quay lại!</h2>
+          <h2>Chào mừng bạn quay lại!</h2>
           <p>Tiếp tục hành trình ôn thi vào lớp 10 cùng VnStarL.</p>
         </div>
         <ul class="auth-loi-ich">
@@ -71,7 +86,7 @@
           <li><i class="fa-solid fa-school"></i>
             <div><b>Gợi ý trường phù hợp</b><span>Dựa trên điểm số và khoảng cách từ nhà.</span></div>
           </li>
-          <li><i class="fa-solid fa-fire"></i>
+          <li><img src="img/icon-streak.png" alt="Streak" class="vn-ico" />
             <div><b>Giữ chuỗi ngày học</b><span>Điểm danh, nhiệm vụ và xếp hạng mỗi ngày.</span></div>
           </li>
         </ul>
@@ -80,18 +95,56 @@
 
       <!-- Cột phải: form -->
       <section class="auth-main">
+        <nav class="auth-mobile-tabs" aria-label="Chuyển đổi Đăng nhập và Đăng ký">
+          <a href="login.html" class="auth-mobile-tab active" aria-current="page">Đăng nhập</a>
+          <a href="register.html" class="auth-mobile-tab">Đăng ký</a>
+        </nav>
         <h1>Đăng nhập</h1>
-        <p class="auth-sub">Nhập email và mật khẩu để tiếp tục.</p>
+        <p class="auth-sub">Chọn tài khoản Gmail có sẵn trên máy hoặc nhập email để tiếp tục.</p>
 
         <div id="auth-alert" class="auth-alert" role="alert" aria-live="polite"></div>
 
         <form id="form-login" class="auth-form" novalidate>
-          <div class="field">
-            <label for="login-email">Email</label>
+          <div class="field google-field-wrap">
+            <div class="field-label-row">
+              <label for="login-email">Email / Tài khoản Gmail</label>
+              <div class="auth-or-divider" aria-hidden="true"><span>hoặc nhập email</span></div>
+              <button type="button" id="btn-toggle-login-gmail" class="btn-gmail-mini">
+                <svg class="g-icon-sm" viewBox="0 0 24 24" width="15" height="15">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                <span>Chọn Gmail trong máy</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+            </div>
             <div class="input-wrap">
               <i class="fa-solid fa-envelope ico"></i>
-              <input type="email" id="login-email" placeholder="ban@gmail.com" autocomplete="email" required />
+              <input type="email" id="login-email" placeholder="Nhập email (vd: ban@gmail.com)" autocomplete="email" required />
             </div>
+
+            <!-- Hộp chọn nhanh Gmail có sẵn trên máy ngay tại ô Email đăng nhập -->
+            <div id="login-google-popup" class="google-accounts-card hidden">
+              <div class="g-acc-dau">
+                <span class="g-acc-tieu-de">Chọn nhanh Gmail trên máy này</span>
+                <button type="button" id="btn-dong-login-g" class="g-acc-x" aria-label="Đóng">✕</button>
+              </div>
+              <div id="login-g-accounts-list" class="g-accounts-list">
+                <!-- Danh sách tài khoản sẽ hiển thị nếu người dùng đã từng đăng nhập trên thiết bị này -->
+              </div>
+              <button type="button" id="btn-login-gmail-khac" class="g-acc-item g-acc-them">
+                <div class="g-avatar g-avatar-them">
+                  <i class="fa-solid fa-keyboard"></i>
+                </div>
+                <div class="g-acc-info">
+                  <b class="g-name">Tự nhập tài khoản khác</b>
+                  <span class="g-email">Gõ địa chỉ Gmail từ bàn phím</span>
+                </div>
+              </button>
+            </div>
+
             <p class="field-msg"></p>
           </div>
 
@@ -109,7 +162,9 @@
           </div>
 
           <div class="auth-phu">
-            <button type="button" id="btn-quen-mk" class="auth-link-nho">Quên mật khẩu?</button>
+            <button type="button" id="btn-quen-mk" class="auth-link-nho">
+              <i class="fa-solid fa-key"></i> Quên mật khẩu? Đổi qua Gmail
+            </button>
           </div>
 
           <button type="submit" id="btn-login" class="auth-btn">Đăng nhập</button>
@@ -120,8 +175,217 @@
     </div>
   </main>
 
-  <script src="script.js"></script>
-  <script src="auth.js"></script>
+  <!-- Modal Khôi phục & Đổi mật khẩu qua Gmail / Google -->
+  <div id="modal-quen-mk" class="auth-modal-nen" hidden>
+    <div class="auth-modal-hop" role="dialog" aria-modal="true" aria-labelledby="qmk-tieu-de">
+      
+      <div class="auth-modal-dau">
+        <div class="qmk-buoc-nav">
+          <div class="qmk-buoc-item active" id="dot-step-1">
+            <span class="qmk-dot">1</span>
+            <small>Chọn Gmail</small>
+          </div>
+          <span class="qmk-line" id="line-step-1"></span>
+          <div class="qmk-buoc-item" id="dot-step-2">
+            <span class="qmk-dot">2</span>
+            <small>Mã từ Email</small>
+          </div>
+          <span class="qmk-line" id="line-step-2"></span>
+          <div class="qmk-buoc-item" id="dot-step-3">
+            <span class="qmk-dot">3</span>
+            <small>Mật khẩu mới</small>
+          </div>
+        </div>
+        <button type="button" id="btn-dong-qmk" class="auth-modal-x" aria-label="Đóng hộp thoại">✕</button>
+      </div>
+
+      <div class="auth-modal-than">
+        <!-- Thông báo chung trong modal -->
+        <div id="qmk-alert" class="auth-alert" role="alert" aria-live="polite"></div>
+
+        <!-- BƯỚC 1: Chọn hoặc nhập Gmail -->
+        <div id="qmk-step-1" class="qmk-step active">
+          <div class="qmk-icon-box">
+            <i class="fa-solid fa-envelope-open-text"></i>
+          </div>
+          <h2 id="qmk-tieu-de">Quên mật khẩu?</h2>
+          <p class="qmk-sub">Chọn sẵn 1 tài khoản Gmail trong máy bên dưới (hoặc tự nhập) để nhận mã xác thực về Email.</p>
+
+          <!-- Hộp chọn tài khoản Google trên máy (HIỆN SẴN MẶC ĐỊNH Y HỆT ẢNH) -->
+          <div class="google-select-wrap">
+            <button type="button" id="btn-chon-gmail-may" class="btn-google-chon open">
+              <svg class="g-icon" viewBox="0 0 24 24" width="22" height="22">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              <span class="btn-google-text">Tài khoản Gmail có sẵn trên máy (chọn để gửi mã ngay)</span>
+              <i class="fa-solid fa-chevron-down ico-muiten"></i>
+            </button>
+
+            <!-- Danh sách tài khoản Google hiện sẵn trực tiếp trong Bước 1 -->
+            <div id="google-accounts-popup" class="google-accounts-card inline-card">
+              <div id="g-accounts-list" class="g-accounts-list">
+                <!-- Danh sách tài khoản đã lưu trên thiết bị sẽ tự động tải -->
+              </div>
+              <button type="button" id="btn-nhap-gmail-khac" class="g-acc-item g-acc-them">
+                <div class="g-avatar g-avatar-them">
+                  <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <div class="g-acc-info">
+                  <b class="g-name">Sử dụng tài khoản Gmail khác</b>
+                  <span class="g-email">Tự nhập địa chỉ Gmail ở ô bên dưới</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <div class="qmk-hoac">
+            <span>hoặc nhập địa chỉ Gmail nhận mã</span>
+          </div>
+
+          <div class="field">
+            <label for="qmk-email">Địa chỉ Gmail nhận mã xác thực</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-envelope ico"></i>
+              <input type="email" id="qmk-email" placeholder="Nhập địa chỉ Gmail (ví dụ: ban@gmail.com)" autocomplete="email" list="list-goi-y-gmail" />
+              <datalist id="list-goi-y-gmail"></datalist>
+            </div>
+            <p id="qmk-email-msg" class="field-msg"></p>
+          </div>
+
+          <div class="qmk-actions">
+            <button type="button" id="btn-gui-otp" class="auth-btn">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Gửi mã xác thực về Gmail</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- BƯỚC 2: Nhập mã OTP từ Gmail -->
+        <div id="qmk-step-2" class="qmk-step">
+          <div class="qmk-icon-box otp">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h2>Kiểm tra hộp thư Gmail</h2>
+          <p class="qmk-sub">
+            Mã xác thực 6 chữ số cho <b id="qmk-target-email">...</b>
+            <br />
+            <a href="https://mail.google.com" target="_blank" rel="noopener" class="btn-mo-gmail">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Mở hộp thư Gmail (mail.google.com)
+            </a>
+          </p>
+
+          <!-- Hộp báo mã OTP & Cấu hình gửi mail thật qua Gmail SMTP -->
+          <div id="qmk-demo-box" class="qmk-demo-box hidden">
+            <div class="qmk-demo-row">
+              <i class="fa-solid fa-envelope-circle-check"></i>
+              <div class="qmk-demo-text">
+                <span>Mã xác thực OTP của bạn:</span>
+                <b id="qmk-demo-otp-val">123456</b>
+                <button type="button" id="btn-copy-demo-otp" class="btn-copy-otp">Điền nhanh mã này</button>
+              </div>
+            </div>
+            <div class="qmk-smtp-toggle-wrap">
+              <button type="button" id="btn-mo-cai-smtp" class="btn-link-smtp">
+                <i class="fa-solid fa-gear"></i> Muốn nhận thư trực tiếp trong hộp thư đến Gmail? Cài Mật khẩu ứng dụng Gmail tại đây
+              </button>
+              <div id="qmk-smtp-form" class="qmk-smtp-form hidden">
+                <p class="smtp-huong-dan">
+                  Để server tự động gửi thư vào hộp thư đến Gmail thật, nhập <b>Mật khẩu ứng dụng 16 ký tự</b> của Google
+                  (<a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener">Lấy mã tại Google App Passwords</a>):
+                </p>
+                <div class="smtp-grid">
+                  <input type="email" id="smtp-sender-email" placeholder="Gmail dùng để gửi (vd: your-email@gmail.com)" />
+                  <input type="password" id="smtp-app-pass" placeholder="Mật khẩu ứng dụng Google (16 ký tự)" />
+                  <button type="button" id="btn-luu-smtp" class="btn-save-smtp">
+                    <i class="fa-solid fa-paper-plane"></i> Lưu &amp; Gửi thư vào Gmail ngay
+                  </button>
+                </div>
+                <p id="smtp-status-msg" class="smtp-status-msg"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="otp-box-wrap">
+            <label for="qmk-otp">Nhập mã OTP 6 chữ số:</label>
+            <div class="otp-input-container">
+              <input type="text" id="qmk-otp" maxlength="6" placeholder="••••••" autocomplete="one-time-code" inputmode="numeric" />
+            </div>
+            <p id="qmk-otp-msg" class="field-msg text-center"></p>
+          </div>
+
+          <div class="qmk-actions">
+            <button type="button" id="btn-xac-nhan-otp" class="auth-btn">
+              <i class="fa-solid fa-check"></i>
+              <span>Xác thực mã &amp; Tiếp tục</span>
+            </button>
+          </div>
+
+          <div class="qmk-gui-lai-wrap">
+            <span>Chưa nhận được mã? </span>
+            <button type="button" id="btn-gui-lai-otp" class="auth-link-nho">Gửi lại mã (<span id="qmk-dem-giay">60</span>s)</button>
+          </div>
+
+          <div class="qmk-quay-lai-wrap">
+            <button type="button" class="btn-quay-lai-step" data-to="1">
+              <i class="fa-solid fa-arrow-left"></i> Chọn tài khoản Gmail khác
+            </button>
+          </div>
+        </div>
+
+        <!-- BƯỚC 3: Đổi mật khẩu mới -->
+        <div id="qmk-step-3" class="qmk-step">
+          <div class="qmk-icon-box success">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <h2>Đặt mật khẩu mới</h2>
+          <p class="qmk-sub">Nhập mật khẩu mới cho tài khoản <b id="qmk-reset-email">...</b></p>
+
+          <div class="field">
+            <label for="qmk-new-password">Mật khẩu mới</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-lock ico"></i>
+              <input type="password" id="qmk-new-password" placeholder="Nhập ít nhất 6 ký tự" autocomplete="new-password" />
+              <button type="button" class="toggle-mk" data-for="qmk-new-password" aria-label="Hiện mật khẩu">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+            <p id="qmk-mk-msg" class="field-msg"></p>
+          </div>
+
+          <div id="qmk-mk-manh" class="mk-manh" data-m="0">
+            <div class="mk-thanh"><span></span><span></span><span></span><span></span></div>
+            <p id="qmk-mk-chu" class="mk-chu">Dùng 8 ký tự trở lên, gồm chữ hoa, chữ thường và số để an toàn hơn.</p>
+          </div>
+
+          <div class="field">
+            <label for="qmk-confirm-password">Xác nhận mật khẩu mới</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-lock ico"></i>
+              <input type="password" id="qmk-confirm-password" placeholder="Nhập lại mật khẩu mới" autocomplete="new-password" />
+              <button type="button" class="toggle-mk" data-for="qmk-confirm-password" aria-label="Hiện mật khẩu">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+            <p id="qmk-confirm-msg" class="field-msg"></p>
+          </div>
+
+          <div class="qmk-actions">
+            <button type="button" id="btn-doi-mk-xong" class="auth-btn">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>Lưu mật khẩu mới &amp; Đăng nhập</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js?v=17"></script>
+  <script src="auth.js?v=5"></script>
 </body>
 
 </html>

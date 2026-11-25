@@ -4,9 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=2"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
-  <title>EduMate</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Khảo sát chọn trường - VnStarL</title>
+  <link rel="stylesheet" href="style.css?v=11" />
   <link rel="stylesheet" href="style2.css" />
   <link rel="stylesheet" href="style3.css" />
 </head>
@@ -17,17 +20,56 @@
       <section class="right">
         <a href="index.html" id="logo">
           <img src="img/logo.webp" alt="Logo" />
-          <span>Edu<span id="logo-span">Mate</span></span>
+          <span>Vn<span id="logo-span">StarL</span></span>
         </a>
       </section>
+      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">☰</button>
+      <ul id="nav" class="center">
+        <li id="nav-gioi-thieu">
+          <a href="index.html" id="link-gioi-thieu" title="Giới thiệu" aria-label="Giới thiệu">
+            <i class="fa-solid fa-house"></i><span class="nav-chu">Giới thiệu</span>
+          </a>
+        </li>
+        <li id="nav-bai-tap">
+          <a href="subjects.html" id="link-bai-tap" title="Bài tập" aria-label="Bài tập">
+            <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
+          </a>
+        </li>
+        <li id="nav-khoa-bang">
+          <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+            <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+          </a>
+        </li>
+        <li id="nav-xep-hang">
+          <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
+            <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+          </a>
+        </li>
+        <li id="nav-vuon-saoladou">
+          <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+            <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
+          </a>
+        </li>
+      </ul>
+      <div class="user-account-area">
+        <div id="auth-buttons">
+          <a href="login.html" class="auth-link">Đăng nhập</a>
+          <a href="register.html" class="auth-link">Đăng ký</a>
+        </div>
+        <div id="user-profile" class="hidden">
+          <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
+          <span class="username">Username</span>
+          <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
+        </div>
+      </div>
     </div>
   </header>
 
   <div id="survey">
     <form id="input-survey">
-      <h2 class="form-muc">1. Điểm số của anh/chị</h2>
+      <h2 class="form-muc">1. Điểm số của bạn</h2>
       <p class="form-ghi-chu">
-        Nhập điểm cả năm lớp 8 ở đây. Điểm các kỳ lớp 9 (giữa kỳ, cuối kỳ) anh/chị nhập dần
+        Nhập điểm cả năm lớp 8 ở đây. Điểm các kỳ lớp 9 (giữa kỳ, cuối kỳ) bạn nhập dần
         trong trang Học tập cá nhân hoá → Điểm số, khảo sát sẽ tự dùng. Nhập càng nhiều kỳ, dự đoán càng sát.
       </p>
 
@@ -41,7 +83,13 @@
           <option value="">-- Chọn môn chuyên --</option>
           <option value="toan">Chuyên Toán</option>
           <option value="ly">Chuyên Vật Lý</option>
+          <option value="hoa">Chuyên Hóa Học</option>
+          <option value="sinh">Chuyên Sinh Học</option>
+          <option value="van">Chuyên Ngữ Văn</option>
+          <option value="anh">Chuyên Tiếng Anh</option>
+          <option value="su">Chuyên Lịch Sử</option>
           <option value="dia">Chuyên Địa Lí</option>
+          <option value="tin">Chuyên Tin Học</option>
         </select>
 
         <div class="chk">
@@ -55,7 +103,7 @@
       <!-- JS tự vẽ bảng điểm các kỳ thi vào đây -->
       <div id="ky-thi" class="ky-thi"></div>
 
-      <h2 class="form-muc">2. Mong muốn của anh/chị</h2>
+      <h2 class="form-muc">2. Mong muốn của bạn</h2>
 
       <label for="uu-tien">Bạn ưu tiên điều gì nhất?</label>
       <select id="uu-tien">
@@ -80,8 +128,8 @@
     </form>
   </div>
   <script src="ky-thi.js"></script>
-  <script src="khaosat.js"></script>
-  <script src="script.js"></script>
+  <script src="khaosat.js?v=3"></script>
+  <script src="script.js?v=17"></script>
 </body>
 
 </html>

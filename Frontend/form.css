@@ -154,21 +154,99 @@
     transition: transform 0.12s, border-color 0.15s, background 0.15s, box-shadow 0.15s;
 }
 
-/* Mỗi đáp án A B C D một màu */
-.cau-lua-chon:not(.cau-dung-sai) .lua-chon:nth-child(1) {
+/* Mọi đáp án A B C D dùng chung màu xanh học thuật để tránh nhiễu màu Đúng/Sai */
+.cau-lua-chon:not(.cau-dung-sai) .lua-chon {
     --lc: #2457d6;
 }
 
-.cau-lua-chon:not(.cau-dung-sai) .lua-chon:nth-child(2) {
-    --lc: #178a5a;
+/* Nút đánh dấu câu phân vân (🚩 Chưa chắc) */
+.cau-flag {
+    margin-left: auto;
+    margin-right: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #64748b;
+    background: #fff;
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.15s ease;
 }
 
-.cau-lua-chon:not(.cau-dung-sai) .lua-chon:nth-child(3) {
-    --lc: #e07a1f;
+.cau-flag:hover {
+    color: #b45309;
+    background: #fffbeb;
+    border-color: #f59e0b;
+    border-style: solid;
 }
 
-.cau-lua-chon:not(.cau-dung-sai) .lua-chon:nth-child(4) {
-    --lc: #7b4bd8;
+.cau-flag.on {
+    color: #92400e;
+    background: #fef3c7;
+    border: 1.5px solid #f59e0b;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
+}
+
+.cau-flag.on i {
+    color: #d97706;
+}
+
+.question-card.phan-van:not(.dung):not(.sai) {
+    --mau: #f59e0b;
+    background: #fffdf7;
+}
+
+/* Nút gạch loại trừ đáp án sai (🚫) */
+.lua-chon-loai {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    font-size: 0.78rem;
+    color: #94a3b8;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.lua-chon-loai:hover {
+    color: #dc2626;
+    background: #fee2e2;
+    border-color: #fca5a5;
+}
+
+.lua-chon-loai.on {
+    color: #1e40af;
+    background: #dbeafe;
+    border-color: #93c5fd;
+}
+
+.lua-chon.bi-loai {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    border-style: dashed;
+    opacity: 0.58;
+}
+
+.lua-chon.bi-loai .lua-chon-ky-hieu {
+    color: #94a3b8;
+    border-color: #cbd5e1;
+    text-decoration: line-through;
+}
+
+.lua-chon.bi-loai .lua-chon-chu {
+    color: #64748b;
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    text-decoration-color: #ef4444;
 }
 
 .lua-chon:hover {
@@ -522,6 +600,144 @@
    GIAO DIỆN "THÍCH LÀM BÀI": tiến độ, hiệu ứng, sao, pháo giấy
    ========================================================== */
 
+/* ---------- Đồng hồ đếm ngược Khoa Bảng (form.html khi subject=contest) ---------- */
+.kb-dong-ho-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    margin: 0 -16px 14px;
+    padding: 10px 18px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.25);
+    border-bottom: 2px solid #60a5fa;
+}
+
+.kb-dh-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.kb-dh-trai {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.kb-dh-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.kb-dh-ten {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fef08a;
+}
+
+.kb-dh-giua {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+}
+
+.kb-dh-so {
+    font-size: 1.4rem;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    background: #0f172a;
+    color: #38bdf8;
+    padding: 3px 10px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.kb-dong-ho-sticky.canh-bao {
+    background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%);
+    border-bottom-color: #f87171;
+    animation: kbPulse 1.2s infinite;
+}
+
+.kb-dong-ho-sticky.canh-bao .kb-dh-so {
+    color: #fca5a5;
+    background: #450a0a;
+}
+
+@keyframes kbPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.92; }
+}
+
+.kb-dh-btn-nop {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f59e0b;
+    color: #78350f;
+    border: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+    transition: transform 0.15s, background 0.15s;
+}
+
+.kb-dh-btn-nop:hover {
+    background: #fbbf24;
+    transform: translateY(-1px);
+}
+
+/* Tối ưu điện thoại cho đồng hồ */
+@media (max-width: 640px) {
+    .kb-dong-ho-sticky {
+        margin: 0 -12px 10px;
+        padding: 8px 10px;
+    }
+    .kb-dh-inner {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .kb-dh-trai {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .kb-dh-badge {
+        font-size: 0.72rem;
+        padding: 2px 7px;
+    }
+    .kb-dh-ten {
+        font-size: 0.85rem;
+    }
+    .kb-dh-giua {
+        font-size: 0.82rem;
+    }
+    .kb-dh-so {
+        font-size: 1.15rem;
+        padding: 2px 8px;
+    }
+    .kb-dh-btn-nop {
+        font-size: 0.8rem;
+        padding: 4px 10px;
+    }
+}
+
 /* ---------- Thanh tiến độ dính trên cùng ---------- */
 .tien-do-lam {
     position: sticky;
@@ -532,6 +748,12 @@
     background: rgba(248, 250, 252, 0.92);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--vien);
+}
+
+/* Khi có đồng hồ Khoa Bảng ở trên thì đẩy thanh tiến độ xuống dưới đồng hồ, không đè nhau */
+.kb-dong-ho-sticky + .tien-do-lam {
+    top: 52px;
+    margin-top: -14px;
 }
 
 .tdl-hang {
@@ -805,6 +1027,25 @@
 }
 
 @media (max-width: 640px) {
+    #quiz-container {
+        padding: 0 10px 80px;
+    }
+
+    .question-card {
+        padding: 12px 12px;
+        margin-bottom: 12px;
+    }
+
+    .cau-de {
+        font-size: 0.98rem;
+    }
+
+    .lua-chon {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+        min-height: 44px; /* chuẩn touch target ngón tay trên di động */
+    }
+
     .tien-do-lam {
         margin: 0 -10px 8px;
         padding: 6px 10px 8px;
@@ -817,6 +1058,12 @@
     .sao {
         font-size: 2.5rem;
     }
+
+    #btn-nop-bai {
+        width: 100%;
+        padding: 13px 20px;
+        font-size: 1.05rem;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -826,4 +1073,15 @@
         animation: none;
         transition: none;
     }
+}
+
+/* Chống sao chép / bôi đen nội dung đề thi bảo mật */
+.kb-anti-copy,
+.kb-anti-copy .quiz-container,
+.kb-anti-copy .bai-tap,
+.kb-anti-copy .cau-hoi {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
 }

@@ -6,16 +6,28 @@
    Đường nằm ngang đó chính là "mặt đất": bệ nằm ngay dưới nó, chân pet chạm vào nó,
    còn bong bóng chữ mở ra bên dưới bệ (khoảng trống bên phải trang). */
 #sao-la {
-    --sl-w: 190px;             /* bề rộng bệ */
-    --sl-pet: 112px;           /* kích thước 1 khung hình pet */
-    --sl-dat-y: 160px;         /* mặt đất cách mép trên cửa sổ bao nhiêu */
+    --sl-w: 180px;             /* bề rộng bệ */
+    --sl-pet: 108px;           /* kích thước 1 khung hình pet */
     position: fixed;
     right: 0;
-    top: var(--sl-dat-y);
+    top: auto;
+    bottom: 26px;
     width: var(--sl-w);
     height: 0;
     z-index: 900;              /* thấp hơn menu (1000) và hộp thoại */
     pointer-events: none;      /* chỉ vùng pet / nút tiếng bắt chuột, không chặn nội dung phía sau */
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.3, 1), opacity 0.2s;
+}
+
+#sao-la.thu-gon {
+    transform: translateX(calc(var(--sl-w) - 36px));
+}
+
+#sao-la.thu-gon .sl-pet,
+#sao-la.thu-gon .sl-bong,
+#sao-la.thu-gon .sl-tieng {
+    opacity: 0;
+    pointer-events: none;
 }
 
 #sao-la[hidden] {
@@ -86,9 +98,9 @@
     inset: -8px;
 }
 
-#sao-la .sl-tieng {
+#sao-la .sl-tieng,
+#sao-la .sl-thu {
     position: absolute;
-    left: 6px;
     bottom: 2px;
     width: 26px;
     height: 26px;
@@ -96,51 +108,103 @@
     border: 1px solid var(--vien, #d8e0ee);
     border-radius: 50%;
     background: var(--nen, #fff);
+    color: var(--chu, #1b2a41);
     font-size: 13px;
     line-height: 1;
     cursor: pointer;
     pointer-events: auto;
     z-index: 2;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.15s, background 0.15s;
 }
 
-#sao-la .sl-tieng[hidden] {
+#sao-la .sl-tieng {
+    left: 34px;
+}
+
+#sao-la .sl-thu {
+    left: 4px;
+    font-weight: 800;
+}
+
+#sao-la .sl-tieng:hover,
+#sao-la .sl-thu:hover {
+    background: #eef4ff;
+    transform: scale(1.08);
+}
+
+#sao-la .sl-tieng[hidden],
+#sao-la .sl-thu[hidden] {
     display: none;
 }
 
-/* Bong bóng chữ nằm dưới bệ, mũi nhọn chỉ lên pet */
+/* Bong bóng chữ nằm trên đầu pet, mũi nhọn chỉ xuống pet */
 #sao-la .sl-bong {
     position: absolute;
-    top: 20px;
+    top: auto;
+    bottom: calc(var(--sl-pet) + 8px);
     right: 10px;
     width: max-content;
     min-width: 96px;
-    max-width: calc(var(--sl-w) - 20px);
+    max-width: 220px;
     padding: 8px 12px;
     border: 1px solid var(--vien, #d8e0ee);
     border-radius: 14px;
     background: var(--nen, #fff);
     color: var(--chu, #1b2a41);
-    font-size: 14px;
+    font-size: 13.5px;
     line-height: 1.4;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, .12);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .14);
     pointer-events: none;
 }
 
 #sao-la .sl-bong::before {
     content: "";
     position: absolute;
-    top: -6px;
+    bottom: -6px;
     right: calc(var(--sl-w) / 2 - 15px);
     width: 10px;
     height: 10px;
     background: var(--nen, #fff);
-    border-left: 1px solid var(--vien, #d8e0ee);
-    border-top: 1px solid var(--vien, #d8e0ee);
+    border-right: 1px solid var(--vien, #d8e0ee);
+    border-bottom: 1px solid var(--vien, #d8e0ee);
     transform: rotate(45deg);
 }
 
 #sao-la .sl-bong[hidden] {
     display: none;
+}
+
+/* Đặt Sao La ở GÓC TRÊN-PHẢI trên PC (>= 641px) */
+@media (min-width: 641px) {
+    #sao-la {
+        top: 170px;
+        bottom: auto;
+        right: 0;
+    }
+
+    #sao-la .sl-tieng,
+    #sao-la .sl-thu {
+        top: 18px;
+        bottom: auto;
+    }
+
+    /* Bong bóng chữ mở XUỐNG DƯỚI bệ để không chạm Header */
+    #sao-la .sl-bong {
+        top: 52px;
+        bottom: auto;
+        right: 10px;
+    }
+
+    #sao-la .sl-bong::before {
+        top: -6px;
+        bottom: auto;
+        right: calc(var(--sl-w) / 2 - 15px);
+        border-right: none;
+        border-bottom: none;
+        border-left: 1px solid var(--vien, #d8e0ee);
+        border-top: 1px solid var(--vien, #d8e0ee);
+    }
 }
 
 @media (max-width: 900px) {
@@ -152,7 +216,7 @@
 
 @media (max-width: 600px) {
     #sao-la {
-        --sl-dat-y: 130px;
+        bottom: 18px;
     }
 }
 

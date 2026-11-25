@@ -1,0 +1,106 @@
+{
+  "bai_tap": [
+    {
+      "id": "1",
+      "ten": "Đề Thi Hội - Thời gian làm bài 45 phút",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Giá trị của biểu thức $A = \\sqrt{(2 - \\sqrt{3})^2} + \\sqrt{3}$ bằng:",
+          "dap_an": [
+            "$2$",
+            "$2\\sqrt{3}$",
+            "$4 - 2\\sqrt{3}$",
+            "$2 - 2\\sqrt{3}$"
+          ],
+          "diem": 10
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Đường thẳng $d: y = 2x - 4$ cắt trục hoành tại điểm có tọa độ là:",
+          "dap_an": [
+            "$(0; -4)$",
+            "$(2; 0)$",
+            "$(-2; 0)$",
+            "$(0; 2)$"
+          ],
+          "diem": 10
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Tập nghiệm của phương trình $x^2 - 5x + 6 = 0$ là:",
+          "dap_an": [
+            "$S = \\{-2; -3\\}$",
+            "$S = \\{1; 6\\}$",
+            "$S = \\{2; 3\\}$",
+            "$S = \\{-1; -6\\}$"
+          ],
+          "diem": 10
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Theo định lý Vi-ét, tổng và tích hai nghiệm của phương trình $2x^2 - 7x + 3 = 0$ lần lượt là:",
+          "dap_an": [
+            "$x_1 + x_2 = \\frac{7}{2};\\ x_1 x_2 = \\frac{3}{2}$",
+            "$x_1 + x_2 = -\\frac{7}{2};\\ x_1 x_2 = \\frac{3}{2}$",
+            "$x_1 + x_2 = 7;\\ x_1 x_2 = 3$",
+            "$x_1 + x_2 = \\frac{3}{2};\\ x_1 x_2 = \\frac{7}{2}$"
+          ],
+          "diem": 10
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Một tam giác vuông có đường cao ứng với cạnh huyền chia cạnh huyền thành hai đoạn có độ dài $4\\text{ cm}$ và $9\\text{ cm}$. Độ dài đường cao đó là:",
+          "dap_an": [
+            "$6.5\\text{ cm}$",
+            "$13\\text{ cm}$",
+            "$6\\text{ cm}$",
+            "$36\\text{ cm}$"
+          ],
+          "diem": 10
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Bán kính $R$ của đường tròn ngoại tiếp tam giác đều cạnh $a$ bằng:",
+          "dap_an": [
+            "$\\frac{a\\sqrt{3}}{2}$",
+            "$\\frac{a\\sqrt{3}}{3}$",
+            "$\\frac{a\\sqrt{3}}{6}$",
+            "$a\\sqrt{3}$"
+          ],
+          "diem": 10
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Phương trình $x^2 - 2(m - 1)x + m^2 = 0$ có nghiệm kép khi giá trị của $m$ là:",
+          "dap_an": [
+            "$m = \\frac{1}{2}$",
+            "$m = -\\frac{1}{2}$",
+            "$m = 1$",
+            "$m = 2$"
+          ],
+          "diem": 10
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Điểm nào dưới đây thuộc parabol $(P): y = -2x^2$?",
+          "dap_an": [
+            "$M(1; 2)$",
+            "$N(-2; 8)$",
+            "$P(2; -8)$",
+            "$Q(-1; -4)$"
+          ],
+          "diem": 10
+        }
+      ]
+    }
+  ]
+}

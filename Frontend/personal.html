@@ -4,14 +4,19 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="preconnect" href="https://script.google.com" crossorigin />
+    <script src="api-config.js?v=3"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
     <title>VnStarL - Học tập cá nhân hoá</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="personal.css" />
-    <link rel="stylesheet" href="nhiem-vu.css" />
+    <link rel="stylesheet" href="style.css?v=11" />
+    <link rel="stylesheet" href="personal.css?v=12" />
+    <link rel="stylesheet" href="nhiem-vu.css?v=2" />
+    <link rel="stylesheet" href="tour-personal.css?v=7" />
+    <link rel="stylesheet" href="truong-note.css?v=4" />
 </head>
 
-<body>
+<body class="personal-page">
     <header id="header">
         <div id="header-inner">
             <section class="right">
@@ -23,9 +28,9 @@
             <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">☰</button>
             <ul id="nav" class="center">
                 <li id="nav-gioi-thieu">
-                    <a href="personal.html" id="link-gioi-thieu" class="active" title="Học tập cá nhân hoá"
-                        aria-label="Học tập cá nhân hoá">
-                        <i class="fa-solid fa-graduation-cap"></i><span class="nav-chu">Học tập cá nhân hoá</span>
+                    <a href="personal.html" id="link-gioi-thieu" class="active" title="Cá nhân hóa"
+                        aria-label="Cá nhân hóa">
+                        <i class="fa-solid fa-graduation-cap"></i><span class="nav-chu">Cá nhân hóa</span>
                     </a>
                 </li>
                 <li id="nav-bai-tap">
@@ -33,9 +38,19 @@
                         <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
                     </a>
                 </li>
+                <li id="nav-khoa-bang">
+                    <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+                        <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+                    </a>
+                </li>
                 <li id="nav-xep-hang">
                     <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
                         <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+                    </a>
+                </li>
+                <li id="nav-vuon-saoladou">
+                    <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+                        <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
                     </a>
                 </li>
             </ul>
@@ -45,7 +60,7 @@
                     <a href="register.html" class="auth-link">Đăng ký</a>
                 </div>
                 <div id="user-profile" class="hidden">
-                    <div class="streak-box">🔥 <span>0</span></div>
+                    <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
                     <span class="username">Username</span>
                     <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
                 </div>
@@ -54,139 +69,471 @@
     </header>
 
     <main class="hoctap">
-        <h1>Học tập cá nhân hoá</h1>
-        <div id="nhiem-vu"></div>
-        <div class="tab-chinh">
-            <button id="tab-lich" class="on">Lịch học</button>
-            <button id="tab-setup">Thiết lập</button>
-            <button id="tab-diem">Điểm số</button>
+        <div class="hoctap-head-row">
+            <h1 class="hoctap-title">Học tập cá nhân hoá</h1>
+            <button type="button" id="btn-mo-tour" class="btn-tour-replay" title="Xem lại hướng dẫn sử dụng trang">
+                <i class="fa-regular fa-circle-question"></i> Hướng dẫn
+            </button>
         </div>
-        <!-- ===== Lịch học ===== -->
-        <section id="pn-lich">
-            <div class="hang">
-                <h2 id="hom-nay"></h2>
-                <button id="btn-xep" class="btn">Xếp lại từ bây giờ</button>
-                <a id="btn-so-loi" class="btn" href="so-loi.html">Sổ lỗi sai</a>
+        <div id="nhiem-vu"></div>
+
+        <!-- Thanh 3 Tab chính trên PC: Sổ lỗi sai | Thiết lập | Điểm số -->
+        <div class="tab-chinh" role="tablist" aria-label="Chuyển khu vực Học tập cá nhân hoá">
+            <button id="tab-nv" type="button" class="tab-pill">
+                <i class="fa-solid fa-list-check"></i> <span>Nhiệm vụ</span>
+            </button>
+            <button id="tab-so-loi" type="button" class="tab-pill on" role="tab" aria-selected="true" aria-controls="pn-so-loi">
+                <span class="tab-ico-wrap tab-ico-blue"><i class="fa-solid fa-book-medical"></i></span>
+                <span class="tab-copy">
+                    <span class="tab-head-line">
+                        <span class="tab-main-lbl">Sổ lỗi sai</span>
+                        <span id="tab-badge-so-loi" class="tab-badge">Đang tải</span>
+                    </span>
+                    <small class="tab-sub">Vá lỗ hổng kiến thức &amp; thẻ chứng minh</small>
+                </span>
+            </button>
+            <button id="tab-setup" type="button" class="tab-pill" role="tab" aria-selected="false" aria-controls="pn-setup">
+                <span class="tab-ico-wrap tab-ico-indigo"><i class="fa-solid fa-sliders"></i></span>
+                <span class="tab-copy">
+                    <span class="tab-head-line">
+                        <span class="tab-main-lbl">Thiết lập</span>
+                        <span id="tab-badge-setup" class="tab-badge">Chưa có TKB</span>
+                    </span>
+                    <small class="tab-sub">Nhập TKB, học thêm &amp; giờ giấc</small>
+                </span>
+            </button>
+            <button id="tab-diem" type="button" class="tab-pill" role="tab" aria-selected="false" aria-controls="pn-diem">
+                <span class="tab-ico-wrap tab-ico-emerald"><i class="fa-solid fa-chart-pie"></i></span>
+                <span class="tab-copy">
+                    <span class="tab-head-line">
+                        <span class="tab-main-lbl">Điểm số</span>
+                        <span id="tab-badge-diem" class="tab-badge">4 kỳ thi</span>
+                    </span>
+                    <small class="tab-sub">Điểm nền lớp 9 &amp; năng lực môn chuyên</small>
+                </span>
+            </button>
+        </div>
+
+        <!-- ===== TAB 1: Bản đồ Sổ lỗi sai (V30 PC) ===== -->
+        <section id="pn-so-loi" class="pn-so-loi-card" role="tabpanel" aria-labelledby="tab-so-loi">
+            <div class="psl-head">
+                <div class="psl-head-left">
+                    <h2>
+                        <span class="setup-title-ico"><i class="fa-solid fa-book-medical"></i></span>
+                        <span>Bản đồ Sổ lỗi sai</span>
+                    </h2>
+                    <p class="phu">Tự động gom câu từng làm sai để bạn sửa lỗi và chứng minh bằng câu mới cho tới khi thông thạo.</p>
+                </div>
+                <div class="psl-head-right">
+                    <a id="btn-so-loi" class="psl-open-btn" href="so-loi.html">
+                        <span>Mở phòng ôn Sổ lỗi sai</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
-            <p id="tb-banner" class="phu"></p>
-            <div id="tabs-ngay" class="tabs-ngay"></div>
-            <ul id="lich-ngay" class="lich"></ul>
-            <div id="canhbao"></div>
+
+            <div id="psl-stats" class="psl-stats-grid" aria-live="polite">
+                <div class="psl-stat-box">
+                    <span class="psl-stat-lbl">Tổng kỹ năng</span>
+                    <strong id="psl-num-tong">—</strong>
+                </div>
+                <div class="psl-stat-box psl-stat-box--due">
+                    <span class="psl-stat-lbl">Cần làm ngay (đến hạn)</span>
+                    <strong id="psl-num-denhan">—</strong>
+                </div>
+                <div class="psl-stat-box psl-stat-box--err">
+                    <span class="psl-stat-lbl">Lỗi chưa hiểu</span>
+                    <strong id="psl-num-loi">—</strong>
+                </div>
+                <div class="psl-stat-box psl-stat-box--ok">
+                    <span class="psl-stat-lbl">Đã thông thạo</span>
+                    <strong id="psl-num-ok">—</strong>
+                </div>
+            </div>
+
+            <div class="psl-toolbar">
+                <div id="psl-mon-pills" class="psl-mon-pills" role="tablist" aria-label="Lọc kỹ năng theo môn"></div>
+                <button type="button" id="psl-only-due" class="psl-due-toggle" aria-pressed="false">
+                    ⚡ Chỉ hiện cần làm ngay
+                </button>
+            </div>
+
+            <div id="psl-grid" class="psl-skill-grid" aria-live="polite">
+                <div class="psl-loading">Đang tải bản đồ Sổ lỗi sai...</div>
+            </div>
         </section>
-        <!-- ===== Điểm số các kỳ thi lớp 9 (nằm NGOÀI pn-setup) ===== -->
-        <section id="pn-diem" hidden>
-            <div class="khung">
-                <h2>Điểm các kỳ thi lớp 9</h2>
-                <p class="phu">Kỳ nào đến ngày thi thì ô nhập mới mở. Điểm lưu tự động và được dùng khi anh/chị làm
-                    <a href="khaosat.html" style="color:var(--nhan);font-weight:600">khảo sát gợi ý trường</a>
-                    (kỳ càng gần ngày thi tuyển sinh càng có trọng số cao).
-                </p>
-                <div class="cuon">
-                    <table id="bang-diem"></table>
+
+        <!-- ===== TAB 3: Điểm số các kỳ thi lớp 9 & Năng lực Môn Chuyên Tự Động (V30 PC) ===== -->
+        <section id="pn-diem" hidden role="tabpanel" aria-labelledby="tab-diem">
+            <div class="khung diem-v30-card">
+                <div class="diem-v30-head">
+                    <div>
+                        <h2 class="setup-title">
+                            <span class="setup-title-ico"><i class="fa-solid fa-chart-pie"></i></span>
+                            <span>Điểm số lớp 9 &amp; Năng lực môn chuyên</span>
+                        </h2>
+                        <p class="phu diem-v30-sub">
+                            Toán &amp; Văn là <strong>Điểm nền học lực (45% trọng số)</strong> đồng bộ với
+                            <a href="khaosat.html" class="diem-link">khảo sát trường mục tiêu</a>;
+                            <strong>55% còn lại</strong> đo trực tiếp từ kết quả học thật trên VnStarL.
+                        </p>
+                    </div>
+                    <div id="diem-stage-pill" class="diem-stage-pill" title="Trần Độ sẵn sàng hiện tại">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <span>Đang tải giai đoạn...</span>
+                    </div>
+                </div>
+
+                <!-- 2 thẻ tổng quan: Điểm nền (45%) & Đo năng lực tự động VnStarL (55%) -->
+                <div id="diem-overview" class="diem-overview-grid"></div>
+
+                <!-- Bảng 4 kỳ thi thiết kế mới -->
+                <div class="diem-table-wrap">
+                    <table id="bang-diem" class="diem-v30-table"></table>
+                </div>
+
+                <div class="diem-gdpt-note">
+                    <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                    <span>Vì chương trình GDPT 2018 gộp KHTN/KHXH nên trường không có điểm lẻ phân môn; VnStarL tách lớp và đo độc lập năng lực mũi nhọn từ chính kết quả Khoa cử, Bài tập và Sổ lỗi sai của bạn.</span>
                 </div>
             </div>
         </section>
 
-        <!-- ===== Thiết lập ===== -->
-        <section id="pn-setup" hidden>
-            <!-- (xóa khối pn-diem cũ ở đây, giữ nguyên các .khung 1 đến 5) -->
-            <div class="khung">
-                <h2>1. Thời khóa biểu</h2>
-                <div class="hang">
-                    <label class="btn">Tải ảnh thời khóa biểu<input type="file" id="file" accept="image/*"
-                            hidden /></label>
-                    <button id="btn-xoa-tkb" class="btn">Xóa bảng</button>
+        <!-- ===== TAB 2: Thiết lập (V30 PC — 2 Trạng thái: Chưa có TKB & Đã có TKB) ===== -->
+        <section id="pn-setup" hidden role="tabpanel" aria-labelledby="tab-setup">
+            <!-- Thanh nhảy nhanh 5 mục Thiết lập (PC) -->
+            <div class="setup-quick-nav" aria-label="Đi nhanh tới mục thiết lập">
+                <div class="setup-quick-links">
+                    <span class="setup-quick-lbl">Đi nhanh:</span>
+                    <button type="button" class="setup-jump-btn" data-jump="#setup-sec-tkb">1. TKB</button>
+                    <button type="button" class="setup-jump-btn" data-jump="#setup-sec-extra">2. Học thêm</button>
+                    <button type="button" class="setup-jump-btn" data-jump="#setup-sec-viec">3. Việc tuần</button>
+                    <button type="button" class="setup-jump-btn" data-jump="#setup-sec-uutien">4. Ưu tiên</button>
+                    <button type="button" class="setup-jump-btn" data-jump="#setup-sec-gio">5. Giờ giấc</button>
                 </div>
-                <div class="thanh">
-                    <div id="thanh"></div>
+                <span id="setup-tb-inline" class="setup-tb-inline"></span>
+            </div>
+
+            <!-- 1. Thời khóa biểu -->
+            <div class="khung setup-card" id="setup-sec-tkb">
+                <div class="setup-card-head">
+                    <div class="khung-dau-tkb mo" id="tkb-header" role="button" tabindex="0"
+                        aria-expanded="true" aria-controls="tkb-noi-dung" title="Bấm để mở/thu gọn thời khóa biểu">
+                        <h2 class="setup-title">
+                            <span class="setup-title-ico"><i class="fa-solid fa-table-cells"></i></span>
+                            <span>1. Thời khóa biểu</span>
+                        </h2>
+                        <button type="button" class="btn-toggle-tkb" id="btn-toggle-tkb"
+                            aria-label="Mở/thu gọn thời khóa biểu">
+                            <span class="tkb-toggle-chu">Thu gọn</span>
+                            <i class="fa-solid fa-chevron-down tkb-mui-ten"></i>
+                        </button>
+                    </div>
+                    <span class="setup-star" aria-hidden="true">✦</span>
                 </div>
-                <p id="ocr-tt" class="phu" aria-live="polite">Quét ảnh có thể sai, anh/chị sửa lại ô trong bảng nhé.
-                    Cũng có
-                    thể tự gõ.</p>
-                <div class="cuon">
-                    <table id="tkb"></table>
+                <div class="tkb-noi-dung" id="tkb-noi-dung">
+                    <div class="hang setup-pill-row">
+                        <label class="pill-btn pill-btn-primary">
+                            <i class="fa-regular fa-image"></i>
+                            <span>Tải ảnh thời khóa biểu</span>
+                            <input type="file" id="file" accept="image/*" hidden />
+                        </label>
+                        <button id="btn-xoa-tkb" type="button" class="pill-btn pill-btn-ghost">
+                            <i class="fa-regular fa-trash-can"></i>
+                            <span>Xóa bảng</span>
+                        </button>
+                    </div>
+                    <div class="thanh">
+                        <div id="thanh"></div>
+                    </div>
+                    <p id="ocr-tt" class="phu setup-note-inline" aria-live="polite">Quét ảnh có thể sai, bạn sửa lại ô trong bảng nhé. Cũng có thể tự gõ.</p>
+                    <div class="cuon">
+                        <table id="tkb"></table>
+                    </div>
                 </div>
             </div>
 
-            <div class="khung">
-                <h2>2. Học thêm</h2>
-                <div class="hang">
-                    <select id="ex-thu" aria-label="Thứ">
-                        <option value="2">T2</option>
-                        <option value="3">T3</option>
-                        <option value="4">T4</option>
-                        <option value="5">T5</option>
-                        <option value="6">T6</option>
-                        <option value="7">T7</option>
-                        <option value="8">CN</option>
-                    </select>
-                    <input id="ex-tu" placeholder="Từ 19:00" size="9" aria-label="Giờ bắt đầu" />
-                    <input id="ex-den" placeholder="Đến 20:30" size="9" aria-label="Giờ kết thúc" />
-                    <input id="ex-mon" list="ds-mon" placeholder="Môn (không bắt buộc)" aria-label="Môn học thêm" />
-                    <button id="btn-them-extra" class="btn">Thêm</button>
+            <!-- 2. Học thêm -->
+            <div class="khung setup-card" id="setup-sec-extra">
+                <div class="setup-card-head">
+                    <h2 class="setup-title">
+                        <span class="setup-title-ico"><i class="fa-solid fa-book-open"></i></span>
+                        <span>2. Học thêm</span>
+                    </h2>
+                    <span class="setup-star" aria-hidden="true">✦</span>
+                </div>
+                <div class="hang setup-pill-row">
+                    <div class="pill-field pill-select">
+                        <select id="ex-thu" aria-label="Thứ">
+                            <option value="2">T2</option>
+                            <option value="3">T3</option>
+                            <option value="4">T4</option>
+                            <option value="5">T5</option>
+                            <option value="6">T6</option>
+                            <option value="7">T7</option>
+                            <option value="8">CN</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down pill-caret" aria-hidden="true"></i>
+                    </div>
+                    <label class="pill-field pill-time">
+                        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                        <input id="ex-tu" placeholder="Từ 19:00" size="8" aria-label="Giờ bắt đầu" />
+                    </label>
+                    <label class="pill-field pill-time">
+                        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                        <input id="ex-den" placeholder="Đến 20:30" size="8" aria-label="Giờ kết thúc" />
+                    </label>
+                    <label class="pill-field pill-grow">
+                        <i class="fa-solid fa-book" aria-hidden="true"></i>
+                        <input id="ex-mon" list="ds-mon" placeholder="Môn (không bắt buộc)" aria-label="Môn học thêm" />
+                    </label>
+                    <button id="btn-them-extra" type="button" class="pill-btn pill-btn-add">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Thêm</span>
+                    </button>
                 </div>
                 <p id="ex-tt" class="canhbao"></p>
-                <ul id="ds-extra" class="ds"></ul>
+                <ul id="ds-extra" class="ds setup-list"></ul>
             </div>
 
-            <div class="khung">
-                <h2>3. Công việc tuần này</h2>
-                <div class="hang">
-                    <select id="vi-thu" aria-label="Hạn vào thứ">
-                        <option value="2">T2</option>
-                        <option value="3">T3</option>
-                        <option value="4">T4</option>
-                        <option value="5">T5</option>
-                        <option value="6">T6</option>
-                        <option value="7">T7</option>
-                        <option value="8">CN</option>
-                    </select>
-                    <input id="vi-mon" list="ds-mon" placeholder="Môn, ví dụ Vật lí" aria-label="Môn" />
-                    <select id="vi-loai" aria-label="Loại">
-                        <option>Kiểm tra 15 phút</option>
-                        <option>Kiểm tra 1 tiết</option>
-                        <option>Kiểm tra học kì</option>
-                        <option>Bài tập / nộp bài</option>
-                        <option>Khác</option>
-                    </select>
-                    <label>Cần ôn <input id="vi-phut" type="number" min="15" step="5" value="60" style="width:70px" />
-                        phút</label>
-                    <input id="vi-ghi" placeholder="Ghi chú: học chương nào..." aria-label="Ghi chú" />
-                    <button id="btn-them-viec" class="btn">Thêm</button>
+            <!-- 3. Công việc tuần này -->
+            <div class="khung setup-card" id="setup-sec-viec">
+                <div class="setup-card-head">
+                    <h2 class="setup-title">
+                        <span class="setup-title-ico"><i class="fa-solid fa-briefcase"></i></span>
+                        <span>3. Công việc tuần này</span>
+                    </h2>
+                    <span class="setup-star" aria-hidden="true">✦</span>
+                </div>
+                <div class="hang setup-pill-row">
+                    <div class="pill-field pill-select">
+                        <select id="vi-thu" aria-label="Hạn vào thứ">
+                            <option value="2">T2</option>
+                            <option value="3">T3</option>
+                            <option value="4">T4</option>
+                            <option value="5">T5</option>
+                            <option value="6">T6</option>
+                            <option value="7">T7</option>
+                            <option value="8">CN</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down pill-caret" aria-hidden="true"></i>
+                    </div>
+                    <label class="pill-field pill-subject">
+                        <i class="fa-solid fa-book" aria-hidden="true"></i>
+                        <input id="vi-mon" list="ds-mon" placeholder="Môn, ví dụ Vật lí" aria-label="Môn" />
+                    </label>
+                    <div class="pill-field pill-select pill-type">
+                        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                        <select id="vi-loai" aria-label="Loại">
+                            <option>Kiểm tra 15 phút</option>
+                            <option>Kiểm tra 1 tiết</option>
+                            <option>Kiểm tra học kì</option>
+                            <option>Bài tập / nộp bài</option>
+                            <option>Khác</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down pill-caret" aria-hidden="true"></i>
+                    </div>
+                    <label class="pill-field pill-duration">
+                        <i class="fa-solid fa-stopwatch" aria-hidden="true"></i>
+                        <span class="pill-prefix">Cần ôn:</span>
+                        <input id="vi-phut" type="number" min="15" step="5" value="60" class="pill-inner-num" aria-label="Số phút cần ôn" />
+                        <span class="pill-suffix">phút</span>
+                    </label>
+                    <label class="pill-field pill-grow">
+                        <i class="fa-regular fa-note-sticky" aria-hidden="true"></i>
+                        <input id="vi-ghi" placeholder="Ghi chú: học chương nào..." aria-label="Ghi chú" />
+                    </label>
+                    <button id="btn-them-viec" type="button" class="pill-btn pill-btn-add">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Thêm</span>
+                    </button>
                 </div>
                 <p id="vi-tt" class="canhbao"></p>
-                <ul id="ds-viec" class="ds"></ul>
+                <ul id="ds-viec" class="ds setup-list"></ul>
             </div>
 
-            <div class="khung">
-                <h2>4. Môn nào học trước?</h2>
-                <p class="phu">Môn đứng trên được xếp giờ học sớm hơn khi cùng hạn.</p>
-                <ul id="ds-uu-tien" class="ds"></ul>
-            </div>
+            <!-- Hàng dưới: 2 trạng thái (!hasTkb gọn 2 card | hasTkb phân tầng 3 nhóm + Xem trước nhịp học) -->
+            <div class="setup-bottom-grid" id="setup-bottom-grid">
+                <!-- Cột Trái: 4. Môn nào học trước? -->
+                <div class="khung setup-card" id="setup-sec-uutien">
+                    <div class="setup-card-head">
+                        <h2 class="setup-title">
+                            <span class="setup-title-ico"><i class="fa-solid fa-graduation-cap"></i></span>
+                            <span>4. Môn nào học trước?</span>
+                        </h2>
+                        <button type="button" id="btn-goi-y-uutien" class="btn-goi-y-uutien" hidden>
+                            <i class="fa-solid fa-star"></i>
+                            <span>Gợi ý theo mục tiêu</span>
+                        </button>
+                    </div>
 
-            <div class="khung">
-                <h2>5. Giờ giấc (đồng hồ 24h)</h2>
-                <div class="hang">
-                    <label>Vào học sáng <input data-g="sang" data-kieu="gio" size="6" /></label>
-                    <label>Vào học chiều <input data-g="chieu" data-kieu="gio" size="6" /></label>
-                    <label>Phút / tiết <input data-g="tiet" type="number" min="1" style="width:70px" /></label>
-                    <label>Ra chơi (phút) <input data-g="nghi" type="number" min="0" style="width:70px" /></label>
-                    <label>Bắt đầu học từ <input data-g="batDau" data-kieu="gio" size="6" /></label>
-                    <label>Đi ngủ lúc <input data-g="ngu" data-kieu="gio" size="6" /></label>
-                    <label>Phút dành cho VnStarL mỗi ngày <input data-g="edumate" type="number" min="10"
-                            style="width:70px" /></label>
+                    <!-- Trạng thái 1: Chưa có TKB -->
+                    <div class="setup-accent-box" id="uu-tien-empty">
+                        <p class="phu">Môn đứng trên được xếp giờ học sớm hơn khi cùng hạn.</p>
+                        <p class="phu">Nhập thời khóa biểu hoặc công việc để có môn.</p>
+                    </div>
+
+                    <!-- Trạng thái 2: Đã có TKB -> Phân tầng 3 nhóm kéo-thả -->
+                    <div id="uu-tien-tiers" class="uu-tien-tiers" hidden>
+                        <p class="phu uu-tien-sub">Môn đứng trên được xếp giờ học sớm hơn khi cùng hạn. Kéo thả thẻ giữa các nhóm.</p>
+
+                        <div class="tier-box tier-box--cao" data-tier="cao">
+                            <div class="tier-box-head">
+                                <div>
+                                    <div class="tier-box-title">Ưu tiên cao — Môn thi &amp; Chuyên</div>
+                                    <div class="tier-box-sub">(Học lúc tỉnh táo nhất)</div>
+                                </div>
+                            </div>
+                            <div id="tier-list-cao" class="tier-grid tier-grid--2" data-tier="cao"></div>
+                        </div>
+
+                        <div class="tier-box tier-box--deu" data-tier="deu">
+                            <div class="tier-box-head">
+                                <div class="tier-box-title">Học đều giữ điểm — Môn học bạ</div>
+                            </div>
+                            <div id="tier-list-deu" class="tier-grid tier-grid--2" data-tier="deu"></div>
+                        </div>
+
+                        <div class="tier-box tier-box--nhe" id="tier-box-nhe" data-tier="nhe">
+                            <button type="button" class="tier-box-head tier-collapse-btn" id="btn-toggle-nhe" aria-expanded="true">
+                                <span class="tier-box-title">
+                                    <span class="tier-dot-nhe" aria-hidden="true"></span>
+                                    Học nhẹ / Không cần ôn sâu
+                                </span>
+                                <i class="fa-solid fa-chevron-up tier-caret" aria-hidden="true"></i>
+                            </button>
+                            <div id="tier-list-nhe" class="tier-grid tier-grid--3" data-tier="nhe"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cột Phải: 5. Giờ giấc + Card Xem trước nhịp học trong ngày -->
+                <div class="setup-right-stack">
+                    <div class="khung setup-card" id="setup-sec-gio">
+                        <div class="setup-card-head">
+                            <h2 class="setup-title">
+                                <span class="setup-title-ico"><i class="fa-regular fa-clock"></i></span>
+                                <span>5. Giờ giấc (đồng hồ 24h)</span>
+                            </h2>
+                            <span class="setup-star" aria-hidden="true">✦</span>
+                        </div>
+                        <div class="gio-grid">
+                            <label class="gio-pill">
+                                <span class="gio-pill-label">
+                                    <i class="fa-solid fa-sun gio-ico-sun" aria-hidden="true"></i>
+                                    <span>Vào học sáng</span>
+                                </span>
+                                <input data-g="sang" data-kieu="gio" size="6" class="gio-val" />
+                            </label>
+                            <label class="gio-pill">
+                                <span class="gio-pill-label">
+                                    <i class="fa-solid fa-cloud-sun gio-ico-afternoon" aria-hidden="true"></i>
+                                    <span>Vào học chiều</span>
+                                </span>
+                                <input data-g="chieu" data-kieu="gio" size="6" class="gio-val" />
+                            </label>
+                            <label class="gio-pill">
+                                <span class="gio-pill-label">
+                                    <i class="fa-solid fa-person-running gio-ico-blue" aria-hidden="true"></i>
+                                    <span>Phút / tiết</span>
+                                </span>
+                                <input data-g="tiet" type="number" min="1" class="gio-val" />
+                            </label>
+                            <label class="gio-pill">
+                                <span class="gio-pill-label">
+                                    <i class="fa-solid fa-mug-hot gio-ico-sky" aria-hidden="true"></i>
+                                    <span>Ra chơi (phút)</span>
+                                </span>
+                                <input data-g="nghi" type="number" min="0" class="gio-val" />
+                            </label>
+                            <label class="gio-pill">
+                                <span class="gio-pill-label">
+                                    <i class="fa-solid fa-house-chimney gio-ico-blue" aria-hidden="true"></i>
+                                    <span>Bắt đầu học từ</span>
+                                </span>
+                                <input data-g="batDau" data-kieu="gio" size="6" class="gio-val" />
+                            </label>
+                            <label class="gio-pill">
+                                <span class="gio-pill-label">
+                                    <i class="fa-solid fa-moon gio-ico-indigo" aria-hidden="true"></i>
+                                    <span>Đi ngủ lúc</span>
+                                </span>
+                                <input data-g="ngu" data-kieu="gio" size="6" class="gio-val" />
+                            </label>
+                            <label class="gio-pill gio-pill-wide">
+                                <span class="gio-pill-label">
+                                    <i class="fa-regular fa-star gio-ico-blue" aria-hidden="true"></i>
+                                    <span>Phút dành cho VnStarL mỗi ngày</span>
+                                </span>
+                                <input data-g="edumate" type="number" min="10" class="gio-val" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Card mới V30: Xem trước nhịp học trong ngày (chỉ hiện khi đã có TKB/công việc) -->
+                    <div class="khung setup-card setup-preview-card" id="setup-preview-card" hidden>
+                        <div class="setup-card-head">
+                            <h2 class="setup-title">
+                                <span>Xem trước nhịp học trong ngày</span>
+                            </h2>
+                            <span id="preview-day-tag" class="preview-day-tag">Nhịp mẫu</span>
+                        </div>
+                        <div class="timeline-24h-wrap">
+                            <div id="timeline-24h" class="timeline-24h" role="img" aria-label="Biểu đồ nhịp học 24 giờ"></div>
+                            <div class="timeline-ticks" aria-hidden="true">
+                                <span>0</span><span>4</span><span>8</span><span>12</span><span>16</span><span>20</span><span>24</span>
+                            </div>
+                        </div>
+                        <ul id="preview-slot-list" class="preview-slot-list"></ul>
+                        <button type="button" id="btn-ap-dung-nhip-hoc" class="preview-apply-btn">
+                            Áp dụng &amp; Lưu nhịp học
+                        </button>
+                        <p id="preview-save-msg" class="preview-save-msg" aria-live="polite"></p>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- Modal tự bật khi đã đến kỳ thi lớp 9 nhưng học sinh chưa nhập điểm kỳ đó -->
+    <div id="ky-thi-modal-overlay" class="kt-modal-overlay" hidden>
+        <div class="kt-modal-box" role="dialog" aria-modal="true" aria-labelledby="kt-modal-title">
+            <button type="button" id="kt-modal-close" class="kt-modal-close" aria-label="Đóng">✕</button>
+            <span id="kt-modal-badge" class="kt-modal-badge">📅 Đã mở nhập điểm</span>
+            <h3 id="kt-modal-title">Nhập nhanh điểm kỳ thi lớp 9</h3>
+            <p id="kt-modal-desc" class="kt-modal-desc"></p>
+            <div class="kt-modal-inputs">
+                <label class="kt-modal-field">
+                    <span><i class="fa-solid fa-square-root-variable"></i> Điểm Toán (0–10)</span>
+                    <input type="number" id="kt-in-toan" min="0" max="10" step="any" placeholder="VD: 8.5" />
+                </label>
+                <label class="kt-modal-field">
+                    <span><i class="fa-solid fa-feather-pointed"></i> Điểm Văn (0–10)</span>
+                    <input type="number" id="kt-in-van" min="0" max="10" step="any" placeholder="VD: 8.0" />
+                </label>
+            </div>
+            <p id="kt-modal-chuyen-note" class="kt-modal-chuyen-note">
+                <i class="fa-solid fa-sparkles"></i> Điểm Môn Chuyên được VnStarL tự động đo từ Khoa cử, Bài tập và Sổ lỗi sai.
+            </p>
+            <p id="kt-modal-err" class="canhbao" aria-live="polite"></p>
+            <div class="kt-modal-actions">
+                <button type="button" id="kt-btn-de-sau" class="pill-btn pill-btn-ghost">Để sau</button>
+                <button type="button" id="kt-btn-luu" class="pill-btn pill-btn-primary">
+                    <i class="fa-solid fa-check"></i> Lưu điểm &amp; Cập nhật Độ sẵn sàng
+                </button>
+            </div>
+        </div>
+    </div>
+
     <datalist id="ds-mon"></datalist>
     <script src="thong-bao.js?v=1"></script>
-    <script src="script.js"></script>
+    <script src="script.js?v=17"></script>
     <script src="ky-thi.js"></script>
     <script src="tkb-ocr.js"></script>
-    <script src="nhiem-vu.js"></script>
-    <script src="personal.js"></script>
+    <script src="nhiem-vu.js?v=4"></script>
+    <script src="personal.js?v=4"></script>
+    <script src="truong-note.js?v=3" data-page="personal"></script>
+    <script src="tour-personal.js?v=10"></script>
 </body>
 
 </html>

@@ -4,23 +4,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=2"></script>
   <script>
     if (localStorage.getItem("isLoggedIn") !== "true") location.replace("subjects.html");
   </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
   <title>VnStarL</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=11" />
   <link rel="stylesheet" href="style2.css" />
   <link rel="stylesheet" href="style3.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
   <link rel="stylesheet" href="form.css" />
   <link rel="stylesheet" href="so-loi.css" />
   <link rel="stylesheet" href="tien-do.css" />
-  <link rel="stylesheet" href="quiz-tung-cau.css" />
+  <link rel="stylesheet" href="quiz-tung-cau.css?v=32" />
   <script src="so-loi-chung.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
-  <script defer src="math.js"></script>
 
 </head>
 
@@ -48,9 +50,19 @@
             <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
           </a>
         </li>
+        <li id="nav-khoa-bang">
+          <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+            <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+          </a>
+        </li>
         <li id="nav-xep-hang">
           <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
             <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+          </a>
+        </li>
+        <li id="nav-vuon-saoladou">
+          <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+            <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
           </a>
         </li>
       </ul>
@@ -62,7 +74,7 @@
         </div>
         <!-- 2. Khi đã đăng nhập (mặc định thêm class hidden) -->
         <div id="user-profile" class="hidden">
-          <div class="streak-box">🔥 <span>0</span></div>
+          <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
           <span class="username">Username</span>
           <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
         </div>
@@ -70,19 +82,14 @@
     </div>
   </header>
   <div id="tac-pham" class="tac-pham-box hidden"></div>
-  <div id="quiz-container">
-    <div data-type="noi-cot"></div>
-    <div data-type="trac-nghiem"></div>
-    <div data-type="dung-sai"></div>
-    <div data-type="tra-loi-ngan"></div>
-  </div>
+  <div id="quiz-container"></div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=17"></script>
   <script src="hang.js"></script>
-  <script src="am-thanh.js"></script>
+  <script src="am-thanh.js?v=3"></script>
   <!-- CHỈ nạp bai-tap.js ĐÚNG 1 LẦN. Nạp 2 lần thì bài bị vẽ lặp (2 bộ câu hỏi + 2 nút Nộp bài) -->
-  <script src="quiz-tung-cau.js"></script>
-  <script src="bai-tap.js"></script>
+  <script src="quiz-tung-cau.js?v=32"></script>
+  <script src="bai-tap.js?v=6"></script>
 </body>
 
 </html>

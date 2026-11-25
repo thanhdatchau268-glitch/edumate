@@ -121,6 +121,12 @@
     padding: 44px 44px 36px;
 }
 
+/* Chỉ hiển thị trên điện thoại (<= 640px) */
+.auth-mobile-tabs,
+.auth-or-divider {
+    display: none;
+}
+
 .auth-main h1 {
     font-size: 1.7rem;
     font-weight: 800;
@@ -440,5 +446,902 @@
 
     .auth-btn.loading::before {
         animation-duration: 1.6s;
+    }
+}
+
+/* ==========================================================
+   MODAL KHÔI PHỤC MẬT KHẨU & TÀI KHOẢN GOOGLE / GMAIL
+   ========================================================== */
+.auth-modal-nen {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(15, 27, 51, 0.6);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    animation: authFadeIn 0.25s ease-out;
+}
+
+.auth-modal-nen[hidden] {
+    display: none !important;
+}
+
+@keyframes authFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.auth-modal-hop {
+    position: relative;
+    width: min(520px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 24px;
+    border: 1px solid var(--vien);
+    box-shadow: 0 20px 60px rgba(15, 27, 51, 0.28);
+    animation: authModalVao 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes authModalVao {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.auth-modal-dau {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px 12px;
+    border-bottom: 1px solid #edf2f9;
+}
+
+.auth-modal-x {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+    color: #8b99ad;
+    background: #f1f4fa;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.auth-modal-x:hover {
+    color: #d62424;
+    background: #fdeaea;
+}
+
+/* Thanh tiến trình 3 bước */
+.qmk-buoc-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qmk-buoc-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #8b99ad;
+}
+
+.qmk-dot {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #6b7a94;
+    background: #edf2fa;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.qmk-buoc-item.active .qmk-dot {
+    color: #fff;
+    background: var(--nhan);
+    box-shadow: 0 3px 8px rgba(36, 87, 214, 0.35);
+}
+
+.qmk-buoc-item.active small {
+    color: var(--nhan);
+}
+
+.qmk-buoc-item.done .qmk-dot {
+    color: #fff;
+    background: #178a5a;
+}
+
+.qmk-line {
+    width: 24px;
+    height: 2px;
+    background: #e2e8f4;
+    border-radius: 2px;
+    transition: background 0.2s;
+}
+
+.qmk-line.done {
+    background: #178a5a;
+}
+
+/* Thân modal */
+.auth-modal-than {
+    padding: 24px 28px 28px;
+}
+
+.qmk-step {
+    display: none;
+    animation: authFadeIn 0.25s ease-out;
+}
+
+.qmk-step.active {
+    display: block;
+}
+
+.qmk-icon-box {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 12px;
+    font-size: 1.5rem;
+    color: var(--nhan);
+    background: color-mix(in srgb, var(--nhan) 12%, #fff);
+    border-radius: 18px;
+}
+
+.qmk-icon-box.otp {
+    color: #e07a1f;
+    background: #fff4e5;
+}
+
+.qmk-icon-box.success {
+    color: #178a5a;
+    background: #e3f7ec;
+}
+
+.auth-modal-than h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--chu);
+    text-align: center;
+    margin: 0 0 6px;
+}
+
+.qmk-sub {
+    font-size: 0.92rem;
+    color: var(--nhat);
+    text-align: center;
+    line-height: 1.5;
+    margin: 0 0 20px;
+}
+
+/* Nút chọn Gmail ngay trên form đăng nhập / đăng ký */
+.google-field-wrap {
+    position: relative;
+}
+
+.field-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.btn-gmail-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1a56db;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.18s;
+}
+
+.btn-gmail-mini:hover {
+    background: #dbeafe;
+    border-color: #60a5fa;
+    transform: translateY(-1px);
+}
+
+.btn-gmail-mini i {
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+}
+
+.btn-gmail-mini.open i {
+    transform: rotate(180deg);
+}
+
+/* Nút chọn Gmail trên máy trong Modal */
+.google-select-wrap {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.btn-google-chon {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    font: inherit;
+    font-size: 0.94rem;
+    font-weight: 700;
+    color: #1b2a41;
+    background: #f8fbff;
+    border: 1.5px solid #c3d6f7;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(15, 27, 51, 0.05);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-google-chon:hover {
+    border-color: #4285F4;
+    background: #f0f6ff;
+    box-shadow: 0 6px 16px rgba(66, 133, 244, 0.16);
+}
+
+.btn-google-text {
+    flex: 1;
+    text-align: left;
+}
+
+.ico-muiten {
+    color: #9aa6b8;
+    font-size: 0.85rem;
+    transition: transform 0.2s;
+}
+
+.btn-google-chon.open .ico-muiten {
+    transform: rotate(180deg);
+}
+
+/* Popup danh sách tài khoản Google (style Google Account Chooser) */
+.google-accounts-card {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 30;
+    background: #fff;
+    border: 1.5px solid #dce5f4;
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: 0 16px 40px rgba(15, 27, 51, 0.22);
+    animation: authModalVao 0.2s ease-out;
+}
+
+.google-accounts-card.inline-card {
+    position: static;
+    margin-top: 8px;
+    box-shadow: 0 6px 20px rgba(15, 27, 51, 0.08);
+    background: #ffffff;
+}
+
+.google-accounts-card.hidden {
+    display: none;
+}
+
+.g-acc-dau {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px 10px;
+    border-bottom: 1px solid #eef2fa;
+}
+
+.g-acc-tieu-de {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #6b7a94;
+}
+
+.g-acc-x {
+    width: 26px;
+    height: 26px;
+    color: #8b99ad;
+    background: none;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    font-size: 0.95rem;
+}
+
+.g-acc-x:hover {
+    color: #1b2a41;
+    background: #eef2fa;
+}
+
+.g-accounts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 4px 0;
+    max-height: 210px;
+    overflow-y: auto;
+}
+
+.g-acc-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.12s;
+}
+
+.g-acc-item:hover {
+    background: #f0f6ff;
+    border-color: #c7d9fb;
+    transform: translateX(2px);
+}
+
+.g-chon-badge {
+    margin-left: auto;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #2457d6;
+    background: #eaf1ff;
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+}
+
+.g-acc-item:hover .g-chon-badge {
+    background: #2457d6;
+    color: #fff;
+}
+
+.g-avatar {
+    position: relative;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.g-badge-edit {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    display: grid;
+    place-items: center;
+    width: 17px;
+    height: 17px;
+    font-size: 9px;
+    color: #444;
+    background: #fff;
+    border-radius: 50%;
+    border: 1.5px solid #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.g-acc-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.g-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1b2a41;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.g-email {
+    font-size: 0.82rem;
+    color: #5b6b82;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.g-acc-item.g-acc-them {
+    border-top: 1px dashed #dce5f4;
+    border-radius: 0 0 12px 12px;
+    margin-top: 4px;
+    padding-top: 12px;
+}
+
+.g-avatar-them {
+    color: var(--nhan);
+    background: #eaf1ff;
+    font-size: 1rem;
+}
+
+/* Dòng phân cách "hoặc" */
+.qmk-hoac {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #8b99ad;
+}
+
+.qmk-hoac::before,
+.qmk-hoac::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e2e8f4;
+}
+
+.btn-mo-gmail {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 5px 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #2457d6;
+    background: #eef4ff;
+    border: 1px solid #c7d9fb;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+
+.btn-mo-gmail:hover {
+    background: #2457d6;
+    color: #fff;
+}
+
+/* Hộp demo OTP & Cấu hình SMTP */
+.qmk-demo-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    color: #1e40af;
+    font-size: 0.88rem;
+}
+
+.qmk-demo-box.hidden {
+    display: none;
+}
+
+.qmk-demo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.qmk-demo-row i {
+    font-size: 1.25rem;
+    color: #2563eb;
+    flex: none;
+}
+
+.qmk-demo-text {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+}
+
+.qmk-demo-text b {
+    font-size: 1.18rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #1d4ed8;
+    background: #fff;
+    padding: 2px 10px;
+    border-radius: 6px;
+    border: 1.5px dashed #3b82f6;
+}
+
+.btn-copy-otp {
+    padding: 4px 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #fff;
+    background: #2563eb;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.btn-copy-otp:hover {
+    background: #1d4ed8;
+}
+
+.qmk-smtp-toggle-wrap {
+    border-top: 1px dashed #bfdbfe;
+    padding-top: 8px;
+}
+
+.btn-link-smtp {
+    padding: 0;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #1d4ed8;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+    text-decoration: underline;
+}
+
+.qmk-smtp-form {
+    margin-top: 10px;
+    padding: 10px;
+    background: #ffffff;
+    border: 1px solid #dbeafe;
+    border-radius: 10px;
+}
+
+.qmk-smtp-form.hidden {
+    display: none;
+}
+
+.smtp-huong-dan {
+    font-size: 0.78rem;
+    color: #475569;
+    margin: 0 0 8px;
+    line-height: 1.4;
+}
+
+.smtp-huong-dan a {
+    color: #2563eb;
+    font-weight: 700;
+}
+
+.smtp-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.smtp-grid input {
+    width: 100%;
+    padding: 8px 10px;
+    font: inherit;
+    font-size: 0.84rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+.btn-save-smtp {
+    padding: 8px 12px;
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #fff;
+    background: #178a5a;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-save-smtp:hover {
+    background: #126e47;
+}
+
+.smtp-status-msg {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 6px 0 0;
+}
+
+/* Ô nhập OTP */
+.otp-box-wrap {
+    margin: 18px 0;
+    text-align: center;
+}
+
+.otp-box-wrap label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--chu);
+}
+
+.otp-input-container input {
+    width: 220px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 12px;
+    font-family: monospace, monospace;
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: 8px;
+    text-align: center;
+    color: var(--nhan);
+    background: #f7faff;
+    border: 2px solid #b8cdfa;
+    border-radius: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.otp-input-container input:focus {
+    outline: none;
+    border-color: var(--nhan);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(36, 87, 214, 0.16);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.qmk-actions {
+    margin-top: 18px;
+}
+
+.qmk-gui-lai-wrap {
+    margin-top: 14px;
+    text-align: center;
+    font-size: 0.88rem;
+    color: var(--nhat);
+}
+
+.qmk-quay-lai-wrap {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.btn-quay-lai-step {
+    padding: 6px 12px;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #6b7a94;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.btn-quay-lai-step:hover {
+    color: var(--nhan);
+}
+
+/* ==========================================================
+   TỐI ƯU RIÊNG CHO ĐIỆN THOẠI (<= 640px)
+   ========================================================== */
+@media (max-width: 640px) {
+    .auth-page {
+        min-height: calc(100dvh - 53px);
+        align-content: start;
+        padding: 12px 12px 104px; /* Chừa đệm đáy thoáng để không bị thanh nav đáy che */
+    }
+
+    .auth-card {
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(27, 42, 65, 0.08);
+    }
+
+    /* Thu gọn banner xanh thành 1 dải chào mừng ngắn gọn trên cùng */
+    .auth-side {
+        padding: 12px 16px;
+        gap: 0;
+        text-align: center;
+    }
+
+    .auth-side h2 {
+        font-size: 1.02rem;
+        line-height: 1.3;
+        margin: 0;
+    }
+
+    .auth-side > div > p,
+    .auth-loi-ich,
+    .auth-side small {
+        display: none;
+    }
+
+    .auth-main {
+        padding: 18px 16px 20px;
+    }
+
+    /* Thanh chuyển nhanh Đăng nhập | Đăng ký ở ngay đầu form */
+    .auth-mobile-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
+        padding: 4px;
+        margin-bottom: 14px;
+        background: #eef3fb;
+        border: 1px solid #dbe6f8;
+        border-radius: 12px;
+    }
+
+    .auth-mobile-tab {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 10px;
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: #5b6b84;
+        text-decoration: none;
+        border-radius: 9px;
+        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+
+    .auth-mobile-tab.active {
+        color: #ffffff;
+        background: linear-gradient(120deg, #2457d6, #5b7cf0);
+        box-shadow: 0 3px 10px rgba(36, 87, 214, 0.26);
+    }
+
+    .auth-main h1 {
+        font-size: 1.32rem;
+        margin-bottom: 10px;
+    }
+
+    .auth-main .auth-sub {
+        display: none;
+    }
+
+    /* Tách nút Chọn Gmail thành nút lớn phía trên + vạch chia "hoặc nhập email" */
+    .field-label-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+
+    .field-label-row .btn-gmail-mini {
+        order: 1;
+        width: 100%;
+        justify-content: center;
+        padding: 11px 14px;
+        font-size: 0.92rem;
+        border-radius: 12px;
+        background: #f8fbff;
+        border: 1.5px solid #c3d6f7;
+        box-shadow: 0 2px 6px rgba(15, 27, 51, 0.04);
+    }
+
+    .field-label-row .auth-or-divider {
+        order: 2;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #8b99ad;
+        margin: 2px 0;
+    }
+
+    .field-label-row .auth-or-divider::before,
+    .field-label-row .auth-or-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #e2e8f4;
+    }
+
+    .field-label-row > label {
+        order: 3;
+        margin-bottom: 0;
+        font-size: 0.88rem;
+        font-weight: 600;
+    }
+
+    /* Thu gọn khoảng trống giữa các ô trên ĐT */
+    .auth-form {
+        gap: 2px;
+    }
+
+    .field {
+        margin-bottom: 8px;
+    }
+
+    .field > label {
+        margin-bottom: 4px;
+        font-size: 0.88rem;
+    }
+
+    .input-wrap input {
+        padding: 11px 40px 11px 38px;
+        font-size: 0.95rem;
+        border-radius: 11px;
+    }
+
+    .input-wrap > i.ico {
+        left: 13px;
+        font-size: 0.9rem;
+    }
+
+    .field-msg {
+        min-height: 0;
+        margin-top: 4px;
+    }
+
+    .field-msg:empty {
+        display: none;
+    }
+
+    /* Ẩn thanh độ mạnh mật khẩu khi chưa nhập gì */
+    .mk-manh[data-m="0"] {
+        display: none;
+    }
+
+    .mk-manh {
+        margin: 2px 0 8px;
+    }
+
+    .auth-phu {
+        margin: 0 0 6px;
+    }
+
+    .auth-btn {
+        padding: 12px 18px;
+        font-size: 1rem;
+        margin-top: 6px;
+    }
+
+    .auth-chuyen {
+        margin-top: 14px;
+        font-size: 0.9rem;
+    }
+
+    /* Modal Quên mật khẩu trên ĐT chừa đáy để không vướng thanh nav */
+    .auth-modal-nen {
+        padding: 12px 12px 86px;
+    }
+
+    .auth-modal-than {
+        padding: 18px 16px 20px;
     }
 }

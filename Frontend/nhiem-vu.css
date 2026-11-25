@@ -1,29 +1,81 @@
-/* nhiem-vu.css - thanh "Nhiệm vụ hôm nay" (dùng lại --nen, --chu, --nhat, --nhan, --vien của style.css) */
+/* nhiem-vu.css - V15 MASTER: Kính mờ, Viên thuốc Xanh VnStarL & Họa tiết Hình học Ánh sáng */
 .nv-khung {
-    margin: 12px 0 18px;
-    padding: 16px 20px;
-    background: var(--nen);
-    border: 1px solid var(--vien);
-    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    margin: 14px 0 18px;
+    padding: 20px 22px 18px;
+    background:
+        radial-gradient(circle 220px at 96% 8%, rgba(191, 219, 254, 0.34) 0%, transparent 72%),
+        rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1.5px solid #dbeafe;
+    border-radius: 20px;
+    box-shadow: 0 10px 28px -12px rgba(29, 78, 216, 0.14);
+}
+
+/* Họa tiết Ánh sáng & Hình học (chấm lưới + vòng tròn đồng tâm + cụm sao 4 cánh) */
+.nv-khung::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 240px;
+    height: 150px;
+    pointer-events: none;
+    z-index: 0;
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: 240px 150px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='150' viewBox='0 0 240 150' fill='none'%3E%3Ccircle cx='226' cy='14' r='44' stroke='%2393c5fd' stroke-opacity='0.34' stroke-width='1.2'/%3E%3Ccircle cx='226' cy='14' r='74' stroke='%2393c5fd' stroke-opacity='0.24' stroke-width='1.1'/%3E%3Ccircle cx='226' cy='14' r='106' stroke='%23bfdbfe' stroke-opacity='0.28' stroke-width='1' stroke-dasharray='4 4'/%3E%3Cg fill='%2360a5fa' fill-opacity='0.24'%3E%3Ccircle cx='120' cy='18' r='1.6'/%3E%3Ccircle cx='136' cy='18' r='1.6'/%3E%3Ccircle cx='152' cy='18' r='1.6'/%3E%3Ccircle cx='168' cy='18' r='1.6'/%3E%3Ccircle cx='120' cy='34' r='1.6'/%3E%3Ccircle cx='136' cy='34' r='1.6'/%3E%3Ccircle cx='152' cy='34' r='1.6'/%3E%3Ccircle cx='136' cy='50' r='1.4'/%3E%3Ccircle cx='152' cy='50' r='1.4'/%3E%3C/g%3E%3Cpath d='M190 28 C191 34 193 36 199 37 C193 38 191 40 190 46 C189 40 187 38 181 37 C187 36 189 34 190 28 Z' fill='%2360a5fa' fill-opacity='0.5'/%3E%3Cpath d='M214 58 C214.6 61.5 216 63 219.5 63.5 C216 64 214.6 65.5 214 69 C213.4 65.5 212 64 208.5 63.5 C212 63 213.4 61.5 214 58 Z' fill='%2393c5fd' fill-opacity='0.65'/%3E%3Cpath d='M162 56 C162.4 58.2 163.3 59.1 165.5 59.5 C163.3 59.9 162.4 60.8 162 63 C161.6 60.8 160.7 59.9 158.5 59.5 C160.7 59.1 161.6 58.2 162 56 Z' fill='%2393c5fd' fill-opacity='0.55'/%3E%3C/svg%3E");
+}
+
+.nv-khung > * {
+    position: relative;
+    z-index: 1;
 }
 
 .nv-dau {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }
 
 .nv-dau h2 {
-    font-size: 1.1rem;
-    color: var(--chu);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 1.12rem;
+    font-weight: 800;
+    color: #0f2b6b;
+}
+
+.nv-dau-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+    font-size: 0.9rem;
+    flex-shrink: 0;
 }
 
 .nv-dem {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--nhat);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 999px;
+    padding: 4px 12px;
+    white-space: nowrap;
 }
 
 .nv-ds {
@@ -31,35 +83,55 @@
     flex-direction: column;
     gap: 10px;
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-/* mỗi nhiệm vụ có màu theo độ khó: dễ xanh lá, vừa xanh dương, khó cam */
+/* Thẻ nhiệm vụ dạng Kính Mờ & Viên Nang đồng bộ Web 1 (bỏ vạch sọc trái) */
 .nv-the {
-    --c: var(--nhan);
+    --c: #2563eb;
+    --c-bg: #eff6ff;
+    --c-bd: #bfdbfe;
+    --c-txt: #1d4ed8;
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 12px 14px;
-    background: #fff;
-    border: 1px solid var(--vien);
-    border-left: 5px solid var(--c);
-    border-radius: 12px;
+    padding: 13px 16px;
+    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+    border: 1.5px solid #dbeafe;
+    border-radius: 16px;
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
 }
 
+.nv-the:hover {
+    transform: translateY(-1px);
+    border-color: #93c5fd;
+    box-shadow: 0 8px 20px -10px rgba(37, 99, 235, 0.18);
+}
+
+/* Chỉ giữ 3 sắc thái pastel siêu dịu cho riêng Icon & Nhãn độ khó */
 .nv-the.kho-de {
-    --c: #178a5a;
+    --c-bg: #ecfdf5;
+    --c-bd: #a7f3d0;
+    --c-txt: #059669;
 }
 
 .nv-the.kho-vua {
-    --c: #2457d6;
+    --c-bg: #eff6ff;
+    --c-bd: #bfdbfe;
+    --c-txt: #1d4ed8;
 }
 
 .nv-the.kho-kho {
-    --c: #d9480f;
+    --c-bg: #fff7ed;
+    --c-bd: #fed7aa;
+    --c-txt: #d97706;
 }
 
 .nv-the.da-nhan {
-    opacity: 0.6;
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    opacity: 0.72;
 }
 
 .nv-icon {
@@ -68,9 +140,11 @@
     place-items: center;
     width: 40px;
     height: 40px;
-    color: var(--c);
-    background: color-mix(in srgb, var(--c) 13%, #fff);
-    border-radius: 50%;
+    color: var(--c-txt);
+    background: var(--c-bg);
+    border: 1px solid var(--c-bd);
+    border-radius: 12px;
+    font-size: 0.96rem;
 }
 
 .nv-giua {
@@ -78,84 +152,140 @@
     min-width: 0;
 }
 
+.nv-ten-hang {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
 .nv-giua b {
-    color: var(--chu);
+    color: #0f2b6b;
+    font-size: 0.94rem;
+    font-weight: 800;
 }
 
 .nv-kho {
-    margin-left: 8px;
-    padding: 1px 9px;
-    font-size: 0.75rem;
+    padding: 2px 9px;
+    font-size: 0.72rem;
     font-weight: 700;
-    color: var(--c);
-    background: color-mix(in srgb, var(--c) 12%, #fff);
+    color: var(--c-txt);
+    background: var(--c-bg);
+    border: 1px solid var(--c-bd);
     border-radius: 999px;
+    line-height: 1.3;
 }
 
 .nv-giua small {
     display: block;
-    font-size: 0.83rem;
+    font-size: 0.8rem;
     line-height: 1.4;
-    color: var(--nhat);
+    color: #64748b;
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Thanh tiến độ + Chỉ số 0/2 nằm gọn 1 hàng */
+.nv-tien-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
 }
 
 .nv-tien {
-    height: 6px;
-    margin-top: 6px;
+    flex: 1;
+    height: 7px;
     overflow: hidden;
-    background: #edf1f8;
-    border-radius: 9px;
+    background: #e2eaf6;
+    border-radius: 999px;
 }
 
 .nv-tien i {
     display: block;
     height: 100%;
-    background: var(--c);
-    border-radius: 9px;
-    transition: width 0.4s;
+    background: linear-gradient(90deg, #60a5fa 0%, #2563eb 100%);
+    border-radius: 999px;
+    transition: width 0.4s cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 
 .nv-so {
-    font-size: 0.78rem;
-    color: var(--nhat);
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #1e40af;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 999px;
+    padding: 1px 8px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
 }
 
+/* Cụm phải: Viên thuốc điểm + Nút viên thuốc Xanh VnStarL */
 .nv-phai {
     flex: none;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
+    align-items: center;
+    gap: 10px;
 }
 
 .nv-qua {
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: #b7791f;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #b45309;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 999px;
+    padding: 4px 10px;
+    white-space: nowrap;
 }
 
 .nv-nut {
-    display: inline-block;
-    padding: 7px 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 16px;
     font: inherit;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--nhan);
-    background: #fff;
-    border: 1px solid var(--nhan);
-    border-radius: 9px;
+    font-size: 0.83rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    background: #eff6ff;
+    border: 1.5px solid #3b82f6;
+    border-radius: 999px;
     cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.16s ease;
+}
+
+.nv-nut i {
+    font-size: 0.74rem;
+    transition: transform 0.16s ease;
 }
 
 .nv-nut:hover {
-    color: #fff;
-    background: var(--nhan);
+    color: #ffffff;
+    background: #2563eb;
+    border-color: #2563eb;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.nv-nut:hover i {
+    transform: translateX(2px);
 }
 
 .nv-nut.dac {
-    color: #fff;
-    background: var(--c, var(--nhan));
-    border-color: var(--c, var(--nhan));
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border-color: #1d4ed8;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+}
+
+.nv-nut.dac:hover {
+    filter: brightness(1.06);
 }
 
 .nv-nut:disabled {
@@ -164,57 +294,119 @@
 }
 
 .nv-nut:focus-visible {
-    outline: 3px solid rgba(36, 87, 214, 0.4);
+    outline: 3px solid rgba(37, 99, 235, 0.35);
     outline-offset: 2px;
 }
 
 .nv-da-nhan {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: #178a5a;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #059669;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 999px;
+    padding: 5px 12px;
 }
 
+/* Banner mốc thưởng đủ 3 nhiệm vụ */
 .nv-du3 {
-    margin-top: 12px;
-    font-size: 0.9rem;
-    color: var(--nhat);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0 0;
+    padding: 7px 14px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #1e40af;
+    background: linear-gradient(90deg, #eff6ff 0%, #f0f9ff 100%);
+    border: 1px dashed #93c5fd;
+    border-radius: 999px;
+}
+
+.nv-du3 i {
+    color: #2563eb;
 }
 
 .nv-du3.xong {
-    color: #178a5a;
+    color: #047857;
+    background: #ecfdf5;
+    border-color: #6ee7b7;
+}
+
+.nv-du3.xong i {
+    color: #059669;
 }
 
 .nv-tb {
-    min-height: 1.3em;
-    margin-top: 6px;
-    font-size: 0.9rem;
+    min-height: 1.2em;
+    margin: 8px 0 0;
+    font-size: 0.86rem;
     font-weight: 600;
 }
 
 .nv-tb.ok {
-    color: #178a5a;
+    color: #059669;
 }
 
 .nv-tb.loi,
 .nv-loi {
-    color: #c62828;
+    color: #dc2626;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 640px) {
+    .nv-khung {
+        padding: 15px 14px;
+        border-radius: 16px;
+        margin: 10px 0 16px;
+    }
+
+    .nv-khung::before {
+        width: 170px;
+        height: 110px;
+        background-size: 170px 110px;
+        opacity: 0.7;
+    }
+
     .nv-the {
         flex-wrap: wrap;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .nv-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 0.86rem;
+    }
+
+    .nv-giua {
+        flex: 1 1 calc(100% - 48px);
+    }
+
+    .nv-giua small {
+        white-space: normal;
     }
 
     .nv-phai {
-        flex-direction: row;
-        align-items: center;
         width: 100%;
-        justify-content: flex-end;
+        justify-content: space-between;
+        padding-top: 4px;
+        border-top: 1px dashed #e2e8f0;
+    }
+
+    .nv-du3 {
+        display: flex;
+        border-radius: 12px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .nv-tien i {
+    .nv-tien i,
+    .nv-the,
+    .nv-nut {
         transition: none;
     }
 }

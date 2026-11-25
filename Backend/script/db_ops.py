@@ -18,7 +18,7 @@ BANG_XEP_HANG = {
 KY_XEP_HANG = {"tong": "Tổng", "thang": "Tháng này"}
 
 # Các giá trị mon_chuyen hợp lệ (giữ cả môn cũ để không lỗi hồ sơ cũ nếu có)
-MON_CHUYEN_HOP_LE = {mon for _, mon in BANG_XEP_HANG.values()} | {"hoa", "sinh", "van", "anh"}
+MON_CHUYEN_HOP_LE = {mon for _, mon in BANG_XEP_HANG.values()} | {"hoa", "sinh", "van", "anh", "tin"}
 
 def thang_hien_tai():
     return date.today().strftime("%Y-%m")   # vd "2026-11"
@@ -47,7 +47,28 @@ def cong_diem_thang(conn, user_id, diem):
         "ON CONFLICT(user_id, thang) DO UPDATE SET diem = COALESCE(diem_thang.diem, 0) + excluded.diem",
         (user_id, thang_hien_tai(), diem))
 
+def dam_bao_cot_educoin():
+    """Đảm bảo cột users.educoin tồn tại trên DB cũ."""
+    conn = sqlite3.connect(DB_PATH)
+    cac_cot = [c[1] for c in conn.execute("PRAGMA table_info(users)")]
+    if cac_cot and 'educoin' not in cac_cot:
+        conn.execute("ALTER TABLE users ADD COLUMN educoin INTEGER DEFAULT 0")
+    conn.commit()
+    conn.close()
+
+def cong_diem_va_educoin(conn, user_id, diem, cong_thang=True):
+    """Cộng đồng thời score, educoin và tùy chọn điểm tháng (dùng chung connection)."""
+    if diem <= 0:
+        return
+    conn.execute(
+        "UPDATE users SET score = COALESCE(score, 0) + ?, educoin = COALESCE(educoin, 0) + ? WHERE id = ?",
+        (diem, diem, user_id),
+    )
+    if cong_thang:
+        cong_diem_thang(conn, user_id, diem)
+
 dam_bao_bang_thang()
+dam_bao_cot_educoin()
 
 # 1. Thêm tài khoản mới (Create)
 def add_user(username, email, mk, bio=""):
@@ -102,13 +123,14 @@ def delete_user(user_id):
 
 # 5. Sửa điểm người dùng theo ID
 def update_user_score(user_id, points):
+    if points <= 0:
+        return
     conn = sqlite3.connect(DB_PATH)
     try:
         cursor = conn.cursor()
         if not cursor.execute("SELECT 1 FROM users WHERE id = ?", (user_id,)).fetchone():
             return
-        cursor.execute('UPDATE users SET score = COALESCE(score, 0) + ? WHERE id = ?', (points, user_id))
-        cong_diem_thang(conn, user_id, points)   # cộng luôn vào bảng tháng
+        cong_diem_va_educoin(conn, user_id, points, cong_thang=True)
         conn.commit()
         print(f"Đã cộng thêm {points} điểm cho user ID {user_id}!")
     finally:
@@ -231,10 +253,13 @@ def get_my_rank(user_id, bang="khong-chuyen", ky="tong"):
     return kq
 
 # 8. Lưu môn chuyên của người dùng ('' = không thi chuyên)
-def update_mon_chuyen(user_id, mon):
+def update_mon_chuyen(user_id, mon, hoan_thanh_khao_sat=False):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute("UPDATE users SET mon_chuyen = ? WHERE id = ?", (mon, user_id))
+    if hoan_thanh_khao_sat:
+        cursor.execute("UPDATE users SET mon_chuyen = ?, da_khao_sat = 1 WHERE id = ?", (mon, user_id))
+    else:
+        cursor.execute("UPDATE users SET mon_chuyen = ? WHERE id = ?", (mon, user_id))
     conn.commit()
     conn.close()
 
@@ -243,7 +268,7 @@ def get_user(user_id):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     row = conn.execute(
-        "SELECT id, username, bio, score, streak, mon_chuyen, last_active_date, avatar, "
+        "SELECT id, username, bio, score, COALESCE(educoin, 0) AS educoin, streak, mon_chuyen, last_active_date, avatar, "
         "COALESCE(huy_hieu, '') AS huy_hieu, the_bao_ho "
         "FROM users WHERE id = ?", (user_id,)
     ).fetchone()
@@ -253,6 +278,7 @@ def get_user(user_id):
 
     u = dict(row)
     u['score'] = u['score'] or 0
+    u['educoin'] = u['educoin'] or 0
     u['mon_chuyen'] = u['mon_chuyen'] or ''
     u['avatar'] = u['avatar'] or ''
     u['huy_hieu'] = u['huy_hieu'] or ''

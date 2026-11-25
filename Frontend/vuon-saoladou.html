@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=3"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
+  <title>Vườn Saoladou - VnStarL</title>
+  <link rel="stylesheet" href="style.css?v=11" />
+  <link rel="stylesheet" href="style2.css" />
+  <link rel="stylesheet" href="style3.css" />
+  <link rel="stylesheet" href="vuon-saoladou.css?v=9" />
+</head>
+
+<body class="vuon-page" data-time="day">
+  <header id="header">
+    <div id="header-inner">
+      <section class="right">
+        <a href="index.html" id="logo">
+          <img src="img/logo.webp" alt="Logo" />
+          <span>Vn<span id="logo-span">StarL</span></span>
+        </a>
+      </section>
+      <button id="menu-btn" aria-label="Mở menu" aria-expanded="false">☰</button>
+
+      <ul id="nav" class="center">
+        <li id="nav-gioi-thieu">
+          <a href="index.html" id="link-gioi-thieu" title="Giới thiệu" aria-label="Giới thiệu">
+            <i class="fa-solid fa-house"></i><span class="nav-chu">Giới thiệu</span>
+          </a>
+        </li>
+        <li id="nav-bai-tap">
+          <a href="subjects.html" id="link-bai-tap" title="Bài tập" aria-label="Bài tập">
+            <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
+          </a>
+        </li>
+        <li id="nav-khoa-bang">
+          <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+            <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+          </a>
+        </li>
+        <li id="nav-xep-hang">
+          <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
+            <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+          </a>
+        </li>
+        <li id="nav-vuon-saoladou">
+          <a href="vuon-saoladou.html" id="link-vuon-saoladou" class="active" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+            <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="user-account-area">
+        <div id="auth-buttons">
+          <a href="login.html" class="auth-link">Đăng nhập</a>
+          <a href="register.html" class="auth-link">Đăng ký</a>
+        </div>
+        <div id="user-profile" class="hidden">
+          <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
+          <span class="username">Username</span>
+          <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main aria-label="Vườn Saoladou">
+    <div id="vuon-app" class="vuon-app">
+      <div id="vuon-loading" class="vuon-state-card" role="status" aria-live="polite">
+        <div class="vuon-spinner" aria-hidden="true"></div>
+        <p class="vuon-state-title">Đang mở cổng rừng Trường Sơn...</p>
+        <p class="vuon-state-sub">Chờ một chút để SaoLa chạy ra đón bạn nhé.</p>
+      </div>
+
+      <div id="vuon-login-cta" class="vuon-state-card hidden">
+        <div class="vuon-state-emoji" aria-hidden="true">🌿🦌</div>
+        <h1 class="vuon-state-title">Chào mừng đến Vườn Saoladou!</h1>
+        <p class="vuon-state-sub">
+          Đăng nhập để nuôi dưỡng SaoLa trong khu rừng suối mát, tích lũy EduCoin khi làm bài tập mà không lo tụt hạng BXH.
+        </p>
+        <div class="vuon-state-actions">
+          <a href="login.html" class="vuon-cta-btn">Đăng nhập ngay</a>
+          <a href="register.html" class="vuon-cta-btn vuon-cta-btn--ghost">Tạo tài khoản</a>
+        </div>
+      </div>
+
+      <div id="vuon-error" class="vuon-state-card hidden" role="alert">
+        <div class="vuon-state-emoji" aria-hidden="true">🌧️</div>
+        <h2 class="vuon-state-title">Chưa kết nối được tới khu rừng</h2>
+        <p id="vuon-error-msg" class="vuon-state-sub">Không tải được dữ liệu Vườn Saoladou. Vui lòng thử lại.</p>
+        <div class="vuon-state-actions">
+          <button type="button" id="vuon-retry-btn" class="vuon-cta-btn">Thử tải lại</button>
+          <button type="button" id="vuon-local-btn" class="vuon-cta-btn vuon-cta-btn--ghost hidden">Dùng Backend Local (127.0.0.1:5000)</button>
+        </div>
+      </div>
+
+      <section id="vuon-stage" class="vuon-stage hidden" data-time="day" aria-label="Không gian Vườn Saoladou">
+        <!-- 2 ĐẢO KÍNH MỜ NỔI PHÍA TRÊN (FLOATING TOP HUD ISLANDS) -->
+        <div class="vuon-hud" role="region" aria-label="Thông tin khu vườn">
+          <!-- Đảo Trái: Trạng thái sức khỏe + 3 thanh chỉ số -->
+          <div class="vuon-hud-island vuon-hud-island--stats">
+            <div class="vuon-status-row">
+              <span id="vuon-health-pill" class="vuon-health-pill is-healthy" role="status">
+                ✨ Khỏe mạnh rạng rỡ
+              </span>
+            </div>
+
+            <div class="vuon-stats-row">
+              <div class="vuon-stat" title="Độ no bụng">
+                <div class="vuon-stat-head">
+                  <span>🌿 No bụng</span>
+                  <b id="vuon-val-no">80%</b>
+                </div>
+                <div class="vuon-stat-track">
+                  <div id="vuon-bar-no" class="vuon-stat-fill vuon-stat-fill--no" style="width: 80%"></div>
+                </div>
+              </div>
+              <div class="vuon-stat" title="Độ vui vẻ">
+                <div class="vuon-stat-head">
+                  <span>💛 Vui vẻ</span>
+                  <b id="vuon-val-vui">80%</b>
+                </div>
+                <div class="vuon-stat-track">
+                  <div id="vuon-bar-vui" class="vuon-stat-fill vuon-stat-fill--vui" style="width: 80%"></div>
+                </div>
+              </div>
+              <div class="vuon-stat" title="Độ sạch sẽ">
+                <div class="vuon-stat-head">
+                  <span>💧 Sạch sẽ</span>
+                  <b id="vuon-val-sach">80%</b>
+                </div>
+                <div class="vuon-stat-track">
+                  <div id="vuon-bar-sach" class="vuon-stat-fill vuon-stat-fill--sach" style="width: 80%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Đảo Phải: EduCoin + Chuyển Vườn/Shop + Cụm Ngày/Hoàng hôn/Đêm -->
+          <div class="vuon-hud-island vuon-hud-island--controls">
+            <div class="vuon-hud-ctrl-top">
+              <div class="vuon-coin-pill">
+                <img src="img/pet/educoin.webp" alt="EduCoin" class="vuon-coin-ico" />
+                <strong id="vuon-educoin">0</strong>
+                <span>EduCoin</span>
+              </div>
+
+              <div class="vuon-mode-tabs" role="tablist" aria-label="Chuyển chế độ Vườn và Cửa hàng">
+                <button
+                  type="button"
+                  id="tab-btn-vuon"
+                  class="vuon-mode-btn is-active"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="vuon-scene"
+                  data-tab="vuon"
+                >
+                  🌿 Vườn
+                </button>
+                <button
+                  type="button"
+                  id="tab-btn-shop"
+                  class="vuon-mode-btn"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="vuon-shop"
+                  data-tab="shop"
+                >
+                  🛒 Shop
+                </button>
+              </div>
+            </div>
+
+            <div class="vuon-hud-ctrl-sub">
+              <div id="vuon-bxh-sub" class="vuon-bxh-sub">BXH: 0đ · tiêu không tụt hạng</div>
+              <div id="vuon-time-switch" class="vuon-time-switch" role="group" aria-label="Chế độ ánh sáng khu rừng">
+                <button type="button" class="vuon-time-btn is-active" data-time-mode="auto" title="Tự động theo giờ máy">Tự động</button>
+                <button type="button" class="vuon-time-btn" data-time-mode="day" title="Ban ngày">☀️</button>
+                <button type="button" class="vuon-time-btn" data-time-mode="sunset" title="Hoàng hôn">🌅</button>
+                <button type="button" class="vuon-time-btn" data-time-mode="night" title="Ban đêm">🌙</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="vuon-toast-banner" class="vuon-toast-banner hidden" role="status" aria-live="polite"></div>
+
+        <!-- CẢNH RỪNG TRÀN TRỌN 100% KHUNG SÂN KHẤU -->
+        <div id="vuon-scene" class="vuon-scene" role="tabpanel" aria-labelledby="tab-btn-vuon">
+          <div id="vuon-arena" class="vuon-arena">
+            <!-- THẾ GIỚI RỪNG HỒ TRƯỜNG SƠN 2.5D VECTOR -->
+            <div id="vuon-world" class="vuon-world">
+              <!-- Lớp 1: Bầu trời, Mặt trời/Mặt trăng, Sao & Mây trôi -->
+              <div class="vuon-sky" aria-hidden="true">
+                <div class="vuon-sky-sunbeam"></div>
+                <div class="vuon-celestial">
+                  <div class="vuon-sun-glow"></div>
+                  <div class="vuon-sun-core"></div>
+                  <div class="vuon-moon-core"></div>
+                </div>
+                <div class="vuon-stars">
+                  <span style="left:8%;top:12%;--d:0s;--s:3px"></span>
+                  <span style="left:16%;top:22%;--d:0.7s;--s:2px"></span>
+                  <span style="left:24%;top:9%;--d:1.3s;--s:2.5px"></span>
+                  <span style="left:33%;top:18%;--d:0.4s;--s:2px"></span>
+                  <span style="left:41%;top:11%;--d:1.9s;--s:3px"></span>
+                  <span style="left:49%;top:24%;--d:0.9s;--s:2px"></span>
+                  <span style="left:57%;top:8%;--d:1.5s;--s:2.5px"></span>
+                  <span style="left:64%;top:19%;--d:0.2s;--s:2px"></span>
+                  <span style="left:72%;top:13%;--d:1.1s;--s:3px"></span>
+                  <span style="left:82%;top:23%;--d:0.6s;--s:2px"></span>
+                  <span style="left:90%;top:10%;--d:1.7s;--s:2.5px"></span>
+                  <span style="left:94%;top:25%;--d:0.3s;--s:2px"></span>
+                  <span style="left:12%;top:31%;--d:2.1s;--s:2px"></span>
+                  <span style="left:29%;top:28%;--d:1.2s;--s:2.5px"></span>
+                  <span style="left:53%;top:15%;--d:0.5s;--s:2px"></span>
+                  <span style="left:68%;top:29%;--d:1.6s;--s:2px"></span>
+                  <span style="left:78%;top:10%;--d:2.2s;--s:2.5px"></span>
+                  <span style="left:86%;top:32%;--d:0.8s;--s:2px"></span>
+                </div>
+                <div class="vuon-clouds">
+                  <svg class="vuon-cloud vuon-cloud--1" viewBox="0 0 180 68" fill="none">
+                    <path d="M26 56h126c13 0 22-8 22-19 0-10-8-18-18-19-3-11-14-18-27-18-11 0-20 5-25 13-5-4-11-6-18-6-15 0-27 11-28 25-11 1-20 9-20 18 0 4-6 6-12 6Z" fill="var(--cloud-main)"/>
+                    <path d="M36 56h116c10 0 18-5 20-12-16 4-38 5-68 5-31 0-53-1-68-5 1 7 8 12 0 12Z" fill="var(--cloud-shade)" opacity="0.45"/>
+                  </svg>
+                  <svg class="vuon-cloud vuon-cloud--2" viewBox="0 0 150 56" fill="none">
+                    <path d="M20 48h108c11 0 19-7 19-16 0-8-6-15-15-16-3-10-12-16-24-16-10 0-18 5-22 12-4-3-9-5-15-5-13 0-23 9-24 21-9 1-16 8-16 15 0 3-5 5-11 5Z" fill="var(--cloud-main)"/>
+                  </svg>
+                  <svg class="vuon-cloud vuon-cloud--3" viewBox="0 0 130 48" fill="none">
+                    <path d="M18 42h92c10 0 16-6 16-14 0-7-5-13-13-14-3-8-10-14-20-14-9 0-16 4-19 10-4-2-8-4-13-4-11 0-19 8-20 18-8 1-14 7-14 13 0 2-4 5-9 5Z" fill="var(--cloud-main)"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Lớp 2: Dãy núi Trường Sơn 3 tầng & Rừng hậu cảnh 2.5D -->
+              <svg class="vuon-horizon-svg" viewBox="0 0 1440 360" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+                <defs>
+                  <linearGradient id="vMtnFar" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="var(--mtn-far-top)"/>
+                    <stop offset="100%" stop-color="var(--mtn-far-bot)"/>
+                  </linearGradient>
+                  <linearGradient id="vMtnMid" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="var(--mtn-mid-top)"/>
+                    <stop offset="100%" stop-color="var(--mtn-mid-bot)"/>
+                  </linearGradient>
+                  <linearGradient id="vMtnNear" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="var(--mtn-near-top)"/>
+                    <stop offset="100%" stop-color="var(--mtn-near-bot)"/>
+                  </linearGradient>
+                  <linearGradient id="vMist" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="var(--mist-color)" stop-opacity="0"/>
+                    <stop offset="65%" stop-color="var(--mist-color)" stop-opacity="0.42"/>
+                    <stop offset="100%" stop-color="var(--mist-color)" stop-opacity="0.72"/>
+                  </linearGradient>
+                </defs>
+                <path d="M-20 360 L-20 220 Q110 118 245 162 Q380 86 540 168 Q680 124 830 176 Q1010 74 1190 156 Q1330 112 1460 185 L1460 360 Z" fill="url(#vMtnFar)"/>
+                <path d="M245 162 Q380 86 458 134 L410 218 L245 162 Z" fill="#ffffff" opacity="0.1"/>
+                <path d="M1010 112 Q1080 96 1190 156 L1120 228 L980 160 Z" fill="#ffffff" opacity="0.09"/>
+                <path d="M-20 360 L-20 248 Q160 162 340 222 Q530 144 745 230 Q935 168 1130 224 Q1300 154 1460 228 L1460 360 Z" fill="url(#vMtnMid)"/>
+                <rect x="0" y="195" width="1440" height="165" fill="url(#vMist)"/>
+                <path d="M-20 360 L-20 284 Q90 250 185 276 Q290 246 410 282 Q550 256 680 284 Q830 244 980 278 Q1140 248 1280 276 Q1375 256 1460 278 L1460 360 Z" fill="url(#vMtnNear)"/>
+                <g fill="var(--forest-tree)" opacity="0.92">
+                  <circle cx="48" cy="286" r="34"/><circle cx="92" cy="292" r="28"/><circle cx="140" cy="294" r="32"/>
+                  <circle cx="215" cy="288" r="26"/><circle cx="268" cy="284" r="34"/><circle cx="322" cy="294" r="28"/>
+                  <circle cx="385" cy="292" r="26"/><circle cx="456" cy="296" r="30"/><circle cx="520" cy="292" r="26"/>
+                  <circle cx="610" cy="296" r="32"/><circle cx="672" cy="294" r="26"/><circle cx="755" cy="288" r="34"/>
+                  <circle cx="822" cy="294" r="28"/><circle cx="892" cy="286" r="35"/><circle cx="956" cy="292" r="30"/>
+                  <circle cx="1042" cy="288" r="32"/><circle cx="1115" cy="294" r="28"/><circle cx="1192" cy="286" r="36"/>
+                  <circle cx="1265" cy="290" r="30"/><circle cx="1345" cy="284" r="34"/><circle cx="1410" cy="292" r="32"/>
+                </g>
+              </svg>
+
+              <!-- Lớp 3A: Thảm cỏ 2.5D + Rừng cây bờ trên trái -->
+              <div class="vuon-zone vuon-zone-co" data-zone="co" title="Bấm vào bãi cỏ để SaoLa chạy tới">
+                <svg class="vuon-meadow-svg" viewBox="0 0 1200 280" preserveAspectRatio="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="vGrassTop" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--grass-1)"/>
+                      <stop offset="48%" stop-color="var(--grass-2)"/>
+                      <stop offset="100%" stop-color="var(--grass-3)"/>
+                    </linearGradient>
+                    <linearGradient id="vHillBack" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--grass-hill)"/>
+                      <stop offset="100%" stop-color="var(--grass-2)"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0 44 Q280 4 610 30 Q930 56 1200 18 L1200 280 L0 280 Z" fill="url(#vHillBack)"/>
+                  <path d="M0 58 Q360 22 720 48 Q980 66 1200 34 L1200 280 L0 280 Z" fill="url(#vGrassTop)"/>
+                  <ellipse cx="680" cy="155" rx="330" ry="62" fill="var(--sun-patch)" opacity="0.24"/>
+                  <!-- Lối đá cuội nhỏ dẫn từ mép hồ tới bãi cỏ & gốc cây -->
+                  <g fill="var(--stone-path)" opacity="0.62">
+                    <ellipse cx="492" cy="186" rx="22" ry="7.5"/>
+                    <ellipse cx="546" cy="172" rx="18" ry="6.5"/>
+                    <ellipse cx="604" cy="164" rx="20" ry="7"/>
+                    <ellipse cx="662" cy="156" rx="17" ry="6"/>
+                    <ellipse cx="724" cy="150" rx="21" ry="7"/>
+                  </g>
+                </svg>
+
+                <!-- Cụm cây lá rộng, bụi cây & hoa dại góc trên-trái phía sau hồ nước -->
+                <svg class="vuon-far-bank-svg" viewBox="0 0 540 200" preserveAspectRatio="xMinYMax meet" aria-hidden="true">
+                  <g class="vuon-far-trees">
+                    <ellipse cx="72" cy="112" rx="34" ry="8" fill="#0f172a" opacity="0.18"/>
+                    <path d="M66 110 L68 66 L77 66 L80 110 Z" fill="var(--trunk-mid)"/>
+                    <circle cx="56" cy="58" r="24" fill="var(--leaf-dark)"/>
+                    <circle cx="88" cy="60" r="22" fill="var(--leaf-dark)"/>
+                    <circle cx="72" cy="44" r="27" fill="var(--leaf-mid-1)"/>
+                    <ellipse cx="68" cy="36" rx="18" ry="12" fill="var(--leaf-top-1)" opacity="0.86"/>
+
+                    <ellipse cx="152" cy="96" rx="28" ry="7" fill="#0f172a" opacity="0.16"/>
+                    <path d="M148 95 L150 66 L156 66 L158 95 Z" fill="var(--trunk-mid)"/>
+                    <circle cx="139" cy="58" r="19" fill="var(--leaf-dark)"/>
+                    <circle cx="165" cy="60" r="18" fill="var(--leaf-mid-2)"/>
+                    <circle cx="152" cy="46" r="22" fill="var(--leaf-mid-1)"/>
+                    <ellipse cx="149" cy="39" rx="14" ry="9" fill="var(--leaf-top-2)" opacity="0.82"/>
+
+                    <ellipse cx="228" cy="94" rx="36" ry="11" fill="var(--leaf-dark)" opacity="0.9"/>
+                    <circle cx="210" cy="84" r="16" fill="var(--leaf-mid-2)"/>
+                    <circle cx="230" cy="78" r="20" fill="var(--leaf-mid-1)"/>
+                    <circle cx="250" cy="86" r="15" fill="var(--leaf-mid-2)"/>
+                    <ellipse cx="228" cy="73" rx="13" ry="7" fill="var(--leaf-top-1)" opacity="0.72"/>
+
+                    <g>
+                      <circle cx="108" cy="108" r="3.4" fill="#fef08a"/>
+                      <circle cx="118" cy="113" r="3" fill="#fbcfe8"/>
+                      <circle cx="99" cy="116" r="2.8" fill="#ffffff"/>
+                      <circle cx="192" cy="104" r="3.2" fill="#fef08a"/>
+                      <circle cx="202" cy="109" r="2.8" fill="#ffffff"/>
+                      <circle cx="282" cy="98" r="3.2" fill="#fbcfe8"/>
+                      <circle cx="294" cy="94" r="2.6" fill="#fef08a"/>
+                    </g>
+                    <g>
+                      <rect x="174" y="102" width="4" height="8" rx="1.5" fill="#fef3c7"/>
+                      <path d="M169 103 C169 96 183 96 183 103 Z" fill="#fb7185"/>
+                      <circle cx="174" cy="100" r="1.2" fill="#ffffff"/>
+                      <circle cx="179" cy="101" r="1" fill="#ffffff"/>
+                    </g>
+                  </g>
+                </svg>
+
+                <!-- Khóm cỏ đung đưa & hoa dại -->
+                <div class="vuon-grass-tufts" aria-hidden="true">
+                  <svg class="vuon-tuft" style="left:48%;bottom:26%" viewBox="0 0 36 22" fill="none">
+                    <path d="M18 20c-1-8-6-13-11-15 4 5 5 10 6 15m5 0c0-9 2-15 5-19 0 6-1 13-1 19m2 0c2-7 6-11 10-13-3 5-5 9-6 13" stroke="var(--tuft-color)" stroke-width="2.4" stroke-linecap="round"/>
+                  </svg>
+                  <svg class="vuon-tuft vuon-tuft--alt" style="left:58%;bottom:54%" viewBox="0 0 36 22" fill="none">
+                    <path d="M18 20c-1-8-6-13-11-15 4 5 5 10 6 15m5 0c0-9 2-15 5-19 0 6-1 13-1 19m2 0c2-7 6-11 10-13-3 5-5 9-6 13" stroke="var(--tuft-color)" stroke-width="2.2" stroke-linecap="round"/>
+                    <circle cx="10" cy="8" r="2.4" fill="#fef08a"/>
+                    <circle cx="27" cy="9" r="2.2" fill="#ffffff"/>
+                  </svg>
+                  <svg class="vuon-tuft" style="left:71%;bottom:16%" viewBox="0 0 36 22" fill="none">
+                    <path d="M18 20c-1-8-6-13-11-15 4 5 5 10 6 15m5 0c0-9 2-15 5-19 0 6-1 13-1 19m2 0c2-7 6-11 10-13-3 5-5 9-6 13" stroke="var(--tuft-color)" stroke-width="2.4" stroke-linecap="round"/>
+                    <circle cx="23" cy="6" r="2.3" fill="#fbcfe8"/>
+                  </svg>
+                  <svg class="vuon-tuft vuon-tuft--alt" style="left:36%;bottom:62%" viewBox="0 0 36 22" fill="none">
+                    <path d="M18 20c-1-8-6-13-11-15 4 5 5 10 6 15m5 0c0-9 2-15 5-19 0 6-1 13-1 19" stroke="var(--tuft-color)" stroke-width="2.2" stroke-linecap="round"/>
+                    <circle cx="14" cy="9" r="2.2" fill="#ffffff"/>
+                  </svg>
+                </div>
+                <div id="vuon-ping-layer" class="vuon-ping-layer" aria-hidden="true"></div>
+              </div>
+
+              <!-- Lớp 3B: Hồ Nước Trường Sơn 2.5D nằm yên bình trên thảm cỏ bên trái (Tương tác tắm hồ) -->
+              <button type="button" class="vuon-zone vuon-zone-song" data-zone="song" aria-label="Tắm hồ Trường Sơn">
+                <svg class="vuon-song-svg" viewBox="0 0 460 220" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                  <defs>
+                    <radialGradient id="vLakeGrad" cx="46%" cy="38%" r="64%">
+                      <stop offset="0%" stop-color="var(--water-1)"/>
+                      <stop offset="56%" stop-color="var(--water-2)"/>
+                      <stop offset="100%" stop-color="var(--water-3)"/>
+                    </radialGradient>
+                    <linearGradient id="vBankGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--bank-top)"/>
+                      <stop offset="100%" stop-color="var(--bank-bot)"/>
+                    </linearGradient>
+                  </defs>
+                  <g class="vuon-song-hit">
+                    <!-- Bóng bờ cỏ ôm lấy lòng hồ -->
+                    <ellipse cx="230" cy="122" rx="212" ry="86" fill="#0f172a" opacity="0.14"/>
+                    <!-- Bờ đất cát mịn bao quanh mặt hồ -->
+                    <path d="M32 122 C26 70 112 34 228 34 C346 34 432 66 428 118 C424 172 344 202 226 202 C110 202 38 174 32 122 Z" fill="url(#vBankGrad)"/>
+                    <!-- Lòng hồ xanh ngọc phân lớp (.vuon-lake-core dùng để JS định tâm bơi chuẩn 100%) -->
+                    <ellipse class="vuon-lake-core vuon-lake-water" cx="230" cy="118" rx="184" ry="72" fill="url(#vLakeGrad)"/>
+                    <!-- Viền nông ven bờ nước -->
+                    <ellipse cx="230" cy="116" rx="166" ry="60" fill="none" stroke="var(--water-shine)" stroke-width="2" opacity="0.28"/>
+                    <!-- Ánh phản chiếu bầu trời / hoàng hôn / ánh trăng trên mặt hồ -->
+                    <ellipse cx="196" cy="94" rx="88" ry="22" fill="var(--water-shine)" opacity="0.26"/>
+                    <ellipse cx="288" cy="136" rx="54" ry="12" fill="var(--water-shine)" opacity="0.18"/>
+                    <!-- Các vòng gợn sóng đồng tâm dịu êm giữa mặt hồ -->
+                    <ellipse class="vuon-lake-ripple vuon-lake-ripple--1" cx="230" cy="118" rx="64" ry="22" fill="none" stroke="#ffffff" stroke-width="2.4" opacity="0.58"/>
+                    <ellipse class="vuon-lake-ripple vuon-lake-ripple--2" cx="230" cy="118" rx="112" ry="38" fill="none" stroke="#e0f2fe" stroke-width="2" opacity="0.45"/>
+                    <!-- Tia gợn sóng ngắn lung linh -->
+                    <path class="vuon-water-flow vuon-water-flow--1" d="M126 106 Q178 96 238 104 Q296 112 348 102" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+                    <path class="vuon-water-flow vuon-water-flow--2" d="M112 138 Q184 148 258 140 Q314 134 360 142" fill="none" stroke="#e0f2fe" stroke-width="2.2" stroke-linecap="round" opacity="0.48"/>
+                    <!-- Đá cuội phủ rêu ven bờ hồ -->
+                    <g>
+                      <ellipse cx="76" cy="156" rx="22" ry="9.5" fill="var(--rock-dark)"/>
+                      <ellipse cx="74" cy="152" rx="17" ry="6.5" fill="var(--rock-mid)"/>
+                      <path d="M64 149 Q74 144 84 149" fill="none" stroke="#4ade80" stroke-width="2.8" stroke-linecap="round"/>
+                      <ellipse cx="104" cy="170" rx="13" ry="6" fill="var(--rock-mid)"/>
+                      <ellipse cx="378" cy="154" rx="18" ry="8" fill="var(--rock-dark)"/>
+                      <ellipse cx="376" cy="151" rx="13" ry="5" fill="var(--rock-lit)" opacity="0.8"/>
+                      <ellipse cx="394" cy="140" rx="11" ry="5" fill="var(--rock-mid)"/>
+                      <ellipse cx="94" cy="68" rx="15" ry="6.5" fill="var(--rock-mid)"/>
+                    </g>
+                    <!-- Khóm lau sậy & bông sậy mọc ven mép trái hồ -->
+                    <g>
+                      <path d="M46 116 C40 94 36 80 31 66 M54 118 C52 94 53 80 56 64 M62 118 C66 100 72 88 78 78" stroke="var(--tuft-color)" stroke-width="2.6" stroke-linecap="round"/>
+                      <ellipse cx="31" cy="64" rx="2.8" ry="6.5" transform="rotate(-16 31 64)" fill="#78350f"/>
+                      <ellipse cx="56" cy="62" rx="2.8" ry="6.5" transform="rotate(8 56 62)" fill="#78350f"/>
+                      <path d="M398 92 C404 78 408 68 414 58 M406 94 C412 82 418 76 424 70" stroke="var(--tuft-color)" stroke-width="2.4" stroke-linecap="round"/>
+                    </g>
+                  </g>
+                </svg>
+                <span id="vuon-badge-song" class="vuon-zone-badge">💧 Tắm hồ</span>
+              </button>
+
+              <!-- Lớp 3C: Tảng đá sưởi nắng 2.5D (Bên phải bãi cỏ) -->
+              <button type="button" class="vuon-zone vuon-zone-da" data-zone="da" aria-label="Lên tảng đá ngắm cảnh">
+                <svg class="vuon-da-svg" viewBox="0 0 184 116" fill="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="vRockMain" x1="0" y1="0" x2="0.2" y2="1">
+                      <stop offset="0%" stop-color="var(--rock-lit)"/>
+                      <stop offset="55%" stop-color="var(--rock-mid)"/>
+                      <stop offset="100%" stop-color="var(--rock-dark)"/>
+                    </linearGradient>
+                  </defs>
+                  <ellipse cx="92" cy="98" rx="76" ry="14" fill="#0f172a" opacity="0.24"/>
+                  <path d="M118 94 C118 72 134 62 152 66 C168 70 174 84 170 95 C160 100 128 100 118 94 Z" fill="var(--rock-dark)"/>
+                  <path d="M124 84 C128 70 144 65 158 72 C152 80 136 84 124 84 Z" fill="var(--rock-lit)" opacity="0.65"/>
+                  <path d="M18 92 C14 68 30 38 66 32 C98 27 132 36 146 60 C154 74 152 92 140 97 C112 103 44 103 18 92 Z" fill="url(#vRockMain)"/>
+                  <path d="M30 62 C36 42 64 34 94 35 C118 36 134 45 138 58 C122 65 56 68 30 62 Z" fill="#ffffff" opacity="0.22"/>
+                  <path d="M36 52 C48 40 76 38 92 46 C80 54 50 56 36 52 Z" fill="#4ade80" opacity="0.82"/>
+                  <path d="M104 43 C114 40 126 44 132 52 C122 54 110 50 104 43 Z" fill="#22c55e" opacity="0.72"/>
+                  <path d="M22 92 C14 82 10 74 12 66 M22 92 C24 80 28 72 34 68" stroke="#15803d" stroke-width="2.6" stroke-linecap="round"/>
+                </svg>
+                <span class="vuon-zone-badge">🪨 Ngắm cảnh</span>
+              </button>
+
+              <!-- Lớp 3D: Cây cổ thụ Trường Sơn 2.5D bên phải (Tương tác nghỉ bóng râm) -->
+              <button type="button" class="vuon-zone vuon-zone-cay" data-zone="cay" aria-label="Nghỉ dưới bóng cây cổ thụ">
+                <svg class="vuon-cay-svg" viewBox="0 0 280 330" fill="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="vTrunk" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stop-color="var(--trunk-lit)"/>
+                      <stop offset="55%" stop-color="var(--trunk-mid)"/>
+                      <stop offset="100%" stop-color="var(--trunk-dark)"/>
+                    </linearGradient>
+                    <linearGradient id="vCanopyMid" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--leaf-mid-1)"/>
+                      <stop offset="100%" stop-color="var(--leaf-mid-2)"/>
+                    </linearGradient>
+                    <linearGradient id="vCanopyTop" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--leaf-top-1)"/>
+                      <stop offset="100%" stop-color="var(--leaf-top-2)"/>
+                    </linearGradient>
+                  </defs>
+                  <ellipse cx="148" cy="300" rx="108" ry="22" fill="#0f172a" opacity="0.22"/>
+                  <path d="M138 158 C136 212 130 256 106 298 C124 303 142 301 154 294 C168 302 186 303 204 297 C180 262 174 212 174 158 Z" fill="url(#vTrunk)"/>
+                  <!-- Cành vươn trái đỡ đèn lồng đom đóm -->
+                  <path d="M144 176 C118 164 92 162 66 172" stroke="var(--trunk-mid)" stroke-width="14" stroke-linecap="round"/>
+                  <path d="M144 172 C120 161 94 159 68 168" stroke="var(--trunk-lit)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+                  <!-- Cành vươn phải đỡ chuông gió trúc -->
+                  <path d="M170 178 C196 168 220 168 242 178" stroke="var(--trunk-mid)" stroke-width="11" stroke-linecap="round"/>
+                  <path d="M150 184 C149 218 146 250 140 282 M164 196 C165 224 168 254 176 280" stroke="var(--trunk-dark)" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+                  <g class="vuon-tree-canopy">
+                    <circle cx="96" cy="154" r="56" fill="var(--leaf-dark)"/>
+                    <circle cx="164" cy="158" r="64" fill="var(--leaf-dark)"/>
+                    <circle cx="218" cy="148" r="52" fill="var(--leaf-dark)"/>
+                    <circle cx="88" cy="134" r="54" fill="url(#vCanopyMid)"/>
+                    <circle cx="154" cy="126" r="68" fill="url(#vCanopyMid)"/>
+                    <circle cx="216" cy="132" r="54" fill="url(#vCanopyMid)"/>
+                    <circle cx="132" cy="84" r="56" fill="url(#vCanopyMid)"/>
+                    <circle cx="192" cy="86" r="50" fill="url(#vCanopyMid)"/>
+                    <ellipse cx="132" cy="68" rx="44" ry="30" fill="url(#vCanopyTop)" opacity="0.92"/>
+                    <ellipse cx="190" cy="74" rx="36" ry="24" fill="url(#vCanopyTop)" opacity="0.86"/>
+                    <ellipse cx="84" cy="116" rx="34" ry="22" fill="url(#vCanopyTop)" opacity="0.78"/>
+                    <path d="M84 186 Q78 210 86 232 M102 184 Q108 202 102 218" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+                    <circle cx="86" cy="232" r="3" fill="#86efac"/>
+                    <circle cx="118" cy="74" r="3.5" fill="#fef08a" opacity="0.9"/>
+                    <circle cx="176" cy="96" r="3" fill="#fde68a" opacity="0.85"/>
+                    <circle cx="92" cy="126" r="3" fill="#ffffff" opacity="0.8"/>
+                  </g>
+                </svg>
+                <span id="vuon-badge-cay" class="vuon-zone-badge">🌳 Nghỉ râm</span>
+              </button>
+
+              <!-- Lớp 4: Đom đóm đêm & Lá dương xỉ tiền cảnh -->
+              <div class="vuon-night-fireflies" aria-hidden="true">
+                <span style="left:14%;bottom:36%;--d:0s"></span>
+                <span style="left:28%;bottom:48%;--d:1.1s"></span>
+                <span style="left:46%;bottom:42%;--d:0.5s"></span>
+                <span style="left:64%;bottom:52%;--d:1.7s"></span>
+                <span style="left:79%;bottom:46%;--d:0.8s"></span>
+                <span style="left:88%;bottom:32%;--d:2.1s"></span>
+              </div>
+              <svg class="vuon-fg-fern vuon-fg-fern--left" viewBox="0 0 110 90" fill="none" aria-hidden="true">
+                <path d="M0 90 C18 68 42 52 72 44 C46 58 26 72 14 90 Z" fill="var(--leaf-dark)" opacity="0.75"/>
+                <path d="M0 78 C24 52 54 34 94 28 C60 44 34 62 12 86 Z" fill="var(--leaf-mid-2)" opacity="0.82"/>
+                <path d="M-4 58 C18 32 42 18 72 10 C46 26 24 44 4 68 Z" fill="var(--leaf-top-2)" opacity="0.72"/>
+              </svg>
+              <svg class="vuon-fg-fern vuon-fg-fern--right" viewBox="0 0 110 90" fill="none" aria-hidden="true">
+                <path d="M110 90 C92 68 68 52 38 44 C64 58 84 72 96 90 Z" fill="var(--leaf-dark)" opacity="0.75"/>
+                <path d="M110 78 C86 52 56 34 16 28 C50 44 76 62 98 86 Z" fill="var(--leaf-mid-2)" opacity="0.82"/>
+                <path d="M114 58 C92 32 68 18 38 10 C64 26 86 44 106 68 Z" fill="var(--leaf-top-2)" opacity="0.72"/>
+              </svg>
+            </div>
+
+            <div id="vuon-decor-layer" class="vuon-decor-layer"></div>
+
+            <div class="vuon-pet-wrap" id="vuon-pet-wrap">
+              <div id="vuon-speech" class="vuon-speech hidden" role="status" aria-live="polite"></div>
+              <div id="vuon-float-layer" class="vuon-float-layer" aria-hidden="true"></div>
+              <!-- Hiệu ứng môi trường động quanh SaoLa (sóng nước tắm hồ / Zzz ngủ nghỉ) -->
+              <div id="vuon-env-fx" class="vuon-env-fx" aria-hidden="true">
+                <div class="vuon-swim-fx">
+                  <span class="vuon-ripple vuon-ripple--1"></span>
+                  <span class="vuon-ripple vuon-ripple--2"></span>
+                  <span class="vuon-drop vuon-drop--1"></span>
+                  <span class="vuon-drop vuon-drop--2"></span>
+                  <span class="vuon-drop vuon-drop--3"></span>
+                  <span class="vuon-drop vuon-drop--4"></span>
+                </div>
+                <div class="vuon-rest-fx">
+                  <span class="vuon-zzz vuon-zzz--1">z</span>
+                  <span class="vuon-zzz vuon-zzz--2">Z</span>
+                  <span class="vuon-zzz vuon-zzz--3">z</span>
+                  <span class="vuon-fall-leaf vuon-fall-leaf--1">🍃</span>
+                  <span class="vuon-fall-leaf vuon-fall-leaf--2">🍃</span>
+                </div>
+              </div>
+              <div class="vuon-pet-shadow" aria-hidden="true"></div>
+              <button
+                type="button"
+                id="vuon-pet-btn"
+                class="vuon-pet-btn"
+                aria-label="Vuốt ve SaoLa"
+              >
+                <span id="vuon-pet-sprite" class="vuon-pet-sprite" aria-hidden="true"></span>
+                <span id="vuon-pet-fx" class="vuon-pet-fx" aria-hidden="true"></span>
+                <span id="vuon-pet-sick-fx" class="vuon-pet-sick-fx hidden" aria-hidden="true"></span>
+              </button>
+              <div id="vuon-pet-hint" class="vuon-pet-hint">Chạm để vuốt ve · Còn 3/3 lượt vui vẻ</div>
+            </div>
+          </div>
+
+          <!-- KHAY TÚI ĐỒ KÍNH MỜ NỔI Ở ĐÁY + NÚT THU GỌN 1 CHẠM -->
+          <section id="vuon-dock" class="vuon-dock" aria-label="Túi đồ và vật phẩm trong vườn">
+            <div class="vuon-dock-top">
+              <div id="vuon-dock-filters" class="vuon-filter-pills" role="tablist" aria-label="Lọc túi đồ"></div>
+              <div class="vuon-dock-actions">
+                <span id="vuon-dock-tip" class="vuon-dock-tip">Bấm 1 chạm để dùng hoặc bật/tắt</span>
+                <button type="button" id="vuon-dock-toggle" class="vuon-dock-toggle" aria-expanded="true" title="Thu gọn hoặc mở khay túi đồ">
+                  🎒 Thu gọn
+                </button>
+              </div>
+            </div>
+            <div id="vuon-dock-items" class="vuon-dock-items"></div>
+          </section>
+        </div>
+
+        <section id="vuon-shop" class="vuon-shop hidden" role="tabpanel" aria-labelledby="tab-btn-shop">
+          <div class="vuon-shop-head">
+            <div>
+              <h2 class="vuon-shop-title">Cửa Hàng Rừng Trường Sơn</h2>
+              <p class="vuon-shop-sub">Dùng EduCoin mua thực vật, chăm sóc, đồ chơi &amp; đồ trang trí cho khu vườn của SaoLa.</p>
+            </div>
+            <div id="vuon-shop-filters" class="vuon-filter-pills" role="tablist" aria-label="Danh mục cửa hàng"></div>
+          </div>
+          <div id="vuon-shop-body" class="vuon-shop-body"></div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <script src="script.js?v=17"></script>
+  <script src="vuon-saoladou.js?v=9"></script>
+</body>
+
+</html>

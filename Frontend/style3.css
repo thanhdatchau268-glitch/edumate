@@ -23,7 +23,8 @@
   margin-top: 12px;
   background: var(--nen);
   color: var(--chu);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow: 0 2px 6px rgba(27, 42, 65, 0.05);
 }
 
@@ -48,6 +49,16 @@
   border-top: 1px solid var(--vien);
   color: var(--chu);
   line-height: 1.8;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.noi-dung-ly-thuyet .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  padding: 6px 0;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Đoạn văn trong lý thuyết */
@@ -124,7 +135,9 @@
 
 /* Phần nội dung lý thuyết: dài quá thì cuộn bên trong ô */
 .modal-hop .noi-dung-ly-thuyet {
+  overflow-x: auto;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 16px 20px;
   border-top: none;
 }

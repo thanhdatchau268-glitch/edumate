@@ -12,7 +12,7 @@ from datetime import date, datetime, timedelta
 
 from flask import Blueprint, jsonify, request
 
-from db_ops import DB_PATH, streak_hien_thi, cong_diem_thang
+from db_ops import DB_PATH, streak_hien_thi, cong_diem_va_educoin
 from huy_hieu import kiem_tra_huy_hieu
 
 qua_bp = Blueprint('qua', __name__)
@@ -21,6 +21,7 @@ qua_bp = Blueprint('qua', __name__)
 CHU_KY = 7                 # cứ 7 lần điểm danh thì được 1 lượt quay
 TOI_DA_BAO_HO = 3          # giữ tối đa 3 thẻ bảo hộ cùng lúc
 DIEM_DOI_THE_DAY = 15      # thẻ đã đầy mà trúng thẻ nữa thì đổi thành ngần này điểm
+DIEM_DOI_BAO_HO = 100      # dùng 100 điểm tích lũy để đổi 1 thẻ bảo hộ streak
 BUFF_X15_GIAY = 3600       # x1,5 điểm kéo dài 1 giờ
 THUONG_X15 = 0.5           # +0.5 vào hệ số điểm (cộng dồn với thưởng streak, KHÔNG nhân)
 
@@ -109,8 +110,14 @@ def _trang_thai(conn, user_id):
     if not u:
         return None
     tong = u['dd_tong'] or 0
-    tien_do = ((tong - 1) % CHU_KY) + 1 if tong > 0 else 0     # đã điểm danh mấy ô trong vòng hiện tại
-    tuan_dau = tong <= CHU_KY                                   # còn trong 7 ngày đầu thì hiện quà từng ngày
+    da_hom_nay = (u['dd_last'] == str(date.today()))
+    if tong == 0 or (tong % CHU_KY == 0 and not da_hom_nay):
+        # Chưa điểm danh hoặc đã hoàn thành đủ 7 ngày từ hôm trước -> sang ngày mới reset về 0/7
+        tien_do = 0
+    else:
+        tien_do = ((tong - 1) % CHU_KY) + 1
+    # Còn xem bảng quà tuần đầu khi đang trong 7 ngày đầu, hoặc vừa chạm mốc ngày 7 ngay trong hôm nay
+    tuan_dau = (tong < CHU_KY) or (tong == CHU_KY and da_hom_nay)
 
     lich = []
     for q in QUA_TUAN_DAU:
@@ -121,7 +128,7 @@ def _trang_thai(conn, user_id):
         lich.append({"ngay": q["ngay"], "ten": ten, "da_nhan": q["ngay"] <= tien_do})
 
     return {
-        "da_diem_danh_hom_nay": u['dd_last'] == str(date.today()),
+        "da_diem_danh_hom_nay": da_hom_nay,
         "tong_ngay": tong,
         "tien_do": tien_do,
         "tuan_dau": tuan_dau,
@@ -142,8 +149,7 @@ def _cong_bao_ho(conn, user_id):
     return cur.rowcount == 1
 
 def _cong_diem(conn, user_id, diem):
-    conn.execute("UPDATE users SET score = COALESCE(score, 0) + ? WHERE id = ?", (diem, user_id))
-    cong_diem_thang(conn, user_id, diem)
+    cong_diem_va_educoin(conn, user_id, diem, cong_thang=True)
 
 def _lay_user_id():
     data = request.get_json(silent=True) or {}
@@ -260,3 +266,47 @@ def quay_thuong():
     vi_tri = next(i for i, o in enumerate(VONG_QUAY) if o["id"] == trung["id"])
     return jsonify({"success": True, "trung": trung["id"], "ten": trung["ten"],
                     "vi_tri": vi_tri, "ghi_chu": ghi_chu, "trang_thai": tt}), 200
+
+
+@qua_bp.route('/api/bao-ho/doi', methods=['POST'])
+def doi_bao_ho():
+    user_id = _lay_user_id()
+    if not user_id:
+        return jsonify({"success": False, "message": "Hãy đăng nhập để đổi thẻ bảo hộ!"}), 401
+
+    conn = _ket_noi()
+    try:
+        conn.execute("BEGIN IMMEDIATE")
+        u = conn.execute(
+            "SELECT COALESCE(score, 0) AS score, COALESCE(the_bao_ho, 0) AS the_bao_ho "
+            "FROM users WHERE id = ?",
+            (user_id,),
+        ).fetchone()
+        if not u:
+            conn.rollback()
+            return jsonify({"success": False, "message": "Không tìm thấy người dùng!"}), 404
+        if u["the_bao_ho"] >= TOI_DA_BAO_HO:
+            conn.rollback()
+            return jsonify({"success": False, "message": f"Bạn đã giữ tối đa {TOI_DA_BAO_HO}/{TOI_DA_BAO_HO} thẻ bảo hộ rồi!"}), 400
+        if u["score"] < DIEM_DOI_BAO_HO:
+            conn.rollback()
+            return jsonify({"success": False, "message": f"Bạn cần ít nhất {DIEM_DOI_BAO_HO} điểm để đổi 1 thẻ bảo hộ!"}), 400
+
+        conn.execute(
+            "UPDATE users SET score = COALESCE(score, 0) - ?, the_bao_ho = COALESCE(the_bao_ho, 0) + 1 WHERE id = ?",
+            (DIEM_DOI_BAO_HO, user_id),
+        )
+        conn.commit()
+        u_moi = conn.execute(
+            "SELECT COALESCE(score, 0) AS score, COALESCE(the_bao_ho, 0) AS the_bao_ho FROM users WHERE id = ?",
+            (user_id,),
+        ).fetchone()
+        return jsonify({
+            "success": True,
+            "message": f"Đã đổi -{DIEM_DOI_BAO_HO} điểm lấy +1 thẻ bảo hộ streak!",
+            "score": u_moi["score"],
+            "the_bao_ho": u_moi["the_bao_ho"],
+            "toi_da_bao_ho": TOI_DA_BAO_HO,
+        }), 200
+    finally:
+        conn.close()

@@ -1,118 +1,309 @@
-/* Trang Điểm danh & Quay thưởng */
-.qua-trang {
-    max-width: 640px;
+/* ========================================================
+   qua.css - VnStarL Game Arena (Đấu Trường Quà Tặng & Vòng Quay)
+   V9 MASTER: BỐ CỤC 2 CỘT ARENA VỪA VẶN MÀN HÌNH PC KHÔNG CUỘN
+   ======================================================== */
+
+body {
+    background:
+        radial-gradient(ellipse 100% 55% at 50% 100%, rgba(37, 99, 235, 0.16) 0%, transparent 70%),
+        linear-gradient(180deg, #f0f7ff 0%, #dceaff 48%, #badbff 100%) !important;
+    background-attachment: fixed !important;
+    min-height: 100vh;
+    margin: 0;
 }
 
-.qua-tieu-de {
-    text-align: center;
-    margin-bottom: 6px;
+/* ========================================================
+   1. BỐ CỤC 2 CỘT GAME ARENA (MAX-WIDTH 1320PX)
+   ======================================================== */
+.qua-arena-wrapper {
+    max-width: 1320px;
+    margin: 18px auto 36px auto;
+    padding: 0 16px;
+    box-sizing: border-box;
 }
 
-.qua-trang h3 {
-    margin: 28px 0 6px;
+.qua-arena-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: stretch;
+}
+
+/* CARD ARENA DÙNG CHUNG */
+.arena-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(255, 255, 255, 0.9);
+    border-radius: 28px;
+    padding: 24px 28px;
+    box-shadow: 0 16px 40px -12px rgba(37, 99, 235, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.arena-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.arena-head-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.arena-head-title i {
+    font-size: 1.25rem;
+}
+
+.arena-head-title h3 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+}
+
+.wheel-spins-badge {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #2563eb;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+.wheel-spins-badge b {
+    color: #1d4ed8;
+    font-weight: 900;
+}
+
+/* ========================================================
+   2. TÚI ĐỒ TÀI SẢN NGƯỜI CHƠI (INVENTORY STRIP)
+   ======================================================== */
+.player-inventory-strip {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.inv-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s ease;
+}
+
+.inv-item:hover {
+    transform: translateY(-2px);
+    background: #ffffff;
+    border-color: #cbd5e1;
+}
+
+.inv-item i {
+    font-size: 1.25rem;
+}
+
+.inv-item .vn-ico-2xl {
+    width: 40px;
+    height: 40px;
+}
+
+.arena-head-title .vn-ico-lg {
+    width: 30px;
+    height: 30px;
+}
+
+.inv-val {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #0f172a;
+    line-height: 1.1;
+}
+
+.inv-lbl {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #64748b;
 }
 
 .qua-mo-ta {
-    color: var(--nhat);
-    font-size: 0.95rem;
-    margin: 0 0 12px;
+    font-size: 0.82rem;
+    color: #64748b;
+    margin: 0 0 10px;
+    line-height: 1.4;
 }
 
-.qua-thong-bao {
-    min-height: 1.4em;
-    text-align: center;
-    font-weight: 600;
-    margin: 10px 0 0;
-}
-
-.qua-chi-so {
+/* ========================================================
+   3. HÀNH TRÌNH 7 NGÀY CỦA SAO LA (JOURNEY TRAIL)
+   ======================================================== */
+.arena-journey-trail {
     display: flex;
-    gap: 12px;
-    margin-top: 12px;
-}
-
-.qua-the {
-    flex: 1;
-    text-align: center;
-    background: #f4f7fc;
-    border-radius: 12px;
-    padding: 12px 6px;
-}
-
-.qua-so {
-    display: block;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--chu);
-}
-
-.qua-nhan {
-    font-size: 0.8rem;
-    color: var(--nhat);
-}
-
-.qua-x15 {
-    text-align: center;
-    font-weight: 700;
-    color: #c27410;
-    background: #fff4e0;
-    border-radius: 10px;
-    padding: 8px;
-    margin-top: 12px;
-}
-
-/* 7 ô điểm danh */
-.qua-lich {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-}
-
-.qua-o {
-    text-align: center;
-    border: 1px solid #dfe5ee;
-    border-radius: 10px;
-    padding: 8px 2px;
-    background: #fff;
-    font-size: 0.78rem;
-    color: var(--nhat);
-}
-
-.qua-o b {
-    display: block;
-    font-size: 0.85rem;
-    color: var(--chu);
-    margin-bottom: 2px;
-}
-
-.qua-o.da-nhan {
-    background: #e6f6ee;
-    border-color: #178a5a;
-    color: #178a5a;
-}
-
-.qua-o.da-nhan b {
-    color: #178a5a;
-}
-
-/* Vòng quay: nền chia 7 múi bằng conic-gradient, chữ xếp bằng JS */
-.qua-quay-khung {
+    align-items: center;
+    justify-content: space-between;
     position: relative;
-    width: 300px;
+    margin: 28px 0 20px 0;
+    padding: 8px 4px 6px 4px;
+    box-sizing: border-box;
+}
+
+.journey-line-bg {
+    position: absolute;
+    top: 32px;
+    left: 24px;
+    right: 24px;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    z-index: 1;
+}
+
+.journey-line-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%);
+    border-radius: 999px;
+    transition: width 0.5s ease;
+}
+
+.station-node,
+.qua-o {
+    position: relative;
+    z-index: 2;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: 68px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.station-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2.5px solid #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    z-index: 2;
+}
+
+.station-circle-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.station-node.completed .station-circle,
+.qua-o.da-nhan .station-circle {
+    background: #ecfdf5;
+    border-color: #10b981;
+    color: #059669;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.station-node.is-today .station-circle {
+    background: #eff6ff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2), 0 8px 18px rgba(37, 99, 235, 0.35);
+    transform: scale(1.12);
+}
+
+.station-mascot-pin {
+    position: absolute;
+    top: -24px;
+    width: 28px;
+    height: auto;
+    z-index: 10;
+    animation: bouncePin 1.5s infinite ease-in-out;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+}
+
+@keyframes bouncePin {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.station-label-title {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #1e293b;
+    white-space: nowrap !important;
+}
+
+.station-reward-val {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.08);
+    padding: 2px 6px;
+    border-radius: 6px;
+    white-space: nowrap !important;
+}
+
+.station-node.completed .station-reward-val,
+.qua-o.da-nhan .station-reward-val {
+    background: #10b981;
+    color: #ffffff;
+}
+
+/* ========================================================
+   4. VÒNG QUAY MAY MẮN HOÀNG GIA (KHUNG MẠ VÀNG 3D)
+   ======================================================== */
+.qua-quay-khung-v2 {
+    position: relative;
+    width: 270px;
     max-width: 100%;
     aspect-ratio: 1;
-    margin: 12px auto 0;
+    margin: 12px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wheel-outer-ring {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    padding: 9px;
+    background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #b45309 100%);
+    box-shadow: 0 14px 34px rgba(245, 158, 11, 0.35),
+                inset 0 2px 6px rgba(255, 255, 255, 0.8),
+                0 0 0 2px rgba(254, 240, 138, 0.6);
+    box-sizing: border-box;
 }
 
 .qua-kim {
     position: absolute;
-    top: -6px;
+    top: -8px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 2;
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-top: 22px solid #d62424;
+    z-index: 10;
+    border-left: 13px solid transparent;
+    border-right: 13px solid transparent;
+    border-top: 24px solid #ef4444;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35));
 }
 
 .qua-banh {
@@ -120,9 +311,9 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 6px solid var(--chu);
-    box-shadow: 0 6px 24px rgba(27, 42, 65, 0.2);
+    box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.15);
     transition: transform 4.2s cubic-bezier(0.12, 0.7, 0.1, 1);
+    overflow: hidden;
 }
 
 .qua-nhan-mui {
@@ -137,38 +328,140 @@
     position: absolute;
     left: -48px;
     width: 96px;
-    top: -128px;
+    top: -116px;
     text-align: center;
-    font-size: 0.78rem;
-    font-weight: 700;
+    font-size: 0.75rem;
+    font-weight: 800;
     color: #1b2a41;
     line-height: 1.15;
 }
 
-#btn-diem-danh:disabled,
-#btn-quay:disabled {
+/* ========================================================
+   5. NÚT BẤM 3D & THÔNG BÁO
+   ======================================================== */
+.arena-btn-wrap {
+    margin-top: 14px;
+}
+
+.btn-checkin-3d {
+    width: 100%;
+    padding: 13px 20px;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #ffffff;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.45);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-checkin-3d:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -4px rgba(37, 99, 235, 0.55);
+}
+
+.btn-spin-gold {
+    width: 100%;
+    padding: 13px 20px;
+    font-size: 1.02rem;
+    font-weight: 900;
+    color: #78350f;
+    background: linear-gradient(135deg, #fde047 0%, #f59e0b 50%, #d97706 100%);
+    border: 1.5px solid #fef08a;
+    border-radius: 16px;
+    box-shadow: 0 8px 22px -4px rgba(245, 158, 11, 0.5);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-spin-gold:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -4px rgba(245, 158, 11, 0.65);
+}
+
+.btn-checkin-3d:disabled,
+.btn-spin-gold:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    transform: none;
-    background: #fff;
-    color: var(--nhan);
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.qua-thong-bao {
+    min-height: 1.4em;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.88rem;
+    margin: 8px 0 0;
+}
+
+.journey-note {
+    font-size: 0.76rem;
+    color: #64748b;
+    margin: 10px 0 0;
+    line-height: 1.4;
+}
+
+.qua-x15 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: #c27410;
+    background: #fff4e0;
+    border: 1px solid #fed7aa;
+    border-radius: 12px;
+    padding: 8px;
+    margin-bottom: 12px;
+}
+
+/* ========================================================
+   6. RESPONSIVE CHO TABLET & MOBILE
+   ======================================================== */
+@media (max-width: 900px) {
+    .qua-arena-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 480px) {
-    .qua-lich {
-        gap: 4px;
+    .qua-arena-wrapper {
+        padding: 0 10px;
     }
 
+    .arena-card {
+        padding: 18px 16px;
+    }
+
+    .station-node,
     .qua-o {
-        font-size: 0.68rem;
+        width: 44px !important;
     }
 
-    .qua-quay-khung {
-        width: 260px;
+    .station-circle {
+        width: 38px;
+        height: 38px;
+    }
+
+    .station-circle-icon {
+        font-size: 1rem;
+    }
+
+    .qua-quay-khung-v2 {
+        width: 230px;
     }
 
     .qua-nhan-mui span {
-        top: -108px;
-        font-size: 0.7rem;
+        top: -98px;
+        font-size: 0.68rem;
     }
 }

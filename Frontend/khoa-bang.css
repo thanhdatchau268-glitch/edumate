@@ -3,6 +3,21 @@
    Tông XANH đồng bộ với web (--nhan #2457d6), điểm nhấn vàng kim cho hạng nhất.
    Tiền tố kb- để không đụng CSS cũ.
    ========================================================== */
+
+/* ========================================================
+   V10 MASTER: ĐỒNG BỘ NỀN XANH SKY BLUE GRADIENT VÀ KHUNG KÍNH MỜ
+   ======================================================== */
+body {
+    background:
+        radial-gradient(circle 220px at 50% 34%, rgba(255, 255, 255, 0.92) 0%, rgba(239, 246, 255, 0.4) 55%, transparent 100%),
+        radial-gradient(ellipse 100% 55% at 50% 100%, rgba(37, 99, 235, 0.22) 0%, transparent 70%),
+        linear-gradient(180deg, #f4f8ff 0%, #dceaff 48%, #a6cbfc 100%) !important;
+    background-attachment: fixed !important;
+    min-height: 100dvh;
+    margin: 0;
+    padding: 0;
+}
+
 .kb-trang {
     --xanh: #2457d6;
     --xanh-dam: #163a96;
@@ -14,10 +29,25 @@
     --nen-phu: #f4f7fc;
     --giay: #ffffff;
     --vien-xanh: #d3ddf3;
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 24px 16px 80px;
+    background: rgba(255, 255, 255, 0.78) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.9) !important;
+    border-radius: 28px !important;
+    box-shadow: 0 16px 40px -12px rgba(37, 99, 235, 0.08), 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+    max-width: 1200px !important;
+    margin: 20px auto 40px auto !important;
+    padding: 28px 24px 60px !important;
+    box-sizing: border-box;
     color: var(--chu);
+}
+
+@media (max-width: 640px) {
+    .kb-trang {
+        margin: 10px 8px 32px !important;
+        padding: 16px 12px 48px !important;
+        border-radius: 20px !important;
+    }
 }
 
 .kb-trang i.fa-solid,
@@ -129,6 +159,17 @@
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+}
+
+/* Các phần tử dành riêng cho Mobile (mặc định ẩn trên Desktop) */
+.kb-tab-dropdown-wrap,
+.kb-mon-mobile-wrap,
+.kb-hop-nut-ky-xa {
+    display: none;
+}
+
+.kb-tab-desktop-only {
+    display: inline-flex;
 }
 
 .kb-tabs a {
@@ -336,6 +377,131 @@
 .kb-nut:disabled {
     opacity: .5;
     cursor: not-allowed;
+}
+
+.kb-the-hanh-dong {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    flex-wrap: wrap;
+}
+
+.kb-nut-thi {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #fff;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border: 1.5px solid #1e40af;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+    transition: transform 0.15s, background 0.15s;
+    text-decoration: none;
+}
+
+.kb-nut-thi:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+    transform: translateY(-2px);
+    color: #fff;
+}
+
+/* Banner phòng thi chính thức trong từng tab kỳ thi */
+.kb-phong-thi-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 2px solid #93c5fd;
+    border-left: 6px solid #2563eb;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+}
+
+.kb-pt-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    background: #dc2626;
+    color: #fff;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 4px;
+}
+
+.kb-pt-trai h3 {
+    margin: 2px 0 4px;
+    font-size: 1.15rem;
+    color: #1e3a8a;
+}
+
+.kb-pt-trai p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #334155;
+    line-height: 1.5;
+}
+
+.kb-pt-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: #fff !important;
+    font-weight: 800;
+    font-size: 0.98rem;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-decoration: none;
+}
+
+.kb-pt-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.45);
+}
+
+.kb-nut-thi-khoa {
+    background: #94a3b8 !important;
+    border-color: #64748b !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 0.85;
+}
+
+.kb-pt-chua-mo {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+    border: 2px solid #cbd5e1 !important;
+    border-left: 6px solid #94a3b8 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+}
+
+.kb-badge-cho {
+    background: #f59e0b !important;
+    color: #fff !important;
+}
+
+.kb-btn-khoa {
+    background: #94a3b8 !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+    opacity: 0.85 !important;
 }
 
 .kb-khoi {
@@ -828,6 +994,312 @@
 }
 
 @media (max-width: 600px) {
+    /* Nền xanh đậm nhạt dần từ dưới lên như trang cá nhân hóa */
+    body {
+        background:
+            radial-gradient(ellipse 100% 55% at 50% 100%, rgba(37, 99, 235, 0.22) 0%, transparent 70%),
+            linear-gradient(180deg, #f5f9ff 0%, #d8eaff 45%, #8cbdfa 100%) !important;
+        background-attachment: fixed !important;
+        min-height: 100vh;
+    }
+
+    /* Thu nhỏ bảng vàng trên điện thoại, bỏ dòng chữ mở đầu, giữ trọn vẹn ý */
+    .kb-hero {
+        padding: 16px 14px 14px;
+        border-width: 2.5px;
+        border-radius: 14px;
+        box-shadow: 0 0 0 1.5px var(--vang), 0 8px 20px rgba(22, 58, 150, .22);
+        background-size: 110px auto, 110px auto, auto, auto;
+    }
+
+    .kb-hero::before {
+        inset: 5px;
+        border-radius: 9px;
+    }
+
+    .kb-hero h1 {
+        font-size: 1.25rem;
+        margin: 4px 0 6px;
+        letter-spacing: .02em;
+    }
+
+    .kb-ngan {
+        font-size: 0.68rem;
+        letter-spacing: .08em;
+        margin-bottom: 2px;
+    }
+
+    .kb-hero p {
+        font-size: 0.82rem;
+        line-height: 1.45;
+    }
+
+    /* Bỏ cụm "Ba kỳ thi, ba bậc danh vọng: " theo yêu cầu */
+    .kb-hero-mo-dau {
+        display: none !important;
+    }
+
+    /* Thanh điều khiển trên điện thoại: hàng tab thẳng tắp 1 hàng, nút môn ở dưới */
+    .kb-bar {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 12px 0 14px;
+        gap: 8px;
+    }
+
+    .kb-tabs {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-wrap: nowrap;
+        width: 100%;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 2px;
+    }
+
+    .kb-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .kb-tabs a,
+    .kb-tab-dropdown-btn {
+        flex: 0 0 auto;
+        padding: 6px 11px;
+        font-size: 0.82rem;
+        white-space: nowrap;
+    }
+
+    /* Ẩn các nút kỳ thi riêng lẻ trên mobile, thay bằng nút dropdown gom */
+    .kb-tab-desktop-only {
+        display: none !important;
+    }
+
+    .kb-tab-dropdown-wrap {
+        display: inline-block;
+        position: relative;
+    }
+
+    .kb-tab-dropdown-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 11px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--xanh);
+        background: var(--giay);
+        border: 1.5px solid var(--vien-xanh);
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    .kb-tab-dropdown-btn:hover {
+        background: var(--xanh-nhat);
+        border-color: var(--xanh);
+    }
+
+    .kb-tab-dropdown-btn.on {
+        color: #fff;
+        background: var(--xanh);
+        border-color: var(--xanh-dam);
+    }
+
+    .kb-tab-arrow {
+        font-size: 0.7rem;
+        transition: transform 0.2s ease;
+    }
+
+    .kb-tab-dropdown-wrap.open .kb-tab-arrow {
+        transform: rotate(180deg);
+    }
+
+    .kb-tab-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        min-width: 175px;
+        background: #ffffff;
+        border: 1.5px solid var(--vien-xanh);
+        border-radius: 14px;
+        box-shadow: 0 10px 26px rgba(27, 42, 65, 0.16);
+        padding: 6px;
+        z-index: 100;
+        display: none;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .kb-tab-dropdown-wrap.open .kb-tab-dropdown-menu {
+        display: flex;
+        animation: kbMenuIn 0.18s ease;
+    }
+
+    .kb-tab-dropdown-divider {
+        height: 1px;
+        background: var(--vien-xanh);
+        margin: 3px 0;
+    }
+
+    .kb-tab-dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 9px;
+        font-weight: 600;
+        font-size: 0.86rem;
+        color: var(--chu);
+        text-decoration: none;
+        border: none;
+        background: transparent;
+    }
+
+    .kb-tab-dropdown-menu a:hover,
+    .kb-tab-dropdown-menu a.on {
+        background: var(--xanh-nhat);
+        color: var(--xanh);
+    }
+
+    .kb-tab-dropdown-menu a i {
+        width: 18px;
+        text-align: center;
+        color: var(--xanh);
+    }
+
+    /* Gom nhóm môn học thành 1 nút Pill chọn nhanh */
+    .kb-chips {
+        display: none !important;
+    }
+
+    .kb-chips-area {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .kb-mon-mobile-wrap {
+        display: inline-block;
+        position: relative;
+    }
+
+    .kb-mon-mobile-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        font-size: 0.84rem;
+        font-weight: 700;
+        color: var(--xanh-dam);
+        background: #ffffff;
+        border: 1.5px solid #9db4ea;
+        border-radius: 999px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(36, 87, 214, 0.08);
+    }
+
+    .kb-mon-arrow {
+        font-size: 0.72rem;
+        color: var(--xanh);
+    }
+
+    #kb-select-mon-mobile {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    /* Cuộc thi ưu tiên & các kỳ thi còn xa */
+    .kb-luoi-3 .kb-cap-xa {
+        display: none !important;
+    }
+
+    .kb-luoi-3.mo-tat-ca-ky .kb-cap-xa {
+        display: flex !important;
+        animation: kbFadeIn 0.25s ease-out;
+    }
+
+    .kb-hop-nut-ky-xa {
+        display: flex !important;
+        justify-content: center;
+        width: 100%;
+        margin: 10px 0 16px;
+    }
+
+    .kb-nut-mo-ky-xa {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--xanh);
+        background: linear-gradient(135deg, #f0f5ff 0%, #e6efff 100%);
+        border: 1.5px dashed #93c5fd;
+        border-radius: 12px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);
+        transition: all 0.2s ease;
+    }
+
+    .kb-nut-mo-ky-xa:active {
+        transform: scale(0.98);
+    }
+
+    .kb-luoi-3.mo-tat-ca-ky .kb-nut-mo-ky-xa {
+        background: var(--xanh-nhat);
+        border-color: var(--xanh);
+        color: var(--xanh-dam);
+    }
+
+    .kb-icon-mui-ten-xa {
+        font-size: 0.75rem;
+        transition: transform 0.2s ease;
+    }
+
+    .kb-luoi-3.mo-tat-ca-ky .kb-icon-mui-ten-xa {
+        transform: rotate(180deg);
+    }
+
+    .kb-phong-thi-banner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .kb-pt-btn {
+        justify-content: center;
+        width: 100%;
+        text-align: center;
+        padding: 11px 16px;
+        font-size: 0.92rem;
+    }
+
+    .kb-the-hanh-dong {
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+    }
+
+    .kb-nut-thi,
+    .kb-the-hanh-dong .kb-nut {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        padding: 8px 12px;
+    }
+
     .kb-tam-khoi {
         grid-template-columns: 1fr;
     }
@@ -859,4 +1331,64 @@
     .kb-khoi-the.hien[data-thu="1"] {
         animation: none;
     }
+}
+
+@keyframes kbFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes kbMenuIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================================
+   DESKTOP (PC / LAPTOP >= 861px): HIỂN THỊ CẢ 3 KỲ THI CÙNG LÚC
+   ========================================================== */
+@media (min-width: 861px) {
+    /* 1. Lưới 3 cột dàn ngang đều đặn */
+    .kb-luoi-3,
+    #kb-luoi-tong-quan {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 20px !important;
+        margin-bottom: 24px !important;
+    }
+
+    /* 2. Luôn hiển thị đầy đủ cả 3 thẻ kỳ thi (Thi Hương, Thi Hội, Thi Đình) */
+    .kb-luoi-3 .kb-cap,
+    .kb-luoi-3 .kb-cap-uu-tien,
+    .kb-luoi-3 .kb-cap-xa {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* 3. TUYỆT ĐỐI ẨN nút "Xem các kỳ thi khác" trên PC */
+    .kb-hop-nut-ky-xa,
+    #kb-btn-mo-ky-xa {
+        display: none !important;
+    }
+}
+
+/* Khung huy hiệu avatar trên các bảng/thẻ Khoa Bảng */
+.kb-ten-hs {
+    min-width: 0;
+}
+
+.kb-khoi-the .hh-khung-wrap.co-khung {
+    margin: 2px 0;
 }

@@ -2,139 +2,224 @@
 // Dữ liệu 100% từ API /api/khoa-bang (server tự tính điểm, trình duyệt chỉ hiển thị).
 // Cần nạp sau script.js (dùng hàm datAvatar).
 (function () {
-    "use strict";
-    const API = "http://127.0.0.1:5000/api/khoa-bang";
-    const $ = (id) => document.getElementById(id);
-    const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("kbToken");
+  "use strict";
+  const API = "http://127.0.0.1:5000/api/khoa-bang";
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("kbToken");
 
-    const ICON_CAP = { huong: "fa-feather-pointed", hoi: "fa-landmark", dinh: "fa-crown" };
-    const ICON_DH = {
-        trang_nguyen: "fa-crown", bang_nhan: "fa-award", tham_hoa: "fa-medal", hoang_giap: "fa-scroll",
-        dong_tien_si: "fa-stamp", hoi_nguyen: "fa-landmark", thai_hoc_sinh: "fa-book-open-reader",
-        pho_bang: "fa-bookmark", giai_nguyen: "fa-feather-pointed", huong_cong: "fa-pen-nib", sinh_do: "fa-graduation-cap",
-    };
-    const TAB_CAP = ["huong", "hoi", "dinh"];
+  const ICON_CAP = { huong: "fa-feather-pointed", hoi: "fa-landmark", dinh: "fa-crown" };
+  const ICON_DH = {
+    trang_nguyen: "fa-crown", bang_nhan: "fa-award", tham_hoa: "fa-medal", hoang_giap: "fa-scroll",
+    dong_tien_si: "fa-stamp", hoi_nguyen: "fa-landmark", thai_hoc_sinh: "fa-book-open-reader",
+    pho_bang: "fa-bookmark", giai_nguyen: "fa-feather-pointed", huong_cong: "fa-pen-nib", sinh_do: "fa-graduation-cap",
+  };
+  const TAB_CAP = ["huong", "hoi", "dinh"];
 
-    let cauHinh = null;   // { bang:[{id,ten,mon}], cap:[...] }
-    let bang = "khong-chuyen";
-    let luot = 0;         // chống kết quả cũ ghi đè kết quả mới khi bấm nhanh
-    let hen = null;       // bộ đếm ngược
+  let cauHinh = null;   // { bang:[{id,ten,mon}], cap:[...] }
+  let bang = "khong-chuyen";
+  let luot = 0;         // chống kết quả cũ ghi đè kết quả mới khi bấm nhanh
+  let hen = null;       // bộ đếm ngược
+  let dsContests = [];  // danh sách kỳ thi thực tế từ /api/contests
 
-    // ---------- Hàm nhỏ ----------
-    async function goi(url, opt) {
-        let res;
-        try { res = await fetch(API + url, opt); }
-        catch (e) { throw new Error("Không kết nối được server. Bật app.py nhé!"); }
-        const kq = await res.json();
-        if (!kq.success) throw new Error(kq.message || "Có lỗi xảy ra.");
-        return kq;
+  // ---------- Hàm nhỏ ----------
+  async function goi(url, opt) {
+    let res;
+    try { res = await fetch(API + url, opt); }
+    catch (e) { throw new Error("Không kết nối được server. Bật app.py nhé!"); }
+    const kq = await res.json();
+    if (!kq.success) throw new Error(kq.message || "Có lỗi xảy ra.");
+    return kq;
+  }
+
+  async function capNhatDsContests() {
+    try {
+      const res = await fetch("http://127.0.0.1:5000/api/contests");
+      const kq = await res.json();
+      if (kq.success && Array.isArray(kq.data)) dsContests = kq.data;
+    } catch (e) {
+      console.error("Lỗi khi cập nhật danh sách kỳ thi:", e);
     }
-    const ngayVN = (s) => { const [y, m, d] = s.split("-"); return `${d}/${m}/${y}`; };
-    const fmt = (x) => Number(x).toFixed(1);
-    const tenKy = (cap, ma) => {
-        if (cap === "huong") return "Tuần " + ma.split("-W")[1] + "/" + ma.slice(0, 4);
-        if (cap === "hoi") return "Tháng " + Number(ma.slice(5)) + "/" + ma.slice(0, 4);
-        return "Quý " + ma.slice(-1) + "/" + ma.slice(0, 4);
-    };
-    const avatar = (ten, lon) => `<img class="kb-av${lon ? " lon" : ""}" data-av="${esc(ten)}" alt="">`;
-    function ganAvatar(goc) { goc.querySelectorAll("img[data-av]").forEach((i) => datAvatar(i, i.dataset.av)); }
-    const hsLink = (d) => `<a href="#ho-so/${d.user_id}">${esc(d.username)}</a>`;
-
-    function vao(html) {
-        const el = $("kb-noi-dung");
-        el.innerHTML = html;
-        ganAvatar(el);
-        return el;
-    }
-
-    // ---------- Đếm ngược ----------
-    function demNguoc(goc) {
-        clearInterval(hen);
-        const ds = [...goc.querySelectorAll(".kb-dem[data-giay]")];
-        if (!ds.length) return;
-        const het = ds.map((e) => Date.now() + Number(e.dataset.giay) * 1000);
-        const ve = () => ds.forEach((e, i) => {
-            let s = Math.max(0, Math.floor((het[i] - Date.now()) / 1000));
-            const d = Math.floor(s / 86400); s -= d * 86400;
-            const h = String(Math.floor(s / 3600)).padStart(2, "0"); s %= 3600;
-            e.textContent = `Còn ${d} ngày ${h}:${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+  }
+  const ngayVN = (s) => { const [y, m, d] = s.split("-"); return `${d}/${m}/${y}`; };
+  const fmt = (x) => Number(x).toFixed(1);
+  const tenKy = (cap, ma) => {
+    if (cap === "huong") return "Tuần " + ma.split("-W")[1] + "/" + ma.slice(0, 4);
+    if (cap === "hoi") return "Tháng " + Number(ma.slice(5)) + "/" + ma.slice(0, 4);
+    return "Quý " + ma.slice(-1) + "/" + ma.slice(0, 4);
+  };
+  const avatar = (ten, lon, huyHieu) =>
+    `<img class="kb-av${lon ? " lon" : ""}" data-av="${esc(ten)}" data-hh="${esc(huyHieu || "")}" alt="">`;
+  function ganAvatar(goc) {
+    goc.querySelectorAll("img[data-av]").forEach((i) => {
+      datAvatar(i, i.dataset.av);
+      if (window.HUY_HIEU_KHUNG) {
+        window.HUY_HIEU_KHUNG.bocKhungAvatar(i, i.dataset.hh || "", {
+          sizeClass: i.classList.contains("lon") ? "hh-kb-lon" : "hh-kb",
         });
-        ve();
-        hen = setInterval(ve, 1000);
-    }
+      }
+    });
+  }
+  const hsLink = (d) => `<a href="#ho-so/${d.user_id}">${esc(d.username)}</a>`;
 
-    // ---------- Bảng xếp hạng ----------
-    function bangXh(cap, ds, quyChe) {
-        if (!ds.length) return `<p class="kb-trong">Chưa có ai đủ điều kiện xếp hạng ở kỳ này.</p>`;
-        const ngan = {};
-        quyChe.cach_tinh.forEach((c) => (ngan[c.ma] = c.ngan));
-        return `<div class="kb-cuon"><table class="kb-bang-xh">
+  function vao(html) {
+    const el = $("kb-noi-dung");
+    el.innerHTML = html;
+    ganAvatar(el);
+    return el;
+  }
+
+  // ---------- Đếm ngược ----------
+  function demNguoc(goc) {
+    clearInterval(hen);
+    const ds = [...goc.querySelectorAll(".kb-dem[data-giay]")];
+    if (!ds.length) return;
+    const het = ds.map((e) => Date.now() + Number(e.dataset.giay) * 1000);
+    const ve = () => ds.forEach((e, i) => {
+      let s = Math.max(0, Math.floor((het[i] - Date.now()) / 1000));
+      const d = Math.floor(s / 86400); s -= d * 86400;
+      const h = String(Math.floor(s / 3600)).padStart(2, "0"); s %= 3600;
+      e.textContent = `Còn ${d} ngày ${h}:${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+    });
+    ve();
+    hen = setInterval(ve, 1000);
+  }
+
+  // ---------- Bảng xếp hạng ----------
+  function bangXh(cap, ds, quyChe) {
+    if (!ds.length) return `<p class="kb-trong">Chưa có ai đủ điều kiện xếp hạng ở kỳ này.</p>`;
+    const ngan = {};
+    quyChe.cach_tinh.forEach((c) => (ngan[c.ma] = c.ngan));
+    return `<div class="kb-cuon"><table class="kb-bang-xh">
       <thead><tr><th>Hạng</th><th>Học sinh</th><th>Điểm</th><th class="kb-ct-cot">Thành phần</th><th>Danh hiệu</th></tr></thead>
       <tbody>${ds.map((d) => `
         <tr class="${userId && String(d.user_id) === userId ? "toi" : ""}">
           <td class="hang">${d.hang}</td>
-          <td><span class="kb-ten-hs">${avatar(d.avatar)}${hsLink(d)}</span></td>
+          <td><span class="kb-ten-hs">${avatar(d.avatar, false, d.huy_hieu)}${hsLink(d)}</span></td>
           <td class="kb-diem">${fmt(d.diem_tong)}</td>
           <td class="kb-ct-cot"><span class="kb-chi-tiet">${Object.keys(ngan).map((k) =>
-            d.chi_tiet[k] === undefined ? "" : `<span>${esc(ngan[k])} ${fmt(d.chi_tiet[k])}</span>`).join("")}</span></td>
+      d.chi_tiet[k] === undefined ? "" : `<span>${esc(ngan[k])} ${fmt(d.chi_tiet[k])}</span>`).join("")}</span></td>
           <td>${d.danh_hieu ? `<span class="kb-dh${d.tam_tinh ? " du-kien" : ""}">${esc(d.danh_hieu.ten)}</span>` : ""}</td>
         </tr>`).join("")}</tbody></table></div>`;
-    }
+  }
 
-    // ---------- TAB: Tổng quan ----------
-    async function veTongQuan(l) {
-        const kq = await goi(`/tong-quan?bang=${encodeURIComponent(bang)}`);
-        if (l !== luot) return;
-        const the = kq.cap.map((c) => {
-            const g = c.nguoi_giu_ngoi;
-            return `<article class="kb-the kb-cap">
+  // ---------- TAB: Tổng quan ----------
+  async function veTongQuan(l) {
+    const kq = await goi(`/tong-quan?bang=${encodeURIComponent(bang)}`);
+    if (l !== luot) return;
+    await capNhatDsContests();
+    const the = kq.cap.map((c, i) => {
+      const g = c.nguoi_giu_ngoi;
+      const cid = c.cap === "huong" ? 1 : c.cap === "hoi" ? 2 : 3;
+      const thoiLuong = c.cap === "huong" ? "30p" : c.cap === "hoi" ? "45p" : "60p";
+      const ct = dsContests.find((x) => x.id === cid);
+      const dangMo = ct && ct.trang_thai === "dang-dien-ra";
+      const nutThi = dangMo
+        ? `<a class="kb-nut-thi" href="form.html?subject=contest&chapter=${cid}&article=${cid}&q=1">
+            <i class="fa-solid fa-play"></i> Vào thi (${thoiLuong})
+          </a>`
+        : `<span class="kb-nut-thi kb-nut-thi-khoa" title="Kỳ thi chưa tới ngày mở (Bắt đầu: ${ct ? ct.bat_dau : 'Sắp diễn ra'})">
+            <i class="fa-solid fa-lock"></i> Chưa mở
+          </span>`;
+      const isUuTien = i === 0;
+      return `<article class="kb-the kb-cap ${isUuTien ? "kb-cap-uu-tien" : "kb-cap-xa"}">
         <div class="kb-cap-dau"><i class="fa-solid ${ICON_CAP[c.cap]}"></i>
           <div><h2>${esc(c.ten)}</h2><small>${esc(c.chu_ky)} · ${esc(tenKy(c.cap, c.ky.ma))}</small></div></div>
         <div class="kb-dem" data-giay="${c.ky.con_lai_giay}"></div>
-        ${g ? `<div class="kb-giu-ngoi">${avatar(g.avatar)}<div><small>${c.tam_tinh ? "Đang dẫn đầu" : "Người giữ ngôi"}</small>
+        ${g ? `<div class="kb-giu-ngoi">${avatar(g.avatar, false, g.huy_hieu)}<div><small>${c.tam_tinh ? "Đang dẫn đầu" : "Người giữ ngôi"}</small>
               <b>${hsLink(g)}</b> · <span class="kb-diem">${fmt(g.diem_tong)}</span></div></div>`
-                    : `<p class="kb-trong" style="padding:10px">Chưa có ai trên bảng. Hãy là người đầu tiên!</p>`}
+          : `<p class="kb-trong" style="padding:10px">Chưa có ai trên bảng. Hãy là người đầu tiên!</p>`}
         <ul class="kb-mini">${c.top.slice(1).map((d) =>
-                        `<li><span>${d.hang}. ${esc(d.username)}</span><b>${fmt(d.diem_tong)}</b></li>`).join("")}</ul>
-        <a class="kb-nut" href="#${c.cap}">Xem chi tiết</a>
+            `<li><span>${d.hang}. ${esc(d.username)}</span><b>${fmt(d.diem_tong)}</b></li>`).join("")}</ul>
+        <div class="kb-the-hanh-dong">
+          ${nutThi}
+          <a class="kb-nut" href="#${c.cap}">Chi tiết</a>
+        </div>
       </article>`;
-        }).join("");
+    }).join("");
 
-        const noiBat = kq.noi_bat.length
-            ? kq.noi_bat.map((n) => `<div class="kb-the" style="margin-bottom:12px">
+    const noiBat = kq.noi_bat.length
+      ? kq.noi_bat.map((n) => `<div class="kb-the" style="margin-bottom:12px">
           <h3>${esc(n.ten)} · ${esc(tenKy(n.cap, n.ma_ky))}</h3>
           <div class="kb-huy-chuong" style="margin-top:8px">${n.ds.map((d) => `
             <div><i class="fa-solid ${ICON_DH[d.ma] || "fa-medal"}"></i>${esc(d.ten)}: ${hsLink(d)}</div>`).join("")}</div></div>`).join("")
-            : `<p class="kb-trong kb-the">Chưa có kỳ thi nào được chốt. Danh hiệu đầu tiên sẽ xuất hiện khi kỳ đầu tiên kết thúc.</p>`;
+      : `<p class="kb-trong kb-the">Chưa có kỳ thi nào được chốt. Danh hiệu đầu tiên sẽ xuất hiện khi kỳ đầu tiên kết thúc.</p>`;
 
-        const el = vao(`<div class="kb-luoi-3">${the}</div>
+    const nutMoXa = `
+      <div class="kb-hop-nut-ky-xa">
+        <button type="button" class="kb-nut-mo-ky-xa" id="kb-btn-mo-ky-xa">
+          <i class="fa-solid fa-layer-group"></i>
+          <span class="kb-chu-mo-xa">Xem các kỳ thi khác (Thi Hội, Thi Đình)</span>
+          <i class="fa-solid fa-chevron-down kb-icon-mui-ten-xa"></i>
+        </button>
+      </div>`;
+
+    const el = vao(`<div class="kb-luoi-3" id="kb-luoi-tong-quan">${the}</div>
+      ${nutMoXa}
       <section class="kb-khoi"><h2>Danh hiệu nổi bật</h2>${noiBat}</section>`);
-        demNguoc(el);
+
+    const btnMoXa = el.querySelector("#kb-btn-mo-ky-xa");
+    const luoi = el.querySelector("#kb-luoi-tong-quan");
+    if (luoi && window.innerWidth > 860) {
+      luoi.classList.add("mo-tat-ca-ky");
+    }
+    if (btnMoXa && luoi) {
+      btnMoXa.addEventListener("click", () => {
+        const mo = luoi.classList.toggle("mo-tat-ca-ky");
+        const chu = btnMoXa.querySelector(".kb-chu-mo-xa");
+        if (chu) chu.textContent = mo ? "Thu gọn các kỳ thi khác" : "Xem các kỳ thi khác (Thi Hội, Thi Đình)";
+      });
     }
 
-    // ---------- TAB: chi tiết từng kỳ ----------
-    async function veKy(cap, ma, l) {
-        const kq = await goi(`/ky/${cap}?bang=${encodeURIComponent(bang)}` + (ma ? `&ma=${encodeURIComponent(ma)}` : ""));
-        if (l !== luot) return;
-        const ky = kq.ky, q = kq.quy_che, mo = ky.trang_thai === "mo";
-        const dsKy = [{ ma: kq.ma_hien_tai, nhan: tenKy(cap, kq.ma_hien_tai) + " (hiện tại)" },
-        ...kq.lich_su.filter((h) => h.ma !== kq.ma_hien_tai).map((h) => ({ ma: h.ma, nhan: tenKy(cap, h.ma) }))];
-        const bangDs = kq.ds.map((d) => ({ ...d, tam_tinh: kq.tam_tinh }));
-        const coThiChinh = cap === "hoi" || cap === "dinh";
+    demNguoc(el);
+  }
 
-        const el = vao(`
+  // ---------- TAB: chi tiết từng kỳ ----------
+  async function veKy(cap, ma, l) {
+    const kq = await goi(`/ky/${cap}?bang=${encodeURIComponent(bang)}` + (ma ? `&ma=${encodeURIComponent(ma)}` : ""));
+    if (l !== luot) return;
+    const ky = kq.ky, q = kq.quy_che, mo = ky.trang_thai === "mo";
+    await capNhatDsContests();
+    const cid = cap === "huong" ? 1 : cap === "hoi" ? 2 : 3;
+    const ct = dsContests.find((x) => x.id === cid);
+    const dangMo = ct && ct.trang_thai === "dang-dien-ra";
+    const dsKy = [{ ma: kq.ma_hien_tai, nhan: tenKy(cap, kq.ma_hien_tai) + " (hiện tại)" },
+    ...kq.lich_su.filter((h) => h.ma !== kq.ma_hien_tai).map((h) => ({ ma: h.ma, nhan: tenKy(cap, h.ma) }))];
+    const bangDs = kq.ds.map((d) => ({ ...d, tam_tinh: kq.tam_tinh }));
+    const coThiChinh = cap === "hoi" || cap === "dinh";
+
+    const el = vao(`
       <div class="kb-tieu-ky">
         <h2><i class="fa-solid ${ICON_CAP[cap]}"></i> ${esc(ky.ten)} · ${esc(tenKy(cap, ky.ma))}</h2>
         <select id="kb-chon-ky" class="kb-chon" aria-label="Chọn kỳ">${dsKy.map((k) =>
-            `<option value="${esc(k.ma)}"${k.ma === ky.ma ? " selected" : ""}>${esc(k.nhan)}</option>`).join("")}</select>
+      `<option value="${esc(k.ma)}"${k.ma === ky.ma ? " selected" : ""}>${esc(k.nhan)}</option>`).join("")}</select>
       </div>
       <div class="kb-the" style="margin-bottom:14px">
         ${ngayVN(ky.bat_dau)} → ${ngayVN(ky.ket_thuc)} ·
         ${mo ? `<span class="kb-dem" data-giay="${ky.con_lai_giay}" style="display:inline-block"></span>` : `<b>Đã chốt kết quả chính thức</b>`}
-      
       </div>
+      ${dangMo ? `
+      <div class="kb-phong-thi-banner">
+        <div class="kb-pt-trai">
+          <span class="kb-pt-badge"><i class="fa-solid fa-fire"></i> Phòng thi đang mở</span>
+          <h3>Đề thi chính thức: ${esc(ky.ten)}</h3>
+          <p>Thời gian làm bài: <b>${cap === "huong" ? "30 phút" : cap === "hoi" ? "45 phút" : "60 phút"}</b> · Đề thi trắc nghiệm bấm giờ thực, tự động chấm điểm và tính điểm vào bảng xếp hạng Khoa Bảng.</p>
+        </div>
+        <a class="kb-pt-btn" href="form.html?subject=contest&chapter=${cap === "huong" ? 1 : cap === "hoi" ? 2 : 3}&article=${cap === "huong" ? 1 : cap === "hoi" ? 2 : 3}&q=1">
+          <i class="fa-solid fa-pen-nib"></i> Vào phòng thi ngay (${cap === "huong" ? "30p" : cap === "hoi" ? "45p" : "60p"})
+        </a>
+      </div>` : `
+      <div class="kb-phong-thi-banner kb-pt-chua-mo">
+        <div class="kb-pt-trai">
+          <span class="kb-pt-badge kb-badge-cho"><i class="fa-solid fa-clock"></i> Sắp diễn ra</span>
+          <h3>Đề thi chính thức: ${esc(ky.ten)}</h3>
+          <p>Thời gian làm bài: <b>${cap === "huong" ? "30 phút" : cap === "hoi" ? "45 phút" : "60 phút"}</b> · Kỳ thi sẽ mở tự động lúc <b>${ct ? ct.bat_dau : 'ngày thi'}</b>. Hiện tại phòng thi chưa mở.</p>
+        </div>
+        <button class="kb-pt-btn kb-btn-khoa" disabled>
+          <i class="fa-solid fa-lock"></i> Chưa tới ngày mở
+        </button>
+      </div>`}
       ${kq.tam_tinh ? `<p class="kb-tam-tinh">Bảng xếp hạng đang <b>tạm tính</b>, danh hiệu là <b>dự kiến</b>. Kết quả sẽ được khóa khi kỳ kết thúc. ${esc(q.luu_y)}</p>` : ""}
       ${bangXh(cap, bangDs, q)}
       <p class="kb-ghi" style="margin-top:8px;font-size:.85rem;opacity:.8">Tổng ${kq.tong} thí sinh đủ điều kiện xếp hạng.</p>
@@ -162,100 +247,100 @@
           <tbody>${kq.lich_su.map((h) => `<tr><td><a href="#${cap}/${esc(h.ma)}">${esc(tenKy(cap, h.ma))}</a></td>
             <td>${ngayVN(h.bat_dau)} - ${ngayVN(h.ket_thuc)}</td><td>${esc(h.nguoi_dau || "")}</td>
             <td class="kb-diem">${h.diem_dau == null ? "" : fmt(h.diem_dau)}</td><td>${h.so_nguoi}</td></tr>`).join("")}</tbody></table></div>`
-                : `<p class="kb-trong kb-the">Chưa có kỳ nào được chốt.</p>`}</section>`);
+        : `<p class="kb-trong kb-the">Chưa có kỳ nào được chốt.</p>`}</section>`);
 
-        demNguoc(el);
-        $("kb-chon-ky").addEventListener("change", (e) => { location.hash = `#${cap}/${e.target.value}`; });
-        const gui = $("kb-pk-gui");
-        if (gui) gui.addEventListener("click", () => guiPhucKhao(ky.id));
+    demNguoc(el);
+    $("kb-chon-ky").addEventListener("change", (e) => { location.hash = `#${cap}/${e.target.value}`; });
+    const gui = $("kb-pk-gui");
+    if (gui) gui.addEventListener("click", () => guiPhucKhao(ky.id));
+  }
+
+  async function guiPhucKhao(kyId) {
+    const tb = $("kb-pk-tb");
+    const nd = $("kb-pk-nd").value.trim();
+    tb.className = "kb-tb";
+    if (!token) { tb.className = "kb-tb loi"; tb.textContent = "Hãy đăng xuất rồi đăng nhập lại để gửi phúc khảo."; return; }
+    if (nd.length < 10) { tb.className = "kb-tb loi"; tb.textContent = "Nội dung cần ít nhất 10 ký tự."; return; }
+    $("kb-pk-gui").disabled = true;
+    try {
+      const kq = await goi("/phuc-khao", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+        body: JSON.stringify({ ky_id: kyId, noi_dung: nd }),
+      });
+      tb.className = "kb-tb ok"; tb.textContent = kq.message;
+    } catch (err) {
+      tb.className = "kb-tb loi"; tb.textContent = err.message;
+      $("kb-pk-gui").disabled = false;
     }
+  }
 
-    async function guiPhucKhao(kyId) {
-        const tb = $("kb-pk-tb");
-        const nd = $("kb-pk-nd").value.trim();
-        tb.className = "kb-tb";
-        if (!token) { tb.className = "kb-tb loi"; tb.textContent = "Hãy đăng xuất rồi đăng nhập lại để gửi phúc khảo."; return; }
-        if (nd.length < 10) { tb.className = "kb-tb loi"; tb.textContent = "Nội dung cần ít nhất 10 ký tự."; return; }
-        $("kb-pk-gui").disabled = true;
-        try {
-            const kq = await goi("/phuc-khao", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
-                body: JSON.stringify({ ky_id: kyId, noi_dung: nd }),
-            });
-            tb.className = "kb-tb ok"; tb.textContent = kq.message;
-        } catch (err) {
-            tb.className = "kb-tb loi"; tb.textContent = err.message;
-            $("kb-pk-gui").disabled = false;
-        }
+  // ---------- TAB: Vinh danh (bảng vàng + hiệu ứng xướng danh) ----------
+  let henXuong = [];
+  function xuongDanh(sec, nhanh) {
+    henXuong.forEach(clearTimeout); henXuong = [];
+    const the = [...sec.querySelectorAll(".kb-khoi-the")].sort((a, b) => b.dataset.thu - a.dataset.thu); // Thám hoa -> Trạng nguyên
+    const tb = sec.querySelector(".kb-xuong-tb");
+    the.forEach((t) => t.classList.remove("hien"));
+    sec.classList.remove("da-mo");
+    if (nhanh || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      the.forEach((t) => t.classList.add("hien")); sec.classList.add("da-mo"); tb.textContent = ""; return;
     }
+    tb.textContent = "🥁 Thùng... thùng... Triều đình xướng danh!";
+    the.forEach((t, i) => henXuong.push(setTimeout(() => {
+      t.classList.add("hien");
+      tb.textContent = `✦ ${t.querySelector("b.dh").textContent}: ${t.querySelector(".ten").textContent} ✦`;
+    }, 1100 + i * 1500)));
+    henXuong.push(setTimeout(() => { sec.classList.add("da-mo"); tb.textContent = "Bảng vàng đã treo!"; }, 1100 + the.length * 1500));
+  }
 
-    // ---------- TAB: Vinh danh (bảng vàng + hiệu ứng xướng danh) ----------
-    let henXuong = [];
-    function xuongDanh(sec, nhanh) {
-        henXuong.forEach(clearTimeout); henXuong = [];
-        const the = [...sec.querySelectorAll(".kb-khoi-the")].sort((a, b) => b.dataset.thu - a.dataset.thu); // Thám hoa -> Trạng nguyên
-        const tb = sec.querySelector(".kb-xuong-tb");
-        the.forEach((t) => t.classList.remove("hien"));
-        sec.classList.remove("da-mo");
-        if (nhanh || matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            the.forEach((t) => t.classList.add("hien")); sec.classList.add("da-mo"); tb.textContent = ""; return;
-        }
-        tb.textContent = "🥁 Thùng... thùng... Triều đình xướng danh!";
-        the.forEach((t, i) => henXuong.push(setTimeout(() => {
-            t.classList.add("hien");
-            tb.textContent = `✦ ${t.querySelector("b.dh").textContent}: ${t.querySelector(".ten").textContent} ✦`;
-        }, 1100 + i * 1500)));
-        henXuong.push(setTimeout(() => { sec.classList.add("da-mo"); tb.textContent = "Bảng vàng đã treo!"; }, 1100 + the.length * 1500));
-    }
-
-    async function veVinhDanh(l) {
-        const kq = await goi(`/vinh-danh?bang=${encodeURIComponent(bang)}`);
-        if (l !== luot) return;
-        if (!kq.ds.length) {
-            vao(`<p class="kb-trong kb-the">Bảng vàng còn trống. Kỳ Thi Đình đầu tiên chưa kết thúc.<br>
+  async function veVinhDanh(l) {
+    const kq = await goi(`/vinh-danh?bang=${encodeURIComponent(bang)}`);
+    if (l !== luot) return;
+    if (!kq.ds.length) {
+      vao(`<p class="kb-trong kb-the">Bảng vàng còn trống. Kỳ Thi Đình đầu tiên chưa kết thúc.<br>
         <a class="kb-nut" style="display:inline-block;margin-top:12px" href="#dinh">Xem Thi Đình hiện tại</a></p>`);
-            return;
-        }
-        const daXem = JSON.parse(localStorage.getItem("kb_da_xem") || "[]");
-        const el = vao(kq.ds.map((k) => {
-            const tam = k.danh_hieu.filter((d) => ["trang_nguyen", "bang_nhan", "tham_hoa"].includes(d.ma));
-            const giap = (ma) => k.danh_hieu.filter((d) => d.ma === ma);
-            const nhom = (ma, tieu) => giap(ma).length
-                ? `<div class="kb-giap"><h3>${esc(tieu)}</h3><ul>${giap(ma).map((d) => `<li>${hsLink(d)}</li>`).join("")}</ul></div>` : "";
-            return `<section class="kb-bv" data-ky="${k.id}">
+      return;
+    }
+    const daXem = JSON.parse(localStorage.getItem("kb_da_xem") || "[]");
+    const el = vao(kq.ds.map((k) => {
+      const tam = k.danh_hieu.filter((d) => ["trang_nguyen", "bang_nhan", "tham_hoa"].includes(d.ma));
+      const giap = (ma) => k.danh_hieu.filter((d) => d.ma === ma);
+      const nhom = (ma, tieu) => giap(ma).length
+        ? `<div class="kb-giap"><h3>${esc(tieu)}</h3><ul>${giap(ma).map((d) => `<li>${hsLink(d)}</li>`).join("")}</ul></div>` : "";
+      return `<section class="kb-bv" data-ky="${k.id}">
         <div class="kb-bv-tieu"><small>ĐỆ NHẤT GIÁP · TAM KHÔI</small><h2>Bảng vàng ${esc(tenKy("dinh", k.ma))}</h2></div>
         <p class="kb-xuong-tb" aria-live="polite"></p>
         <ol class="kb-tam-khoi">${tam.map((d) => `<li class="kb-khoi-the" data-thu="${d.thu_tu}">
           <i class="fa-solid ${ICON_DH[d.ma]} bieu"></i><b class="dh">${esc(d.ten)}</b>
-          ${avatar(d.avatar, true)}<span class="ten">${esc(d.username)}</span>
+          ${avatar(d.avatar, true, d.huy_hieu)}<span class="ten">${esc(d.username)}</span>
           <small>${d.diem == null ? "" : fmt(d.diem) + " điểm"}</small></li>`).join("")}</ol>
         ${nhom("hoang_giap", "ĐỆ NHỊ GIÁP · HOÀNG GIÁP")}${nhom("dong_tien_si", "ĐỆ TAM GIÁP · ĐỒNG TIẾN SĨ XUẤT THÂN")}
         <p style="text-align:center;margin-top:16px"><button type="button" class="kb-nut phu" data-xuong>🔔 Xướng danh lại</button></p>
       </section>`;
-        }).join(""));
+    }).join(""));
 
-        // Kỳ mới nhất chưa xem thì công bố có hiệu ứng, còn lại hiện ngay
-        el.querySelectorAll(".kb-bv").forEach((sec, i) => {
-            const id = Number(sec.dataset.ky);
-            const moi = i === 0 && !daXem.includes(id);
-            xuongDanh(sec, !moi);
-            if (moi) { daXem.push(id); localStorage.setItem("kb_da_xem", JSON.stringify(daXem.slice(-50))); }
-            sec.querySelector("[data-xuong]").addEventListener("click", () => xuongDanh(sec, false));
-        });
+    // Kỳ mới nhất chưa xem thì công bố có hiệu ứng, còn lại hiện ngay
+    el.querySelectorAll(".kb-bv").forEach((sec, i) => {
+      const id = Number(sec.dataset.ky);
+      const moi = i === 0 && !daXem.includes(id);
+      xuongDanh(sec, !moi);
+      if (moi) { daXem.push(id); localStorage.setItem("kb_da_xem", JSON.stringify(daXem.slice(-50))); }
+      sec.querySelector("[data-xuong]").addEventListener("click", () => xuongDanh(sec, false));
+    });
+  }
+
+  // ---------- TAB: Hồ sơ khoa bảng ----------
+  async function veHoSo(uid, l) {
+    if (!uid) {
+      vao(`<p class="kb-trong kb-the">Hãy <a href="login.html" style="color:var(--son);font-weight:700">đăng nhập</a> để xem hồ sơ khoa bảng của bạn.</p>`);
+      return;
     }
-
-    // ---------- TAB: Hồ sơ khoa bảng ----------
-    async function veHoSo(uid, l) {
-        if (!uid) {
-            vao(`<p class="kb-trong kb-the">Hãy <a href="login.html" style="color:var(--son);font-weight:700">đăng nhập</a> để xem hồ sơ khoa bảng của anh/chị.</p>`);
-            return;
-        }
-        const d = (await goi(`/ho-so/${encodeURIComponent(uid)}`)).data;
-        if (l !== luot) return;
-        const nhanCap = { huong: "Thi Hương", hoi: "Thi Hội", dinh: "Thi Đình" };
-        vao(`
-      <section class="kb-the"><div class="kb-ho-so-dau">${avatar(d.user.avatar, true)}
+    const d = (await goi(`/ho-so/${encodeURIComponent(uid)}`)).data;
+    if (l !== luot) return;
+    const nhanCap = { huong: "Thi Hương", hoi: "Thi Hội", dinh: "Thi Đình" };
+    vao(`
+      <section class="kb-the"><div class="kb-ho-so-dau">${avatar(d.user.avatar, true, d.user.huy_hieu)}
         <div><h2>${esc(d.user.username)}</h2><p>${esc(d.user.bio || "Chưa có giới thiệu")}</p></div></div>
         <div class="kb-chi-so">
           <div><b>${d.cao_nhat ? esc(d.cao_nhat.ten) : "—"}</b><span>Danh hiệu cao nhất</span></div>
@@ -265,57 +350,128 @@
         </div></section>
       <section class="kb-khoi"><h2>Huy chương khoa bảng</h2>
         ${d.dem.length ? `<div class="kb-huy-chuong">${d.dem.map((x) =>
-            `<div><i class="fa-solid ${ICON_DH[x.ma] || "fa-medal"}"></i>${esc(x.ten)} <small>×${x.so_lan}</small></div>`).join("")}</div>`
-                : `<p class="kb-trong kb-the">Chưa có danh hiệu nào. Hãy tham gia Thi Hương tuần này!</p>`}</section>
+      `<div><i class="fa-solid ${ICON_DH[x.ma] || "fa-medal"}"></i>${esc(x.ten)} <small>×${x.so_lan}</small></div>`).join("")}</div>`
+        : `<p class="kb-trong kb-the">Chưa có danh hiệu nào. Hãy tham gia Thi Hương tuần này!</p>`}</section>
       <section class="kb-khoi"><h2>Lịch sử khoa bảng</h2>
         ${d.lich_su.length ? `<div class="kb-cuon"><table class="kb-bang-xh"><thead><tr><th>Kỳ</th><th>Cấp</th><th>Hạng</th><th>Điểm</th><th>Danh hiệu</th></tr></thead>
           <tbody>${d.lich_su.map((h) => `<tr><td>${esc(tenKy(h.cap, h.ma))}</td><td>${nhanCap[h.cap]}</td><td>${h.hang}</td>
             <td class="kb-diem">${fmt(h.diem)}</td><td>${h.danh_hieu ? `<span class="kb-dh">${esc(h.danh_hieu)}</span>` : ""}</td></tr>`).join("")}</tbody></table></div>`
-                : `<p class="kb-trong kb-the">Chưa tham gia kỳ nào đã chốt kết quả.</p>`}</section>`);
+        : `<p class="kb-trong kb-the">Chưa tham gia kỳ nào đã chốt kết quả.</p>`}</section>`);
+  }
+
+  // ---------- Điều hướng bằng #hash: #tong-quan | #huong/2026-W44 | #ho-so/12 ----------
+  function doc() {
+    const [tab, tham] = location.hash.slice(1).split("/");
+    return { tab: ["tong-quan", ...TAB_CAP, "vinh-danh", "ho-so"].includes(tab) ? tab : "tong-quan", tham: tham ? decodeURIComponent(tham) : "" };
+  }
+
+  async function ve() {
+    const { tab, tham } = doc();
+    const l = ++luot;
+    clearInterval(hen);
+    document.querySelectorAll("#kb-tabs a").forEach((a) => a.classList.toggle("on", a.dataset.tab === tab));
+
+    // Cập nhật trạng thái nút gom kỳ thi trên mobile
+    const dropBtn = $("kb-tab-dropdown-btn");
+    const dropTen = $("kb-tab-dropdown-ten");
+    const dropWrap = $("kb-tab-dropdown-wrap");
+    if (dropWrap) dropWrap.classList.remove("open");
+    if (dropBtn) {
+      const laCap = TAB_CAP.includes(tab);
+      dropBtn.classList.toggle("on", laCap);
+      if (dropTen) {
+        dropTen.textContent = tab === "huong" ? "Thi Hương" : tab === "hoi" ? "Thi Hội" : tab === "dinh" ? "Thi Đình" : "Kỳ thi";
+      }
     }
 
-    // ---------- Điều hướng bằng #hash: #tong-quan | #huong/2026-W44 | #ho-so/12 ----------
-    function doc() {
-        const [tab, tham] = location.hash.slice(1).split("/");
-        return { tab: ["tong-quan", ...TAB_CAP, "vinh-danh", "ho-so"].includes(tab) ? tab : "tong-quan", tham: tham ? decodeURIComponent(tham) : "" };
+    $("kb-noi-dung").innerHTML = `<p class="kb-trong">Đang mở bảng vàng...</p>`;
+    try {
+      if (tab === "tong-quan") await veTongQuan(l);
+      else if (TAB_CAP.includes(tab)) await veKy(tab, tham, l);
+      else if (tab === "vinh-danh") await veVinhDanh(l);
+      else await veHoSo(tham || userId, l);
+    } catch (err) {
+      if (l === luot) $("kb-noi-dung").innerHTML = `<p class="kb-trong kb-the">${esc(err.message)}</p>`;
     }
+  }
 
-    async function ve() {
-        const { tab, tham } = doc();
-        const l = ++luot;
-        clearInterval(hen);
-        document.querySelectorAll("#kb-tabs a").forEach((a) => a.classList.toggle("on", a.dataset.tab === tab));
-        $("kb-noi-dung").innerHTML = `<p class="kb-trong">Đang mở bảng vàng...</p>`;
-        try {
-            if (tab === "tong-quan") await veTongQuan(l);
-            else if (TAB_CAP.includes(tab)) await veKy(tab, tham, l);
-            else if (tab === "vinh-danh") await veVinhDanh(l);
-            else await veHoSo(tham || userId, l);
-        } catch (err) {
-            if (l === luot) $("kb-noi-dung").innerHTML = `<p class="kb-trong kb-the">${esc(err.message)}</p>`;
-        }
+  function veNhom() {
+    $("kb-bang").innerHTML = cauHinh.bang.map((b) =>
+      `<button type="button" class="kb-chip${b.id === bang ? " on" : ""}" data-b="${esc(b.id)}" role="tab" aria-selected="${b.id === bang}">${esc(b.ten)}</button>`).join("");
+
+    // Đồng bộ nút gom chọn môn trên mobile
+    const selMob = $("kb-select-mon-mobile");
+    if (selMob) {
+      selMob.innerHTML = cauHinh.bang.map((b) =>
+        `<option value="${esc(b.id)}"${b.id === bang ? " selected" : ""}>${esc(b.ten)}</option>`).join("");
     }
-
-    function veNhom() {
-        $("kb-bang").innerHTML = cauHinh.bang.map((b) =>
-            `<button type="button" class="kb-chip${b.id === bang ? " on" : ""}" data-b="${esc(b.id)}" role="tab" aria-selected="${b.id === bang}">${esc(b.ten)}</button>`).join("");
+    const tenMonMob = $("kb-mon-mobile-ten");
+    const bHienTai = cauHinh.bang.find((b) => b.id === bang);
+    if (tenMonMob && bHienTai) {
+      tenMonMob.textContent = bHienTai.ten;
     }
+  }
 
-    async function khoiDong() {
-        try { cauHinh = await goi("/cau-hinh"); }
-        catch (err) { $("kb-noi-dung").innerHTML = `<p class="kb-trong kb-the">${esc(err.message)}</p>`; return; }
-        // Mặc định mở nhóm đúng môn chuyên của anh/chị
-        const cuaToi = cauHinh.bang.find((b) => b.mon === (localStorage.getItem("monChuyen") || ""));
-        bang = (cuaToi || cauHinh.bang[0]).id;
+  async function khoiDong() {
+    try { cauHinh = await goi("/cau-hinh"); }
+    catch (err) { $("kb-noi-dung").innerHTML = `<p class="kb-trong kb-the">${esc(err.message)}</p>`; return; }
+    // Mặc định mở nhóm đúng môn chuyên của bạn
+    const cuaToi = cauHinh.bang.find((b) => b.mon === (localStorage.getItem("monChuyen") || ""));
+    bang = (cuaToi || cauHinh.bang[0]).id;
+    veNhom();
+    $("kb-bang").addEventListener("click", (e) => {
+      const n = e.target.closest("[data-b]");
+      if (!n) return;
+      bang = n.dataset.b; veNhom(); ve();
+    });
+
+    // Lắng nghe chọn môn trên mobile
+    const selMob = $("kb-select-mon-mobile");
+    if (selMob) {
+      selMob.addEventListener("change", (e) => {
+        bang = e.target.value;
         veNhom();
-        $("kb-bang").addEventListener("click", (e) => {
-            const n = e.target.closest("[data-b]");
-            if (!n) return;
-            bang = n.dataset.b; veNhom(); ve();
-        });
-        window.addEventListener("hashchange", ve);
         ve();
+      });
     }
 
-    khoiDong();
+    // Toggle dropdown gom kỳ thi trên mobile
+    const dropWrap = $("kb-tab-dropdown-wrap");
+    const dropBtn = $("kb-tab-dropdown-btn");
+    if (dropBtn && dropWrap) {
+      dropBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const open = dropWrap.classList.toggle("open");
+        dropBtn.setAttribute("aria-expanded", String(open));
+      });
+      document.addEventListener("click", (e) => {
+        if (!dropWrap.contains(e.target)) {
+          dropWrap.classList.remove("open");
+          dropBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
+
+    window.addEventListener("hashchange", ve);
+    await ve();
+
+    const noiKhoaBang = async (tt) => {
+      if (!tt || !window.SAOLA || window.SAOLA.vuaChaoMoi) return;
+      const laPc = window.matchMedia("(min-width: 641px)").matches;
+      const dangNoiTour = sessionStorage.getItem("vnstarl_tour_chain") === "khoa-bang";
+      const chuaXongTourKb = userId && localStorage.getItem("vnstarl_tour_khoabang_" + userId) !== "1";
+      if (laPc && (dangNoiTour || chuaXongTourKb)) return;
+      const kSs = "saola_da_kb_" + (userId || "khach");
+      if (sessionStorage.getItem(kSs)) return;
+      if (dsContests.length === 0) await capNhatDsContests();
+      if (dsContests.some((c) => c.trang_thai === "dang-dien-ra")) return;
+      sessionStorage.setItem(kSs, "1");
+      const sapMo = dsContests.some((c) => c.trang_thai === "sap-dien-ra");
+      window.SAOLA.noi(sapMo ? "kb_sap_mo" : "kb_gioi_thieu");
+    };
+    if (window.SAOLA) window.SAOLA.sanSang.then(noiKhoaBang);
+    else window.addEventListener("saola-san-sang", (e) => noiKhoaBang(e.detail), { once: true });
+  }
+
+  khoiDong();
 })();

@@ -12,7 +12,7 @@ from datetime import datetime
 
 from flask import Blueprint, jsonify, request
 
-from db_ops import DB_PATH, cong_diem_thang, streak_hien_thi
+from db_ops import DB_PATH, cong_diem_thang, cong_diem_va_educoin, streak_hien_thi
 
 huy_hieu_bp = Blueprint('huy_hieu', __name__)
 
@@ -86,6 +86,8 @@ def dam_bao_bang_tren_conn(conn):
     cot_users = [r[1] for r in conn.execute("PRAGMA table_info(users)")]
     if cot_users and 'huy_hieu' not in cot_users:
         conn.execute("ALTER TABLE users ADD COLUMN huy_hieu TEXT DEFAULT ''")
+    if cot_users and 'educoin' not in cot_users:
+        conn.execute("ALTER TABLE users ADD COLUMN educoin INTEGER DEFAULT 0")
     if cot_users:
         conn.execute("UPDATE users SET huy_hieu = '' WHERE huy_hieu IS NULL")
 
@@ -345,11 +347,11 @@ def kiem_tra_huy_hieu(conn, user_id):
                 mo_trong_luot = True
                 if thuong > 0:
                     if u["co_cot_score"]:
-                        conn.execute(
-                            "UPDATE users SET score = COALESCE(score, 0) + ? WHERE id = ?",
-                            (thuong, uid),
-                        )
-                    if co_diem_thang:
+                        if co_diem_thang:
+                            cong_diem_va_educoin(conn, uid, thuong, cong_thang=True)
+                        else:
+                            cong_diem_va_educoin(conn, uid, thuong, cong_thang=False)
+                    elif co_diem_thang:
                         cong_diem_thang(conn, uid, thuong)
                 moi_mo.append({
                     "id": bid,

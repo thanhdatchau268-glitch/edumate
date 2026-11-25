@@ -4,12 +4,17 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700;800&display=swap" />
-    <title>Bảng vàng khoa bảng - VnStarL</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Khoa cử - VnStarL</title>
+    <link rel="stylesheet" href="style.css?v=11" />
     <link rel="stylesheet" href="style3.css" />
-    <link rel="stylesheet" href="khoa-bang.css?v=2" />
+    <link rel="stylesheet" href="huy-hieu-khung.css" />
+    <link rel="stylesheet" href="khoa-bang.css?v=3" />
+    <link rel="stylesheet" href="tour-personal.css?v=6" />
 </head>
 
 <body>
@@ -33,16 +38,21 @@
                         <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
                     </a>
                 </li>
+                <li id="nav-khoa-bang">
+                    <a href="khoa-bang.html" id="link-khoa-bang" class="active" title="Khoa cử"
+                        aria-label="Khoa cử">
+                        <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+                    </a>
+                </li>
                 <li id="nav-xep-hang">
                     <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
                         <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
                     </a>
                 </li>
-                <li>
-                    <a href="khoa-bang.html" id="link-khoa-bang" class="active" title="Khoa bảng"
-                        aria-label="Khoa bảng">
-                        <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa bảng</span>
-                    </a>
+                <li id="nav-vuon-saoladou">
+                  <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+                    <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
+                  </a>
                 </li>
             </ul>
             <div class="user-account-area">
@@ -51,7 +61,7 @@
                     <a href="register.html" class="auth-link">Đăng ký</a>
                 </div>
                 <div id="user-profile" class="hidden">
-                    <div class="streak-box">🔥 <span>0</span></div>
+                    <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
                     <span class="username">Username</span>
                     <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
                 </div>
@@ -62,28 +72,61 @@
     <main class="kb-trang">
         <section class="kb-hero">
             <p class="kb-ngan">✦ Khoa cử · Vinh danh · Kế thừa ✦</p>
-            <h1>Bảng Vàng Khoa Bảng</h1>
-            <p>Ba kỳ thi, ba bậc danh vọng: <b>Thi Hương</b> mỗi tuần, <b>Thi Hội</b> mỗi tháng, <b>Thi Đình</b> mỗi
+            <h1>Bảng Vàng Khoa Cử</h1>
+            <p><span class="kb-hero-mo-dau">Ba kỳ thi, ba bậc danh vọng: </span><b>Thi Hương</b> mỗi tuần, <b>Thi Hội</b> mỗi tháng, <b>Thi Đình</b> mỗi
                 quý.</p>
+            <button type="button" id="btn-mo-tour-kb" class="btn-tour-replay btn-tour-kb" title="Xem lại hướng dẫn Khoa bảng">
+                <i class="fa-regular fa-circle-question"></i> Hướng dẫn
+            </button>
         </section>
 
         <div class="kb-bar">
             <nav class="kb-tabs" id="kb-tabs" aria-label="Các mục khoa bảng">
                 <a href="#tong-quan" data-tab="tong-quan">Tổng quan</a>
-                <a href="#huong" data-tab="huong">Thi Hương</a>
-                <a href="#hoi" data-tab="hoi">Thi Hội</a>
-                <a href="#dinh" data-tab="dinh">Thi Đình</a>
+                <!-- Nút dropdown gom các mục kỳ thi trên Mobile -->
+                <div class="kb-tab-dropdown-wrap" id="kb-tab-dropdown-wrap">
+                    <button type="button" class="kb-tab-dropdown-btn" id="kb-tab-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-landmark"></i>
+                        <span id="kb-tab-dropdown-ten">Kỳ thi</span>
+                        <i class="fa-solid fa-chevron-down kb-tab-arrow"></i>
+                    </button>
+                    <div class="kb-tab-dropdown-menu" id="kb-tab-dropdown-menu">
+                        <a href="#huong" data-tab="huong"><i class="fa-solid fa-feather-pointed"></i> Thi Hương</a>
+                        <a href="#hoi" data-tab="hoi"><i class="fa-solid fa-landmark"></i> Thi Hội</a>
+                        <a href="#dinh" data-tab="dinh"><i class="fa-solid fa-crown"></i> Thi Đình</a>
+                        <div class="kb-tab-dropdown-divider"></div>
+                        <a href="#ho-so" data-tab="ho-so"><i class="fa-solid fa-user-graduate"></i> Hồ sơ khoa bảng</a>
+                    </div>
+                </div>
+                <!-- Các tab riêng biệt cho Desktop -->
+                <a href="#huong" class="kb-tab-desktop-only" data-tab="huong">Thi Hương</a>
+                <a href="#hoi" class="kb-tab-desktop-only" data-tab="hoi">Thi Hội</a>
+                <a href="#dinh" class="kb-tab-desktop-only" data-tab="dinh">Thi Đình</a>
                 <a href="#vinh-danh" data-tab="vinh-danh">Vinh danh</a>
                 <a href="#ho-so" data-tab="ho-so">Hồ sơ</a>
             </nav>
-            <div class="kb-chips" id="kb-bang" role="tablist" aria-label="Chọn nhóm thi"></div>
+            <div class="kb-chips-area">
+                <!-- Danh sách chips trải rộng cho Desktop -->
+                <div class="kb-chips" id="kb-bang" role="tablist" aria-label="Chọn nhóm thi"></div>
+                <!-- Nút gom môn học cho Mobile -->
+                <div class="kb-mon-mobile-wrap" id="kb-mon-mobile-wrap">
+                    <label class="kb-mon-mobile-btn" for="kb-select-mon-mobile">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span id="kb-mon-mobile-ten">Không chuyên</span>
+                        <i class="fa-solid fa-chevron-down kb-mon-arrow"></i>
+                    </label>
+                    <select id="kb-select-mon-mobile" aria-label="Chọn nhóm môn thi"></select>
+                </div>
+            </div>
         </div>
 
         <div id="kb-noi-dung" aria-live="polite"></div>
     </main>
 
-    <script src="script.js"></script>
-    <script src="khoa-bang.js"></script>
+    <script src="script.js?v=17"></script>
+    <script src="huy-hieu-khung.js"></script>
+    <script src="khoa-bang.js?v=2"></script>
+    <script src="tour-khoa-bang.js?v=6"></script>
 </body>
 
 </html>

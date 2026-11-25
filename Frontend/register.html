@@ -4,12 +4,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+  <script src="api-config.js?v=2"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
   <title>Đăng ký - VnStarL</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="style2.css" />
-  <link rel="stylesheet" href="style3.css" />
-  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="style.css?v=11" />
+  <link rel="stylesheet" href="style2.css?v=4" />
+  <link rel="stylesheet" href="style3.css?v=4" />
+  <link rel="stylesheet" href="auth.css?v=5" />
 </head>
 
 <body>
@@ -34,9 +37,19 @@
             <i class="fa-solid fa-book-open"></i><span class="nav-chu">Bài tập</span>
           </a>
         </li>
+        <li id="nav-khoa-bang">
+          <a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử">
+            <i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span>
+          </a>
+        </li>
         <li id="nav-xep-hang">
           <a href="ranking.html" id="link-xep-hang" title="Xếp hạng" aria-label="Xếp hạng">
             <i class="fa-solid fa-ranking-star"></i><span class="nav-chu">Xếp hạng</span>
+          </a>
+        </li>
+        <li id="nav-vuon-saoladou">
+          <a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou">
+            <i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span>
           </a>
         </li>
       </ul>
@@ -47,7 +60,7 @@
           <a href="register.html" class="auth-link">Đăng ký</a>
         </div>
         <div id="user-profile" class="hidden">
-          <div class="streak-box">🔥 <span>0</span></div>
+          <div class="streak-box"><img src="img/icon-streak.png" alt="Streak" class="vn-ico vn-ico-streak" /><span>0</span></div>
           <span class="username">Username</span>
           <img src="img/avartar.webp" alt="Avatar" class="user-avatar" />
         </div>
@@ -66,13 +79,13 @@
         </div>
         <ul class="auth-loi-ich">
           <li><i class="fa-solid fa-graduation-cap"></i>
-            <div><b>Lịch học cá nhân hoá</b><span>Tự xếp giờ ôn bài theo thời khóa biểu của anh/chị.</span></div>
+            <div><b>Lịch học cá nhân hoá</b><span>Tự xếp giờ ôn bài theo thời khóa biểu của bạn.</span></div>
           </li>
           <li><i class="fa-solid fa-book-bookmark"></i>
             <div><b>Sổ lỗi sai thông minh</b><span>Ôn đúng chỗ hổng, nhớ lâu hơn.</span></div>
           </li>
           <li><i class="fa-solid fa-ranking-star"></i>
-            <div><b>Đua top cùng anh/chị bè</b><span>Tích điểm, nhận quà, leo bảng xếp hạng.</span></div>
+            <div><b>Đua top cùng bạn bè</b><span>Tích điểm, nhận quà, leo bảng xếp hạng.</span></div>
           </li>
         </ul>
         <small>© VnStarL</small>
@@ -80,18 +93,56 @@
 
       <!-- Cột phải: form -->
       <section class="auth-main">
+        <nav class="auth-mobile-tabs" aria-label="Chuyển đổi Đăng nhập và Đăng ký">
+          <a href="login.html" class="auth-mobile-tab">Đăng nhập</a>
+          <a href="register.html" class="auth-mobile-tab active" aria-current="page">Đăng ký</a>
+        </nav>
         <h1>Tạo tài khoản</h1>
-        <p class="auth-sub">Điền thông tin bên dưới để đăng ký.</p>
+        <p class="auth-sub">Chọn tài khoản Gmail có sẵn trên máy hoặc điền thông tin bên dưới.</p>
 
         <div id="auth-alert" class="auth-alert" role="alert" aria-live="polite"></div>
 
         <form id="form-register" class="auth-form" novalidate>
-          <div class="field">
-            <label for="reg-email">Email</label>
+          <div class="field google-field-wrap">
+            <div class="field-label-row">
+              <label for="reg-email">Email / Tài khoản Gmail</label>
+              <div class="auth-or-divider" aria-hidden="true"><span>hoặc nhập email</span></div>
+              <button type="button" id="btn-toggle-reg-gmail" class="btn-gmail-mini">
+                <svg class="g-icon-sm" viewBox="0 0 24 24" width="15" height="15">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                <span>Chọn Gmail trong máy</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+            </div>
             <div class="input-wrap">
               <i class="fa-solid fa-envelope ico"></i>
-              <input type="email" id="reg-email" placeholder="ban@gmail.com" autocomplete="email" required />
+              <input type="email" id="reg-email" placeholder="Nhập email (vd: ban@gmail.com)" autocomplete="email" required />
             </div>
+
+            <!-- Hộp chọn nhanh Gmail có sẵn trên máy ngay tại ô Email đăng ký -->
+            <div id="reg-google-popup" class="google-accounts-card hidden">
+              <div class="g-acc-dau">
+                <span class="g-acc-tieu-de">Chọn nhanh Gmail trên máy này</span>
+                <button type="button" id="btn-dong-reg-g" class="g-acc-x" aria-label="Đóng">✕</button>
+              </div>
+              <div id="reg-g-accounts-list" class="g-accounts-list">
+                <!-- Danh sách tài khoản đã lưu trên thiết bị sẽ tự động tải -->
+              </div>
+              <button type="button" id="btn-reg-gmail-khac" class="g-acc-item g-acc-them">
+                <div class="g-avatar g-avatar-them">
+                  <i class="fa-solid fa-keyboard"></i>
+                </div>
+                <div class="g-acc-info">
+                  <b class="g-name">Tự nhập tài khoản khác</b>
+                  <span class="g-email">Gõ địa chỉ Gmail từ bàn phím</span>
+                </div>
+              </button>
+            </div>
+
             <p class="field-msg"></p>
           </div>
 
@@ -145,8 +196,8 @@
     </div>
   </main>
 
-  <script src="script.js"></script>
-  <script src="auth.js"></script>
+  <script src="script.js?v=17"></script>
+  <script src="auth.js?v=5"></script>
 </body>
 
 </html>

@@ -7,19 +7,32 @@
   };
 
   const viTri = { lat: null, lng: null };
+  // Tọa độ mặc định tại TP. Cao Lãnh, Đồng Tháp (dùng khi người dùng không bật / không hỗ trợ GPS)
+  const VI_TRI_MAC_DINH = { lat: 10.4596, lng: 105.6322 };
   let truong = [];
   let truongChuyenData = {};
   let monChuyenHienTai = "";
   let ST = null; // trạng thái kết quả (để đổi / ghim trường mà không tính lại từ đầu)
   let KY = []; // danh sách kỳ thi + trạng thái mở/khóa
 
-  const KEY_MON = { toan: "Toan", ly: "Ly", dia: "Dia" };
-  const TEN_MON = { toan: "Toán", ly: "Vật Lý", dia: "Địa Lí" };
+  const KEY_MON = { toan: "Toan", ly: "Ly", hoa: "Hoa", sinh: "Sinh", van: "Van", anh: "Anh", su: "Su", dia: "Dia", tin: "Tin" };
+  const TEN_MON = {
+    toan: "Toán",
+    ly: "Vật Lý",
+    hoa: "Hóa Học",
+    sinh: "Sinh Học",
+    van: "Ngữ Văn",
+    anh: "Tiếng Anh",
+    su: "Lịch Sử",
+    dia: "Địa Lí",
+    tin: "Tin Học",
+  };
   const ANH = {
     thuong: { thuMuc: "img/school/", tienTo: "" },
     chuyen: { thuMuc: "img/school/", tienTo: "chuyen_" },
   };
   const DUOI_ANH = ["webp"];
+  const ANH_MAC_DINH = "img/school/aaa.webp";
 
   const HESO_DUONG = 1.3;
   const TOC_DO = { xedap: 12, xemay: 30, xebuyt: 22, giadinh: 30 }; // km/giờ (gia đình chở = tốc độ xe máy)
@@ -89,8 +102,8 @@
   // ---------- 3 nguyện vọng ----------
   // min/max: khoảng xác suất đỗ của vai trò; dich: xác suất lý tưởng (dùng khi không có trường nào lọt khoảng)
   const VAI_TRO = [
-    { ten: "NV1", nhan: "Thử sức", loai: "thusuc", min: 0.25, max: 0.65, dich: 0.45, mota: "Trường mơ ước, cao hơn mức anh/chị đang đạt một chút." },
-    { ten: "NV2", nhan: "Vừa sức", loai: "vuasuc", min: 0.55, max: 0.9, dich: 0.72, mota: "Sát với năng lực hiện tại của anh/chị." },
+    { ten: "NV1", nhan: "Thử sức", loai: "thusuc", min: 0.25, max: 0.65, dich: 0.45, mota: "Trường mơ ước, cao hơn mức bạn đang đạt một chút." },
+    { ten: "NV2", nhan: "Vừa sức", loai: "vuasuc", min: 0.55, max: 0.9, dich: 0.72, mota: "Sát với năng lực hiện tại của bạn." },
     { ten: "NV3", nhan: "An toàn", loai: "antoan", min: 0.85, max: 1.01, dich: 0.95, mota: "Phương án dự phòng chắc chắn." },
   ];
 
@@ -138,7 +151,7 @@
       const res = await fetch(`http://127.0.0.1:5000/api/users/${userId}/mon-chuyen`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mon_chuyen: mon }),
+        body: JSON.stringify({ mon_chuyen: mon, hoan_thanh_khao_sat: true }),
       });
       const kq = await res.json();
       return kq.success ? "server" : "loi";
@@ -152,8 +165,30 @@
     if (out.dataset.dangLuu === "1") return;
     out.dataset.dangLuu = "1";
 
-    localStorage.setItem("nguyenVong", JSON.stringify(ST.slots.map((s) => ({ id: s.t.id, ten: s.t.ten_truong }))));
-    if (ST.chuyen) localStorage.setItem("truongChuyen", JSON.stringify({ id: ST.chuyen.chon.id, ten: ST.chuyen.chon.ten_truong }));
+    localStorage.setItem(
+      "nguyenVong",
+      JSON.stringify(
+        ST.slots.map((s) => ({
+          id: s.t.id,
+          ten: s.t.ten_truong,
+          vt: s.vt,
+          pt: s.t.xs != null ? Math.round(s.t.xs * 100) : null,
+        }))
+      )
+    );
+    if (ST.chuyen && ST.chuyen.chon) {
+      localStorage.setItem(
+        "truongChuyen",
+        JSON.stringify({
+          id: ST.chuyen.chon.id,
+          ten: ST.chuyen.chon.ten_truong,
+          mon: monChuyenHienTai || localStorage.getItem("monChuyen") || "",
+          pt: ST.chuyen.chon.xs != null ? Math.round(ST.chuyen.chon.xs * 100) : null,
+        })
+      );
+    } else {
+      localStorage.removeItem("truongChuyen");
+    }
 
     const tb = $("chon-thong-bao");
     tb.hidden = false;
@@ -236,7 +271,12 @@
     e.preventDefault();
     const out = $("ketqua");
 
-    if (viTri.lat === null) return baoLoi(out, "Cần cho phép lấy vị trí trước khi nộp.");
+    if (viTri.lat === null || viTri.lng === null) {
+      viTri.lat = VI_TRI_MAC_DINH.lat;
+      viTri.lng = VI_TRI_MAC_DINH.lng;
+      const kq = $("kq");
+      if (kq) kq.textContent = "Chưa có GPS, đang dùng tọa độ mặc định (TP. Cao Lãnh, Đồng Tháp).";
+    }
     if (!truong.length) return baoLoi(out, "Chưa tải được dữ liệu trường.");
 
     let ds;
@@ -296,11 +336,13 @@
           // chấp nhận xa: chọn trường dễ đỗ nhất, trừ khi chỉ hơn trường gần nhất rất ít
           const chon = chuyenXa && tot.id !== gan.id && (tot.xs ?? -1) - (gan.xs ?? -1) >= 0.08 ? tot : gan;
           let lyDo = `Điểm xét chuyên ước tính ${ST.diemChuyen}. `;
-          if (chon.id === gan.id) lyDo += "Trường chuyên gần nhà anh/chị nhất.";
+          if (chon.id === gan.id) lyDo += "Trường chuyên gần nhà bạn nhất.";
           else lyDo += `Khả năng đỗ cao hơn trường gần nhất (${gan.ten_truong}) khoảng ${Math.round((chon.xs - (gan.xs ?? 0)) * 100)}%, đổi lại cách nhà ${chon.km.toFixed(1)} km nên cần ở trọ / ký túc xá.`;
           const goiY = (!chuyenXa && tot.id !== chon.id && (tot.xs ?? -1) - (chon.xs ?? 0) >= 0.15)
-            ? `${tot.ten_truong} dễ vào hơn (khả năng đỗ ~${Math.round(tot.xs * 100)}%) nhưng cách nhà ${tot.km.toFixed(1)} km. Nếu anh/chị chấp nhận học xa, hãy tích ô "chấp nhận học chuyên ở trường xa" rồi nộp lại.` : "";
+            ? `${tot.ten_truong} dễ vào hơn (khả năng đỗ ~${Math.round(tot.xs * 100)}%) nhưng cách nhà ${tot.km.toFixed(1)} km. Nếu bạn chấp nhận học xa, hãy tích ô "chấp nhận học chuyên ở trường xa" rồi nộp lại.` : "";
           ST.chuyen = { ds: dsC, chon, tot, lyDo, goiY };
+        } else {
+          ST.thongBaoChuyen = `Hiện chưa có dữ liệu điểm chuẩn trường chuyên cho môn ${TEN_MON[mon] || mon}.`;
         }
       }
     }
@@ -322,16 +364,19 @@
         if (i < DUOI_ANH.length) {
           img.dataset.i = i;
           img.src = `${img.dataset.base}.${DUOI_ANH[i]}`;
+        } else if (!img.dataset.fallback) {
+          img.dataset.fallback = "1";
+          img.src = ANH_MAC_DINH;
         } else {
-          img.replaceWith(Object.assign(document.createElement("div"), { className: "truong-null", textContent: "null" }));
+          img.replaceWith(Object.assign(document.createElement("div"), { className: "truong-null", textContent: "Chưa có ảnh" }));
         }
       });
     });
   }
 
   function lyDoTruong(c, vt) {
-    let s = `${VAI_TRO[vt].mota} Điểm chuẩn dự đoán ${c.dub.du.toFixed(1)}, điểm ước tính của anh/chị ${ST.diem}.`;
-    if (c.id === ST.gannhatId) s += " Gần nhất trong các trường anh/chị có khả năng đỗ.";
+    let s = `${VAI_TRO[vt].mota} Điểm chuẩn dự đoán ${c.dub.du.toFixed(1)}, điểm ước tính của bạn ${ST.diem}.`;
+    if (c.id === ST.gannhatId) s += " Gần nhất trong các trường bạn có khả năng đỗ.";
     return s;
   }
 
@@ -347,11 +392,11 @@
            <div class="xs-thanh"><i style="width:${p}%"></i></div>
          </div>`
       : `<p class="truong-lydo">Chưa có điểm chuẩn để ước tính khả năng đỗ.</p>`;
-    const du = c.dub ? c.dub.du.toFixed(1) : "chưa có";
+    const du = c.dub ? c.dub.du.toFixed(1) : "Đang cập nhật";
     return `
       <article class="truong-card truong-card--${o.loai}${o.ghim ? " da-ghim" : ""}" style="--i:${o.i}" tabindex="0">
         <div class="truong-anh">
-          <img class="truong-img" src="${base}.${DUOI_ANH[0]}" data-base="${base}" data-i="0" alt="Ảnh ${ten}" loading="lazy">
+          <img class="truong-img" src="${base}.${DUOI_ANH[0]}" data-base="${base}" data-i="0" alt="Ảnh ${ten}" loading="lazy" decoding="async">
           <span class="truong-nhan">${esc(o.nhan)}</span>
         </div>
         <div class="truong-noidung">
@@ -361,8 +406,8 @@
           ${xs}
           <p class="truong-diem">
             <span>Dự đoán <b>${du}</b></span>
-            <span>2026 <b>${c.diem_2026 ?? "chưa có"}</b></span>
-            <span>2025 <b>${c.diem_2025 ?? "chưa có"}</b></span>
+            <span>2026 <b>${c.diem_2026 ?? "Đang cập nhật"}</b></span>
+            <span>2025 <b>${c.diem_2025 ?? "Đang cập nhật"}</b></span>
           </p>
           <p class="truong-lydo">${esc(o.lyDo)}</p>
           ${canhBao(c).map((w) => `<p class="canh-bao">⚠ ${esc(w)}</p>`).join("")}
@@ -409,7 +454,7 @@
       <div class="tom-tat">
         <b>Điểm xét tuyển ước tính: ${S.diem}</b>
         (Toán TB ${S.toan.toFixed(1)}, Văn TB ${S.van.toFixed(1)}${S.diemChuyen !== null ? `, điểm xét chuyên ${S.diemChuyen}` : ""}).
-        ${esc(xh)}Ưu tiên của anh/chị: <b>${{ gan: "gần nhà", chatluong: "chất lượng", antoan: "chắc đỗ" }[S.uuTien]}</b>
+        ${esc(xh)}Ưu tiên của bạn: <b>${{ gan: "gần nhà", chatluong: "chất lượng", antoan: "chắc đỗ" }[S.uuTien]}</b>
         · ${S.dorm ? "có thể ở ký túc xá nên xét cả trường xa" : `chỉ xét trường đi được trong ${GIOI_HAN_PHUT[S.pt]} phút`}.
       </div>`;
 
@@ -434,11 +479,11 @@
     out.dataset.dangLuu = "0";
     out.innerHTML = `
       <div class="ket-qua-khoi${animate ? "" : " khong-anim"}">
-        <h2 class="ketqua-tieu-de">Gợi ý dành cho anh/chị</h2>
+        <h2 class="ketqua-tieu-de">Gợi ý dành cho bạn</h2>
         ${tomTat}
         ${chuyenHtml()}
         <h2 class="ketqua-tieu-de nho">3 nguyện vọng trường thường</h2>
-        <p class="chon-goi-y">Bấm "Đổi trường này" để xem trường thay thế, "Ghim" để giữ lại trường anh/chị thích.</p>
+        <p class="chon-goi-y">Bấm "Đổi trường này" để xem trường thay thế, "Ghim" để giữ lại trường bạn thích.</p>
         <div class="truong-grid">${cards}</div>
         <div class="bang-cuon">
           <table class="so-sanh">
@@ -514,16 +559,23 @@
 
   function layViTri() {
     const kq = $("kq");
-    if (!navigator.geolocation) { kq.textContent = "Trình duyệt không hỗ trợ định vị."; return; }
+    if (!navigator.geolocation) {
+      viTri.lat = VI_TRI_MAC_DINH.lat;
+      viTri.lng = VI_TRI_MAC_DINH.lng;
+      kq.textContent = "Trình duyệt không hỗ trợ định vị. Đang dùng tọa độ mặc định (TP. Cao Lãnh, Đồng Tháp).";
+      return;
+    }
     kq.textContent = "Đang lấy vị trí...";
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         viTri.lat = pos.coords.latitude;
         viTri.lng = pos.coords.longitude;
-        kq.textContent = "Đã lấy được vị trí của anh/chị.";
+        kq.textContent = "Đã lấy được vị trí của bạn.";
       },
       (err) => {
-        kq.textContent = "Chưa lấy được vị trí (" + err.message + "). Hãy cho phép định vị rồi tải lại trang.";
+        viTri.lat = VI_TRI_MAC_DINH.lat;
+        viTri.lng = VI_TRI_MAC_DINH.lng;
+        kq.textContent = "Chưa lấy được vị trí (" + err.message + "). Đang dùng tọa độ mặc định (TP. Cao Lãnh, Đồng Tháp).";
       },
     );
   }
@@ -562,6 +614,24 @@
 
   function khoiDong() {
     chuanBiGiaoDien();
+    if (sessionStorage.getItem("tuDinhHuong") === "1") {
+      sessionStorage.removeItem("tuDinhHuong");
+      const monChuyen = localStorage.getItem("monChuyen") || "";
+      const chk = $("survey-3-specialized_high_school");
+      const section = $("chuyen-section");
+      const mon = $("mon-chuyen");
+      if (chk && section && mon) {
+        if (monChuyen) {
+          chk.checked = true;
+          section.hidden = false;
+          mon.value = monChuyen;
+        } else {
+          chk.checked = false;
+          section.hidden = true;
+          mon.value = "";
+        }
+      }
+    }
     veKyThi();
     ganSuKien();
     taiDuLieu().catch((e) => { $("kq").textContent = "Không đọc được diem_chuan_2026.json: " + e.message; });

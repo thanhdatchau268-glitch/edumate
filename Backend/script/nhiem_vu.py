@@ -24,7 +24,7 @@ from datetime import date, timedelta
 
 from flask import Blueprint, jsonify, request
 
-from db_ops import DB_PATH
+from db_ops import DB_PATH, cong_diem_va_educoin
 from huy_hieu import kiem_tra_huy_hieu
 import qua_tang  # noqa: F401  (import để chắc chắn bảng users đã có cột dd_last, luot_quay)
 
@@ -304,7 +304,7 @@ def nhan_thuong():
         return jsonify({"success": False, "message": "Bạn đã nhận thưởng nhiệm vụ này rồi!"}), 409
 
     diem = THUONG[nv["kho"]]["diem"]
-    conn.execute("UPDATE users SET score = score + ? WHERE id = ?", (diem, user_id))
+    cong_diem_va_educoin(conn, user_id, diem, cong_thang=False)
 
     # Nhận đủ 3 nhiệm vụ trong ngày -> thưởng thêm lượt quay (cũng chỉ được 1 lần/ngày)
     ids = _ds_hom_nay(conn, user_id, ngay)
