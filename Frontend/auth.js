@@ -87,10 +87,12 @@
             }
             res = await fetch(API + url, opts);
         } catch (e) {
-            throw new Error("Không kết nối được server. Bạn bật app.py chưa?");
+            throw new Error("Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại nhé!");
         }
         if (res.status >= 500) {
-            throw new Error("Server đang gặp lỗi (" + res.status + "). Xem terminal chạy app.py nhé!");
+            let chiTiet = "";
+            try { chiTiet = ((await res.clone().json()) || {}).message || ""; } catch (e) {}
+            throw new Error(chiTiet || "Máy chủ đang bận (" + res.status + "). Bạn thử lại sau vài giây nhé!");
         }
         return res.json();
     }
@@ -164,23 +166,37 @@
         }
     }
 
+    function escHtml(s) {
+        return String(s ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+    }
+
     function taoHtmlDanhSachGmail(ds, coNutGuiMa = false) {
         if (!ds || !ds.length) {
             return '<div style="padding:14px;color:#94a3b8;font-size:0.85rem;text-align:center;"><i class="fa-solid fa-clock-rotate-left" style="margin-right:6px"></i>Chưa có tài khoản nào được lưu trên trình duyệt này.</div>';
         }
         return ds
             .map((acc, idx) => {
-                const chuDau = (acc.name || acc.email)[0].toUpperCase();
+                const emailRaw = String(acc.email || "");
+                const nameRaw = String(acc.name || "");
+                const chuDau = escHtml((nameRaw || emailRaw || "?")[0].toUpperCase());
+                const safeEmail = escHtml(emailRaw);
+                const safeName = escHtml(nameRaw);
+                const displayName = escHtml(nameRaw || emailRaw.split("@")[0]);
+                const safeColor = /^#[0-9a-fA-F]{3,8}$/.test(String(acc.color || "")) ? acc.color : "#673ab7";
                 const isMain = idx === 0 || acc.isMain;
                 return `
-                <button type="button" class="g-acc-item" data-email="${acc.email}" data-name="${acc.name || ""}">
-                    <div class="g-avatar" style="background-color: ${acc.color || "#673ab7"}">
+                <button type="button" class="g-acc-item" data-email="${safeEmail}" data-name="${safeName}">
+                    <div class="g-avatar" style="background-color: ${safeColor}">
                         <span>${chuDau}</span>
                         ${isMain ? '<span class="g-badge-edit"><i class="fa-solid fa-pencil"></i></span>' : ""}
                     </div>
                     <div class="g-acc-info">
-                        <b class="g-name">${acc.name || acc.email.split("@")[0]}</b>
-                        <span class="g-email">${acc.email}</span>
+                        <b class="g-name">${displayName}</b>
+                        <span class="g-email">${safeEmail}</span>
                     </div>
                     ${
                         coNutGuiMa
@@ -895,24 +911,124 @@
         }
         veDoManh("");
 
-        formReg.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            anBaoForm();
-            const kq = [kiemEmail(), kiemTen(), kiemMk(), kiemNhapLai()];
-            if (kq.includes(false)) return;
+        // ===== Xác minh email bằng mã OTP 6 số (gửi về Gmail, hiện ngay trên điện thoại) =====
+        const REG = { daGuiMa: false, emailDaGui: "", giayConLai: 0, timer: null };
 
-            const nut = $("btn-register");
+        function regKhoaForm(khoa) {
+            ["reg-email", "reg-username", "reg-password", "reg-confirm-password"].forEach((id) => {
+                const o = $(id);
+                if (o) o.readOnly = khoa;
+            });
+        }
+
+        function regBaoOtp(loai, chu) {
+            const el = $("reg-otp-msg");
+            if (!el) return;
+            el.textContent = chu || "";
+            el.classList.toggle("reg-otp-loi", loai === "error");
+            el.classList.toggle("reg-otp-ok", loai === "success");
+        }
+
+        function regDemNguoc(giay) {
+            const nut = $("btn-reg-gui-lai");
+            clearInterval(REG.timer);
+            REG.giayConLai = giay;
+            const ve = () => {
+                if (!nut) return;
+                if (REG.giayConLai > 0) {
+                    nut.disabled = true;
+                    nut.textContent = "Gửi lại mã (" + REG.giayConLai + "s)";
+                } else {
+                    nut.disabled = false;
+                    nut.textContent = "Gửi lại mã ngay";
+                    clearInterval(REG.timer);
+                }
+            };
+            ve();
+            REG.timer = setInterval(() => {
+                REG.giayConLai--;
+                ve();
+            }, 1000);
+        }
+
+        function regVeBuocNhapMa(email) {
+            REG.daGuiMa = true;
+            REG.emailDaGui = email;
+            regKhoaForm(true);
+            const panel = $("reg-otp-panel");
+            if (panel) panel.classList.remove("hidden");
+            if ($("reg-otp-to")) $("reg-otp-to").textContent = "Mã 6 số đã gửi tới " + email + ". Mở Gmail trên điện thoại để xem mã.";
+            if ($("btn-register")) $("btn-register").textContent = "Xác nhận & tạo tài khoản";
+            if ($("reg-otp")) {
+                $("reg-otp").value = "";
+                setTimeout(() => $("reg-otp").focus(), 150);
+            }
+            regBaoOtp("", "");
+        }
+
+        function regVeBuocNhapThongTin() {
+            REG.daGuiMa = false;
+            REG.emailDaGui = "";
+            clearInterval(REG.timer);
+            regKhoaForm(false);
+            const panel = $("reg-otp-panel");
+            if (panel) panel.classList.add("hidden");
+            if ($("btn-register")) $("btn-register").textContent = "Gửi mã xác minh về email";
+            if ($("reg-otp-demo")) $("reg-otp-demo").textContent = "";
+            if ($("reg-email")) $("reg-email").focus();
+        }
+
+        async function regGuiMa(nut) {
+            const email = $("reg-email").value.trim();
+            dangGui(nut, true, "Đang gửi mã...");
+            try {
+                const data = await goiApi("/api/register/send-otp", { email });
+                if (!data.success) {
+                    if (/email/i.test(data.message || "")) {
+                        datTrangThai($("reg-email").closest(".field"), "loi", data.message);
+                    } else {
+                        baoForm("error", data.message || "Không gửi được mã xác minh.");
+                    }
+                    dangGui(nut, false);
+                    return false;
+                }
+                dangGui(nut, false);
+                regVeBuocNhapMa(email);
+                regDemNguoc(60);
+                baoForm("success", data.message || "Đã gửi mã xác minh về email của bạn!");
+                // Chỉ có khi chạy Backend local để thử nghiệm (Netlify không bao giờ trả mã này)
+                if (data.demo_otp && $("reg-otp-demo")) $("reg-otp-demo").textContent = "Mã thử nghiệm (chỉ máy local): " + data.demo_otp;
+                return true;
+            } catch (err) {
+                baoForm("error", err.message);
+                dangGui(nut, false);
+                return false;
+            }
+        }
+
+        async function regXacNhanVaTao(nut) {
+            const otp = ($("reg-otp").value || "").replace(/\D/g, "");
+            if (otp.length !== 6) {
+                regBaoOtp("error", "Hãy nhập đủ mã OTP 6 chữ số.");
+                $("reg-otp").focus();
+                return;
+            }
             dangGui(nut, true, "Đang tạo tài khoản...");
             try {
-                const email = $("reg-email").value.trim();
+                const email = REG.emailDaGui;
                 const username = $("reg-username").value.trim();
                 const data = await goiApi("/api/register", {
                     username,
                     email,
                     mk: $("reg-password").value,
+                    otp,
                 });
                 if (!data.success) {
-                    if (/email/i.test(data.message || "")) {
+                    if (/otp|mã|xác minh/i.test(data.message || "")) {
+                        regBaoOtp("error", data.message);
+                        $("reg-otp").select();
+                    } else if (/email/i.test(data.message || "")) {
+                        regVeBuocNhapThongTin();
                         datTrangThai($("reg-email").closest(".field"), "loi", data.message);
                     } else {
                         baoForm("error", data.message || "Đăng ký không thành công.");
@@ -929,6 +1045,54 @@
                 baoForm("error", err.message);
                 dangGui(nut, false);
             }
+        }
+
+        if ($("btn-register")) $("btn-register").textContent = "Gửi mã xác minh về email";
+
+        formReg.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            anBaoForm();
+            const nut = $("btn-register");
+            if (REG.daGuiMa) {
+                await regXacNhanVaTao(nut);
+                return;
+            }
+            const kq = [kiemEmail(), kiemTen(), kiemMk(), kiemNhapLai()];
+            if (kq.includes(false)) return;
+            await regGuiMa(nut);
         });
+
+        if ($("reg-otp")) {
+            $("reg-otp").addEventListener("input", (e) => {
+                e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6);
+                regBaoOtp("", "");
+                if (e.target.value.length === 6 && REG.daGuiMa) regXacNhanVaTao($("btn-register"));
+            });
+        }
+        if ($("btn-reg-gui-lai")) {
+            $("btn-reg-gui-lai").addEventListener("click", async () => {
+                if (REG.giayConLai > 0) return;
+                const nut = $("btn-reg-gui-lai");
+                nut.disabled = true;
+                nut.textContent = "Đang gửi...";
+                try {
+                    const data = await goiApi("/api/register/send-otp", { email: REG.emailDaGui });
+                    if (data.success) {
+                        regBaoOtp("success", "Đã gửi lại mã mới. Hãy kiểm tra Gmail.");
+                        if (data.demo_otp && $("reg-otp-demo")) $("reg-otp-demo").textContent = "Mã thử nghiệm (chỉ máy local): " + data.demo_otp;
+                        regDemNguoc(60);
+                    } else {
+                        regBaoOtp("error", data.message || "Chưa gửi lại được mã.");
+                        nut.disabled = false;
+                        nut.textContent = "Gửi lại mã ngay";
+                    }
+                } catch (err) {
+                    regBaoOtp("error", err.message);
+                    nut.disabled = false;
+                    nut.textContent = "Gửi lại mã ngay";
+                }
+            });
+        }
+        if ($("btn-reg-doi-email")) $("btn-reg-doi-email").addEventListener("click", regVeBuocNhapThongTin);
     }
 })();

@@ -45,8 +45,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   let moPhong = null; // thông tin mô phỏng của bài (null = bài không có)
 
   // Nút "Về ..." quay đúng chương trong trang danh sách bài
-  document.getElementById("quay-lai").href =
-    `problems.html?subject=${subject}&chuong=${chapter}`;
+  document.getElementById("quay-lai").href = subject
+    ? `problems.html?subject=${encodeURIComponent(subject)}${chapter ? `&chuong=${encodeURIComponent(chapter)}` : ""}`
+    : "subjects.html";
 
   // Dải 5 cấp độ thành tích 2D phẳng (xếp từ cao xuống thấp)
   const chuGiaiEl = document.getElementById("chu-giai");
@@ -154,7 +155,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  const doKho = (d) => (d <= 1 ? "Dễ" : d < 2 ? "Vừa" : "Khó");
+  const doKho = (d) => {
+    const v = Number(d);
+    if (!Number.isFinite(v)) return "Vừa";
+    return v <= 1 ? "Dễ" : v < 2 ? "Vừa" : "Khó";
+  };
 
   // ----- Đọc file JSON của bài -----
   try {
@@ -197,7 +202,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       ? data.bai_tap
       : (data.cau_hoi || []).map((c) => ({ id: c.id, do_kho: c.do_kho, cau_hoi: [c] }));
 
-    const baiSapXep = [...dsBai].sort((a, b) => a.do_kho - b.do_kho);
+    const baiSapXep = [...dsBai].sort((a, b) => (Number(a.do_kho) || 0) - (Number(b.do_kho) || 0));
     const [ten, tienDo] = await Promise.all([layTenBai(), layTienDo()]);
 
     // Tiêu đề trang: CHỈ GHI TÊN BÀI, KHÔNG GHI CHƯƠNG theo yêu cầu
@@ -367,7 +372,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (err) {
     // Lỗi thì vẫn cho bấm nút, trong ô sẽ hiện thông báo lỗi
     noiDung.textContent = "Lỗi: " + err.message;
+    if (noiDungInline) noiDungInline.textContent = "Lỗi: " + err.message;
     nutMo.disabled = false;
-    document.getElementById("ds-cau").innerHTML = `<p class="ghi">${err.message}</p>`;
+    document.getElementById("ds-cau").textContent = err.message;
   }
 });

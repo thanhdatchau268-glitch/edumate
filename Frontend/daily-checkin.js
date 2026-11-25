@@ -300,7 +300,7 @@
           <span class="station-circle-icon">${iconHtml}</span>
         </div>
         <span class="station-label-title daily-day-num">Ngày ${item.ngay}</span>
-        <span class="station-reward-val daily-day-reward" title="${item.ten}">${item.da_nhan ? "Đã nhận" : reward.tag}</span>
+        <span class="station-reward-val daily-day-reward" title="${esc(item.ten)}">${item.da_nhan ? "Đã nhận" : reward.tag}</span>
       `;
       trackEl.appendChild(cell);
     });

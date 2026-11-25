@@ -2893,3 +2893,66 @@ body:has(.hoctap) {
     gap: 10px;
     margin-top: 12px;
 }
+
+@media (max-width: 640px) {
+    .diem-overview-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .diem-ov-card {
+        padding: 13px 14px;
+    }
+
+    .diem-mm-row {
+        grid-template-columns: 92px 1fr 44px;
+        gap: 6px;
+        font-size: 0.72rem;
+    }
+
+    .diem-table-wrap {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .diem-v30-table thead th,
+    .diem-v30-table tbody td {
+        padding: 8px 8px;
+        font-size: 0.8rem;
+    }
+
+    .diem-v30-table input.diem-inp {
+        width: 70px;
+        padding: 6px 4px;
+        font-size: 16px;
+    }
+
+    .diem-auto-cell {
+        width: auto;
+        min-width: 170px;
+    }
+
+    .kt-modal-overlay {
+        padding: 12px 10px calc(16px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .kt-modal-box {
+        padding: 18px 14px;
+        max-height: 88dvh;
+        overflow-y: auto;
+        border-radius: 18px;
+    }
+
+    .kt-modal-field input {
+        font-size: 16px;
+    }
+
+    .kt-modal-actions {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 400px) {
+    .kt-modal-inputs {
+        grid-template-columns: 1fr;
+    }
+}

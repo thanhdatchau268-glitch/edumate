@@ -16,10 +16,11 @@ Mọi mã nguồn đã được chuẩn bị sẵn trong `Frontend/`, `AppsScrip
      2. `CryptoHelper` (`AppsScript/CryptoHelper.gs`)
      3. `SheetDB` (`AppsScript/SheetDB.gs`)
      4. `GradingAndModules` (`AppsScript/GradingAndModules.gs`)
-     5. `DapAnData` (`AppsScript/DapAnData.gs`) *(file đáp án bí mật — chỉ nằm trên Apps Script, không đẩy lên GitHub)*
-     6. `DeData1` (`AppsScript/DeData1.gs`)
-     7. `DeData2` (`AppsScript/DeData2.gs`)
-     8. `DeData3` (`AppsScript/DeData3.gs`)
+     5. `LuyenTapMucTieu` (`AppsScript/LuyenTapMucTieu.gs`) *(chấm từng câu tức thì, đo độ sẵn sàng mục tiêu & nhịp/tương tác Vườn Saoladou V28)*
+     6. `DapAnData` (`AppsScript/DapAnData.gs`) *(file đáp án bí mật — chỉ nằm trên Apps Script, không đẩy lên GitHub)*
+     7. `DeData1` (`AppsScript/DeData1.gs`)
+     8. `DeData2` (`AppsScript/DeData2.gs`)
+     9. `DeData3` (`AppsScript/DeData3.gs`)
    - *(Khuyên làm 1 lần)*: Ở thanh chọn hàm phía trên, chọn **`testCryptoSelfCheck`** → bấm **Chạy (Run)** và cấp quyền cho Google Sheet / Drive / Gmail khi hiện hộp thoại xác nhận (*Nâng cao → Đi tới dự án... → Cho phép*). Kiểm tra *Nhật ký thực thi* thấy `scrypt RFC7914 vec1 ok=true, pbkdf2 ok=true` là chuẩn 100%.
 
 ---

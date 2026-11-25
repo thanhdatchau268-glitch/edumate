@@ -197,7 +197,8 @@ window.TKB_OCR = (() => {
 
     // Cắt 1 ô -> canvas sạch (nền trắng, chữ đen, phóng to). Trả null nếu ô trống.
     function catO(b) {
-        const x0 = Math.round(b.x0), x1 = Math.round(b.x1), y0 = Math.round(b.y0), y1 = Math.round(b.y1);
+        const x0 = Math.max(0, Math.round(b.x0)), x1 = Math.min(W - 1, Math.round(b.x1));
+        const y0 = Math.max(0, Math.round(b.y0)), y1 = Math.min(H - 1, Math.round(b.y1));
         const bw = x1 - x0 + 1, bh = y1 - y0 + 1;
         if (bw < 6 || bh < 6) return null;
         const hist = new Uint32Array(256);

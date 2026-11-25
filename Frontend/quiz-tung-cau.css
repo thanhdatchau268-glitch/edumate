@@ -2101,7 +2101,7 @@ body.qz-phu-on #sao-la {
     }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 640px) {
     #qz-app {
         font-size: 16px;
     }
@@ -2189,7 +2189,20 @@ body.qz-phu-on #sao-la {
     }
 
     .qz-de {
-        font-size: 1.12rem;
+        font-size: 1.08rem;
+        overflow-wrap: anywhere;
+    }
+
+    .qz-opt-txt {
+        overflow-wrap: anywhere;
+    }
+
+    .qz-de .katex-display,
+    .qz-opt-txt .katex-display {
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
     }
 
     .qz-opts {

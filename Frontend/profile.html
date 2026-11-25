@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="style.css?v=11" />
   <link rel="stylesheet" href="style2.css?v=8" />
   <link rel="stylesheet" href="style3.css?v=8" />
-  <link rel="stylesheet" href="profile.css?v=6" />
+  <link rel="stylesheet" href="profile.css?v=7" />
   <link rel="stylesheet" href="pet.css?v=2" />
   <link rel="stylesheet" href="truong-note.css?v=4" />
 </head>
@@ -228,6 +228,17 @@
         </div>
       </section>
 
+      <!-- Khối Giọng nói Sao La (Tạm tắt -> Coming soon) -->
+      <section class="pf-card" id="sl-voice-card">
+        <div class="pf-card-dau">
+          <div>
+            <h2><i class="fa-solid fa-microphone-lines"></i> Giọng nói Sao La (AI Voice)</h2>
+            <p class="pf-ghi">Đọc lời thoại bằng giọng nói tự nhiên &amp; giọng AI đang được tạm tắt để nâng cấp.</p>
+          </div>
+          <span class="pf-coming-soon">Coming soon</span>
+        </div>
+      </section>
+
       <!-- Khối Thông báo -->
       <section class="pf-card" id="tb-card">
         <div class="pf-card-dau">
@@ -285,7 +296,7 @@
         </div>
       </section>
 
-      <!-- Đổi mật khẩu & Đăng xuất -->
+      <!-- Đổi mật khẩu, Đăng xuất & Xóa tài khoản -->
       <section class="pf-card pf-bottom-actions">
         <a href="login.html?forgot=1" class="pf-lien-ket">
           <span><i class="fa-solid fa-key"></i> Đổi / Quên mật khẩu qua Gmail</span>
@@ -293,6 +304,9 @@
         </a>
         <button type="button" id="btn-dang-xuat" class="btn pf-dang-xuat">
           <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất
+        </button>
+        <button type="button" id="btn-mo-xoa-tk" class="btn pf-xoa-tk">
+          <i class="fa-solid fa-user-xmark"></i> Xóa tài khoản vĩnh viễn
         </button>
       </section>
     </div>
@@ -360,12 +374,49 @@
     </div>
   </div>
 
+  <!-- Hộp xác nhận Xóa tài khoản (yêu cầu đúng mật khẩu + OTP Gmail) -->
+  <div id="xoa-tk-nen" class="modal-nen hidden">
+    <div class="modal-hop modal-nho" role="dialog" aria-modal="true" aria-labelledby="xoa-tk-tieu-de">
+      <div class="modal-dau">
+        <h3 id="xoa-tk-tieu-de"><i class="fa-solid fa-triangle-exclamation" style="color:#dc2626"></i> Xóa tài khoản</h3>
+        <button type="button" id="btn-dong-xoa-tk" class="modal-dong" aria-label="Đóng">✕</button>
+      </div>
+      <form id="form-xoa-tk" class="profile-form pf-del-form">
+        <div class="pf-del-warn">
+          Hành động này sẽ <b>xóa vĩnh viễn</b> tài khoản, điểm tích lũy, EduCoin, huy hiệu, Sổ lỗi sai và Vườn Saoladou của bạn. Không thể khôi phục!
+        </div>
+        <p class="pf-del-email">Email nhận mã xác minh: <b id="xoa-tk-email">—</b></p>
+
+        <label for="xoa-tk-mk">Mật khẩu hiện tại:</label>
+        <div class="pf-del-mk-wrap">
+          <input type="password" id="xoa-tk-mk" autocomplete="current-password" placeholder="Nhập đúng mật khẩu để xác nhận" required>
+          <button type="button" id="btn-xoa-hien-mk" class="pf-del-eye" aria-label="Hiện mật khẩu">
+            <i class="fa-regular fa-eye"></i>
+          </button>
+        </div>
+
+        <label for="xoa-tk-otp">Mã OTP (6 chữ số gửi về Gmail):</label>
+        <div class="pf-del-otp-row">
+          <input type="text" id="xoa-tk-otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Nhập mã 6 số" required>
+          <button type="button" id="btn-xoa-gui-otp" class="btn pf-del-otp-btn">Gửi mã OTP</button>
+        </div>
+
+        <p id="xoa-tk-tb" class="pf-del-tb" aria-live="polite"></p>
+
+        <div class="profile-form-nut">
+          <button type="button" id="btn-huy-xoa-tk" class="btn">Hủy</button>
+          <button type="submit" id="btn-xoa-xac-nhan" class="btn pf-del-confirm">Xóa vĩnh viễn</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- thong-bao.js nạp TRƯỚC profile.js để window.THONGBAO có sẵn khi trang chạy -->
   <script src="thong-bao.js?v=1"></script>
-  <script src="profile.js?v=13"></script>
+  <script src="profile.js?v=14"></script>
   <!-- Linh vật Sao La mặc định đồng hành -->
   <script src="pet.js?v=7"></script>
-  <script src="script.js?v=17"></script>
+  <script src="script.js?v=18"></script>
   <script src="ky-thi.js?v=1"></script>
   <script src="truong-note.js?v=3" data-page="profile"></script>
 </body>

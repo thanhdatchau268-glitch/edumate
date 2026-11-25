@@ -111,9 +111,9 @@ def chuyen_de(d, bai_id, ten=None, do_kho=3):
             hong = [r["id"] for r in kq_mau if not r["dat"]]
             if hong:
                 canh_bao.append(f"Câu {cid}: đáp án mẫu chỉ tự chấm được {diem_mau}/{diem_cau}. Ý từ khóa chưa khớp: {', '.join(hong)}")
-                cau_hoi.append({"id": cid, "type": "tu-luan", "de_bai": _de_sang_html(c["de_bai"]), "diem": diem_cau})
-                dap_an[cid] = {"loai": "tu-luan", "dap_an_dung": "", "diem": diem_cau, "y": y_moi,
-                           "loi_giai": html.escape(str(c.get("dap_an_mau", "")).strip(), quote=False).replace("\n", "<br>")}
+            cau_hoi.append({"id": cid, "type": "tu-luan", "de_bai": _de_sang_html(c["de_bai"]), "diem": diem_cau})
+            dap_an[cid] = {"loai": "tu-luan", "dap_an_dung": "", "diem": diem_cau, "y": y_moi,
+                       "loi_giai": html.escape(str(c.get("dap_an_mau", "")).strip(), quote=False).replace("\n", "<br>")}
         except (KeyError, ValueError, TypeError) as e:
             loi.append(f"Câu {cid}: {e}")
     if not cau_hoi and not loi:

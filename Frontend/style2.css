@@ -516,6 +516,50 @@
     }
 }
 
+@media (max-width: 640px) {
+    #survey {
+        padding: 20px 12px 96px;
+        gap: 20px;
+    }
+
+    #input-survey {
+        padding: 18px 14px;
+        border-radius: 18px;
+    }
+
+    .ky-hang {
+        grid-template-columns: minmax(90px, 1.35fr) repeat(var(--cot), minmax(0, 1fr));
+        gap: 6px;
+        padding: 8px;
+    }
+
+    .ky-hang.ky-dau {
+        padding: 0 8px;
+        font-size: 11.5px;
+    }
+
+    .ky-ten b {
+        font-size: 13px;
+    }
+
+    .ky-ten small {
+        font-size: 11px;
+    }
+
+    #input-survey .ky-thi input[type="number"] {
+        padding: 8px 4px;
+        font-size: 16px;
+    }
+
+    .truong-hanhdong {
+        flex-wrap: wrap;
+    }
+
+    .truong-hanhdong button {
+        flex: 1 1 120px;
+    }
+}
+
 /* ==========================================================
    Khảo sát thông minh: bảng điểm các kỳ, xác suất đỗ, so sánh
    ========================================================== */

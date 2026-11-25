@@ -123,7 +123,7 @@
       mustClick: "#btn-so-loi",
       staysOnPage: false,
       hint: "Bấm vào nút \"Sổ lỗi sai\" để mở trang",
-      nextLabel: "Hoàn tất tại đây 🎉",
+      nextLabel: "Mở Sổ lỗi sai ➔",
       onEnter: () => {
         const tabSoLoi = document.getElementById("tab-so-loi");
         if (tabSoLoi) tabSoLoi.click();
@@ -228,6 +228,11 @@
       return;
     }
     const r = el.getBoundingClientRect();
+    if (r.width === 0 && r.height === 0) {
+      holeEl.classList.add("is-center");
+      datViTriMascot(null);
+      return;
+    }
     const pad = b.scrollTop ? 10 : 8;
     holeEl.classList.remove("is-center");
     holeEl.style.top = Math.max(4, r.top - pad) + "px";
@@ -299,11 +304,28 @@
     if (nextBtn) {
       nextBtn.addEventListener("click", () => {
         if (typeof b.onNext === "function") b.onNext();
+        if (b.staysOnPage === false && b.mustClick) {
+          const targetEl = document.querySelector(b.mustClick);
+          if (typeof b.onAction === "function") b.onAction(targetEl);
+          if (targetEl && typeof targetEl.click === "function") {
+            targetEl.click();
+            return;
+          }
+        }
         renderBuoc(idx + 1);
       });
     }
 
     requestAnimationFrame(() => {
+      if (!b.scrollTop && b.target) {
+        const el2 = document.querySelector(b.target);
+        if (el2) {
+          const r2 = el2.getBoundingClientRect();
+          if (r2.width > 0 || r2.height > 0) {
+            el2.scrollIntoView({ behavior: "smooth", block: r2.height > 260 ? "start" : "center" });
+          }
+        }
+      }
       capNhatKhung();
       setTimeout(capNhatKhung, 140);
       setTimeout(capNhatKhung, 340);
@@ -314,6 +336,7 @@
   // Khóa mọi click ra ngoài vùng được phép ("Làm A mới qua B")
   function chanClickNgoai(e) {
     if (idx < 0) return;
+    if (e && e.isTrusted === false) return;
     if (mascotWrap && mascotWrap.contains(e.target)) return;
     const dc = document.getElementById("daily-checkin-overlay");
     if (dc && !dc.classList.contains("hidden") && dc.contains(e.target)) return;

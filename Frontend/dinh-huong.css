@@ -1001,8 +1001,27 @@
 
 /* ---------- Mobile Responsive ---------- */
 @media (max-width: 640px) {
+    .dh-shell {
+        padding: 16px 12px 96px;
+    }
+
+    .dh-progress {
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .dh-step-tab {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+    }
+
+    .dh-step-line {
+        min-width: 16px;
+    }
+
     .dh-card {
         padding: 18px 14px;
+        border-radius: 18px;
     }
 
     .dh-luoi-diem {
@@ -1010,12 +1029,26 @@
         gap: 8px;
     }
 
+    .dh-o-diem input {
+        font-size: 16px;
+        padding: 9px 4px;
+    }
+
     .dh-q-stage {
-        padding: 20px 14px;
+        padding: 18px 12px;
+    }
+
+    .dh-q-dots {
+        flex-wrap: wrap;
     }
 
     .dh-q-scale {
-        gap: 6px;
+        gap: 5px;
+    }
+
+    .dh-scale-btn {
+        padding: 10px 3px;
+        min-height: 56px;
     }
 
     .dh-q-scale.is-khtn-opts {
@@ -1023,7 +1056,18 @@
     }
 
     .dh-scale-lbl {
-        font-size: 0.66rem;
+        font-size: 0.65rem;
+    }
+
+    .dh-actions,
+    .dh-q-nav {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .dh-tech-body {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .dh-goiy-grid {

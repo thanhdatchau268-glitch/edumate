@@ -13,7 +13,10 @@ function duongDanAvatar(ten) {
   if (!ten) return AVATAR_MAC_DINH;
   if (/^(https?:\/\/|data:|blob:|\/|img\/)/i.test(ten)) return ten;
   if (ten.startsWith("drv_")) return "https://lh3.googleusercontent.com/d/" + encodeURIComponent(ten.slice(4)) + "=w256";
-  if (ten.startsWith("up_")) return API_SERVER + "/uploads/avatars/" + encodeURIComponent(ten);
+  if (ten.startsWith("up_")) {
+    const laMayLocal = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+    return laMayLocal ? API_SERVER + "/uploads/avatars/" + encodeURIComponent(ten) : AVATAR_MAC_DINH;
+  }
   return "img/avatar/" + encodeURIComponent(ten);
 }
 
@@ -210,7 +213,7 @@ async function handleLoginSubmit(event) {
 
     // Server lỗi 500 trả về HTML, không phải JSON
     if (response.status >= 500) {
-      alert("Server bị lỗi (" + response.status + "). Xem chữ đỏ trong terminal chạy app.py nhé!");
+      alert("Máy chủ đang bận (" + response.status + "). Bạn thử lại sau vài giây nhé!");
       return;
     }
 
@@ -270,7 +273,7 @@ async function handleRegisterSubmit(event) {
       alert(data.message);
     }
   } catch (error) {
-    alert("Không thể kết nối tới server Python!");
+    alert("Không thể kết nối tới máy chủ. Kiểm tra mạng rồi thử lại nhé!");
   }
 }
 
@@ -310,14 +313,25 @@ if (btnClose) btnClose.addEventListener("click", toggleModal);
 function themMucKhoaBang() {
   const ds = document.getElementById("nav");
   if (!ds) return;
-  if (!ds.querySelector('a[href="khoa-bang.html"]')) {
+  // Loại bỏ các mục bị trùng lặp nếu trang cũ / cache sinh dư
+  const seenHref = new Set();
+  Array.from(ds.children).forEach((li) => {
+    const a = li.querySelector("a[href]");
+    if (!a) return;
+    const href = (a.getAttribute("href") || "").split("#")[0].split("?")[0].replace(/^\.\//, "");
+    if (!href) return;
+    if (seenHref.has(href)) li.remove();
+    else seenHref.add(href);
+  });
+
+  if (!ds.querySelector('a[href*="khoa-bang.html"], #link-khoa-bang, #nav-khoa-bang')) {
     const li = document.createElement("li");
     li.id = "nav-khoa-bang";
     li.innerHTML = '<a href="khoa-bang.html" id="link-khoa-bang" title="Khoa cử" aria-label="Khoa cử"><i class="fa-solid fa-scroll"></i><span class="nav-chu">Khoa cử</span></a>';
     const xh = ds.querySelector("#nav-xep-hang");
-    xh ? xh.after(li) : ds.appendChild(li);
+    xh ? xh.before(li) : ds.appendChild(li);
   }
-  if (!ds.querySelector('a[href="vuon-saoladou.html"]')) {
+  if (!ds.querySelector('a[href*="vuon-saoladou.html"], #link-vuon-saoladou, #nav-vuon-saoladou')) {
     const liVuon = document.createElement("li");
     liVuon.id = "nav-vuon-saoladou";
     liVuon.innerHTML = '<a href="vuon-saoladou.html" id="link-vuon-saoladou" title="Vườn Saoladou" aria-label="Vườn Saoladou"><i class="fa-solid fa-seedling"></i><span class="nav-chu">Vườn Saoladou</span></a>';

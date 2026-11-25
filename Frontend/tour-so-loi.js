@@ -177,6 +177,14 @@
     if (nextBtn) {
       nextBtn.addEventListener("click", () => {
         if (typeof b.onNext === "function") b.onNext();
+        if (b.staysOnPage === false && b.mustClick) {
+          const targetEl = document.querySelector(b.mustClick);
+          if (typeof b.onAction === "function") b.onAction(targetEl);
+          if (targetEl && typeof targetEl.click === "function") {
+            targetEl.click();
+            return;
+          }
+        }
         renderBuoc(idx + 1);
       });
     }
@@ -190,6 +198,7 @@
 
   function chanClickNgoai(e) {
     if (idx < 0) return;
+    if (e && e.isTrusted === false) return;
     if (mascotWrap && mascotWrap.contains(e.target)) return;
     const dc = document.getElementById("daily-checkin-overlay");
     if (dc && !dc.classList.contains("hidden") && dc.contains(e.target)) return;
@@ -382,7 +391,7 @@
       scrollTop: true,
       staysOnPage: false,
       hint: 'Bấm vào "Bài tập" trên menu để sang trang mới',
-      nextLabel: "Hoàn tất tại đây 🎉",
+      nextLabel: "Sang Kho Bài Tập ➔",
       onAction: () => {
         localStorage.setItem(KHOA_XONG, "1");
         sessionStorage.setItem(KHOA_CHAIN, "subjects");

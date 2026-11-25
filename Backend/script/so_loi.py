@@ -534,11 +534,12 @@ def goi_y():
         return _loi("Bạn đã mở hết gợi ý rồi!", 409)
     tai = _tai_bai(the["bai_key"])
     cau = _tim_cau(tai, the["cau_id"]) if tai else None
-    if not cau:
+    dap = tai["dap_an"].get(the["cau_id"]) if tai else None
+    if not cau or not dap:
         conn.close()
         return _loi("Không tìm thấy câu hỏi này!", 404)
 
-    nd = _noi_dung_goi_y(tang, tai, cau, tai["dap_an"][the["cau_id"]], the["id"])
+    nd = _noi_dung_goi_y(tang, tai, cau, dap, the["id"])
     conn.execute("UPDATE on_tap_the SET tang_goi_y = ? WHERE id = ?", (tang, the["id"]))
     phan_hoi = {"success": True, "tang": tang, "goi_y": nd, "da_dong": False}
     if tang == 3:      # đã xem lời giải: thẻ kết thúc. Thẻ sửa lỗi = đã hiểu; thẻ chứng minh = chưa đạt

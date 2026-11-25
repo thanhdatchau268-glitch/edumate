@@ -229,36 +229,59 @@
 /* ---------- Điện thoại (tối ưu riêng cho di động, giữ nguyên máy tính) ---------- */
 @media (max-width: 640px) {
   .contest-head {
-    padding: 24px 12px 6px;
+    padding: 20px 12px 6px;
   }
   .contest-head i {
     font-size: 32px;
   }
   .contest-head h1 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
   .contest-container {
-    padding: 0 8px;
-    margin: 16px auto 40px;
-    overflow-x: auto;
+    padding: 0 10px;
+    margin: 14px auto 40px;
   }
   .contest-table {
-    min-width: 480px; /* cho phép cuộn ngang mượt mà trên màn hình nhỏ */
+    table-layout: fixed;
+    width: 100%;
+    min-width: 0;
+  }
+  .contest-table th:nth-child(1),
+  .contest-table td:nth-child(1) {
+    width: 34px;
+    text-align: center;
+    padding-left: 6px;
+    padding-right: 4px;
+  }
+  .contest-table th:nth-child(2),
+  .contest-table td:nth-child(2) {
+    width: 54%;
+  }
+  .contest-table th:nth-child(3),
+  .contest-table td:nth-child(3) {
+    width: auto;
   }
   .contest-table th,
   .contest-table td {
-    padding: 10px 8px;
-    font-size: 13px;
+    padding: 10px 7px;
+    font-size: 12.5px;
+    overflow-wrap: break-word;
+    vertical-align: top;
+  }
+  .contest-table td a {
+    display: block;
+    line-height: 1.35;
   }
   .contest-badge {
     display: inline-block;
-    font-size: 11px;
+    margin: 4px 0 0;
+    font-size: 10.5px;
     padding: 2px 7px;
   }
   .contest-hop {
     width: 96%;
-    max-height: 90vh;
-    border-radius: 12px;
+    max-height: 86dvh;
+    border-radius: 14px;
   }
   .contest-tabs {
     gap: 4px;
@@ -272,6 +295,11 @@
   }
   .contest-ten {
     font-size: 1.15rem;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .contest-noi-dung .contest-badge {
+    margin: 2px 0 0;
   }
 }
 

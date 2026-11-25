@@ -2050,8 +2050,39 @@ body:has(.pl-wrap) {
     .pl-toast {
         left: 14px;
         right: 14px;
-        bottom: 78px;
+        bottom: calc(82px + env(safe-area-inset-bottom, 0px));
         max-width: none;
+    }
+}
+
+@media (max-width: 460px) {
+    .pl-tong:not(.im),
+    .pl-main .pl-tong:not(.im) {
+        grid-template-columns: 54px minmax(0, 1fr) auto;
+        gap: 8px 10px;
+        padding: 10px 12px;
+        min-height: 92px;
+    }
+
+    .pl-tong-mascot {
+        width: 54px;
+        height: 54px;
+        margin: -4px 0 -6px;
+    }
+
+    .pl-tong-mid h2 {
+        font-size: 0.9rem;
+    }
+
+    .pl-tong-chest {
+        width: 58px;
+        height: 58px;
+        border-radius: 12px;
+    }
+
+    .pl-tong-chest.opened img {
+        width: 38px;
+        height: 38px;
     }
 }
 

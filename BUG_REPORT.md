@@ -1,5 +1,38 @@
 # Báo Cáo Kiểm Toán Mã Nguồn (Code Audit Report) — Dự Án VnStarL (`d:\KHTT`)
 
+## 0. Nghi ngờ là bug — Cần xác nhận trước khi sửa (Rà soát 26/11)
+
+> [!IMPORTANT]
+> Các lỗi **chắc chắn là bug** (lệch thụt lề `dia_json.py`, `KeyError` trong `so_loi.py`, thiếu `hang.js` ở `subjects.html`, XSS ở `auth.js`/`subjects.js`/`daily-checkin.js`/`qua.js`, open-redirect `sw.js`, phá DOM `.profile-card` khi offline ở `profile.js`, `catO` tràn biên ở `tkb-ocr.js`, lỗi `ngayVN`/`kb_da_xem` ở `khoa-bang.js`, lỗi chia 0 & xuống dòng ở `qua.js`, lỗi guard `#quay-lai`/sort/lỗi inline ở `lesson.js`, tắt giọng web + AI voice và thêm `Coming soon` ở `profile.html`) **đã được sửa trực tiếp**.
+>
+> Các mục dưới đây **nghi ngờ là bug hoặc là chủ ý demo/thiết kế tạm thời**, giữ nguyên để bạn xem xét trước khi quyết định sửa:
+
+1. **Lệch tên hành động & thiếu sprite Saoladou góc phải màn hình (`Frontend/pet.js`, `Frontend/bai-tap.js`, `Frontend/img/pet/manifest.json`)**
+   - `pet.js` và `bai-tap.js` gọi các hành động `"vui"`, `"noi"`, `"hoc"`, `"khoc"`, nhưng `manifest.json` và thư mục `Frontend/img/pet/than/mac_dinh/` hiện chỉ có `choi_vui.webp`, `idle.webp`, `ngu.webp`, `an_la.webp`, `di_bo.webp`, `focus_combo.webp`, `hoan_thanh_chang.webp`, `khich_le_co_len.webp`, `nghi_ngoi.webp`, `ngoi_ghe.webp`, `om_met.webp`, `tam_song.webp`, `vuon_idle.webp`.
+   - Khi gọi `"vui"`, `pet.js` rơi về `idle`; khi gọi `"noi"`, `"hoc"`, `"khoc"`, hệ thống bỏ qua hoặc fallback nếu không tìm thấy file trong `manifest.json`.
+   - *Cần xác nhận*: Bạn muốn bổ sung 4 file sprite `vui.webp`, `noi.webp`, `hoc.webp`, `khoc.webp` theo format mới hay ánh xạ `"vui"` sang `"choi_vui"` có sẵn?
+
+2. **Cơ chế xác thực / demo nội bộ ở Backend (`Backend/script/app.py`, `pet.py`, `qua_tang.py`)**
+   - Nhiều API nhận `user_id` trực tiếp từ request chưa đối chiếu session/token (rủi ro IDOR nếu đưa lên môi trường công khai).
+   - Route `/api/forgot-password/google-verify` (`app.py`) giải mã phần payload JWT để lấy email khi demo thay vì xác thực chữ ký RS256 với Google.
+   - `CHO_PHEP_DEV = True` (`pet.py:L44`) và `app.run(debug=True)` (`app.py:L971`) đang bật sẵn; `smtp_config.json` lưu cấu hình gửi mail ngay trong repo nếu không cẩn thận khi commit.
+   - *Cần xác nhận*: Nếu chỉ demo local/offline ban giám khảo thì giữ nguyên để tiện test; nếu deploy thật cần khóa auth/tắt debug.
+
+3. **Dữ liệu bài tập placeholder ở các bài Vật lý khác (`Frontend/file_de/vat_ly/`, `Backend/Dap_an/vat_ly/`, `AppsScript/DapAnData.gs`)**
+   - Ngoài `vat_ly/chuong-1/bai-02` vừa chuyển đổi xong từ file Lý 9 Bài 1 của bạn, các bài khác như `chuong-1/bai-03`, `bai-04`, `chuong-2/bai-05..10`, `chuong-3/bai-11..13` vẫn đang dùng dữ liệu placeholder hoặc đáp án mẫu khúc xạ ánh sáng trong `DapAnData.gs` / `Backend/Dap_an`.
+
+4. **Hardcode URL `http://127.0.0.1:5000` & cấu hình Google GSI (`Frontend/script.js`, `auth.js`, `thong-bao.js`, `gate.js`, `khaosat.js`, `login.html`)**
+   - Nếu chạy qua `localhost` hoặc LAN/Netlify kết hợp Backend Flask riêng, hardcode `127.0.0.1:5000` có thể làm thiết bị khác không gọi được API (trừ khi bạn đang dùng chế độ Apps Script / dữ liệu tĩnh).
+   - Nút `"Chọn Gmail trong máy"` ở `login.html` / `register.html` hiện đọc lịch sử email trong `localStorage` thay vì chạy Google Identity Services thực thụ.
+
+5. **XSS ở phần nội dung bài tập/lý thuyết có nhúng HTML/KaTeX (`Frontend/bai-tap.js`, `Frontend/quiz-tung-cau.js`, `Frontend/so-loi.js`, `Frontend/contest.js`)**
+   - Các chuỗi từ API người dùng/quản trị đã được escape ở các file mới sửa (`auth.js`, `subjects.js`, `daily-checkin.js`, `qua.js`), nhưng phần render `de_bai` / `ly_thuyet` / `loi_giai` ở `bai-tap.js`, `quiz-tung-cau.js`, `so-loi.js`, `contest.js` cố ý dùng `innerHTML` để hiển thị thẻ `<br>`, `<b>`, `<table>`, SVG và công thức `$...$` nên chưa tự tước HTML ở đó (cần thư viện sanitize chuẩn như DOMPurify nếu mở cho người lạ nhập đề).
+
+6. **Các khung UI chưa nối hết tính năng (`tkb-ocr.js`, `subjects.js`, `khoa-bang.js`, `personal.js`)**
+   - Xem chi tiết ở **Mục 3, 4, 5** bên dưới (thống kê tuần ở `subjects.js`, thẻ `#kb-the`, dọn `worker.terminate()` và `URL.revokeObjectURL()` trong `tkb-ocr.js`, trang phục `ao_dai`...).
+
+---
+
 ## 1. Tổng quan Audit & Phạm vi kiểm tra
 
 Báo cáo này tổng hợp kết quả kiểm toán mã nguồn toàn dự án (Read-Only) trên 5 phân hệ, đối chiếu chéo giữa Frontend, Backend, cơ sở dữ liệu và tài nguyên tĩnh (`img/`, `audio/`, `file_de/`, `Dap_an/`):
@@ -67,7 +100,7 @@ Báo cáo này tổng hợp kết quả kiểm toán mã nguồn toàn dự án 
 
 ### 2.2. Backend Modules & Scripts (8 lỗi)
 
-1. **Lỗi thụt lề làm mất câu hỏi đúng chuẩn & crash `ValueError`**
+1. **[DONE] Lỗi thụt lề làm mất câu hỏi đúng chuẩn & crash `ValueError`**
    - **Vị trí**: `Backend/script/dia_json.py:L112-L116`, `L119-L122`
    - **Nguyên nhân & Tác động**: `cau_hoi.append(...)` (`L114`) và `dap_an[cid] = ...` (`L115-L116`) bị thụt vào bên trong nhánh `if hong:`. Nếu `dap_an_mau` khớp đủ từ khóa (`hong` rỗng — trường hợp đúng), câu hỏi bị bỏ qua; nếu tất cả câu đều chuẩn, hàm văng `ValueError("Không có câu hỏi nào.")`.
 
@@ -87,7 +120,7 @@ Báo cáo này tổng hợp kết quả kiểm toán mã nguồn toàn dự án 
    - **Vị trí**: `Backend/script/so_loi.py:L239-L243,L368-L563`
    - **Nguyên nhân & Tác động**: Cả 5 route (`/api/so-loi/<user_id>/ky-nang`, `/chan-doan`, `/the`, `/goi-y`, `/tra-loi`) đều không kiểm tra token, cho phép xem và thao túng tiến độ kỹ năng/lỗi sai của người dùng khác.
 
-6. **Crash `KeyError` (500) trong `goi_y()` khi thiếu `cau_id`**
+6. **[DONE] Crash `KeyError` (500) trong `goi_y()` khi thiếu `cau_id`**
    - **Vị trí**: `Backend/script/so_loi.py:L508-L513`
    - **Nguyên nhân & Tác động**: `goi_y()` chỉ kiểm tra `if not cau:` rồi truy cập trực tiếp `tai["dap_an"][the["cau_id"]]` (`L513`) thay vì `.get()` như `tra_loi()` (`L540`), gây crash `KeyError` nếu `cau_id` thiếu trong file đáp án.
 
@@ -107,7 +140,7 @@ Báo cáo này tổng hợp kết quả kiểm toán mã nguồn toàn dự án 
    - **Vị trí**: `Frontend/notched-nav.js:L5,L45,L235` vs `Frontend/script.js:L120-L126`, `Frontend/auth.js:L826-L832`
    - **Nguyên nhân & Tác động**: `daDangNhap` kiểm tra `localStorage.getItem("user") || localStorage.getItem("token")`, trong khi toàn hệ thống lưu `isLoggedIn`, `userId`, `username`, `kbToken`. Kết quả `daDangNhap` luôn `false`: trên mobile (`<= 640px`), tab đầu tiên của notched bar luôn hiện `"Giới thiệu"` (`index.html`) thay vì `"Cá nhân"` (`personal.html`), và sai trạng thái khớp tab khi ở `personal.html`.
 
-2. **Stored/DOM XSS trong danh sách gợi ý Gmail**
+2. **[DONE] Stored/DOM XSS trong danh sách gợi ý Gmail**
    - **Vị trí**: `Frontend/auth.js:L171-L195,L259`
    - **Nguyên nhân & Tác động**: `taoHtmlDanhSachGmail()` và datalist `#list-goi-y-gmail` nội suy trực tiếp `acc.name` và `acc.email` (lấy từ `username` hoặc `localStorage.getItem("vnstarl_known_accounts")`) vào `innerHTML` mà không escape HTML.
 
@@ -117,7 +150,7 @@ Báo cáo này tổng hợp kết quả kiểm toán mã nguồn toàn dự án 
    - **Vị trí**: `Frontend/auth.js:L476-L499`, `Frontend/login.html:L268-L296` vs `Backend/script/app.py:L395-L404`
    - **Nguyên nhân & Tác động**: Frontend chỉ mở `#qmk-demo-box` khi `res.demo_otp` có giá trị và hiển thị thông báo hướng dẫn người dùng bấm nút `"Điền nhanh mã này"` (`auth.js:L498`), nhưng `/api/forgot-password/send-otp` ở Backend không trả `demo_otp`. Vì `#btn-mo-cai-smtp` và `#qmk-smtp-form` nằm bên trong `#qmk-demo-box` (`login.html:L268-L296`), cả nút điền nhanh lẫn toàn bộ giao diện cấu hình Gmail SMTP bị ẩn vĩnh viễn không thể truy cập.
 
-5. **`subjects.html` không nạp `hang.js` khiến trang chủ môn ở chế độ khách bị rỗng**
+5. **[DONE] `subjects.html` không nạp `hang.js` khiến trang chủ môn ở chế độ khách bị rỗng**
    - **Vị trí**: `Frontend/gate.js:L13-L14,L69,L81-L85,L155-L156` vs `Frontend/subjects.html:L205-L207`
    - **Nguyên nhân & Tác động**: `gate.js` đọc `window.HANG` và `window.iconHang` (từ `hang.js`), nhưng `subjects.html` không nạp `hang.js`. Khi khách chưa đăng nhập truy cập `subjects.html`, khu vực `"5 hạng thành tích cho mỗi bài tập"` (`.chu-giai`) và biểu tượng hạng trên các bài học mẫu (`.bh-icons`) rỗng hoàn toàn.
 
@@ -133,7 +166,7 @@ Báo cáo này tổng hợp kết quả kiểm toán mã nguồn toàn dự án 
 
 ### 2.4. Frontend Study (6 lỗi)
 
-1. **XSS qua `innerHTML` không sanitize từ JSON đề bài/lý thuyết & API**
+1. **[DONE (một phần)] XSS qua `innerHTML` không sanitize từ JSON đề bài/lý thuyết & API** *(đã escape nhiệm vụ/thông báo lỗi/thưởng ở `lesson.js`, `subjects.js`, `daily-checkin.js`, `qua.js`; phần render HTML+KaTeX đề bài giữ nguyên để kiểm tra thêm)*
    - **Vị trí**: `Frontend/lesson.js:L170-L176,L369`, `Frontend/bai-tap.js:L458,L464-L472,L498,L508,L1084,L1091,L1101`, `Frontend/quiz-tung-cau.js:L434,L468-L471,L479-L480,L488,L497,L1143`, `Frontend/so-loi.js:L337,L346,L365,L449-L450,L500-L501`, `Frontend/subjects.js:L432,L440-L441,L450`, `Frontend/contest.js:L119`
    - **Nguyên nhân & Tác động**: Gán trực tiếp `data.ly_thuyet`, `err.message`, `bai.ten`, `tp.*`, `cau.de_bai`, `r.loi_giai`, `cau.goi_y`, `g.html`, và dữ liệu nhiệm vụ từ `/api/nhiem-vu/${userId}` vào `innerHTML` không qua escape/sanitize (dù `subjects.js:L249` có sẵn hàm `esc()`).
 
@@ -177,7 +210,7 @@ Báo cáo này tổng hợp kết quả kiểm toán mã nguồn toàn dự án 
    - **Vị trí**: `Frontend/qua.js:L147`, `Frontend/daily-checkin.js:L260`, `Frontend/khoa-bang.js:L112,L207`
    - **Nguyên nhân & Tác động**: Nội suy trực tiếp dữ liệu từ API (`o.ten`, `item.ten`, `reward.tag`, `ct.bat_dau`) vào `innerHTML` và thuộc tính `title` không qua `esc()`.
 
-5. **Phá hủy DOM `.profile-card` và mất toàn bộ listener khi API hồ sơ lỗi**
+5. **[DONE] Phá hủy DOM `.profile-card` và mất toàn bộ listener khi API hồ sơ lỗi**
    - **Vị trí**: `Frontend/profile.js:L53-L54` vs `L350-L447`
    - **Nguyên nhân & Tác động**: Khi `GET /api/users/${userId}` lỗi, `L53` ghi đè `document.querySelector(".profile-card").textContent = ...` phá hủy toàn bộ DOM con và `return` sớm tại `L54`, khiến các listener cài đặt thông báo (`L350-L428`) và tab mobile (`L433-L447`) phía sau không bao giờ được gắn.
 
@@ -343,7 +376,7 @@ Báo cáo này tổng hợp kết quả kiểm toán mã nguồn toàn dự án 
    - **Vị trí**: `Frontend/tkb-ocr.js:L199-L205,L271,L330`
    - **Nguyên nhân & Tác động**: Khi `rong(b, 2)` mở rộng hộp 2px ở mép ảnh hoặc `docTieuDe` (`L330`) truyền `HL[0].c - pitch` (< 0), `gray[(y0 + y) * W + x0 + x]` truy cập ngoài mảng (`undefined`), làm `hist[undefined]` cộng dồn sai vào `hist[0]`.
 
-7. **Rủi ro open redirect khi click thông báo ở `sw.js`**
+7. **[DONE] Rủi ro open redirect khi click thông báo ở `sw.js`**
    - **Vị trí**: `Frontend/sw.js:L109-L123`
    - **Nguyên nhân & Tác động**: `notificationclick` tạo `new URL(data.url || "index.html", self.location.href)` mà không kiểm tra `url.origin === self.location.origin`.
 
@@ -415,7 +448,7 @@ Báo cáo này tổng hợp kết quả kiểm toán mã nguồn toàn dự án 
    - **Vị trí**: `Frontend/ranking.css:L968-L983`, `Frontend/notched-nav.css:L35-L37,L50,L53`, `Frontend/pet.css:L17`, `Frontend/personal.css:L646`, `Frontend/khoa-bang.css:L47`
    - **Nguyên nhân & Tác động**: Trên `<= 640px`, `#sao-la` (`bottom: 82px !important; z-index: 900`) đè lên phần bên phải của `#rk-my-sticky` (`bottom: 78px; z-index: 100`). `personal.css:L646` và `khoa-bang.css:L47` chưa chừa `padding-bottom` cho `.u041` (`height: 76px; z-index: 99999`), dễ che nội dung cuối trang.
 
-7. **`JSON.parse` không `try/catch` trong `veVinhDanh()`**
+7. **[DONE] `JSON.parse` không `try/catch` trong `veVinhDanh()`** *(cũng đã bọc kiểm tra định dạng cho `ngayVN()`)*
    - **Vị trí**: `Frontend/khoa-bang.js:L295`
    - **Nguyên nhân & Tác động**: `JSON.parse(localStorage.getItem("kb_da_xem") || "[]")` sẽ crash hàm `veVinhDanh()` nếu giá trị trong `localStorage` bị hỏng.
 
@@ -427,7 +460,7 @@ Báo cáo này tổng hợp kết quả kiểm toán mã nguồn toàn dự án 
    - **Vị trí**: `Frontend/personal.js:L285,L357`
    - **Nguyên nhân & Tác động**: Truy cập ngay `x.d` sau `kh.ngay.find(...)` mà không kiểm tra `if (!x)`; gọi `KT.capNhatKy()` không kiểm tra `if (KT)` nếu `ky-thi.js` chưa tải.
 
-10. **Chia cho 0 (`Infinity`) khi vẽ vòng quay may mắn rỗng**
+10. **[DONE] Chia cho 0 (`Infinity`) khi vẽ vòng quay may mắn rỗng** *(cũng đã escape tên phần thưởng trong `qua.js`)*
     - **Vị trí**: `Frontend/qua.js:L46,L168-L169`
     - **Nguyên nhân & Tác động**: `veVongQuay()` chia `360 / dsMui.length` khi không kiểm tra `dsMui.length > 0`.
 
@@ -503,7 +536,7 @@ Báo cáo này tổng hợp kết quả kiểm toán mã nguồn toàn dự án 
 1. **rAF loop của pet chạy vĩnh viễn kể cả khi ẩn tab hoặc bật giảm chuyển động** — `Frontend/pet.js:L196-L205`: `requestAnimationFrame(lap)` đặt lịch frame kế tiếp ở `L198` trước khi kiểm tra `if (document.hidden || giamChuyenDong) return;`.
 2. **Thiếu `willReadFrequently: true` & làm tròn chiều rộng khung sprite** — `Frontend/pet.js:L154,L160`: `canvas.getContext("2d")` thiếu `{ willReadFrequently: true }` khi dùng `getImageData`; `Math.floor(W / soKhung)` dễ lệch nhẹ nếu bề rộng sprite sheet không chia hết cho số frame.
 3. **Comment vị trí trong `pet.css` lệch với CSS thực tế** — `Frontend/pet.css:L5-L14`: Comment mô tả đặt pet ở góc phải-trên (`--sl-dat-y`), nhưng rule đặt `bottom: 26px; top: auto`.
-4. **Template string xuống dòng làm hiển thị sai dấu phẩy thập phân** — `Frontend/qua.js:L82-L85`: `` `⚡ Đang x1,\n            5 điểm...` `` render thành `"x1, 5 điểm"` thay vì `"x1,5 điểm"`.
+4. **[DONE] Template string xuống dòng làm hiển thị sai dấu phẩy thập phân** — `Frontend/qua.js:L82-L85`: `` `⚡ Đang x1,\n            5 điểm...` `` render thành `"x1, 5 điểm"` thay vì `"x1,5 điểm"`.
 5. **Cắt bớt mô tả nhiệm vụ quá hẹp trên màn hình nhỏ** — `Frontend/nhiem-vu.css:L248`: Trên `<= 560px`, `.nv-giua small` bị giới hạn `max-width: 140px`.
 6. **Đảo thứ tự nhúng `profile.js` / `qua.js` trước `script.js`** — `Frontend/profile.html:L396-L400`, `Frontend/qua.html:L143-L144`: Thứ tự phụ thuộc `API_SERVER`, `dangXuat`, `datAvatar` bị ngược (hiện tạm chạy nhờ chờ event/`DOMContentLoaded`).
 7. **Còn tiền tố lưu trữ cũ `"edumate_*"` & không dọn `localStorage` theo ngày** — `Frontend/personal.js:L27`, `Frontend/personal.html:L204`: Vẫn dùng `"edumate_hoctap_"`, `"edumate_diem_"`, `"Edumate"`; key `S.daXong` theo ngày tích lũy không tự dọn.

@@ -761,7 +761,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 grid.innerHTML = `
                     <div class="psl-empty">
                         <strong>Chưa tải được dữ liệu Sổ lỗi sai</strong>
-                        <span>Hãy chắc chắn backend <code>app.py</code> đang chạy, hoặc bấm nút bên trên để vào phòng ôn trực tiếp.</span>
+                        <span>Chưa tải được dữ liệu máy chủ lúc này. Bạn hãy kiểm tra mạng hoặc bấm nút bên trên để vào phòng ôn trực tiếp.</span>
                     </div>`;
             }
         }

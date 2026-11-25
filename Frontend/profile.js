@@ -77,17 +77,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     localStorage.setItem("avatar", user.avatar || ""); // đồng bộ lại cho thanh menu
     localStorage.setItem("huyHieu", user.huy_hieu || "");
   } catch (err) {
-    // Chỉ thay phần thẻ hồ sơ, KHÔNG xoá nút Đăng xuất
-    document.querySelector(".profile-card").textContent = "Lỗi: " + err.message;
+    // Chỉ hiển thị trạng thái lỗi trong thẻ hồ sơ, KHÔNG xoá các phần tử con hoặc nút Đăng xuất
+    const bioEl = $("pf-bio");
+    if (bioEl) bioEl.textContent = "Lỗi kết nối server: " + err.message;
     const gridEl = $("pf-trophy-grid");
     if (gridEl) {
       gridEl.innerHTML = "";
       const p = document.createElement("p");
       p.className = "pf-trophy-empty";
-      p.textContent = "Chưa kết nối được server. Hãy bật hoặc khởi động lại Backend/script/app.py nhé!";
+      p.textContent = "Chưa kết nối được máy chủ. Hãy kiểm tra mạng rồi tải lại trang nhé!";
       gridEl.appendChild(p);
     }
-    return;
   }
 
   // =========================================================
@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       danhDauAvatar();
     } catch (err) {
       ttAv.style.color = "#dc2626";
-      ttAv.textContent = "Không tải được danh sách avatar. Bật app.py nhé!";
+      ttAv.textContent = "Không tải được danh sách avatar. Kiểm tra mạng rồi thử lại nhé!";
     }
   }
 
@@ -343,11 +343,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (e.target === nen) dongForm();
   });
 
-  // Phím Esc đóng cả 2 hộp
+  // Phím Esc đóng các modal
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       dongForm();
       dongAvatar();
+      if (typeof dongStatModal === "function") dongStatModal();
+      if (typeof dongXoaModal === "function") dongXoaModal();
     }
   });
 
@@ -908,6 +910,164 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (statNen) {
     statNen.addEventListener("click", (e) => {
       if (e.target === statNen) dongStatModal();
+    });
+  }
+
+  // =========================================================
+  // XÓA TÀI KHOẢN VĨNH VIỄN (Bắt buộc đúng mật khẩu + OTP Gmail)
+  // =========================================================
+  const xoaNen = $("xoa-tk-nen");
+  const formXoa = $("form-xoa-tk");
+  const xoaEmailEl = $("xoa-tk-email");
+  const xoaMkEl = $("xoa-tk-mk");
+  const xoaOtpEl = $("xoa-tk-otp");
+  const xoaTbEl = $("xoa-tk-tb");
+  const btnGuiOtpXoa = $("btn-xoa-gui-otp");
+  const btnXacNhanXoa = $("btn-xoa-xac-nhan");
+  const btnHienMkXoa = $("btn-xoa-hien-mk");
+  let xoaCooldownTimer = null;
+
+  function datTbXoa(msg, ok) {
+    if (!xoaTbEl) return;
+    xoaTbEl.textContent = msg || "";
+    xoaTbEl.className = "pf-del-tb" + (msg ? (ok ? " ok" : " loi") : "");
+  }
+
+  function moXoaModal() {
+    if (!xoaNen) return;
+    if (xoaEmailEl) xoaEmailEl.textContent = (user && user.email) || "Gmail đã đăng ký";
+    if (xoaMkEl) { xoaMkEl.value = ""; xoaMkEl.type = "password"; }
+    if (btnHienMkXoa) btnHienMkXoa.innerHTML = '<i class="fa-regular fa-eye"></i>';
+    if (xoaOtpEl) xoaOtpEl.value = "";
+    datTbXoa("");
+    xoaNen.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    if (xoaMkEl) setTimeout(() => xoaMkEl.focus(), 60);
+  }
+
+  function dongXoaModal() {
+    if (!xoaNen || xoaNen.classList.contains("hidden")) return;
+    xoaNen.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+
+  function batDemNguocOtpXoa(soGiay) {
+    if (!btnGuiOtpXoa) return;
+    clearInterval(xoaCooldownTimer);
+    let left = soGiay;
+    btnGuiOtpXoa.disabled = true;
+    btnGuiOtpXoa.textContent = `Gửi lại (${left}s)`;
+    xoaCooldownTimer = setInterval(() => {
+      left -= 1;
+      if (left <= 0) {
+        clearInterval(xoaCooldownTimer);
+        btnGuiOtpXoa.disabled = false;
+        btnGuiOtpXoa.textContent = "Gửi lại mã";
+      } else {
+        btnGuiOtpXoa.textContent = `Gửi lại (${left}s)`;
+      }
+    }, 1000);
+  }
+
+  const btnMoXoaTk = $("btn-mo-xoa-tk");
+  if (btnMoXoaTk) btnMoXoaTk.addEventListener("click", moXoaModal);
+  const btnDongXoaTk = $("btn-dong-xoa-tk");
+  if (btnDongXoaTk) btnDongXoaTk.addEventListener("click", dongXoaModal);
+  const btnHuyXoaTk = $("btn-huy-xoa-tk");
+  if (btnHuyXoaTk) btnHuyXoaTk.addEventListener("click", dongXoaModal);
+  if (xoaNen) {
+    xoaNen.addEventListener("click", (e) => {
+      if (e.target === xoaNen) dongXoaModal();
+    });
+  }
+
+  if (btnHienMkXoa && xoaMkEl) {
+    btnHienMkXoa.addEventListener("click", () => {
+      const anMk = xoaMkEl.type === "password";
+      xoaMkEl.type = anMk ? "text" : "password";
+      btnHienMkXoa.innerHTML = anMk ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
+    });
+  }
+
+  if (xoaOtpEl) {
+    xoaOtpEl.addEventListener("input", () => {
+      xoaOtpEl.value = xoaOtpEl.value.replace(/\D/g, "").slice(0, 6);
+    });
+  }
+
+  if (btnGuiOtpXoa) {
+    btnGuiOtpXoa.addEventListener("click", async () => {
+      const mk = xoaMkEl ? xoaMkEl.value : "";
+      if (!mk) {
+        datTbXoa("Hãy nhập mật khẩu hiện tại trước rồi mới bấm Gửi mã OTP nhé!", false);
+        if (xoaMkEl) xoaMkEl.focus();
+        return;
+      }
+      datTbXoa("Đang kiểm tra mật khẩu và gửi mã OTP...", true);
+      btnGuiOtpXoa.disabled = true;
+      btnGuiOtpXoa.textContent = "Đang gửi...";
+      try {
+        const res = await fetchCoTimeout(`${API}/api/users/${userId}/delete-send-otp`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mk }),
+        }, 12000);
+        const kq = await res.json();
+        if (!res.ok || !kq.success) throw new Error(kq.message || "Không gửi được mã OTP!");
+        datTbXoa(kq.message || "Đã gửi mã OTP 6 số về Gmail của bạn!", true);
+        if (kq.email && xoaEmailEl) xoaEmailEl.textContent = kq.email;
+        batDemNguocOtpXoa(60);
+        if (xoaOtpEl) xoaOtpEl.focus();
+      } catch (err) {
+        datTbXoa(err.message || "Không gửi được mã OTP!", false);
+        btnGuiOtpXoa.disabled = false;
+        btnGuiOtpXoa.textContent = "Gửi mã OTP";
+      }
+    });
+  }
+
+  if (formXoa) {
+    formXoa.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const mk = xoaMkEl ? xoaMkEl.value : "";
+      const otp = xoaOtpEl ? xoaOtpEl.value.replace(/\D/g, "") : "";
+      if (!mk) {
+        datTbXoa("Vui lòng nhập mật khẩu hiện tại!", false);
+        return;
+      }
+      if (otp.length !== 6) {
+        datTbXoa("Vui lòng nhập đủ 6 chữ số mã OTP đã gửi về Gmail!", false);
+        if (xoaOtpEl) xoaOtpEl.focus();
+        return;
+      }
+      datTbXoa("Đang xác minh và xóa tài khoản...", true);
+      if (btnXacNhanXoa) {
+        btnXacNhanXoa.disabled = true;
+        btnXacNhanXoa.textContent = "Đang xóa...";
+      }
+      try {
+        const res = await fetchCoTimeout(`${API}/api/users/${userId}/delete`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mk, otp }),
+        }, 15000);
+        const kq = await res.json();
+        if (!res.ok || !kq.success) throw new Error(kq.message || "Không thể xóa tài khoản!");
+
+        datTbXoa("Tài khoản đã được xóa vĩnh viễn. Đang thoát...", true);
+        ["isLoggedIn", "username", "userId", "streak", "monChuyen", "avatar", "huyHieu", "kbToken"].forEach((k) =>
+          localStorage.removeItem(k),
+        );
+        setTimeout(() => {
+          window.location.replace("index.html");
+        }, 600);
+      } catch (err) {
+        datTbXoa(err.message || "Xóa tài khoản thất bại!", false);
+        if (btnXacNhanXoa) {
+          btnXacNhanXoa.disabled = false;
+          btnXacNhanXoa.textContent = "Xóa vĩnh viễn";
+        }
+      }
     });
   }
 

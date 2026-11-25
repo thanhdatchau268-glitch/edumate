@@ -18,7 +18,11 @@
         "om_met",
         "hoan_thanh_chang",
         "khich_le_co_len",
-        "focus_combo"
+        "focus_combo",
+        "vui",
+        "noi",
+        "hoc",
+        "khoc"
       ]
     }
   },

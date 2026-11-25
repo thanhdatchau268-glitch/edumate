@@ -993,14 +993,14 @@ body {
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
     /* Nền xanh đậm nhạt dần từ dưới lên như trang cá nhân hóa */
     body {
         background:
             radial-gradient(ellipse 100% 55% at 50% 100%, rgba(37, 99, 235, 0.22) 0%, transparent 70%),
             linear-gradient(180deg, #f5f9ff 0%, #d8eaff 45%, #8cbdfa 100%) !important;
-        background-attachment: fixed !important;
-        min-height: 100vh;
+        background-attachment: scroll !important;
+        min-height: 100dvh;
     }
 
     /* Thu nhỏ bảng vàng trên điện thoại, bỏ dòng chữ mở đầu, giữ trọn vẹn ý */
@@ -1051,17 +1051,11 @@ body {
     .kb-tabs {
         display: flex;
         align-items: center;
-        gap: 5px;
-        flex-wrap: nowrap;
+        gap: 6px;
+        flex-wrap: wrap;
         width: 100%;
-        overflow-x: auto;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
+        overflow: visible;
         padding-bottom: 2px;
-    }
-
-    .kb-tabs::-webkit-scrollbar {
-        display: none;
     }
 
     .kb-tabs a,

@@ -1,4 +1,851 @@
 {
-  "ly_thuyet": "<p>Nội dung bài học đang được biên soạn và cập nhật.</p>",
-  "bai_tap": []
+  "ly_thuyet": "<h3>Ⅰ. Động năng</h3><h4>1. Khái niệm động năng</h4><ul><li>Trong thực tế, ta thường gặp những vật đang chuyển động có khả năng tác dụng lực lên vật khác:<ul><li>Một chiếc xe đang chạy có thể va chạm và làm biến dạng vật cản.</li><li>Một quả bóng đang chuyển động có thể làm các vật khác dịch chuyển khi va chạm.</li><li>Một viên bi đang lăn có thể làm những viên bi khác chuyển động.</li></ul></li><li>Những vật đang chuyển động có khả năng thực hiện công, tức là có năng lượng do chuyển động.</li></ul><blockquote><p><b>GHI NHỚ:</b> <b>Động năng</b> là năng lượng vật có được khi chuyển động. Một vật có khối lượng và đang chuyển động thì có động năng.</p><ul><li>Khi vật đứng yên ($v = 0$): động năng bằng $0$.</li><li>Khi vật chuyển động ($v > 0$): vật có động năng; với khối lượng không đổi, vật chuyển động càng nhanh thì động năng càng lớn.</li></ul></blockquote><h4>2. Công thức tính động năng</h4><p>$$W_{\\text{đ}} = \\frac{1}{2} m v^2$$</p><p><i>Trong đó:</i> $W_{\\text{đ}}$ là động năng ($\\text{J}$); $m$ là khối lượng của vật ($\\text{kg}$); $v$ là tốc độ (vận tốc) chuyển động của vật ($\\text{m/s}$).</p><h4>3. Các yếu tố ảnh hưởng đến động năng</h4><ul><li><b>Khối lượng của vật ($m$):</b> Khi tốc độ không đổi, khối lượng tăng bao nhiêu lần thì động năng tăng bấy nhiêu lần.</li><li><b>Tốc độ của vật ($v$):</b> Động năng tỉ lệ thuận với bình phương tốc độ của vật (tốc độ tăng $k$ lần thì động năng tăng $k^2$ lần).</li></ul><h4>4. Đặc điểm của động năng</h4><ul><li>Động năng là đại lượng vô hướng, không có hướng.</li><li>Động năng luôn không âm ($W_{\\text{đ}} \\ge 0$), bằng $0$ khi vật đứng yên.</li><li>Hai vật có cùng khối lượng và cùng tốc độ thì có động năng bằng nhau, không phụ thuộc vào hướng chuyển động.</li></ul><h3>Ⅱ. Thế năng</h3><h4>1. Khái niệm thế năng</h4><ul><li>Trong thực tế, có những vật dù đứng yên nhưng vẫn có khả năng thực hiện công khi được thả hoặc khi trạng thái của vật thay đổi:<ul><li>Một hòn đá nằm trên vách núi có thể rơi xuống và làm biến dạng mặt đất.</li><li>Một quả bóng được giữ ở độ cao nhất định có thể rơi xuống khi được thả.</li><li>Một chiếc cung được kéo căng có thể làm mũi tên chuyển động khi dây cung được buông ra.</li></ul></li><li>Những vật này có năng lượng không phải do chuyển động mà do vị trí hoặc trạng thái của chúng.</li><li>Có ba loại thế năng: <b>thế năng trọng trường</b> (thế năng hấp dẫn), <b>thế năng đàn hồi</b> và <b>thế năng điện</b>. Trong bài này ta tìm hiểu thế năng trọng trường.</li></ul><blockquote><p><b>GHI NHỚ:</b> <b>Thế năng trọng trường</b> là năng lượng mà vật có được do vị trí của vật trong trọng trường. Vật càng được đưa lên cao so với mốc thế năng thì thế năng trọng trường càng lớn.</p></blockquote><h4>2. Công thức tính thế năng trọng trường</h4><p>$$W_{\\text{t}} = P \\cdot h$$</p><p><i>Trong đó:</i> $W_{\\text{t}}$ là thế năng trọng trường ($\\text{J}$); $P$ là trọng lượng của vật ($\\text{N}$, ở THCS lấy $P = 10m$ với $m$ tính bằng $\\text{kg}$); $h$ là độ cao của vật so với mốc thế năng ($\\text{m}$).</p><h4>3. Các yếu tố ảnh hưởng đến thế năng trọng trường</h4><ul><li><b>Trọng lượng (khối lượng) của vật:</b> Khi độ cao không đổi, trọng lượng/khối lượng tăng bao nhiêu lần thì thế năng tăng bấy nhiêu lần.</li><li><b>Độ cao so với mốc thế năng:</b> Vật ở càng cao thì thế năng càng lớn; độ cao tăng bao nhiêu lần thì thế năng tăng bấy nhiêu lần.</li></ul><h4>4. Mốc thế năng là gì?</h4><ul><li><b>Mốc thế năng</b> là vị trí được chọn làm vị trí có thế năng bằng $0$ (thường chọn mặt đất hoặc mặt sàn làm mốc thế năng).</li></ul><h3>Ⅲ. Mở rộng</h3><ol><li><b>Thế năng đàn hồi:</b> Năng lượng vật có được khi bị biến dạng đàn hồi (lò xo bị nén/giãn, dây cung bị kéo căng).</li><li><b>Thế năng điện:</b> Năng lượng mà điện tích có được do vị trí của nó trong điện trường.</li></ol>",
+  "bai_tap": [
+    {
+      "id": "2.1",
+      "do_kho": 1,
+      "ten": "Động năng và thế năng (Cơ bản)",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Vật có động năng khi nào?",
+          "dap_an": [
+            "Vật nằm yên.",
+            "Vật có khối lượng và chuyển động với một vận tốc.",
+            "Vật không có khối lượng và không chuyển động.",
+            "Vật có khối lượng nhưng không chuyển động."
+          ],
+          "diem": 2,
+          "goi_y": "Động năng gắn với hai yếu tố là khối lượng và vận tốc."
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Vật nào sau đây có động năng?",
+          "dap_an": [
+            "Một con bò đang kéo xe với một tốc độ không đổi.",
+            "Con chó nằm yên trên đồng cỏ.",
+            "Viên bi nằm yên trên mặt sàn.",
+            "Con chim đậu yên trên cành cây."
+          ],
+          "diem": 2,
+          "goi_y": "Vật vừa có khối lượng vừa có tốc độ khác $0$ sẽ có động năng."
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Vật nào sau đây không có động năng?",
+          "dap_an": [
+            "Con chó đang chạy.",
+            "Quả bóng đang bay.",
+            "Ly nước nằm im trên mặt bàn.",
+            "Vận động viên đang chạy bộ."
+          ],
+          "diem": 2,
+          "goi_y": "Vật đứng yên ($v = 0$) không có động năng."
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Công thức tính động năng là gì?",
+          "dap_an": [
+            "$W_{\\text{đ}} = \\frac{1}{2} m v^2$",
+            "$W_{\\text{đ}} = \\frac{1}{3} m v^2$",
+            "$W_{\\text{đ}} = \\frac{1}{2} m P$",
+            "$W_{\\text{đ}} = \\frac{1}{2} m \\cdot 2v$"
+          ],
+          "diem": 2,
+          "goi_y": "Áp dụng công thức tính động năng trong sách giáo khoa."
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "Đơn vị tính động năng thường dùng trong hệ SI là:",
+          "dap_an": [
+            "$\\text{km}$",
+            "$\\text{g/m}$",
+            "$\\text{J}$",
+            "$\\text{N}$"
+          ],
+          "diem": 2,
+          "goi_y": "Đơn vị của năng lượng là Jun."
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "Động năng của một vật phụ thuộc vào những yếu tố nào?",
+          "dap_an": [
+            "Chỉ vận tốc.",
+            "Khoảng cách di chuyển và khối lượng.",
+            "Trọng lượng vật và lực tác dụng.",
+            "Khối lượng vật và tốc độ di chuyển."
+          ],
+          "diem": 2,
+          "goi_y": "Quan sát các đại lượng trong công thức $W_{\\text{đ}} = \\frac{1}{2} m v^2$."
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "Khi tốc độ $v$ tăng gấp $2$ lần, khối lượng $m$ giữ nguyên thì động năng:",
+          "dap_an": [
+            "Tăng $4$ lần.",
+            "Không đổi do $m$ giữ nguyên.",
+            "Tăng $2$ lần.",
+            "Tăng $12$ lần."
+          ],
+          "diem": 2,
+          "goi_y": "Động năng tỉ lệ thuận với bình phương tốc độ $v^2$."
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "Khi tốc độ $v$ tăng gấp $4$ lần, khối lượng $m$ giảm $2$ lần thì động năng:",
+          "dap_an": [
+            "Tăng $6$ lần.",
+            "Giảm $2$ lần.",
+            "Tăng $8$ lần.",
+            "Giảm $4$ lần."
+          ],
+          "diem": 2,
+          "goi_y": "Lấy bình phương số lần tăng của tốc độ chia cho số lần giảm của khối lượng."
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "Một người kéo xe, xe có khối lượng $17\\text{ kg}$ chuyển động với vận tốc $2\\text{ km/h}$. Động năng của xe xấp xỉ bằng:",
+          "dap_an": [
+            "$\\approx 2{,}6\\text{ J}$",
+            "$\\approx 9{,}5\\text{ J}$",
+            "$\\approx 34\\text{ J}$",
+            "$\\approx 17\\text{ J}$"
+          ],
+          "diem": 2,
+          "goi_y": "Đổi vận tốc sang $\\text{m/s}$ bằng cách chia cho $3{,}6$ rồi áp dụng $W_{\\text{đ}} = \\frac{1}{2}mv^2$."
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật có khối lượng $m = 60\\text{ g}$, có phương chuyển động hợp với phương tác dụng của lực một góc $0^\\circ$ và có tốc độ $9\\text{ m/s}$. Động năng của vật bằng:",
+          "dap_an": [
+            "$29\\text{ J}$",
+            "$2{,}43\\text{ J}$",
+            "$50\\text{ J}$",
+            "$23{,}4\\text{ J}$"
+          ],
+          "diem": 2,
+          "goi_y": "Đổi $m = 60\\text{ g} = 0{,}06\\text{ kg}$, tránh dữ liệu góc gây nhiễu."
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "Một viên bi có khối lượng $m = 20\\text{ g}$ lăn trên sàn nằm nghiêng với vận tốc $v = 1\\text{ m/s}$, sau đó dừng lại hẳn. So sánh động năng lúc đầu và lúc sau của viên bi:",
+          "dap_an": [
+            "Động năng tại hai thời điểm là như nhau.",
+            "Động năng lúc đầu lớn hơn lúc sau.",
+            "Động năng lúc đầu nhỏ hơn lúc sau.",
+            "Cả hai thời điểm đều không có động năng."
+          ],
+          "diem": 2,
+          "goi_y": "Xét vận tốc lúc đầu và lúc sau khi dừng lại hẳn ($v = 0$)."
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "Một người đẩy xe kéo có phần tay cầm tạo một góc $45^\\circ$ so với thân xe, phương chuyển động của người hợp với phương chuyển động của xe một góc $0^\\circ$. Biết xe đẩy có $m = 5\\text{ kg}$ di chuyển với $v = 2\\text{ m/s}$. Động năng của xe đẩy bằng bao nhiêu $\\text{kJ}$?",
+          "dap_an": [
+            "$0\\text{ kJ}$",
+            "$200\\text{ kJ}$",
+            "$0{,}01\\text{ kJ}$",
+            "$10\\text{ kJ}$"
+          ],
+          "diem": 2,
+          "goi_y": "Tính động năng theo $\\text{J}$ rồi đổi sang $\\text{kJ}$, tránh dữ liệu góc gây nhiễu."
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật có thế năng trọng trường (thế năng hấp dẫn) khi:",
+          "dap_an": [
+            "Vật có khối lượng (trọng lượng) và ở một độ cao khác $0$ so với mốc thế năng được chọn.",
+            "Khi vật chỉ cách mặt đất một khoảng bất kỳ mà không chọn mốc.",
+            "Khi vật chỉ có mốc thế năng.",
+            "Khi vật có trọng lượng ở mọi vị trí kể cả tại mốc thế năng."
+          ],
+          "diem": 2,
+          "goi_y": "Vật cần có trọng lượng và có độ cao $h \\neq 0$ so với mốc thế năng."
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Vật nào sau đây có thế năng trọng trường? (Mặt đất được chọn làm mốc thế năng)",
+          "dap_an": [
+            "Chiếc ghế đặt trên mặt đất.",
+            "Con gà trên nóc nhà.",
+            "Cậu bé đang đứng chơi bóng trên sân đất.",
+            "Viên bi lăn trên mặt đất."
+          ],
+          "diem": 2,
+          "goi_y": "Chọn vật có độ cao khác $0$ so với mặt đất."
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Vật nào sau đây không có thế năng trọng trường? (Mặt đất được chọn làm mốc thế năng)",
+          "dap_an": [
+            "Máy bay đang bay trên trời.",
+            "Vận động viên nhảy xà đang ở trên không trung.",
+            "Chiếc xe đang chạy trên đường.",
+            "Quả bóng được ném lên cao."
+          ],
+          "diem": 2,
+          "goi_y": "Vật nằm ngay tại mốc thế năng ($h = 0$) không có thế năng trọng trường."
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Công thức tính thế năng trọng trường là gì?",
+          "dap_an": [
+            "$W_{\\text{t}} = P \\cdot h^2$",
+            "$W_{\\text{t}} = F \\cdot s$",
+            "$W_{\\text{t}} = m \\cdot v$",
+            "$W_{\\text{t}} = P \\cdot h$"
+          ],
+          "diem": 2,
+          "goi_y": "Áp dụng công thức thế năng trọng trường trong sách giáo khoa."
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Thế năng thường có đơn vị đo chuẩn là gì?",
+          "dap_an": [
+            "$\\text{m/s}$",
+            "$\\text{J}$",
+            "$\\text{N}$",
+            "$\\text{L}$"
+          ],
+          "diem": 2,
+          "goi_y": "Thế năng là năng lượng, có đơn vị là Jun."
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Thế năng trọng trường phụ thuộc vào điều gì?",
+          "dap_an": [
+            "Khối lượng và tốc độ.",
+            "Trọng lực và vận tốc.",
+            "Độ cao so với mốc thế năng và trọng lượng.",
+            "Độ cao so với mốc tốc độ."
+          ],
+          "diem": 2,
+          "goi_y": "Quan sát hai đại lượng trong công thức $W_{\\text{t}} = P \\cdot h$."
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật có khối lượng $m = 1\\text{ kg}$ ở độ cao $h = 5\\text{ m}$ so với mốc thế năng. Khi tăng độ cao lên gấp đôi thì thế năng tăng mấy lần?",
+          "dap_an": [
+            "Tăng $4$ lần.",
+            "Tăng $1{,}5$ lần.",
+            "Tăng $5$ lần.",
+            "Tăng $2$ lần."
+          ],
+          "diem": 2,
+          "goi_y": "Thế năng tỉ lệ thuận bậc nhất với độ cao $h$."
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật đang ở mặt đất (mốc thế năng), sau đó được đưa lên cao hơn vị trí ban đầu $2\\text{ m}$. Thế năng của vật sẽ thay đổi như thế nào trong quá trình từ mặt đất đến độ cao mới?",
+          "dap_an": [
+            "Giữ nguyên.",
+            "Tăng dần.",
+            "Giảm dần.",
+            "Giảm rồi tăng."
+          ],
+          "diem": 2,
+          "goi_y": "Khi độ cao $h$ tăng dần thì thế năng cũng tăng theo."
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Một quả bóng có khối lượng $m = 500\\text{ g}$ được đưa lên độ cao $h = 5\\text{ m}$ so với mặt đất. Lấy $P = 10m$, thế năng của quả bóng bằng:",
+          "dap_an": [
+            "$5{,}2\\text{ J}$",
+            "$10\\text{ J}$",
+            "$25\\text{ J}$",
+            "$25\\text{ kJ}$"
+          ],
+          "diem": 2,
+          "goi_y": "Đổi $m = 500\\text{ g} = 0{,}5\\text{ kg}$, tính $W_{\\text{t}} = 10mh$."
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Khi một vật có $m = 0{,}5\\text{ kg}$ ở độ cao $10\\text{ m}$ so với mốc thế năng thì thế năng bằng bao nhiêu $\\text{kJ}$?",
+          "dap_an": [
+            "$5\\text{ J}$",
+            "$500\\text{ J}$",
+            "$0{,}5\\text{ J}$",
+            "$0{,}05\\text{ kJ}$"
+          ],
+          "diem": 2,
+          "goi_y": "Tính thế năng theo $\\text{J}$ rồi chia cho $1\\,000$ để đổi sang $\\text{kJ}$."
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Một chú chó có trọng lượng $200\\text{ N}$ đang nằm chơi trên nóc tủ cách mặt đất $3\\text{ m}$. Chọn mặt đất làm mốc thế năng, thế năng của chú chó là:",
+          "dap_an": [
+            "$60\\text{ J}$",
+            "$6\\text{ kJ}$",
+            "$600\\text{ J}$",
+            "$0{,}6\\text{ J}$"
+          ],
+          "diem": 2,
+          "goi_y": "Áp dụng công thức $W_{\\text{t}} = P \\cdot h$."
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Một chiếc máy bay nặng $200\\text{ tấn}$ từ từ cất cánh từ độ cao $0\\text{ m}$ lên đến độ cao $1\\,000\\text{ m}$ so với mặt đất. Chọn mặt đất làm mốc thế năng, thế năng lúc sau của máy bay bằng bao nhiêu $\\text{kJ}$?",
+          "dap_an": [
+            "$2\\,000\\,000\\text{ kJ}$",
+            "$2\\,000\\,000\\text{ J}$",
+            "$10\\,000\\,000\\text{ J}$",
+            "$2\\,000\\text{ kJ}$"
+          ],
+          "diem": 2,
+          "goi_y": "Đổi $200\\text{ tấn} = 200\\,000\\text{ kg}$, tính $W_{\\text{t}} = 10mh$ rồi đổi sang $\\text{kJ}$."
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Một chiếc thang máy có trọng lượng vỏ $P_0 = 20\\text{ N}$, đang chở tối đa $600\\text{ kg}$ hàng hóa trong tòa nhà cao $40\\text{ m}$. Tính động năng và thế năng của thang máy (đang chứa hàng hóa) khi di chuyển đến tầng $5$ (xuất phát từ tầng $1$, mỗi tầng cao $3\\text{ m}$) với vận tốc $2\\text{ m/s}$ (mốc thế năng tại tầng $1$).",
+          "dap_an": [
+            "$W_{\\text{đ}} = 14\\,200\\text{ J};\\ W_{\\text{t}} = 22\\,000\\text{ J}$",
+            "$W_{\\text{đ}} = 12\\,200\\text{ J};\\ W_{\\text{t}} = 27\\,420\\text{ J}$",
+            "$W_{\\text{đ}} = 1\\,204\\text{ J};\\ W_{\\text{t}} = 72\\,240\\text{ J}$",
+            "$W_{\\text{đ}} = 12\\,400\\text{ J};\\ W_{\\text{t}} = 72\\,240\\text{ J}$"
+          ],
+          "diem": 2,
+          "goi_y": "Cộng khối lượng thang máy ($2\\text{ kg}$) với $600\\text{ kg}$ hàng hóa; từ tầng $1$ đến tầng $5$ là $4$ tầng ($h = 12\\text{ m}$)."
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Xét tính đúng/sai của các phát biểu về động năng và thế năng:<br><b>a)</b> Động năng phụ thuộc vào trọng lượng $P$ và độ cao $h$.",
+          "diem": 2.5,
+          "goi_y": "Nhớ lại các yếu tố ảnh hưởng và đơn vị của động năng, thế năng."
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Thế năng trọng trường phụ thuộc vào độ cao $h$ và trọng lượng $P$.",
+          "diem": 2.5,
+          "goi_y": "Nhớ lại các yếu tố ảnh hưởng và đơn vị của động năng, thế năng."
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Đơn vị đo của thế năng và động năng chỉ có Jun ($\\text{J}$).",
+          "diem": 2.5,
+          "goi_y": "Nhớ lại các yếu tố ảnh hưởng và đơn vị của động năng, thế năng."
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Công thức tính động năng và thế năng là như nhau.",
+          "diem": 2.5,
+          "goi_y": "Nhớ lại các yếu tố ảnh hưởng và đơn vị của động năng, thế năng."
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Xét tính đúng/sai về mối liên hệ và sự chuyển hóa giữa động năng và thế năng:<br><b>a)</b> Khi vật có động năng thì chắc chắn cũng có thế năng.",
+          "diem": 2.5,
+          "goi_y": "Xem lại điều kiện tồn tại và sự chuyển hóa giữa động năng và thế năng."
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Động năng và thế năng của vật luôn bằng nhau.",
+          "diem": 2.5,
+          "goi_y": "Xem lại điều kiện tồn tại và sự chuyển hóa giữa động năng và thế năng."
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Quá trình chuyển hóa qua lại giữa các dạng năng lượng thường có một phần năng lượng chuyển hóa thành những dạng năng lượng khác.",
+          "diem": 2.5,
+          "goi_y": "Xem lại điều kiện tồn tại và sự chuyển hóa giữa động năng và thế năng."
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Cả động năng và thế năng đều có thể chuyển hóa thành các dạng năng lượng khác và chuyển hóa qua lại với nhau.",
+          "diem": 2.5,
+          "goi_y": "Xem lại điều kiện tồn tại và sự chuyển hóa giữa động năng và thế năng."
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Trong các vật sau đây, có mấy vật có thế năng trọng trường? (Mặt đất làm mốc thế năng)<br>1. Quả bóng nằm trên mặt đất.<br>2. Chiếc máy bay đang bay trên trời.<br>3. Chiếc ly đặt trên mặt bàn.<br>4. Quả bóng đang được ném lên cao.<br>(Chỉ ghi số lượng)",
+          "diem": 6,
+          "goi_y": "Vật thỏa mãn điều kiện về thế năng trọng trường khi có trọng lượng và có độ cao $h \\neq 0$ so với mặt đất."
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một chiếc xe nặng $20\\text{ kg}$ chạy với vận tốc $50\\text{ km/h}$. Tính động năng của xe theo đơn vị $\\text{kJ}$ (làm tròn đến chữ số thập phân thứ hai, chỉ ghi số).",
+          "diem": 6,
+          "goi_y": "Đổi $50\\text{ km/h}$ sang $\\text{m/s}$, tính $W_{\\text{đ}} = \\frac{1}{2}mv^2$ theo $\\text{J}$ rồi chia $1\\,000$."
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một con chim nặng $0{,}1\\text{ kg}$ đang bay với vận tốc $0{,}5\\text{ m/s}$ ở độ cao $100\\text{ m}$ so với mặt đất. Tính thế năng trọng trường của con chim theo đơn vị $\\text{kJ}$ (mặt đất là mốc thế năng, chỉ ghi số).",
+          "diem": 6,
+          "goi_y": "Áp dụng công thức $W_{\\text{t}} = 10mh$ rồi đổi sang $\\text{kJ}$."
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một khối kim loại có $m = 0{,}5\\text{ kg}$ được ném đi với vận tốc $20\\text{ m/s}$. Tính động năng của khối kim loại theo đơn vị $\\text{J}$ (chỉ ghi số).",
+          "diem": 6,
+          "goi_y": "Áp dụng công thức $W_{\\text{đ}} = \\frac{1}{2}mv^2$."
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Thế năng của một vật ở độ cao $10\\text{ m}$ so với mặt đất bằng $100\\text{ J}$. Tính khối lượng của vật theo đơn vị $\\text{kg}$ (lấy $P = 10m$, chỉ ghi số).",
+          "diem": 6,
+          "goi_y": "Áp dụng công thức $W_{\\text{t}} = 10mh$ để suy ra $m$."
+        }
+      ]
+    },
+    {
+      "id": "2.2",
+      "do_kho": 2,
+      "ten": "Động năng và thế năng (Nâng cao)",
+      "cau_hoi": [
+        {
+          "id": "1",
+          "type": "trac-nghiem",
+          "de_bai": "Đơn vị nào sau đây còn có thể được dùng để đo cơ năng, động năng hay thế năng?",
+          "dap_an": [
+            "$\\text{kcal}$",
+            "$\\text{N}$",
+            "$\\text{m/s}$",
+            "$\\text{W}$"
+          ],
+          "diem": 2,
+          "goi_y": "Calo ($\\text{kcal}$) cũng là đơn vị đo năng lượng."
+        },
+        {
+          "id": "2",
+          "type": "trac-nghiem",
+          "de_bai": "Một ô tô $4\\text{ tấn}$ đi với vận tốc $67\\text{ km/h}$, một xe máy Honda nặng $97\\text{ kg}$ có vận tốc $60\\text{ km/h}$. Động năng của xe ô tô gấp khoảng mấy lần xe máy?",
+          "dap_an": [
+            "$\\approx 46{,}05$ lần",
+            "$\\approx 51{,}42$ lần",
+            "$\\approx 0{,}5$ lần",
+            "$\\approx 40{,}65$ lần"
+          ],
+          "diem": 2,
+          "goi_y": "Lập tỉ số động năng $\\frac{m_1 v_1^2}{m_2 v_2^2}$ (chú ý đổi $4\\text{ tấn} = 4\\,000\\text{ kg}$)."
+        },
+        {
+          "id": "3",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật có khối lượng $10\\text{ kg}$ được ném từ mốc thế năng với động năng ban đầu $2\\,000\\text{ J}$, bỏ qua sức cản không khí. Khi vật có thế năng bằng $2$ lần động năng, vận tốc của vật xấp xỉ là:",
+          "dap_an": [
+            "$16{,}20\\text{ m/s}$",
+            "$12{,}60\\text{ m/s}$",
+            "$11{,}55\\text{ m/s}$",
+            "$18{,}20\\text{ m/s}$"
+          ],
+          "diem": 2,
+          "goi_y": "Áp dụng bảo toàn cơ năng: $W_{\\text{đ}} + W_{\\text{t}} = 3W_{\\text{đ}} = 2\\,000\\text{ J}$, rồi tìm $v$."
+        },
+        {
+          "id": "4",
+          "type": "trac-nghiem",
+          "de_bai": "Một vận động viên cử tạ có khối lượng $80\\text{ kg}$, nâng quả tạ có khối lượng gấp $2$ lần khối lượng cơ thể lên cao $2\\text{ m}$ (lúc nâng di chuyển $0{,}5\\text{ m/s}$), giữ yên trong $10$ giây rồi thả rơi chạm đất. Bỏ qua sức cản, động năng của quả tạ khi chạm đất là:",
+          "dap_an": [
+            "$16\\,000\\text{ J}$",
+            "$3\\,200\\text{ J}$",
+            "$800\\text{ J}$",
+            "$1\\,600\\text{ J}$"
+          ],
+          "diem": 2,
+          "goi_y": "Tính thế năng khi quả tạ được giữ yên ở độ cao $2\\text{ m}$, toàn bộ thế năng chuyển hóa thành động năng khi chạm đất."
+        },
+        {
+          "id": "5",
+          "type": "trac-nghiem",
+          "de_bai": "<i>(Dùng cho Câu 5, 6, 7)</i> Một vật có khối lượng $20\\text{ kg}$ được thả rơi từ độ cao $20\\text{ m}$, bỏ qua sức cản không khí.<br>Tính thế năng ban đầu của vật:",
+          "dap_an": [
+            "$4{,}00\\text{ J}$",
+            "$200\\text{ J}$",
+            "$40\\,000\\text{ J}$",
+            "$4\\text{ kJ}$"
+          ],
+          "diem": 2,
+          "goi_y": "Áp dụng công thức tính thế năng ban đầu và chú ý đổi đơn vị sang $\\text{kJ}$."
+        },
+        {
+          "id": "6",
+          "type": "trac-nghiem",
+          "de_bai": "<i>(Tiếp Câu 5: vật $20\\text{ kg}$ thả rơi từ độ cao $20\\text{ m}$)</i> Tính động năng của vật ngay khi chạm đất:",
+          "dap_an": [
+            "$4\\,000\\text{ J}$",
+            "$0\\text{ J}$",
+            "$10\\text{ J}$",
+            "Không đủ dữ liệu để tính động năng."
+          ],
+          "diem": 2,
+          "goi_y": "Toàn bộ thế năng ban đầu chuyển hóa thành động năng khi chạm đất."
+        },
+        {
+          "id": "7",
+          "type": "trac-nghiem",
+          "de_bai": "<i>(Tiếp Câu 5: vật $20\\text{ kg}$ thả rơi từ độ cao $20\\text{ m}$)</i> Tính vận tốc vật khi động năng bằng thế năng (làm tròn đến chữ số thập phân thứ hai):",
+          "dap_an": [
+            "$20\\text{ m/s}$",
+            "$14\\text{ m/s}$",
+            "$14{,}14\\text{ m/s}$",
+            "$20{,}14\\text{ m/s}$"
+          ],
+          "diem": 2,
+          "goi_y": "Khi $W_{\\text{đ}} = W_{\\text{t}}$ thì $W_{\\text{đ}} = \\frac{1}{2}W$, từ đó tính $v$."
+        },
+        {
+          "id": "8",
+          "type": "trac-nghiem",
+          "de_bai": "<i>(Dùng cho Câu 8, 9, 10)</i> Một vật nặng $4\\text{ kg}$ trượt không vận tốc ban đầu từ đỉnh một mặt phẳng nghiêng cao $15\\text{ m}$, bỏ qua ma sát và sức cản không khí.<br>Tính động năng ban đầu của vật:",
+          "dap_an": [
+            "$60\\text{ J}$",
+            "$0\\text{ J}$",
+            "$6\\text{ kJ}$",
+            "$200\\text{ J}$"
+          ],
+          "diem": 2,
+          "goi_y": "Vật trượt không vận tốc ban đầu nên $v_0 = 0$."
+        },
+        {
+          "id": "9",
+          "type": "trac-nghiem",
+          "de_bai": "<i>(Tiếp Câu 8: vật $4\\text{ kg}$ trượt từ đỉnh cao $15\\text{ m}$)</i> Tính vận tốc vật khi xuống đến độ cao $5\\text{ m}$ (làm tròn đến chữ số thập phân thứ hai):",
+          "dap_an": [
+            "$14{,}14\\text{ m/s}$",
+            "$14{,}41\\text{ m/s}$",
+            "$17{,}03\\text{ m/s}$",
+            "$0\\text{ m/s}$"
+          ],
+          "diem": 2,
+          "goi_y": "Dùng bảo toàn cơ năng: $W_{\\text{đ}} = W - W_{\\text{t}}'$, rồi suy ra $v$."
+        },
+        {
+          "id": "10",
+          "type": "trac-nghiem",
+          "de_bai": "<i>(Tiếp Câu 8: vật $4\\text{ kg}$ trượt từ đỉnh cao $15\\text{ m}$)</i> Xác định độ cao của vật khi động năng bằng ba lần thế năng:",
+          "dap_an": [
+            "$37{,}5\\text{ m}$",
+            "$3\\text{ m}$",
+            "$3{,}75\\text{ m}$",
+            "$7\\text{ m}$"
+          ],
+          "diem": 2,
+          "goi_y": "Thay $W_{\\text{đ}} = 3W_{\\text{t}}$ vào $W_{\\text{đ}} + W_{\\text{t}} = W$ rồi tìm $h$."
+        },
+        {
+          "id": "11",
+          "type": "trac-nghiem",
+          "de_bai": "<i>(Dùng cho Câu 11, 12, 13)</i> Một vật được ném thẳng đứng lên cao từ mặt đất với vận tốc ban đầu $20\\text{ m/s}$, bỏ qua sức cản không khí.<br>Tìm độ cao cực đại của vật:",
+          "dap_an": [
+            "$10\\text{ m}$",
+            "$15\\text{ m}$",
+            "$30\\text{ m}$",
+            "$20\\text{ m}$"
+          ],
+          "diem": 2,
+          "goi_y": "Áp dụng bảo toàn cơ năng: $10mh_{\\max} = \\frac{1}{2}mv_0^2$."
+        },
+        {
+          "id": "12",
+          "type": "trac-nghiem",
+          "de_bai": "<i>(Tiếp Câu 11: ném lên với $v_0 = 20\\text{ m/s}$)</i> Tìm độ cao mà tại đó động năng bằng hai lần thế năng:",
+          "dap_an": [
+            "$6{,}67\\text{ m}$",
+            "$7{,}66\\text{ m}$",
+            "$1{,}2\\text{ m}$",
+            "$3\\text{ m}$"
+          ],
+          "diem": 2,
+          "goi_y": "Khi $W_{\\text{đ}} = 2W_{\\text{t}}$ thì $3W_{\\text{t}} = W = 10mh_{\\max}$."
+        },
+        {
+          "id": "13",
+          "type": "trac-nghiem",
+          "de_bai": "<i>(Tiếp Câu 11: ném lên với $v_0 = 20\\text{ m/s}$)</i> Tính vận tốc của vật khi thế năng bằng $60\\%$ cơ năng ban đầu:",
+          "dap_an": [
+            "$12\\text{ m/s}$",
+            "$14\\text{ m/s}$",
+            "$12{,}65\\text{ m/s}$",
+            "$14{,}67\\text{ m/s}$"
+          ],
+          "diem": 2,
+          "goi_y": "Thế năng bằng $60\\%$ cơ năng thì động năng bằng $40\\%$ cơ năng."
+        },
+        {
+          "id": "14",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật được thả rơi từ độ cao $45\\text{ m}$, bỏ qua sức cản không khí. Khi động năng bằng $2$ lần thế năng thì độ cao $h$ bằng bao nhiêu?",
+          "dap_an": [
+            "$5\\text{ m}$",
+            "$10\\text{ m}$",
+            "$15\\text{ m}$",
+            "$25\\text{ m}$"
+          ],
+          "diem": 2,
+          "goi_y": "Dùng $W_{\\text{đ}} + W_{\\text{t}} = 3W_{\\text{t}} = 10mH$."
+        },
+        {
+          "id": "15",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật có khối lượng $2\\text{ kg}$ được ném thẳng đứng lên từ mặt đất với vận tốc $20\\text{ m/s}$. Độ cao cực đại mà vật có thể đạt được là:",
+          "dap_an": [
+            "$20\\text{ m}$",
+            "$30\\text{ m}$",
+            "$40\\text{ m}$",
+            "$50\\text{ m}$"
+          ],
+          "diem": 2,
+          "goi_y": "Tính cơ năng ban đầu rồi cho bằng thế năng cực đại $10mh_{\\max}$."
+        },
+        {
+          "id": "16",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật được ném thẳng đứng lên cao với vận tốc ban đầu $10\\text{ m/s}$, bỏ qua sức cản không khí. Khi đạt độ cao cực đại thì:",
+          "dap_an": [
+            "Động năng bằng không.",
+            "Động năng cực đại, thế năng cực tiểu.",
+            "Thế năng bằng không.",
+            "Động năng bằng thế năng."
+          ],
+          "diem": 2,
+          "goi_y": "Tại điểm cao nhất, vật dừng lại tức thời ($v = 0$)."
+        },
+        {
+          "id": "17",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật có cơ năng bằng $600\\text{ J}$. Tại vị trí có thế năng bằng $30\\%$ cơ năng thì động năng bằng:",
+          "dap_an": [
+            "$400\\text{ J}$",
+            "$200\\text{ J}$",
+            "$420\\text{ J}$",
+            "$220\\text{ J}$"
+          ],
+          "diem": 2,
+          "goi_y": "Lấy cơ năng trừ đi thế năng ($100\\% - 30\\% = 70\\%$ cơ năng)."
+        },
+        {
+          "id": "18",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật có khối lượng $4\\text{ kg}$ và vận tốc ban đầu $20\\text{ m/s}$ có cơ năng $800\\text{ J}$. Tại vị trí có động năng bằng $1{,}5$ lần thế năng thì vận tốc của vật xấp xỉ là:",
+          "dap_an": [
+            "$15\\text{ m/s}$",
+            "$15{,}49\\text{ m/s}$",
+            "$17\\text{ m/s}$",
+            "$17{,}49\\text{ m/s}$"
+          ],
+          "diem": 2,
+          "goi_y": "Giải $W_{\\text{đ}} + \\frac{W_{\\text{đ}}}{1{,}5} = 800\\text{ J}$ rồi suy ra $v$."
+        },
+        {
+          "id": "19",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật có khối lượng không đổi, nếu tốc độ tăng $3$ lần thì động năng:",
+          "dap_an": [
+            "Không đổi do khối lượng không đổi.",
+            "Tăng $3$ lần.",
+            "Tăng $6$ lần.",
+            "Tăng $9$ lần."
+          ],
+          "diem": 2,
+          "goi_y": "Động năng tỉ lệ thuận với bình phương tốc độ."
+        },
+        {
+          "id": "20",
+          "type": "trac-nghiem",
+          "de_bai": "Hai vật có cùng khối lượng, vật A có tốc độ gấp $4$ lần vật B thì:",
+          "dap_an": [
+            "Động năng vật B gấp $4$ lần động năng vật A.",
+            "Động năng vật B gấp $16$ lần động năng vật A.",
+            "Động năng vật A gấp $4$ lần động năng vật B.",
+            "Động năng vật A gấp $16$ lần động năng vật B."
+          ],
+          "diem": 2,
+          "goi_y": "Bình phương tỉ số tốc độ ($4^2 = 16$)."
+        },
+        {
+          "id": "21",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật ở độ cao so với mặt đất có thế năng ban đầu $200\\text{ J}$. Khi thả rơi mà toàn bộ thế năng chuyển hóa thành động năng thì ta nói:",
+          "dap_an": [
+            "Cơ năng được bảo toàn.",
+            "Thế năng bảo toàn.",
+            "Động năng bảo toàn.",
+            "Không có gì xảy ra."
+          ],
+          "diem": 2,
+          "goi_y": "Áp dụng định luật bảo toàn cơ năng."
+        },
+        {
+          "id": "22",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật có khối lượng $2\\text{ kg}$ được nâng từ độ cao $5\\text{ m}$ lên độ cao $1\\,000\\text{ m}$. Độ tăng thế năng là:",
+          "dap_an": [
+            "$19\\,000\\text{ J}$",
+            "$1\\,900\\text{ J}$",
+            "$19\\,900\\text{ J}$",
+            "$199\\,000\\text{ J}$"
+          ],
+          "diem": 2,
+          "goi_y": "Tính thế năng lúc sau trừ thế năng lúc đầu."
+        },
+        {
+          "id": "23",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật được thả rơi từ độ cao $H$. Khi vật còn cách mặt đất $9\\text{ m}$ thì động năng bằng hai lần thế năng. Tìm $H$:",
+          "dap_an": [
+            "$20\\text{ m}$",
+            "$21\\text{ m}$",
+            "$25\\text{ m}$",
+            "$27\\text{ m}$"
+          ],
+          "diem": 2,
+          "goi_y": "Áp dụng $W_{\\text{đ}} + W_{\\text{t}} = 3W_{\\text{t}} = 10mH$."
+        },
+        {
+          "id": "24",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật được thả rơi tự do, đến vị trí $h = 9\\text{ m}$ so với mặt đất thì động năng bằng hai lần thế năng. Tìm tỉ số giữa vận tốc của vật tại vị trí trên và vận tốc của vật ngay trước khi chạm đất:",
+          "dap_an": [
+            "$\\frac{6}{2}$",
+            "$\\frac{3}{2}$",
+            "$\\frac{3}{\\sqrt{6}}$",
+            "$\\frac{\\sqrt{6}}{3}$"
+          ],
+          "diem": 2,
+          "goi_y": "Tìm tỉ số $\\frac{W_{\\text{đ}}}{W}$ rồi lấy căn bậc hai."
+        },
+        {
+          "id": "25",
+          "type": "trac-nghiem",
+          "de_bai": "Một vật đang chuyển động ở độ cao $12\\text{ m}$ có cơ năng $500\\text{ J}$ và động năng $140\\text{ J}$. Tính khối lượng của vật:",
+          "dap_an": [
+            "$3\\text{ kg}$",
+            "$6\\text{ kg}$",
+            "$9\\text{ kg}$",
+            "$4{,}15\\text{ kg}$"
+          ],
+          "diem": 2,
+          "goi_y": "Tìm thế năng $W_{\\text{t}} = W - W_{\\text{đ}}$, rồi suy ra $m = \\frac{W_{\\text{t}}}{10h}$."
+        },
+        {
+          "id": "26a",
+          "type": "dung-sai",
+          "de_bai": "Một vật có $m = 2\\text{ kg}$ được thả rơi tự do từ $h = 20\\text{ m}$. Chọn mặt đất làm mốc thế năng, bỏ qua sức cản không khí:<br><b>a)</b> Cơ năng của vật tại thời điểm bắt đầu thả là $400\\text{ J}$.",
+          "diem": 2.5,
+          "goi_y": "Tính cơ năng ban đầu $W = 10mh$ và áp dụng bảo toàn cơ năng."
+        },
+        {
+          "id": "26b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Khi vật ở độ cao $10\\text{ m}$, động năng của vật bằng $100\\text{ J}$.",
+          "diem": 2.5,
+          "goi_y": "Tính cơ năng ban đầu $W = 10mh$ và áp dụng bảo toàn cơ năng."
+        },
+        {
+          "id": "26c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Khi động năng bằng thế năng thì vận tốc của vật là $10\\sqrt{2}\\text{ m/s}$.",
+          "diem": 2.5,
+          "goi_y": "Tính cơ năng ban đầu $W = 10mh$ và áp dụng bảo toàn cơ năng."
+        },
+        {
+          "id": "26d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Ngay trước khi chạm đất, động năng của vật bằng $400\\text{ J}$.",
+          "diem": 2.5,
+          "goi_y": "Tính cơ năng ban đầu $W = 10mh$ và áp dụng bảo toàn cơ năng."
+        },
+        {
+          "id": "27a",
+          "type": "dung-sai",
+          "de_bai": "Một vật có $m = 1\\text{ kg}$ được ném thẳng đứng lên từ mặt đất với vận tốc ban đầu $30\\text{ m/s}$, bỏ qua sức cản không khí:<br><b>a)</b> Cơ năng ban đầu của vật là $450\\text{ J}$.",
+          "diem": 2.5,
+          "goi_y": "Tính $W = \\frac{1}{2}mv_0^2$ rồi áp dụng bảo toàn cơ năng."
+        },
+        {
+          "id": "27b",
+          "type": "dung-sai",
+          "de_bai": "<b>b)</b> Độ cao cực đại vật đạt được là $45\\text{ m}$.",
+          "diem": 2.5,
+          "goi_y": "Tính $W = \\frac{1}{2}mv_0^2$ rồi áp dụng bảo toàn cơ năng."
+        },
+        {
+          "id": "27c",
+          "type": "dung-sai",
+          "de_bai": "<b>c)</b> Khi vật ở độ cao $20\\text{ m}$, động năng của vật là $250\\text{ J}$.",
+          "diem": 2.5,
+          "goi_y": "Tính $W = \\frac{1}{2}mv_0^2$ rồi áp dụng bảo toàn cơ năng."
+        },
+        {
+          "id": "27d",
+          "type": "dung-sai",
+          "de_bai": "<b>d)</b> Khi thế năng bằng động năng, độ cao của vật là $22{,}5\\text{ m}$.",
+          "diem": 2.5,
+          "goi_y": "Tính $W = \\frac{1}{2}mv_0^2$ rồi áp dụng bảo toàn cơ năng."
+        },
+        {
+          "id": "28",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một vật có $m = 2\\text{ kg}$ được thả rơi từ độ cao $80\\text{ m}$, bỏ qua sức cản không khí. Tính vận tốc của vật khi rơi được $60\\text{ m}$ theo đơn vị $\\text{m/s}$ (làm tròn đến chữ số thập phân thứ hai, chỉ ghi số).",
+          "diem": 6,
+          "goi_y": "Tìm độ cao còn lại $h' = 80 - 60 = 20\\text{ m}$, tính động năng bằng độ giảm thế năng rồi suy ra $v$."
+        },
+        {
+          "id": "29",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một vật có $m = 3\\text{ kg}$ thả rơi từ độ cao $90\\text{ m}$, bỏ qua sức cản không khí. Xác định độ cao khi động năng bằng $3$ lần thế năng theo đơn vị $\\text{m}$ (chỉ ghi số).",
+          "diem": 6,
+          "goi_y": "Áp dụng bảo toàn cơ năng: $W_{\\text{đ}} + W_{\\text{t}} = 4W_{\\text{t}} = W$."
+        },
+        {
+          "id": "30",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một vật có $m = 4\\text{ kg}$ được ném thẳng đứng từ độ cao $5\\text{ m}$ so với mặt đất với vận tốc ban đầu $15\\text{ m/s}$, bỏ qua sức cản không khí. Độ cao cực đại vật đạt được là bao nhiêu $\\text{m}$? (chỉ ghi số).",
+          "diem": 6,
+          "goi_y": "Tính tổng cơ năng ban đầu $W = W_{\\text{đ}0} + W_{\\text{t}0}$, rồi tìm $h_{\\max} = \\frac{W}{10m}$."
+        },
+        {
+          "id": "31",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một vật có $m = 5\\text{ kg}$ được ném thẳng đứng lên cao từ độ cao $6\\text{ m}$ so với mặt đất với vận tốc lúc đầu $20\\text{ m/s}$, bỏ qua sức cản không khí. Tính vận tốc vật khi thế năng bằng $60\\%$ cơ năng ban đầu theo đơn vị $\\text{m/s}$ (làm tròn đến chữ số thập phân thứ hai, chỉ ghi số).",
+          "diem": 6,
+          "goi_y": "Tính cơ năng ban đầu $W$, khi $W_{\\text{t}} = 60\\%W$ thì $W_{\\text{đ}} = 40\\%W$."
+        },
+        {
+          "id": "32",
+          "type": "tra-loi-ngan",
+          "de_bai": "Một vật có khối lượng $4\\text{ kg}$ chuyển động tại độ cao $10\\text{ m}$ với tốc độ $10\\text{ m/s}$. Bỏ qua lực cản không khí, vật cần giảm bao nhiêu $\\text{m/s}$ tốc độ để động năng chỉ còn $25\\%$ động năng ban đầu, nếu khối lượng không đổi? (chỉ ghi số).",
+          "diem": 6,
+          "goi_y": "Tìm tốc độ mới ứng với $25\\%$ động năng ban đầu rồi lấy tốc độ đầu trừ tốc độ sau."
+        }
+      ]
+    }
+  ]
 }

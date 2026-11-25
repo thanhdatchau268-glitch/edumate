@@ -35,7 +35,7 @@ from so_loi import so_loi_bp, ghi_ket_qua_nop_bai          # Sổ lỗi sai
 from nhiem_vu import nhiem_vu_bp, ghi_su_kien_nop_bai      # Nhiệm vụ hằng ngày
 app.register_blueprint(so_loi_bp)
 app.register_blueprint(nhiem_vu_bp)
-from khoa_bang import kb_bp, ghi_hoat_dong, tao_token
+from khoa_bang import kb_bp, ghi_hoat_dong, tao_token, uid_tu_token
 app.register_blueprint(kb_bp)
 from pet import pet_bp   # Sao La: skin (trang phục) + giới tính giọng nói
 app.register_blueprint(pet_bp)
@@ -132,8 +132,56 @@ THU_MUC_DAP_AN = os.path.join(GOC, '..', 'Dap_an')
 TEN_HOP_LE = re.compile(r'^[a-z0-9_-]+$')
 
 def cham(dap_an_dung, tra_loi):
-    # đổi cả hai về chữ thường rồi so: 1 -> "1", True -> "true", "Lão Hạc" -> "lão hạc"
-    return str(tra_loi).strip().lower() == str(dap_an_dung).strip().lower()
+    # đổi cả hai về chữ thường rồi so; hỗ trợ số thập phân dùng dấu phẩy hoặc dấu chấm
+    a = str(dap_an_dung).strip().lower()
+    b = str(tra_loi).strip().lower()
+    if a == b:
+        return True
+    na, nb = a.replace(',', '.').replace(' ', ''), b.replace(',', '.').replace(' ', '')
+    if na == nb:
+        return True
+    try:
+        return abs(float(na) - float(nb)) < 1e-9
+    except (ValueError, TypeError):
+        return False
+
+@app.route('/api/register/send-otp', methods=['POST'])
+def register_send_otp():
+    data = request.get_json(silent=True) or {}
+    email = (data.get('email') or '').strip().lower()
+    if not email or not re.match(r'^[^\s@]+@[^\s@]+\.[^\s@]{2,}$', email):
+        return jsonify({"success": False, "message": "Vui lòng nhập địa chỉ Gmail hợp lệ!"}), 400
+
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    try:
+        if conn.execute("SELECT 1 FROM users WHERE LOWER(email) = ?", (email,)).fetchone():
+            return jsonify({"success": False, "message": "Email này đã được đăng ký!"}), 409
+
+        key_email = f"reg:{email}"
+        otp = f"{secrets.randbelow(900000) + 100000}"
+        token = secrets.token_hex(24)
+        expires_at = (datetime.now() + timedelta(minutes=10)).strftime("%Y-%m-%d %H:%M:%S")
+        conn.execute("UPDATE password_resets SET used = 1 WHERE LOWER(email) = ? AND used = 0", (key_email,))
+        conn.execute(
+            "INSERT INTO password_resets (email, otp, token, expires_at, used) VALUES (?, ?, ?, ?, 0)",
+            (key_email, otp, token, expires_at)
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    sent, err_msg = gui_email_otp(email, otp, "", muc_dich="register")
+    res_data = {
+        "success": True,
+        "message": f"Đã gửi mã xác minh 6 số về hộp thư Gmail: {email}!" if sent else "Đã tạo mã xác minh đăng ký (chế độ máy local)!",
+        "email": email,
+        "sent_via_smtp": sent,
+        "smtp_error": err_msg if not sent else ""
+    }
+    if not sent:
+        res_data["demo_otp"] = otp
+    return jsonify(res_data), 200
 
 # 1. API Đăng ký tài khoản (Create)
 @app.route('/api/register', methods=['POST'])
@@ -143,6 +191,7 @@ def register():
     email = (data.get('email') or '').strip().lower()  # đổi hết về chữ thường
     mk = data.get('mk') or ''
     bio = data.get('bio', '')
+    otp = re.sub(r'\D', '', str(data.get('otp') or ''))
 
     # kiểm tra từng thứ một, sai thì báo luôn
     if not username or not email or not mk:
@@ -151,10 +200,35 @@ def register():
         return jsonify({"success": False, "message": "Mật khẩu cần ít nhất 6 ký tự!"}), 400
     if len(username) > 30:
         return jsonify({"success": False, "message": "Username tối đa 30 ký tự!"}), 400
+    if len(otp) != 6:
+        return jsonify({"success": False, "message": "Vui lòng nhập mã xác minh OTP 6 chữ số đã gửi về email!"}), 400
+
+    key_email = f"reg:{email}"
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    try:
+        row = conn.execute(
+            "SELECT * FROM password_resets WHERE LOWER(email) = ? AND otp = ? ORDER BY id DESC LIMIT 1",
+            (key_email, otp)
+        ).fetchone()
+        if not row:
+            return jsonify({"success": False, "message": "Mã xác minh OTP không chính xác!"}), 400
+        if row['used']:
+            return jsonify({"success": False, "message": "Mã xác minh OTP này đã được sử dụng rồi!"}), 400
+        try:
+            exp_dt = datetime.strptime(row['expires_at'], "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return jsonify({"success": False, "message": "Mã xác minh không hợp lệ hoặc đã hết hạn!"}), 400
+        if datetime.now() > exp_dt:
+            return jsonify({"success": False, "message": "Mã xác minh đã hết hạn (10 phút). Hãy bấm Gửi lại mã!"}), 400
+        conn.execute("UPDATE password_resets SET used = 1 WHERE id = ?", (row['id'],))
+        conn.commit()
+    finally:
+        conn.close()
 
     try:
-        # lưu mật khẩu đã xáo trộn, không lưu chữ thật
-        new_id = add_user(username, email, generate_password_hash(mk), bio)
+        # lưu mật khẩu đã băm PBKDF2-SHA256 kèm muối, không lưu chữ thật
+        new_id = add_user(username, email, generate_password_hash(mk, method='pbkdf2:sha256'), bio)
         if new_id:
             return jsonify({
                 "success": True,
@@ -302,7 +376,7 @@ def forgot_password_smtp_config():
     }), 200
 
 
-def gui_email_otp(to_email, otp, username=""):
+def gui_email_otp(to_email, otp, username="", muc_dich="reset"):
     """
     Gửi mã OTP về email của người dùng qua Gmail SMTP (nếu đã cấu hình) hoặc ghi log console server.
     Trả về (sent: bool, error_msg: str)
@@ -312,15 +386,28 @@ def gui_email_otp(to_email, otp, username=""):
     smtp_pass = cfg.get('smtp_password', '')
     smtp_server = cfg.get('smtp_server', 'smtp.gmail.com')
     smtp_port = int(cfg.get('smtp_port', 587))
+    la_dang_ky = (muc_dich == "register")
+    la_xoa = (muc_dich == "delete")
 
     sent = False
     error_msg = ""
     if smtp_user and smtp_pass:
         try:
             msg = MIMEMultipart('alternative')
-            msg['Subject'] = f"VnStarL - Mã xác thực đổi mật khẩu: {otp}"
+            msg['Subject'] = (
+                f"VnStarL - Mã xác minh đăng ký tài khoản: {otp}" if la_dang_ky
+                else f"VnStarL - Mã OTP xác nhận xóa tài khoản: {otp}" if la_xoa
+                else f"VnStarL - Mã xác thực đổi mật khẩu: {otp}"
+            )
             msg['From'] = f"VnStarL Ôn Thi <{smtp_user}>"
             msg['To'] = to_email
+            mo_ta_muc_dich = (
+                "Mã xác minh (OTP) để hoàn tất đăng ký tài khoản VnStarL của bạn là:"
+                if la_dang_ky
+                else "Bạn vừa yêu cầu XÓA VĨNH VIỄN tài khoản VnStarL. Mã OTP xác nhận của bạn là:"
+                if la_xoa
+                else "Bạn đã yêu cầu đặt lại mật khẩu tài khoản VnStarL. Mã xác thực (OTP) của bạn là:"
+            )
 
             html_content = f"""
             <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; padding: 24px; border: 1px solid #e1e7f0; border-radius: 16px; background: #ffffff;">
@@ -330,7 +417,7 @@ def gui_email_otp(to_email, otp, username=""):
                 </div>
                 <div style="padding: 20px; background: #f4f7fc; border-radius: 12px; text-align: center;">
                     <p style="font-size: 15px; color: #1b2a41; margin-bottom: 12px;">Xin chào <b>{username or to_email}</b>,</p>
-                    <p style="font-size: 14px; color: #5b6b82; margin-bottom: 16px;">Bạn đã yêu cầu đặt lại mật khẩu tài khoản VnStarL. Mã xác thực (OTP) của bạn là:</p>
+                    <p style="font-size: 14px; color: #5b6b82; margin-bottom: 16px;">{mo_ta_muc_dich}</p>
                     <div style="font-size: 32px; font-weight: 800; letter-spacing: 6px; color: #2457d6; background: #ffffff; padding: 12px 20px; border-radius: 8px; border: 2px dashed #2457d6; display: inline-block; margin-bottom: 16px;">
                         {otp}
                     </div>
@@ -381,7 +468,7 @@ def forgot_password_send_otp():
         # Tự động khởi tạo tài khoản cho Gmail nếu chưa có để người dùng trên máy đổi mật khẩu mượt mà
         ten_mac_dinh = email.split('@')[0]
         try:
-            add_user(ten_mac_dinh[:30], email, generate_password_hash("123456"), "")
+            add_user(ten_mac_dinh[:30], email, generate_password_hash("123456", method='pbkdf2:sha256'), "")
             user = conn.execute("SELECT id, username, email FROM users WHERE LOWER(email) = ?", (email,)).fetchone()
         except Exception:
             pass
@@ -389,12 +476,12 @@ def forgot_password_send_otp():
             conn.close()
             return jsonify({"success": False, "message": "Địa chỉ Gmail này chưa được đăng ký tài khoản trên hệ thống!"}), 404
 
-    # Sinh mã OTP 6 chữ số
-    otp = f"{random.randint(100000, 999999)}"
+    # Sinh mã OTP 6 chữ số và vô hiệu hóa toàn bộ mã cũ chưa dùng của email này
+    otp = f"{secrets.randbelow(900000) + 100000}"
     token = secrets.token_hex(24)
     expires_at = (datetime.now() + timedelta(minutes=10)).strftime("%Y-%m-%d %H:%M:%S")
 
-    # Lưu mã vào DB
+    conn.execute("UPDATE password_resets SET used = 1 WHERE LOWER(email) = ? AND used = 0", (email,))
     conn.execute(
         "INSERT INTO password_resets (email, otp, token, expires_at, used) VALUES (?, ?, ?, ?, 0)",
         (email, otp, token, expires_at)
@@ -423,10 +510,10 @@ def forgot_password_send_otp():
 def forgot_password_verify_otp():
     data = request.get_json(silent=True) or {}
     email = (data.get('email') or '').strip().lower()
-    otp = (data.get('otp') or '').strip()
+    otp = re.sub(r'\s+', '', str(data.get('otp') or ''))
 
-    if not email or not otp:
-        return jsonify({"success": False, "message": "Vui lòng nhập đầy đủ email và mã OTP!"}), 400
+    if not email or not re.fullmatch(r'\d{6}', otp):
+        return jsonify({"success": False, "message": "Vui lòng nhập đầy đủ email và mã OTP 6 chữ số!"}), 400
 
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -446,11 +533,12 @@ def forgot_password_verify_otp():
 
     try:
         exp_time = datetime.strptime(row['expires_at'], "%Y-%m-%d %H:%M:%S")
-        if datetime.now() > exp_time:
-            conn.close()
-            return jsonify({"success": False, "message": "Mã xác thực đã hết hạn (10 phút). Vui lòng yêu cầu mã mới!"}), 400
     except Exception:
-        pass
+        conn.close()
+        return jsonify({"success": False, "message": "Mã xác thực không hợp lệ hoặc đã hết hạn!"}), 400
+    if datetime.now() > exp_time:
+        conn.close()
+        return jsonify({"success": False, "message": "Mã xác thực đã hết hạn (10 phút). Vui lòng yêu cầu mã mới!"}), 400
 
     # Đánh dấu mã OTP đã dùng
     conn.execute("UPDATE password_resets SET used = 1 WHERE id = ?", (row['id'],))
@@ -557,14 +645,15 @@ def forgot_password_reset():
 
     try:
         exp_time = datetime.strptime(row['expires_at'], "%Y-%m-%d %H:%M:%S")
-        if datetime.now() > exp_time:
-            conn.close()
-            return jsonify({"success": False, "message": "Phiên đổi mật khẩu đã hết hạn. Vui lòng thử lại!"}), 400
     except Exception:
-        pass
+        conn.close()
+        return jsonify({"success": False, "message": "Phiên đặt lại mật khẩu không hợp lệ hoặc đã hết hạn!"}), 400
+    if datetime.now() > exp_time:
+        conn.close()
+        return jsonify({"success": False, "message": "Phiên đổi mật khẩu đã hết hạn. Vui lòng thử lại!"}), 400
 
-    # Cập nhật mật khẩu mới cho user
-    hashed_mk = generate_password_hash(new_mk)
+    # Cập nhật mật khẩu mới cho user (PBKDF2-SHA256 kèm muối)
+    hashed_mk = generate_password_hash(new_mk, method='pbkdf2:sha256')
     conn.execute("UPDATE users SET mk = ? WHERE LOWER(email) = ?", (hashed_mk, email))
     conn.execute("UPDATE password_resets SET used = 1 WHERE id = ?", (row['id'],))
     conn.commit()
@@ -958,7 +1047,123 @@ def xem_avatar_upload(ten):
     # tên ngẫu nhiên, mỗi lần đổi ảnh là tên mới -> cho trình duyệt nhớ lâu
     return send_from_directory(THU_MUC_UPLOAD, ten, max_age=31536000)
 
-# 15. NÚT BUFF ĐIỂM (ĐÃ VÔ HIỆU HÓA HOÀN TOÀN ĐỂ BẢO MẬT)
+# 15. Xóa tài khoản từ trang Hồ sơ (bắt buộc đúng mật khẩu + mã OTP 6 số)
+def _xoa_du_lieu_user_sqlite(conn, user_id, email, avatar_val):
+    for (t_name,) in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall():
+        if t_name.startswith('sqlite_'):
+            continue
+        cols = [c[1] for c in conn.execute(f'PRAGMA table_info("{t_name}")').fetchall()]
+        if 'user_id' in cols:
+            conn.execute(f'DELETE FROM "{t_name}" WHERE user_id = ?', (user_id,))
+    if email:
+        em = email.strip().lower()
+        conn.execute(
+            "DELETE FROM password_resets WHERE LOWER(email) IN (?, ?, ?)",
+            (em, f"reg:{em}", f"del:{em}")
+        )
+    conn.execute("DELETE FROM users WHERE id = ?", (user_id,))
+    xoa_anh_upload(avatar_val)
+
+
+@app.route('/api/users/<int:user_id>/delete-send-otp', methods=['POST'])
+def delete_account_send_otp(user_id):
+    t_uid = uid_tu_token()
+    if request.headers.get("Authorization") and t_uid != user_id:
+        return jsonify({"success": False, "message": "Phiên đăng nhập không hợp lệ!"}), 401
+    data = request.get_json(silent=True) or {}
+    mk = data.get('mk') or ''
+    if not mk:
+        return jsonify({"success": False, "message": "Vui lòng nhập mật khẩu hiện tại trước khi lấy mã OTP!"}), 400
+
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    try:
+        u = conn.execute("SELECT id, username, email, mk FROM users WHERE id = ?", (user_id,)).fetchone()
+        if not u:
+            return jsonify({"success": False, "message": "Không tìm thấy người dùng!"}), 404
+        if not check_password_hash(u['mk'], mk):
+            return jsonify({"success": False, "message": "Mật khẩu hiện tại không chính xác!"}), 401
+
+        email = (u['email'] or '').strip().lower()
+        if not email:
+            return jsonify({"success": False, "message": "Tài khoản này chưa có email để nhận mã OTP!"}), 400
+
+        key_email = f"del:{email}"
+        otp = f"{secrets.randbelow(900000) + 100000}"
+        token = secrets.token_hex(24)
+        expires_at = (datetime.now() + timedelta(minutes=10)).strftime("%Y-%m-%d %H:%M:%S")
+        conn.execute("UPDATE password_resets SET used = 1 WHERE LOWER(email) = ? AND used = 0", (key_email,))
+        conn.execute(
+            "INSERT INTO password_resets (email, otp, token, expires_at, used) VALUES (?, ?, ?, ?, 0)",
+            (key_email, otp, token, expires_at)
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    sent, err_msg = gui_email_otp(email, otp, u['username'] or "", muc_dich="delete")
+    parts = email.split('@')
+    masked = (parts[0][:3] + '***@' + parts[1]) if len(parts) == 2 else email
+    res_data = {
+        "success": True,
+        "message": f"Đã gửi mã OTP 6 số về Gmail: {masked}!" if sent else "Đã tạo mã OTP xác nhận (chế độ máy local)!",
+        "email": masked,
+        "sent_via_smtp": sent
+    }
+    if not sent:
+        res_data["demo_otp"] = otp
+    return jsonify(res_data), 200
+
+
+@app.route('/api/users/<int:user_id>/delete', methods=['POST', 'DELETE'])
+def delete_account_confirm(user_id):
+    t_uid = uid_tu_token()
+    if request.headers.get("Authorization") and t_uid != user_id:
+        return jsonify({"success": False, "message": "Phiên đăng nhập không hợp lệ!"}), 401
+    data = request.get_json(silent=True) or {}
+    mk = data.get('mk') or ''
+    otp = re.sub(r'\D', '', str(data.get('otp') or ''))
+    if not mk:
+        return jsonify({"success": False, "message": "Vui lòng nhập mật khẩu hiện tại!"}), 400
+    if len(otp) != 6:
+        return jsonify({"success": False, "message": "Vui lòng nhập đúng mã OTP 6 chữ số!"}), 400
+
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    try:
+        u = conn.execute("SELECT id, email, mk, avatar FROM users WHERE id = ?", (user_id,)).fetchone()
+        if not u:
+            return jsonify({"success": False, "message": "Không tìm thấy người dùng!"}), 404
+        if not check_password_hash(u['mk'], mk):
+            return jsonify({"success": False, "message": "Mật khẩu không chính xác!"}), 401
+
+        email = (u['email'] or '').strip().lower()
+        key_email = f"del:{email}"
+        row = conn.execute(
+            "SELECT * FROM password_resets WHERE LOWER(email) = ? AND otp = ? ORDER BY id DESC LIMIT 1",
+            (key_email, otp)
+        ).fetchone()
+        if not row:
+            return jsonify({"success": False, "message": "Mã OTP không chính xác!"}), 400
+        if row['used']:
+            return jsonify({"success": False, "message": "Mã OTP này đã được sử dụng rồi!"}), 400
+        try:
+            exp_dt = datetime.strptime(row['expires_at'], "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return jsonify({"success": False, "message": "Mã OTP không hợp lệ hoặc đã hết hạn!"}), 400
+        if datetime.now() > exp_dt:
+            return jsonify({"success": False, "message": "Mã OTP đã hết hạn (10 phút). Hãy bấm Gửi lại mã!"}), 400
+
+        conn.execute("UPDATE password_resets SET used = 1 WHERE id = ?", (row['id'],))
+        _xoa_du_lieu_user_sqlite(conn, user_id, email, u['avatar'])
+        conn.commit()
+    finally:
+        conn.close()
+
+    return jsonify({"success": True, "message": "Đã xóa tài khoản vĩnh viễn thành công!"}), 200
+
+
+# 16. NÚT BUFF ĐIỂM (ĐÃ VÔ HIỆU HÓA HOÀN TOÀN ĐỂ BẢO MẬT)
 @app.route('/api/dev/buff-diem', methods=['POST'])
 def buff_diem():
     return jsonify({"success": False, "message": "Tính năng này đã bị vô hiệu hóa vì lý do bảo mật!"}), 403

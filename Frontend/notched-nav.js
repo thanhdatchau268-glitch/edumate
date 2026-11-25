@@ -35,7 +35,8 @@
     {
       id: "nav-vuon-saoladou",
       href: "vuon-saoladou.html",
-      label: "Vườn Saoladou",
+      label: "Vườn",
+      ariaLabel: "Vườn Saoladou",
       iconHtml: '<i class="fa-solid fa-seedling"></i>',
     },
   ];
@@ -64,7 +65,7 @@
     if (!document.querySelector('link[href*="notched-nav.css"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = "notched-nav.css?v=3";
+      link.href = "notched-nav.css?v=4";
       document.head.appendChild(link);
     }
 
@@ -80,7 +81,7 @@
       const isSelected = t.href === trangDich;
       return `
         <li role="none">
-          <button class="u041-tab" type="button" role="tab" data-href="${t.href}" data-index="${idx}" aria-selected="${isSelected ? "true" : "false"}" tabindex="${isSelected ? "0" : "-1"}">
+          <button class="u041-tab" type="button" role="tab" data-href="${t.href}" data-index="${idx}" aria-label="${t.ariaLabel || t.label}" aria-selected="${isSelected ? "true" : "false"}" tabindex="${isSelected ? "0" : "-1"}">
             <span class="u041-ic" aria-hidden="true">${t.iconHtml}</span>
             <span class="u041-lab">${t.label}</span>
           </button>

@@ -5,7 +5,7 @@ self.addEventListener("install", () => self.skipWaiting());
 
 // ====================== CACHE SAO LA ======================
 // Đổi PHIEN_BAN khi thay ảnh/giọng nói thật sự (tên file giữ nguyên) để máy người dùng nạp lại.
-const PHIEN_BAN = "v3";
+const PHIEN_BAN = "v4";
 const TIEN_TO = "vnstarl-pet-";
 const CACHE_THAN = TIEN_TO + "than-" + PHIEN_BAN;       // sprite của skin
 const CACHE_HIEU_UNG = TIEN_TO + "hu-" + PHIEN_BAN;     // hiệu ứng dùng chung (nhỏ, ít)
@@ -112,7 +112,14 @@ self.addEventListener("activate", (e) => {
 // ====================== THÔNG BÁO ======================
 self.addEventListener("notificationclick", (e) => {
     e.notification.close();
-    const url = new URL((e.notification.data && e.notification.data.url) || "index.html", self.location.href).href;
+    const rawUrl = (e.notification.data && e.notification.data.url) || "index.html";
+    let parsed;
+    try {
+        parsed = new URL(rawUrl, self.location.href);
+    } catch (err) {
+        parsed = new URL("index.html", self.location.href);
+    }
+    const url = parsed.origin === self.location.origin ? parsed.href : new URL("index.html", self.location.href).href;
     e.waitUntil(
         self.clients.matchAll({ type: "window", includeUncontrolled: true }).then(async (ds) => {
             for (const c of ds) {

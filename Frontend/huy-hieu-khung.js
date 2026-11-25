@@ -103,7 +103,8 @@
       return "https://lh3.googleusercontent.com/d/" + encodeURIComponent(raw.slice(4)) + "=w256";
     }
     if (raw.startsWith("up_")) {
-      return "http://127.0.0.1:5000/uploads/avatars/" + encodeURIComponent(raw);
+      const laMayLocal = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+      return laMayLocal ? "http://127.0.0.1:5000/uploads/avatars/" + encodeURIComponent(raw) : AVATAR_MAC_DINH_LOCAL;
     }
     return "img/avatar/" + encodeURIComponent(raw);
   }

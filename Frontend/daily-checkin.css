@@ -530,19 +530,24 @@
 
 /* ---------- Tối ưu hóa trên điện thoại di động (Mobile <= 640px) ---------- */
 @media (max-width: 640px) {
+  .daily-checkin-backdrop {
+    padding: 12px 10px calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+
   .daily-checkin-modal {
     padding: 20px 14px 16px;
     border-radius: 20px;
-    max-width: 420px;
+    max-width: min(420px, 100%);
+    max-height: 88dvh;
   }
 
   .daily-checkin-header {
     margin-bottom: 12px;
-    padding: 0 20px;
+    padding: 0 24px;
   }
 
   .daily-checkin-title {
-    font-size: 1.15rem;
+    font-size: 1.12rem;
   }
 
   .daily-checkin-subtitle {
@@ -555,61 +560,88 @@
   }
 
   .daily-stat-card {
-    padding: 8px 2px;
+    padding: 8px 4px;
     border-radius: 10px;
   }
 
   .daily-stat-icon {
     font-size: 1rem;
+    height: 32px;
+  }
+
+  .daily-stat-icon .vn-ico {
+    width: 28px;
+    height: 28px;
   }
 
   .daily-stat-val {
-    font-size: 1.02rem;
+    font-size: 1rem;
   }
 
   .daily-stat-lbl {
     font-size: 0.68rem;
   }
 
+  .journey-path-container,
   .daily-checkin-track {
-    gap: 4px;
-    margin-bottom: 16px;
+    overflow-x: auto;
+    justify-content: flex-start !important;
+    gap: 8px;
+    margin: 14px 0 16px !important;
+    padding: 26px 8px 8px !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
   }
 
+  .journey-path-container::-webkit-scrollbar,
+  .daily-checkin-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .journey-line-bg {
+    top: 46px;
+    left: 26px;
+    right: 26px;
+    min-width: 416px;
+  }
+
+  .station-node,
   .daily-day-cell {
-    min-height: 70px;
-    padding: 6px 1px 4px;
-    border-radius: 8px;
+    flex: 0 0 60px !important;
+    width: 60px !important;
+    scroll-snap-align: center;
   }
 
-  .daily-day-num {
-    font-size: 0.65rem;
+  .station-circle {
+    width: 42px;
+    height: 42px;
   }
 
-  .daily-day-icon {
-    font-size: 1rem;
-    margin: 1px 0;
+  .station-circle-icon {
+    font-size: 1.05rem;
   }
 
-  .daily-day-reward {
-    font-size: 0.62rem;
-    padding: 1px 2px;
+  .daily-day-num,
+  .station-label-title {
+    font-size: 0.68rem !important;
   }
 
-  .daily-day-badge {
-    font-size: 0.55rem;
-    padding: 1px 2px;
+  .daily-day-reward,
+  .station-reward-val {
+    font-size: 0.66rem !important;
+    padding: 2px 5px !important;
   }
 
   .daily-btn-primary {
     padding: 12px 14px;
-    font-size: 0.92rem;
+    font-size: 0.94rem;
     border-radius: 12px;
   }
 
   .daily-btn-secondary {
     padding: 8px 12px;
-    font-size: 0.82rem;
+    font-size: 0.84rem;
   }
 }
 
@@ -619,19 +651,13 @@
     padding: 16px 10px 14px;
   }
 
-  .daily-checkin-track {
-    gap: 3px;
-  }
-
+  .station-node,
   .daily-day-cell {
-    min-height: 64px;
+    flex: 0 0 56px !important;
+    width: 56px !important;
   }
 
-  .daily-day-num {
-    font-size: 0.6rem;
-  }
-
-  .daily-day-reward {
-    font-size: 0.58rem;
+  .journey-line-bg {
+    min-width: 388px;
   }
 }

@@ -27,7 +27,7 @@
   async function goi(url, opt) {
     let res;
     try { res = await fetch(API + url, opt); }
-    catch (e) { throw new Error("Không kết nối được server. Bật app.py nhé!"); }
+    catch (e) { throw new Error("Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại nhé!"); }
     const kq = await res.json();
     if (!kq.success) throw new Error(kq.message || "Có lỗi xảy ra.");
     return kq;
@@ -42,7 +42,12 @@
       console.error("Lỗi khi cập nhật danh sách kỳ thi:", e);
     }
   }
-  const ngayVN = (s) => { const [y, m, d] = s.split("-"); return `${d}/${m}/${y}`; };
+  const ngayVN = (s) => {
+    const str = String(s ?? "").trim();
+    if (!str.includes("-")) return str;
+    const [y, m, d] = str.split("-");
+    return (y && m && d) ? `${d}/${m}/${y}` : str;
+  };
   const fmt = (x) => Number(x).toFixed(1);
   const tenKy = (cap, ma) => {
     if (cap === "huong") return "Tuần " + ma.split("-W")[1] + "/" + ma.slice(0, 4);
@@ -302,7 +307,11 @@
         <a class="kb-nut" style="display:inline-block;margin-top:12px" href="#dinh">Xem Thi Đình hiện tại</a></p>`);
       return;
     }
-    const daXem = JSON.parse(localStorage.getItem("kb_da_xem") || "[]");
+    let daXem = [];
+    try {
+      const parsed = JSON.parse(localStorage.getItem("kb_da_xem") || "[]");
+      if (Array.isArray(parsed)) daXem = parsed;
+    } catch (e) { daXem = []; }
     const el = vao(kq.ds.map((k) => {
       const tam = k.danh_hieu.filter((d) => ["trang_nguyen", "bang_nhan", "tham_hoa"].includes(d.ma));
       const giap = (ma) => k.danh_hieu.filter((d) => d.ma === ma);

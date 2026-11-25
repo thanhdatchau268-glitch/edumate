@@ -33,7 +33,7 @@
 
   /* Đưa widget Sao La lên phía trên thanh đáy để không bị che */
   #sao-la {
-    bottom: 86px !important;
+    bottom: calc(86px + env(safe-area-inset-bottom, 0px)) !important;
   }
 
   /* Khung thanh điều hướng Notched Bottom Tab Bar */
@@ -45,9 +45,9 @@
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
-    max-width: 440px !important;
+    max-width: 100% !important;
     margin: 0 auto !important;
-    height: 80px !important;
+    height: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
     display: flex !important;
     align-items: flex-end !important;
     z-index: 99999 !important;
@@ -68,8 +68,8 @@
     right: 0;
     bottom: 0;
     width: 100%;
-    height: 64px;
-    border-radius: 22px 22px 0 0;
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    border-radius: 20px 20px 0 0;
     background: #ffffff;
     -webkit-mask: radial-gradient(circle var(--notch-r, 36px) at var(--x) 2px, transparent 96%, #000 100%);
     mask: radial-gradient(circle var(--notch-r, 36px) at var(--x) 2px, transparent 96%, #000 100%);
@@ -83,8 +83,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 64px;
-    border-radius: 22px 22px 0 0;
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    border-radius: 20px 20px 0 0;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
     pointer-events: none;
   }
@@ -118,10 +118,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 64px;
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
     display: flex;
     margin: 0;
-    padding: 0 4px max(2px, env(safe-area-inset-bottom));
+    padding: 0 4px env(safe-area-inset-bottom, 0px);
     list-style: none;
     pointer-events: auto;
     z-index: 3;
@@ -189,20 +189,21 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 2px;
-    height: 24px;
+    bottom: 4px;
+    height: 20px;
     padding: 0 2px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
-    line-height: 1.08;
+    font-size: 10.5px;
+    line-height: 1.05;
     font-weight: 600;
     text-align: center;
     color: #94a3b8;
     pointer-events: none;
-    white-space: normal;
-    overflow-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     transition: color 0.25s ease, font-weight 0.25s ease, transform 0.3s ease;
   }
 

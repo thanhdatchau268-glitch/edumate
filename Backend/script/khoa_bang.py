@@ -397,6 +397,7 @@ def trao_danh_hieu(bang_xep_hang, cfg):
 # ======================================================================
 # PHẦN 3: KỲ THI, CHỐT KỲ, TOKEN, API
 # ======================================================================
+import hashlib
 import os
 import secrets
 import threading
@@ -442,7 +443,7 @@ def _khoa_bi_mat():
         f.write(s)
     return s
 
-_SER = URLSafeTimedSerializer(_khoa_bi_mat(), salt="kb-token")
+_SER = URLSafeTimedSerializer(_khoa_bi_mat(), salt="kb-token", signer_kwargs={"digest_method": hashlib.sha256})
 
 def tao_token(user_id):
     """app.py gọi khi đăng nhập thành công, gửi kèm cho trình duyệt."""

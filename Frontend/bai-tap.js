@@ -317,7 +317,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             </button>`;
         } else {
           plTong.className = "pl-tong im";
-          plTong.textContent = "Chưa kết nối được server nên chưa hiện điểm. Bật app.py nhé!";
+          plTong.textContent = "Chưa kết nối được máy chủ nên chưa hiện điểm. Kiểm tra mạng rồi thử lại nhé!";
         }
 
         if (!c.danh_sach_bai || c.danh_sach_bai.length === 0) {

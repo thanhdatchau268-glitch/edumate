@@ -2365,7 +2365,7 @@ body.vuon-page #sao-la {
 
   .vuon-stage {
     height: calc(100dvh - 144px);
-    min-height: 500px;
+    min-height: 460px;
     max-height: 760px;
     border-radius: 20px;
   }
@@ -2717,6 +2717,32 @@ body.vuon-page #sao-la {
 @media (min-width: 440px) and (max-width: 640px) {
   .vuon-shop-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 380px) {
+  .vuon-hud-island {
+    padding: 6px 8px;
+  }
+
+  .vuon-hud-ctrl-top {
+    gap: 5px;
+  }
+
+  .vuon-coin-pill {
+    padding: 3px 7px;
+    font-size: 0.74rem;
+    gap: 4px;
+  }
+
+  .vuon-mode-btn {
+    font-size: 0.72rem;
+    padding: 4px 8px;
+  }
+
+  .vuon-time-btn {
+    font-size: 0.64rem;
+    padding: 3px 5px;
   }
 }
 

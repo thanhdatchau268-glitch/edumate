@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="style.css?v=11" />
   <link rel="stylesheet" href="style2.css?v=4" />
   <link rel="stylesheet" href="style3.css?v=4" />
-  <link rel="stylesheet" href="auth.css?v=5" />
+  <link rel="stylesheet" href="auth.css?v=6" />
 </head>
 
 <body>
@@ -188,7 +188,28 @@
             <p class="field-msg"></p>
           </div>
 
-          <button type="submit" id="btn-register" class="auth-btn">Đăng ký</button>
+          <!-- Bước xác minh email: mã OTP 6 số gửi về Gmail (hiện hộp thư trên điện thoại) -->
+          <div id="reg-otp-panel" class="reg-otp-panel hidden" aria-live="polite">
+            <div class="reg-otp-head">
+              <i class="fa-solid fa-envelope-circle-check"></i>
+              <div>
+                <b>Nhập mã xác minh email</b>
+                <span id="reg-otp-to">Mã 6 số đã gửi về hộp thư của bạn.</span>
+              </div>
+            </div>
+            <div class="otp-input-container">
+              <input type="text" id="reg-otp" maxlength="6" placeholder="••••••" inputmode="numeric" pattern="[0-9]*"
+                autocomplete="one-time-code" aria-label="Mã OTP 6 chữ số" />
+            </div>
+            <p id="reg-otp-msg" class="reg-otp-msg"></p>
+            <p id="reg-otp-demo" class="reg-otp-demo"></p>
+            <div class="reg-otp-actions">
+              <button type="button" id="btn-reg-gui-lai" class="auth-link-nho" disabled>Gửi lại mã (60s)</button>
+              <button type="button" id="btn-reg-doi-email" class="auth-link-nho">Đổi email</button>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-register" class="auth-btn">Gửi mã xác minh về email</button>
         </form>
 
         <p class="auth-chuyen">Đã có tài khoản? <a href="login.html">Đăng nhập</a></p>
@@ -196,8 +217,8 @@
     </div>
   </main>
 
-  <script src="script.js?v=17"></script>
-  <script src="auth.js?v=5"></script>
+  <script src="script.js?v=18"></script>
+  <script src="auth.js?v=6"></script>
 </body>
 
 </html>

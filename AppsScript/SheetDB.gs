@@ -5,7 +5,7 @@ var TABLE_SCHEMAS = {
   user_huy_hieu: ["user_id", "badge_id", "unlocked_at", "diem_thuong"],
   da_lam: ["user_id", "bai_key", "best_pct"],
   ruong_chuong: ["id", "user_id", "subject", "chuong", "diem_thuong", "ngay_mo"],
-  vuon_trang_thai: ["user_id", "cap", "exp", "no_bung", "vui_ve", "sach_se", "lan_cham", "lan_vuot_ve", "vuot_ve_ngay", "vuot_ve_dem"],
+  vuon_trang_thai: ["user_id", "cap", "exp", "no_bung", "vui_ve", "sach_se", "lan_cham", "lan_online", "lan_vuot_ve", "vuot_ve_ngay", "vuot_ve_dem", "tuong_tac_ngay", "tam_song_dem", "tam_song_cuoi", "nghi_cay_dem", "nghi_cay_cuoi"],
   vuon_tui_do: ["user_id", "item_id", "so_luong", "lan_dung_cuoi"],
   vuon_trang_tri: ["user_id", "item_id", "dang_bat"],
   diem_thang: ["user_id", "thang", "diem"],
@@ -16,7 +16,9 @@ var TABLE_SCHEMAS = {
   password_resets: ["id", "email", "otp", "token", "expires_at", "used", "created_at"],
   nv_tien_do: ["user_id", "ngay", "khoa", "gia_tri"],
   nv_ngay: ["user_id", "ngay", "nv_id", "da_nhan"],
-  so_loi: ["user_id", "bai_key", "cau_id", "nguyen_nhan", "so_lan_sai", "lan_cuoi", "da_hieu"],
+  so_loi: ["user_id", "bai_key", "cau_id", "nguyen_nhan", "so_lan_sai", "lan_cuoi", "da_hieu", "do_tu_tin", "uu_tien_cao"],
+  cham_cau_log: ["user_id", "bai_key", "cau_id", "do_tu_tin", "dung", "thuong_coin", "thuong_score", "thoi_gian_ms", "lan_dau"],
+  chang_focus_log: ["id", "user_id", "bai_key", "chang_id", "tao_luc"],
   ky_nang_user: ["user_id", "bai_key", "muc", "ngay_on_ke", "so_lan_dat", "so_lan_chua_dat", "lan_on_cuoi"],
   on_tap_the: ["id", "user_id", "bai_key", "cau_id", "loai", "tang_goi_y", "so_lan_sai", "nguyen_nhan", "ket_qua", "tao_luc"],
   kb_hoat_dong: ["id", "user_id", "bai_key", "thoi_diem", "ngay", "so_cau", "so_tra_loi", "so_dung", "pct"],
@@ -41,7 +43,9 @@ var NUM_COLS = {
   so_dung: true, pct: true, thu_tu: true, diem_tich_luy: true, khao_hach_id: true,
   ky_id: true, diem_tong: true, hang: true,
   cap: true, exp: true, no_bung: true, vui_ve: true, sach_se: true,
-  vuot_ve_dem: true, so_luong: true, dang_bat: true
+  vuot_ve_dem: true, so_luong: true, dang_bat: true,
+  tam_song_dem: true, nghi_cay_dem: true, uu_tien_cao: true,
+  dung: true, thuong_coin: true, thuong_score: true, thoi_gian_ms: true, tao_luc: true
 };
 
 var NULLABLE_NUM_COLS = { contest_id: true, khao_hach_id: true, ky_id: true };
@@ -161,6 +165,12 @@ function dbReadTable(tableName) {
 
 function dbMarkDirty(tableName) {
   _DIRTY[tableName] = true;
+}
+
+function dbReplaceRows(tableName, newRows) {
+  dbReadTable(tableName);
+  _MEM[tableName] = Array.isArray(newRows) ? newRows : [];
+  dbMarkDirty(tableName);
 }
 
 function dbNextId(tableName) {

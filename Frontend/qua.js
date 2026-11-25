@@ -38,10 +38,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     el.style.color = mau || "#c62828";
     el.textContent = text;
   }
+  const esc = (s) => String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
   // ----- Vẽ vòng quay -----
   function veVongQuay() {
     const banh = $("qua-banh");
     const n = dsMui.length;
+    if (!banh || n <= 0) return;
     const mui = 360 / n;
     banh.style.background =
       "conic-gradient(" +
@@ -101,10 +108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "0");
       const s = String(giay % 60).padStart(2,
         "0");
-      el.textContent = `⚡ Đang x1,
-            5 điểm khi làm bài: còn ${m
-        }:${s
-        }`;
+      el.textContent = `⚡ Đang x1,5 điểm khi làm bài: còn ${m}:${s}`;
     };
     ve();
     demNguoc = setInterval(() => {
@@ -167,7 +171,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <span class="station-circle-icon">${o.da_nhan ? '<i class="fa-solid fa-check text-emerald-600 font-bold"></i>' : icon}</span>
         </div>
         <span class="station-label-title">Ngày ${o.ngay}</span>
-        <span class="station-reward-val" title="${o.ten}">${o.da_nhan ? "Đã nhận" : o.ten}</span>
+        <span class="station-reward-val" title="${esc(o.ten)}">${o.da_nhan ? "Đã nhận" : esc(o.ten)}</span>
       `;
       lich.appendChild(d);
     });

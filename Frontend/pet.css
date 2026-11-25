@@ -214,9 +214,25 @@
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
     #sao-la {
-        bottom: 18px;
+        --sl-w: 104px;
+        --sl-pet: 74px;
+        bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    #sao-la .sl-thu {
+        width: 32px;
+        height: 32px;
+        font-size: 15px;
+        left: 2px;
+        bottom: 4px;
+    }
+
+    #sao-la .sl-bong {
+        max-width: min(210px, calc(100vw - 24px));
+        font-size: 12.5px;
+        padding: 7px 10px;
     }
 }
 

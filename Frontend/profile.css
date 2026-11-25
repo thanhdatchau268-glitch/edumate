@@ -1670,3 +1670,143 @@ body.profile-page-body {
 .pf-stat-actions .btn-phu:hover {
     background: #e2e8f0;
 }
+
+/* Badge Coming soon (Saoladou voice card) */
+#sl-voice-card .pf-card-head,
+#sl-voice-card > h2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pf-coming-soon {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+    white-space: nowrap;
+}
+
+.pf-voice-note {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--sl-sub, #475569);
+    line-height: 1.5;
+}
+
+/* Nút & modal Xóa tài khoản */
+.pf-xoa-tk {
+    width: 100%;
+    margin-top: 10px;
+    color: #991b1b;
+    background: transparent;
+    border: 1.5px dashed #fca5a5;
+    border-radius: 12px;
+    padding: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pf-xoa-tk:hover {
+    color: #ffffff;
+    background: #b91c1c;
+    border-style: solid;
+    border-color: #b91c1c;
+}
+
+.pf-del-warn {
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    margin-bottom: 6px;
+}
+
+.pf-del-email {
+    margin: 2px 0 6px;
+    font-size: 0.85rem;
+    color: var(--nhat, #475569);
+}
+
+.pf-del-mk-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.pf-del-mk-wrap input {
+    width: 100%;
+    padding-right: 40px;
+    font-size: 16px;
+}
+
+.pf-del-eye {
+    position: absolute;
+    right: 8px;
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.pf-del-otp-row {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.pf-del-otp-row input {
+    flex: 1;
+    min-width: 0;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-align: center;
+}
+
+.pf-del-otp-btn {
+    flex-shrink: 0;
+    padding: 8px 12px;
+    font-size: 0.84rem;
+    white-space: nowrap;
+}
+
+.pf-del-tb {
+    min-height: 1.2em;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin: 4px 0 0;
+}
+
+.pf-del-tb.ok { color: #059669; }
+.pf-del-tb.loi { color: #dc2626; }
+
+.pf-del-confirm {
+    background: #dc2626 !important;
+    color: #ffffff !important;
+    border-color: #dc2626 !important;
+}
+
+.pf-del-confirm:hover:not(:disabled) {
+    background: #b91c1c !important;
+}
+
+@media (max-width: 420px) {
+    .pf-del-otp-row {
+        flex-direction: column;
+    }
+}

@@ -1339,7 +1339,7 @@ window.QuizTungCau = (() => {
                 ve(1);
             } catch (err) {
                 console.error("[cham-cau]", err);
-                const errText = err.message === "Failed to fetch" ? "Không kết nối được server (bật app.py nhé!)" : err.message;
+                const errText = err.message === "Failed to fetch" ? "Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại nhé!" : err.message;
                 const oldErr = stage.querySelector(".qz-ifb-err");
                 if (oldErr) oldErr.remove();
                 stage.querySelector(".qz-than")?.insertAdjacentHTML("beforeend", `<p class="qz-ifb-err">${esc(errText)}</p>`);
@@ -1467,7 +1467,7 @@ window.QuizTungCau = (() => {
             } catch (e) {
                 st.checking = false;
                 st.dung = false;
-                st.msg = "Không kết nối được server!";
+                st.msg = "Không kết nối được máy chủ!";
             }
             ve(1);
         }
@@ -1707,7 +1707,7 @@ window.QuizTungCau = (() => {
                 S.dangNop = false;
                 an(veDay);
                 const l = $("qz-loi");
-                if (l) l.textContent = "Không nộp được bài: " + (err.message === "Failed to fetch" ? "không kết nối được server. Bật app.py nhé!" : err.message);
+                if (l) l.textContent = "Không nộp được bài: " + (err.message === "Failed to fetch" ? "không kết nối được máy chủ. Kiểm tra mạng rồi thử lại nhé!" : err.message);
             }
         }
 

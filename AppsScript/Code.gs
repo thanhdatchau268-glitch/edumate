@@ -81,6 +81,7 @@ function _dispatch(method, path, query, body, token) {
   }
 
   // ==================== AUTH & FORGOT PASSWORD ====================
+  if (method === "POST" && path === "/api/register/send-otp") return _apiRegisterSendOtp(body);
   if (method === "POST" && path === "/api/register") return _apiRegister(body);
   if (method === "POST" && path === "/api/login") return _apiLogin(body);
   if (method === "GET" && path === "/api/accounts-hint") return _jsonOut(200, { success: true, accounts: [] });
@@ -102,6 +103,13 @@ function _dispatch(method, path, query, body, token) {
   var mMt = /^\/api\/muc-tieu-tuan\/(\d+)$/.exec(path);
   if (mMt && (method === "GET" || method === "PUT")) return _apiMucTieuTuan(method, Number(mMt[1]), body, token);
 
+  // ==================== LUYỆN TẬP TỨC THÌ & MỤC TIÊU SẴN SÀNG ====================
+  if (method === "POST" && path === "/api/luyen-tap/cham-cau") return _apiLtChamCau(body, token);
+  if (method === "POST" && path === "/api/luyen-tap/luu-may-man") return _apiLtLuuMayMan(body, token);
+  if (method === "POST" && path === "/api/luyen-tap/hoan-thanh-chang") return _apiLtHoanThanhChang(body, token);
+  var mMtSs = /^\/api\/muc-tieu\/san-sang\/(\d+)$/.exec(path);
+  if (method === "GET" && mMtSs) return _apiMucTieuSanSang(Number(mMtSs[1]), query);
+
   // ==================== USERS / PROFILE / AVATARS ====================
   if (method === "GET" && path === "/api/avatars") return _jsonOut(200, { success: true, data: AVATAR_LIST });
 
@@ -113,6 +121,12 @@ function _dispatch(method, path, query, body, token) {
 
   var mAvUp = /^\/api\/users\/(\d+)\/avatar-upload$/.exec(path);
   if (method === "POST" && mAvUp) return _apiUploadAvatar(Number(mAvUp[1]), body, token);
+
+  var mDelOtp = /^\/api\/users\/(\d+)\/delete-send-otp$/.exec(path);
+  if (method === "POST" && mDelOtp) return _apiDeleteSendOtp(Number(mDelOtp[1]), body, token);
+
+  var mDel = /^\/api\/users\/(\d+)\/delete$/.exec(path);
+  if ((method === "POST" || method === "DELETE") && mDel) return _apiDeleteAccount(Number(mDel[1]), body, token);
 
   var mUser = /^\/api\/users\/(\d+)$/.exec(path);
   if (mUser) {
@@ -147,10 +161,12 @@ function _dispatch(method, path, query, body, token) {
 
   // ==================== VƯỜN SAOLADOU & SHOP EDUCOIN ====================
   if (method === "GET" && path === "/api/vuon") return _apiVuonXem(query);
+  if (method === "POST" && path === "/api/vuon/nhip") return _apiVuonNhip(body, token);
   if (method === "POST" && path === "/api/vuon/mua") return _apiVuonMua(body, token);
   if (method === "POST" && path === "/api/vuon/dung") return _apiVuonDung(body, token);
   if (method === "POST" && path === "/api/vuon/vuot-ve") return _apiVuonVuotVe(body, token);
   if (method === "POST" && path === "/api/vuon/trang-tri") return _apiVuonTrangTri(body, token);
+  if (method === "POST" && path === "/api/vuon/tuong-tac") return _apiVuonTuongTac(body, token);
 
   // ==================== NHIỆM VỤ ====================
   if (method === "POST" && path === "/api/nhiem-vu/nhan") return _apiNvNhan(body, token);
@@ -185,16 +201,82 @@ function _dispatch(method, path, query, body, token) {
 // =====================================================================
 // IMPLEMENTATIONS
 // =====================================================================
+function _apiRegisterSendOtp(data) {
+  var email = String(data.email || "").trim().toLowerCase();
+  if (!email || !EMAIL_RE.test(email)) return _err("Vui lòng nhập địa chỉ Gmail hợp lệ!", 400);
+  if (findUserByEmail(email)) return _err("Email này đã được đăng ký!", 409);
+
+  var keyEmail = "reg:" + email;
+  var otp = String(Math.floor(100000 + Math.random() * 900000));
+  var token = Utilities.getUuid().replace(/-/g, "");
+  var expMs = Date.now() + 10 * 60 * 1000;
+  var expStr = Utilities.formatDate(new Date(expMs), TZ_VN, "yyyy-MM-dd HH:mm:ss");
+
+  var prRows = dbReadTable("password_resets");
+  for (var i = 0; i < prRows.length; i++) {
+    if (String(prRows[i].email || "").toLowerCase() === keyEmail && Number(prRows[i].used || 0) === 0) {
+      prRows[i].used = 1;
+      dbMarkDirty("password_resets");
+    }
+  }
+  dbInsert("password_resets", {
+    email: keyEmail, otp: otp, token: token, expires_at: expStr, used: 0, created_at: vnNowStr()
+  }, true);
+
+  var sent = false, errMsg = "";
+  try {
+    var htmlBody = '<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:24px;border:1px solid #e1e7f0;border-radius:16px;background:#fff;">' +
+      '<h2 style="color:#2457d6;margin:0 0 8px;">Vn<span style="color:#ff9800;">StarL</span></h2>' +
+      '<p>Xin chào,</p>' +
+      '<p>Mã xác minh (OTP) để hoàn tất đăng ký tài khoản VnStarL của bạn là:</p>' +
+      '<div style="font-size:32px;font-weight:800;letter-spacing:6px;color:#2457d6;padding:12px 20px;border:2px dashed #2457d6;display:inline-block;margin:10px 0;">' + otp + '</div>' +
+      '<p style="color:#e07a1f;font-size:13px;">Mã có hiệu lực trong 10 phút. Không chia sẻ mã này cho bất kỳ ai.</p></div>';
+    MailApp.sendEmail({
+      to: email,
+      subject: "VnStarL - Mã xác minh đăng ký tài khoản: " + otp,
+      htmlBody: htmlBody
+    });
+    sent = true;
+  } catch (e) {
+    errMsg = String(e && e.message ? e.message : e);
+  }
+  if (!sent) {
+    return _err("Không gửi được email OTP lúc này (" + errMsg + "). Hãy kiểm tra lại địa chỉ email hoặc thử lại sau.", 500);
+  }
+  return _jsonOut(200, {
+    success: true,
+    message: "Đã gửi mã xác minh 6 số về hộp thư Gmail: " + email + "!",
+    email: email, sent_via_smtp: true
+  });
+}
+
 function _apiRegister(data) {
   var username = String(data.username || "").trim();
   var email = String(data.email || "").trim().toLowerCase();
   var mk = String(data.mk || "");
   var bio = String(data.bio || "");
+  var otp = String(data.otp || "").replace(/\D/g, "");
   if (!username || !email || !mk) return _err("Vui lòng nhập đầy đủ thông tin!", 400);
   if (!EMAIL_RE.test(email)) return _err("Email không đúng định dạng!", 400);
   if (mk.length < 6) return _err("Mật khẩu cần ít nhất 6 ký tự!", 400);
   if (username.length > 30) return _err("Username tối đa 30 ký tự!", 400);
   if (findUserByEmail(email)) return _err("Email này đã được đăng ký!", 409);
+
+  if (otp.length !== 6) return _err("Vui lòng nhập mã xác minh OTP 6 chữ số đã gửi về email!", 400);
+  var keyEmail = "reg:" + email;
+  var rows = dbReadTable("password_resets");
+  var otpRow = null;
+  for (var i = rows.length - 1; i >= 0; i--) {
+    if (String(rows[i].email || "").toLowerCase() === keyEmail && String(rows[i].otp || "") === otp) {
+      otpRow = rows[i]; break;
+    }
+  }
+  if (!otpRow) return _err("Mã xác minh OTP không chính xác!", 400);
+  if (Number(otpRow.used || 0)) return _err("Mã xác minh OTP này đã được sử dụng rồi!", 400);
+  var expMs = parseYmdHmsMs(otpRow.expires_at);
+  if (!expMs || Date.now() > expMs) return _err("Mã xác minh đã hết hạn (10 phút). Hãy bấm Gửi lại mã!", 400);
+  otpRow.used = 1;
+  dbMarkDirty("password_resets");
 
   var u = dbInsert("users", {
     username: username, email: email, mk: hashPassword(mk), bio: bio,
@@ -302,8 +384,8 @@ function _apiSendOtp(data) {
 
 function _apiVerifyOtp(data) {
   var email = String(data.email || "").trim().toLowerCase();
-  var otp = String(data.otp || "").trim();
-  if (!email || !otp) return _err("Vui lòng nhập đầy đủ email và mã OTP!", 400);
+  var otp = String(data.otp || "").replace(/\s+/g, "");
+  if (!email || !/^\d{6}$/.test(otp)) return _err("Vui lòng nhập đầy đủ email và mã OTP 6 chữ số!", 400);
   var rows = dbReadTable("password_resets");
   var row = null;
   for (var i = rows.length - 1; i >= 0; i--) {
@@ -352,6 +434,13 @@ function _apiGoogleVerify(data) {
 
   var resetToken = Utilities.getUuid().replace(/-/g, "") + Utilities.getUuid().replace(/-/g, "").slice(0, 16);
   var expStr = Utilities.formatDate(new Date(Date.now() + 15 * 60 * 1000), TZ_VN, "yyyy-MM-dd HH:mm:ss");
+  var prRowsG = dbReadTable("password_resets");
+  for (var gi = 0; gi < prRowsG.length; gi++) {
+    if (String(prRowsG[gi].email || "").toLowerCase() === email && Number(prRowsG[gi].used || 0) === 0) {
+      prRowsG[gi].used = 1;
+      dbMarkDirty("password_resets");
+    }
+  }
   dbInsert("password_resets", {
     email: email, otp: "GOOGLE_VERIFIED", token: resetToken, expires_at: expStr, used: 0, created_at: vnNowStr()
   }, true);
@@ -470,7 +559,8 @@ function _apiSubmit(data, token) {
       streak = Number(findUserRow(userId).streak || 0);
       heSo = Math.round((1 + Math.min(streak * 0.001, 0.05) + heSoX15(userId)) * 10000) / 10000;
       var heSoLan = daLuu ? 1.0 : 0.5;
-      diemCong = Math.round(diemDat * heSoLan * heSo);
+      var heSoThuongCau = data.da_thuong_theo_cau ? 0.45 : 1.0;
+      diemCong = Math.round(diemDat * heSoLan * heSo * heSoThuongCau);
       if (diemCong > 0) updateUserScore(userId, diemCong);
     }
   }
@@ -701,6 +791,195 @@ function _apiUploadAvatar(uid, data, token) {
   return _jsonOut(200, { success: true, avatar: tenMoi });
 }
 
+var _USER_SCOPED_TABLES = [
+  "user_huy_hieu", "da_lam", "ruong_chuong",
+  "vuon_trang_thai", "vuon_tui_do", "vuon_trang_tri",
+  "diem_thang", "contest_ket_qua", "pet", "pet_do",
+  "nv_tien_do", "nv_ngay", "so_loi", "cham_cau_log", "chang_focus_log",
+  "ky_nang_user", "on_tap_the",
+  "kb_hoat_dong", "kb_tham_gia", "kb_ket_qua", "kb_user_danh_hieu",
+  "kb_diem_tich_luy", "kb_phuc_khao", "kb_vi_pham"
+];
+
+function _maskEmailShort(email) {
+  var s = String(email || "").trim();
+  var at = s.indexOf("@");
+  if (at <= 1) return s;
+  var name = s.slice(0, at);
+  var vis = name.slice(0, Math.min(3, name.length));
+  return vis + "***" + s.slice(at);
+}
+
+function _deleteUserCascade(uid, userObj) {
+  uid = Number(uid);
+  var email = String((userObj && userObj.email) || "").trim().toLowerCase();
+  if (userObj && userObj.avatar) _xoaAnhDriveCu(userObj.avatar);
+
+  for (var ti = 0; ti < _USER_SCOPED_TABLES.length; ti++) {
+    var tName = _USER_SCOPED_TABLES[ti];
+    var rows = dbReadTable(tName);
+    var kept = rows.filter(function (r) { return Number(r.user_id) !== uid; });
+    if (kept.length !== rows.length) dbReplaceRows(tName, kept);
+  }
+
+  if (email) {
+    var pr = dbReadTable("password_resets");
+    var prKept = pr.filter(function (r) {
+      var em = String(r.email || "").toLowerCase();
+      return em !== email && em !== ("reg:" + email) && em !== ("del:" + email);
+    });
+    if (prKept.length !== pr.length) dbReplaceRows("password_resets", prKept);
+  }
+
+  var users = dbReadTable("users");
+  var usersKept = users.filter(function (r) { return Number(r.id) !== uid; });
+  if (usersKept.length !== users.length) dbReplaceRows("users", usersKept);
+}
+
+function _apiDeleteSendOtp(uid, data, token) {
+  var auth = _authMatch(uid, token);
+  if (!auth.ok) return _err(auth.msg, auth.status);
+  var u = findUserRow(uid);
+  if (!u) return _err("Không tìm thấy người dùng!", 404);
+
+  var mk = String(data.mk || "");
+  if (!mk) return _err("Vui lòng nhập mật khẩu hiện tại trước khi lấy mã OTP!", 400);
+  if (!verifyPassword(u.mk, mk)) return _err("Mật khẩu hiện tại không chính xác!", 401);
+
+  var email = String(u.email || "").trim().toLowerCase();
+  if (!email) return _err("Tài khoản này chưa có email để nhận mã OTP!", 400);
+
+  var keyEmail = "del:" + email;
+  var otp = String(Math.floor(100000 + Math.random() * 900000));
+  var tok = Utilities.getUuid().replace(/-/g, "");
+  var expStr = Utilities.formatDate(new Date(Date.now() + 10 * 60 * 1000), TZ_VN, "yyyy-MM-dd HH:mm:ss");
+
+  var prRows = dbReadTable("password_resets");
+  for (var i = 0; i < prRows.length; i++) {
+    if (String(prRows[i].email || "").toLowerCase() === keyEmail && Number(prRows[i].used || 0) === 0) {
+      prRows[i].used = 1;
+      dbMarkDirty("password_resets");
+    }
+  }
+  dbInsert("password_resets", {
+    email: keyEmail, otp: otp, token: tok, expires_at: expStr, used: 0, created_at: vnNowStr()
+  }, true);
+
+  var sent = false, errMsg = "";
+  try {
+    var htmlBody = '<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:24px;border:1px solid #fecaca;border-radius:16px;background:#fff;">' +
+      '<h2 style="color:#2457d6;margin:0 0 8px;">Vn<span style="color:#ff9800;">StarL</span></h2>' +
+      '<p>Xin chào <b>' + _escHtml(u.username || email) + '</b>,</p>' +
+      '<p style="color:#b91c1c;font-weight:700;">Bạn vừa yêu cầu XÓA VĨNH VIỄN tài khoản VnStarL.</p>' +
+      '<p>Mã OTP xác nhận xóa tài khoản của bạn là:</p>' +
+      '<div style="font-size:32px;font-weight:800;letter-spacing:6px;color:#dc2626;padding:12px 20px;border:2px dashed #dc2626;display:inline-block;margin:10px 0;">' + otp + '</div>' +
+      '<p style="color:#64748b;font-size:13px;">Mã có hiệu lực trong 10 phút. Nếu không phải bạn yêu cầu, hãy đổi mật khẩu ngay lập tức.</p></div>';
+    MailApp.sendEmail({
+      to: email,
+      subject: "VnStarL - Mã OTP xác nhận xóa tài khoản: " + otp,
+      htmlBody: htmlBody
+    });
+    sent = true;
+  } catch (e) {
+    errMsg = String(e && e.message ? e.message : e);
+  }
+  if (!sent) {
+    return _err("Không gửi được email OTP lúc này (" + errMsg + "). Hãy thử lại sau.", 500);
+  }
+  return _jsonOut(200, {
+    success: true,
+    message: "Đã gửi mã OTP 6 số về Gmail: " + _maskEmailShort(email) + "!",
+    email: _maskEmailShort(email)
+  });
+}
+
+function _apiDeleteAccount(uid, data, token) {
+  var auth = _authMatch(uid, token);
+  if (!auth.ok) return _err(auth.msg, auth.status);
+  var u = findUserRow(uid);
+  if (!u) return _err("Không tìm thấy người dùng!", 404);
+
+  var mk = String(data.mk || "");
+  var otp = String(data.otp || "").replace(/\D/g, "");
+  if (!mk) return _err("Vui lòng nhập mật khẩu hiện tại!", 400);
+  if (!verifyPassword(u.mk, mk)) return _err("Mật khẩu không chính xác!", 401);
+  if (otp.length !== 6) return _err("Vui lòng nhập đúng mã OTP 6 chữ số!", 400);
+
+  var email = String(u.email || "").trim().toLowerCase();
+  var keyEmail = "del:" + email;
+  var rows = dbReadTable("password_resets");
+  var otpRow = null;
+  for (var i = rows.length - 1; i >= 0; i--) {
+    if (String(rows[i].email || "").toLowerCase() === keyEmail && String(rows[i].otp || "") === otp) {
+      otpRow = rows[i]; break;
+    }
+  }
+  if (!otpRow) return _err("Mã OTP không chính xác!", 400);
+  if (Number(otpRow.used || 0)) return _err("Mã OTP này đã được sử dụng rồi!", 400);
+  var expMs = parseYmdHmsMs(otpRow.expires_at);
+  if (!expMs || Date.now() > expMs) return _err("Mã OTP đã hết hạn (10 phút). Hãy bấm Gửi lại mã!", 400);
+  otpRow.used = 1;
+  dbMarkDirty("password_resets");
+
+  _deleteUserCascade(uid, u);
+  return _jsonOut(200, {
+    success: true,
+    message: "Đã xóa tài khoản vĩnh viễn thành công!"
+  });
+}
+
+// Hàm chạy thủ công trong Apps Script Editor: Reset toàn bộ tài khoản, CHỈ GIỮ LẠI tài khoản "mea"
+function resetAllAccountsExceptMea() {
+  var KEEP_USERNAMES = { mea: true };
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    resetDbMemCache();
+    var users = dbReadTable("users");
+    var keptUsers = [];
+    var removedUsers = [];
+    var keptIdMap = {};
+
+    for (var i = 0; i < users.length; i++) {
+      var u = users[i];
+      var uname = String(u.username || "").trim().toLowerCase();
+      if (KEEP_USERNAMES[uname]) {
+        keptUsers.push(u);
+        keptIdMap[Number(u.id)] = true;
+      } else {
+        removedUsers.push(u);
+      }
+    }
+
+    if (keptUsers.length === 0) {
+      throw new Error("Không tìm thấy tài khoản 'mea' trong sheet users! Đã hủy reset để tránh xóa nhầm.");
+    }
+
+    for (var ri = 0; ri < removedUsers.length; ri++) {
+      if (removedUsers[ri].avatar) _xoaAnhDriveCu(removedUsers[ri].avatar);
+    }
+
+    dbReplaceRows("users", keptUsers);
+    for (var ti = 0; ti < _USER_SCOPED_TABLES.length; ti++) {
+      var tName = _USER_SCOPED_TABLES[ti];
+      var tRows = dbReadTable(tName);
+      var tKept = tRows.filter(function (r) { return !!keptIdMap[Number(r.user_id)]; });
+      if (tKept.length !== tRows.length) dbReplaceRows(tName, tKept);
+    }
+
+    dbReplaceRows("password_resets", []);
+    dbFlushDirty();
+
+    var msg = "Reset hoàn tất! Giữ lại " + keptUsers.length + " tài khoản ('" +
+      keptUsers.map(function (x) { return x.username + " #" + x.id; }).join(", ") +
+      "'), đã xóa " + removedUsers.length + " tài khoản khác.";
+    Logger.log(msg);
+    return msg;
+  } finally {
+    try { lock.releaseLock(); } catch (e) {}
+  }
+}
+
 // ==================== CONTESTS ====================
 function _apiListContests() {
   var rows = dbReadTable("contests").slice().sort(function (a, b) {
@@ -827,8 +1106,8 @@ function _petTrangThai(uid) {
   var dsSkin = Object.keys(PET_MANIFEST.skin).map(function (sid) {
     var info = PET_MANIFEST.skin[sid];
     var own = !!soHuu[sid];
-    var d = { id: sid, ten: info.ten, gia: info.gia, xem_truoc: "img/pet/than/" + sid + "/_xem_truoc.webp?v=1", so_huu: own };
-    if (own) { d.thu_muc = "img/pet/than/" + sid + "/"; d.hanh_dong = info.hanh_dong; d.v = 1; }
+    var d = { id: sid, ten: info.ten, gia: info.gia, xem_truoc: "img/pet/than/" + sid + "/_xem_truoc.webp?v=2", so_huu: own };
+    if (own) { d.thu_muc = "img/pet/than/" + sid + "/"; d.hanh_dong = info.hanh_dong; d.v = 2; }
     return d;
   });
   var hienTai = dsSkin.filter(function (s) { return s.id === dangMac; })[0] || null;
@@ -982,7 +1261,9 @@ function _apiDoiBaoHo(data, token) {
 function _apiVuonXem(q) {
   var uid = _toInt(q.user_id, null);
   if (!uid) return _err("Thiếu user_id!", 400);
-  var st = vuonBuildState(uid);
+  var phutNgu = _vuonPhanTichPhut(q.ngu_tu, 22 * 60);
+  var phutDay = _vuonPhanTichPhut(q.ngu_den, 6 * 60);
+  var st = vuonBuildState(uid, true, phutNgu, phutDay);
   if (!st) return _err("Không tìm thấy người dùng!", 404);
   dbFlushDirty();
   return _jsonOut(200, { success: true, data: st });
@@ -1139,14 +1420,14 @@ function _apiVuonVuotVe(data, token) {
     });
   }
   vt.vuot_ve_dem = dem + 1;
-  vt.vui_ve = Math.max(0, Math.min(100, Number(vt.vui_ve || 0) + 5));
+  vt.vui_ve = Math.max(0, Math.min(100, Number(vt.vui_ve || 0) + VUON_VUOT_VE_VUI));
   vt.lan_cham = vnNowStr();
+  vt.lan_online = vnNowStr();
   dbMarkDirty("vuon_trang_thai");
-  var leveledUp = _vuonCongExp(vt, 4);
   return _jsonOut(200, {
-    success: true, exp_cong: 4, vui_cong: 5, leveled_up: leveledUp,
-    message: "Saoladuo thích mê! (+5 Vui vẻ, +4 EXP)",
-    data: vuonBuildState(uid)
+    success: true, exp_cong: 0, vui_cong: VUON_VUOT_VE_VUI, leveled_up: false,
+    message: "Saoladuo thích mê! (+" + VUON_VUOT_VE_VUI + " Vui vẻ)",
+    data: vuonBuildState(uid, false)
   });
 }
 

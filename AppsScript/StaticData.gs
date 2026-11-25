@@ -33,7 +33,7 @@ var PET_MANIFEST = {
   so_khung: 6,
   fps: 6,
   skin: {
-    mac_dinh: { ten: "Sao La", gia: 0, hanh_dong: ["idle", "vui"] },
+    mac_dinh: { ten: "Sao La", gia: 0, hanh_dong: ["idle", "vuon_idle", "di_bo", "tam_song", "nghi_ngoi", "ngoi_ghe", "ngu", "an_la", "choi_vui", "om_met", "hoan_thanh_chang", "khich_le_co_len", "focus_combo", "vui", "noi", "hoc", "khoc"] },
     ao_dai: { ten: "Áo dài (ảnh mẫu)", gia: 100, hanh_dong: ["idle"] }
   },
   hieu_ung: {

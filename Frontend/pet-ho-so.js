@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         body: JSON.stringify(thanBody),
       });
     } catch (e) {
-      throw new Error("Không kết nối được server. Bật app.py nhé!");
+      throw new Error("Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại nhé!");
     }
     const kq = await res.json().catch(() => ({}));
     if (!kq.success) throw new Error(kq.message || "Có lỗi xảy ra, thử lại sau nhé.");
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   bao(ttSkin, "Đang tải...");
   const ban = await SAOLA.sanSang;
   if (!ban) {
-    bao(ttSkin, "Không tải được dữ liệu Sao La. Bật app.py nhé!", "loi");
+    bao(ttSkin, "Không tải được dữ liệu Sao La. Kiểm tra mạng rồi thử lại nhé!", "loi");
     return;
   }
   tt = ban;

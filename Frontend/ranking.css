@@ -928,7 +928,7 @@ body.ranking-page-body {
 @media (max-width: 640px) {
     .ranking-master-wrapper {
         width: calc(100% - 14px);
-        padding: 0 2px 96px 2px;
+        padding: 0 2px 148px 2px;
         margin-top: 6px;
     }
 
@@ -970,7 +970,7 @@ body.ranking-page-body {
         align-items: center;
         justify-content: space-between;
         gap: 6px;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
     }
 
     .rk-seg {
@@ -1015,7 +1015,7 @@ body.ranking-page-body {
     }
 
     .podium-stage-base {
-        width: 320px;
+        width: min(320px, 100%);
     }
 
     .silver .avatar,
@@ -1037,16 +1037,16 @@ body.ranking-page-body {
     .rk-my-sticky {
         display: block !important;
         position: fixed;
-        bottom: 78px;
-        left: 14px;
-        right: 14px;
-        max-width: 416px;
+        bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+        left: 12px;
+        right: 12px;
+        max-width: 440px;
         margin: 0 auto;
         z-index: 100;
         background: #0f2b6b;
         color: #ffffff;
         border-radius: 14px;
-        padding: 10px 16px;
+        padding: 10px 14px;
         box-shadow: 0 8px 24px rgba(15, 43, 107, 0.35);
         border: 1px solid rgba(255, 255, 255, 0.18);
     }

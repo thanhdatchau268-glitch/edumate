@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             kq = await res.json();
         } catch (e) {
-            throw new Error("Không kết nối được server. Bật app.py nhé!");
+            throw new Error("Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại nhé!");
         }
         if (!kq.success) throw new Error(kq.message || "Có lỗi xảy ra.");
         return kq;
@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
             veBoLocMon();
             veDanhSachDaLoc();
         } catch (err) {
-            box.innerHTML = `<p class="sl-rong">${esc(err.message === "Failed to fetch" ? "Không kết nối được server. Bật app.py nhé!" : err.message)}</p>`;
+            box.innerHTML = `<p class="sl-rong">${esc(err.message === "Failed to fetch" ? "Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại nhé!" : err.message)}</p>`;
         }
     }
 

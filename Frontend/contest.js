@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         body.appendChild(tr);
       });
     } catch (err) {
-      if (luot === luotMo) baoTrongO("Không kết nối được server. Bật app.py nhé!");
+      if (luot === luotMo) baoTrongO("Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại nhé!");
     }
   }
 
@@ -335,6 +335,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (window.SAOLA) window.SAOLA.sanSang.then(noiCuocThi);
     else window.addEventListener("saola-san-sang", (e) => noiCuocThi(e.detail), { once: true });
   } catch (err) {
-    baoDong("Không kết nối được server. Bật app.py nhé!");
+    baoDong("Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại nhé!");
   }
 });

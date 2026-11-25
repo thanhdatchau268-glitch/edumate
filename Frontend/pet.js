@@ -129,13 +129,8 @@
       }
     });
 
-    ELM.tieng.hidden = LA_FORM; // form.html không có tiếng nên khỏi hiện nút
+    ELM.tieng.hidden = true; // Tạm tắt giọng nói web & giọng AI (Coming soon ở trang hồ sơ)
     veNutTieng();
-    ELM.tieng.addEventListener("click", () => {
-      datTatTieng(!dangTatTieng());
-      if (dangTatTieng()) dungGiong();
-      else noi(null, { chu: "Mình nói lại được rồi nhé!" });
-    });
 
     const chamVao = () => { noi(layLoiCham()); datHanhDong("vui", 2500); };
     ELM.hit.addEventListener("click", chamVao);
@@ -240,8 +235,11 @@
   // NẠP SPRITE (lười) + ĐỔI SKIN
   // =====================================================================
   // Đuôi ?v= đổi khi họa sĩ thay ảnh, nên sw.js/trình duyệt không giữ ảnh cũ trùng tên
+  // Một số hành động ra mắt sau được xuất dạng PNG nền trong suốt (cùng bố cục 6 khung ngang)
+  const HANH_DONG_PNG = ["vui", "noi", "hoc", "khoc"];
   function duongDanSprite(skin, ten) {
-    return skin.thu_muc + ten + ".webp?v=" + (skin.v || 0);
+    const duoi = HANH_DONG_PNG.includes(ten) ? ".png" : ".webp";
+    return skin.thu_muc + ten + duoi + "?v=" + (skin.v || 0);
   }
 
   function napAnh(url) {
@@ -345,16 +343,16 @@
   }
 
   // =====================================================================
-  // GIỌNG NÓI
+  // GIỌNG NÓI (đang tạm tắt cả file mp3 lẫn giọng AI trình duyệt — chỉ hiện chữ)
   // =====================================================================
-  function dangTatTieng() { return luu.doc(KHOA_TAT_TIENG) === "1"; }
-  function datTatTieng(tat) { luu.ghi(KHOA_TAT_TIENG, tat ? "1" : "0"); veNutTieng(); }
+  function dangTatTieng() { return true; }
+  function datTatTieng() { luu.ghi(KHOA_TAT_TIENG, "1"); veNutTieng(); }
   function veNutTieng() {
     if (!ELM.tieng) return;
-    const tat = dangTatTieng();
-    ELM.tieng.textContent = tat ? "🔇" : "🔊";
-    ELM.tieng.setAttribute("aria-pressed", tat ? "true" : "false");
-    ELM.tieng.title = tat ? "Đang tắt tiếng (vẫn hiện chữ)" : "Đang bật tiếng";
+    ELM.tieng.hidden = true;
+    ELM.tieng.textContent = "🔇";
+    ELM.tieng.setAttribute("aria-pressed", "true");
+    ELM.tieng.title = "Giọng nói Sao La đang tạm tắt (Coming soon)";
   }
 
   // Có cuộc thi đang diễn ra không? (dùng cache sessionStorage 60s để không làm trễ lúc mở trang)
@@ -447,14 +445,10 @@
     } catch (e) { return false; }
   }
 
-  // Thứ tự: giọng nữ mp3 (stream tức thì) -> giọng trình duyệt -> chỉ chữ
-  async function phatGiong(ma, chu) {
+  // Giọng nói (MP3 + AI SpeechSynthesis) đã tạm tắt toàn trang — chỉ hiện bong bóng chữ
+  async function phatGiong() {
     dungGiong();
-    if (!ma || dangTatTieng() || imLangNhanh()) return false;
-    const luot = S.luotGiong;
-    const dd = duongDanAm("nu", ma);
-    if (S.amThieu.has(dd)) return S.tuongTac ? noiBangTrinhDuyet(chu) : false;
-    return phatTrucTiep(dd, ma, chu, luot);
+    return false;
   }
 
   // =====================================================================

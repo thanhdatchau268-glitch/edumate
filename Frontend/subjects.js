@@ -425,11 +425,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         listEl.innerHTML = ds.map((item) => {
+          const safeTen = esc(item.ten);
           if (item.da_nhan) {
             return `
               <li class="quest-row done">
                 <i class="fa-solid fa-circle-check"></i>
-                <span class="q-name" title="${item.ten}">${item.ten}</span>
+                <span class="q-name" title="${safeTen}">${safeTen}</span>
                 <span class="q-claimed">Đã nhận</span>
               </li>
             `;
@@ -437,8 +438,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return `
               <li class="quest-row ready">
                 <i class="fa-solid fa-circle-check" style="color: #2563eb;"></i>
-                <span class="q-name" title="${item.ten}">${item.ten}</span>
-                <button class="btn-claim-xp" data-nvid="${item.id}">Nhận +${item.thuong_diem} XP</button>
+                <span class="q-name" title="${safeTen}">${safeTen}</span>
+                <button class="btn-claim-xp" data-nvid="${esc(item.id)}">Nhận +${Number(item.thuong_diem) || 0} XP</button>
               </li>
             `;
           } else {
@@ -447,10 +448,10 @@ document.addEventListener("DOMContentLoaded", () => {
               <li class="quest-row pending">
                 <i class="fa-regular fa-circle"></i>
                 <div class="q-col">
-                  <span class="q-name" title="${item.ten}">${item.ten}</span>
+                  <span class="q-name" title="${safeTen}">${safeTen}</span>
                   <div class="q-track"><div class="q-fill" style="width: ${pt}%;"></div></div>
                 </div>
-                <span class="q-xp">+${item.thuong_diem} XP</span>
+                <span class="q-xp">+${Number(item.thuong_diem) || 0} XP</span>
               </li>
             `;
           }

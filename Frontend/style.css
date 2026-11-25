@@ -788,7 +788,7 @@ header,
 
   html body {
     background-attachment: scroll !important;
-    padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px)) !important;
+    padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
   }
 
   a,
@@ -815,6 +815,10 @@ header,
     max-width: 100%;
   }
 
+  table {
+    max-width: 100%;
+  }
+
   .katex-display {
     max-width: 100%;
     overflow-x: auto;
@@ -828,20 +832,76 @@ header,
   }
 
   #header-inner {
-    padding: 0 16px;
-    height: 58px;
+    padding: 0 12px;
+    gap: 8px;
+    height: 56px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
+  #logo {
+    gap: 7px;
+    flex-shrink: 0;
+  }
+
   #logo img {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
   }
 
   #logo span {
-    font-size: 1.45rem;
+    font-size: 1.36rem;
+    white-space: nowrap;
+  }
+
+  .user-account-area {
+    gap: 8px;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+
+  #auth-buttons {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .auth-link {
+    white-space: nowrap;
+    font-size: 0.84rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #eef4ff;
+    color: var(--nhan);
+  }
+
+  #user-profile {
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .problem-container {
+    padding: 0 12px;
+    margin: 14px auto;
+  }
+
+  .problem-toolbar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .problem-toolbar .title {
+    font-size: 1.25rem;
+  }
+
+  .search-place {
+    min-width: 0;
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .search-place input {
+    width: 100%;
   }
 
   /* Thanh điều hướng ở đáy màn hình (Bottom Navigation Bar) */
@@ -957,6 +1017,36 @@ header,
     height: 30px;
     font-size: 0.82rem;
     border-radius: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  #header-inner {
+    padding: 0 10px;
+    gap: 6px;
+  }
+
+  #logo {
+    gap: 6px;
+  }
+
+  #logo img {
+    width: 30px;
+    height: 30px;
+  }
+
+  #logo span {
+    font-size: 1.2rem;
+  }
+
+  .auth-link {
+    font-size: 0.78rem;
+    padding: 5px 8px;
+  }
+
+  .username {
+    max-width: 62px;
+    font-size: 0.8rem;
   }
 }
 

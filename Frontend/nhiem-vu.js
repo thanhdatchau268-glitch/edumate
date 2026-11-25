@@ -22,7 +22,7 @@
             }
             ve(kq.data);
         } catch (err) {
-            khung.innerHTML = `<section class="nv-khung"><p class="nv-loi">Không tải được nhiệm vụ. Bật app.py nhé!</p></section>`;
+            khung.innerHTML = `<section class="nv-khung"><p class="nv-loi">Không tải được nhiệm vụ. Kiểm tra mạng rồi tải lại trang nhé!</p></section>`;
         }
     }
 

@@ -164,7 +164,7 @@
         <p>${b.text}</p>
         ${b.hint ? `<div class="tour-action-hint"><i class="fa-solid fa-hand-pointer"></i> ${b.hint}</div>` : ""}
         <div class="tour-bubble-foot">
-          <button type="button" class="tour-btn-skip" id="tourSkipBtn">Bỏ qua hướng dẫn</button>
+          <button type="button" class="tour-btn-skip" id="tourSkipBtn">${b.staysOnPage === false ? "Hoàn tất tại đây" : "Bỏ qua hướng dẫn"}</button>
           ${b.nextLabel ? `<button type="button" class="tour-btn-next" id="tourNextBtn">${b.nextLabel}</button>` : ""}
         </div>
       </div>
@@ -177,6 +177,14 @@
     if (nextBtn) {
       nextBtn.addEventListener("click", () => {
         if (typeof b.onNext === "function") b.onNext();
+        if (b.staysOnPage === false && b.mustClick) {
+          const targetEl = document.querySelector(b.mustClick);
+          if (typeof b.onAction === "function") b.onAction(targetEl);
+          if (targetEl && typeof targetEl.click === "function") {
+            targetEl.click();
+            return;
+          }
+        }
         renderBuoc(idx + 1);
       });
     }
@@ -190,6 +198,7 @@
 
   function chanClickNgoai(e) {
     if (idx < 0) return;
+    if (e && e.isTrusted === false) return;
     if (mascotWrap && mascotWrap.contains(e.target)) return;
     const dc = document.getElementById("daily-checkin-overlay");
     if (dc && !dc.classList.contains("hidden") && dc.contains(e.target)) return;
@@ -326,7 +335,7 @@
         staysOnPage: false,
         scrollTop: true,
         hint: "Bấm vào \"Xếp hạng\" trên menu để ghé trang",
-        nextLabel: "Hoàn tất toàn bộ 🎉",
+        nextLabel: "Ghé Xếp hạng ➔",
         onAction: () => {
           localStorage.setItem(KHOA_XONG, "1");
           sessionStorage.setItem(KHOA_CHAIN, "ranking");

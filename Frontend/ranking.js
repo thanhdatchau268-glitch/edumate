@@ -314,7 +314,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (err) {
       if (l !== luot) return;
       datLaiThanhTich();
-      baoDong("Không kết nối được server. Bật app.py nhé!");
+      baoDong("Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại nhé!");
     }
   }
 
@@ -329,7 +329,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     cauHinh = { ...kq, bang: bangLoc.length ? bangLoc : kq.bang };
   } catch (err) {
     xoaBuc();
-    baoDong("Không kết nối được server. Bật app.py nhé!");
+    baoDong("Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại nhé!");
     return;
   }
 

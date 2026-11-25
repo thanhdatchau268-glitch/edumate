@@ -31,8 +31,17 @@ function _seededRng(seedStr) {
 
 // ====================== CHẤM BÀI (app.py & cham_tu_luan.py) ======================
 function cham(dapAnDung, traLoi) {
-  return String(traLoi == null ? "" : traLoi).trim().toLowerCase() ===
-         String(dapAnDung == null ? "" : dapAnDung).trim().toLowerCase();
+  var a = String(dapAnDung == null ? "" : dapAnDung).trim().toLowerCase();
+  var b = String(traLoi == null ? "" : traLoi).trim().toLowerCase();
+  if (a === b) return true;
+  var na = a.replace(/,/g, ".").replace(/ /g, "");
+  var nb = b.replace(/,/g, ".").replace(/ /g, "");
+  if (na === nb) return true;
+  var fa = Number(na), fb = Number(nb);
+  if (na !== "" && nb !== "" && !isNaN(fa) && !isNaN(fb)) {
+    return Math.abs(fa - fb) < 1e-9;
+  }
+  return false;
 }
 
 function chuanHoaTuLuan(str) {
@@ -953,20 +962,25 @@ function _slNoiDungGoiY(tang, tai, cau, dap, theId) {
   };
 }
 
-function _slGhiLoi(uid, baiKey, cauId, homNay, themLan) {
+function _slGhiLoi(uid, baiKey, cauId, homNay, themLan, doTuTin, uuTienCao) {
+  var dtt = String(doTuTin || "");
+  var utc = Number(uuTienCao || 0);
   var rows = dbReadTable("so_loi");
   for (var i = 0; i < rows.length; i++) {
     if (Number(rows[i].user_id) === uid && String(rows[i].bai_key) === baiKey && String(rows[i].cau_id) === String(cauId)) {
       if (themLan) rows[i].so_lan_sai = Number(rows[i].so_lan_sai || 0) + 1;
       rows[i].lan_cuoi = homNay;
       rows[i].da_hieu = 0;
+      if (dtt) rows[i].do_tu_tin = dtt;
+      if (utc > Number(rows[i].uu_tien_cao || 0)) rows[i].uu_tien_cao = utc;
       dbMarkDirty("so_loi");
       return;
     }
   }
   dbInsert("so_loi", {
     user_id: uid, bai_key: baiKey, cau_id: String(cauId),
-    nguyen_nhan: "", so_lan_sai: 1, lan_cuoi: homNay, da_hieu: 0
+    nguyen_nhan: "", so_lan_sai: 1, lan_cuoi: homNay, da_hieu: 0,
+    do_tu_tin: dtt, uu_tien_cao: utc
   }, false);
 }
 
@@ -1625,24 +1639,41 @@ function kbQuyChe(cap) {
   };
 }
 
-// ====================== VƯỜN SAOLADOU & CỬA HÀNG EDUCOIN (vuon.py) ======================
-var VUON_VUOT_VE_CD = 60;
-var VUON_VUOT_VE_MAX_NGAY = 5;
+// ====================== VƯỜN SAOLADOU & CỬA HÀNG EDUCOIN (vuon.py V28) ======================
+var VUON_VUOT_VE_CD = 300;
+var VUON_VUOT_VE_MAX_NGAY = 3;
+var VUON_VUOT_VE_VUI = 6;
+var VUON_TAM_SONG_CD = 1800;
+var VUON_TAM_SONG_MAX_NGAY = 2;
+var VUON_TAM_SONG_SACH = 12;
+var VUON_TAM_SONG_VUI = 4;
+var VUON_NGHI_CAY_CD = 1800;
+var VUON_NGHI_CAY_MAX_NGAY = 2;
+var VUON_NGHI_CAY_VUI = 8;
+var VUON_GIO_OFFLINE_MAX = 72;
+var VUON_PHUT_ONLINE_MAX = 5;
+var VUON_GIAY_SPAM_NHIP = 50;
+var VUON_HE_SO_NGU = 0.15;
+
 var VUON_CATALOG = [
-  { id: "duong_xi", nhom: "thuc_an", ten: "Dương xỉ tổ chim (Asplenium)", gia: 15, mo_ta: "Lá dương xỉ non mọc trên thân cây ẩm rừng Trường Sơn, món ăn nhẹ khoái khẩu của Sao La.", hieu_qua: { no_bung: 20, exp: 10 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "🌿" },
-  { id: "la_sung", nhom: "thuc_an", ten: "Lá sung ven suối (Ficus)", gia: 25, mo_ta: "Lá sung rừng xanh mướt dọc khe suối, giàu chất xơ giúp Sao La khỏe khoắn và vui vẻ.", hieu_qua: { no_bung: 30, vui_ve: 8, exp: 16 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "🍃" },
-  { id: "mon_thuc", nhom: "thuc_an", ten: "Thiên niên kiện / Môn thục (Homalomena)", gia: 40, mo_ta: "Loài thảo mộc đặc trưng dưới tán rừng kín thường xanh, bổ sung nhiều dinh dưỡng tự nhiên.", hieu_qua: { no_bung: 42, vui_ve: 12, exp: 24 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "🌱" },
-  { id: "ray_rung", nhom: "thuc_an", ten: "Cây chi Ráy rừng (Schismatoglottis)", gia: 55, mo_ta: "Cụm lá ráy rừng mọng nước vùng núi cao, giúp Sao La no lâu và tràn đầy năng lượng.", hieu_qua: { no_bung: 55, vui_ve: 16, exp: 32 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "🪴" },
-  { id: "ho_trom", nhom: "thuc_an", ten: "Lá cây họ Trôm (Sterculiaceae)", gia: 80, mo_ta: "Thực phẩm thượng hạng của Sao La ngoài tự nhiên, hồi phục độ no và tăng nhiều EXP.", hieu_qua: { no_bung: 75, vui_ve: 25, exp: 48 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "🍀" },
-  { id: "nuoc_suoi", nhom: "cham_soc", ten: "Nước suối mát Trường Sơn", gia: 15, mo_ta: "Dòng nước suối đầu nguồn trong vắt giúp tắm mát, làm sạch lông và giải khát nhẹ.", hieu_qua: { sach_se: 32, no_bung: 10, exp: 12 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "💧" },
-  { id: "thao_duoc", nhom: "cham_soc", ten: "Thảo dược hồi sức", gia: 60, mo_ta: "Bài thuốc quý từ rừng già, nâng mọi chỉ số (No, Vui, Sạch) lên tối thiểu 70 khi Sao La bị ốm.", hieu_qua: { min_all: 70, exp: 35 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "🧪" },
-  { id: "ban_chai", nhom: "cham_soc", ten: "Bàn chải gỗ mộc", gia: 180, mo_ta: "Bàn chải chải lông thủ công từ gỗ rừng. Mua 1 lần dùng mãi (hồi chiêu 3 giờ).", hieu_qua: { sach_se: 28, vui_ve: 12, exp: 18 }, tieu_hao: false, mua_1_lan: true, cooldown_giay: 10800, pos: null, icon: "🪥" },
-  { id: "bong_may", nhom: "do_choi", ten: "Bóng đan mây tre", gia: 220, mo_ta: "Quả bóng đan từ sợi mây rừng cho Sao La nô đùa trên bãi cỏ (hồi chiêu 2 giờ, hơi lấm bẩn).", hieu_qua: { vui_ve: 30, sach_se: -8, exp: 20 }, tieu_hao: false, mua_1_lan: true, cooldown_giay: 7200, pos: null, icon: "🧶" },
-  { id: "sao_truc", nhom: "do_choi", ten: "Sáo trúc ngân vang", gia: 320, mo_ta: "Tiếng sáo trúc du dương giữa núi rừng giúp Sao La thư giãn tuyệt đối (hồi chiêu 3 giờ).", hieu_qua: { vui_ve: 45, exp: 28 }, tieu_hao: false, mua_1_lan: true, cooldown_giay: 10800, pos: null, icon: "🪈" },
-  { id: "lan_rung", nhom: "trang_tri", ten: "Khóm hoa lan rừng", gia: 250, mo_ta: "Khóm phong lan nở rộ bên gốc cây, thu hút bướm rừng ghé thăm khu vườn.", hieu_qua: {}, tieu_hao: false, mua_1_lan: true, cooldown_giay: 0, pos: { left: "16%", bottom: "18%" }, icon: "🌸" },
-  { id: "den_dom_dom", nhom: "trang_tri", ten: "Đèn lồng đom đóm", gia: 350, mo_ta: "Chiếc đèn lồng mộc treo trên tán cây tỏa ánh sáng ấm áp cùng đom đóm lung linh.", hieu_qua: {}, tieu_hao: false, mua_1_lan: true, cooldown_giay: 0, pos: { left: "23%", top: "24%" }, icon: "🏮" },
-  { id: "ghe_da", nhom: "trang_tri", ten: "Ghế đá nghỉ chân", gia: 300, mo_ta: "Băng ghế đá phủ rêu xanh bên bờ suối để bạn ngồi ngắm Sao La dạo chơi.", hieu_qua: {}, tieu_hao: false, mua_1_lan: true, cooldown_giay: 0, pos: { left: "78%", bottom: "22%" }, icon: "🪑" },
-  { id: "bang_ten", nhom: "trang_tri", ten: "Bảng gỗ chủ vườn", gia: 400, mo_ta: "Tấm bảng gỗ khắc tên khu vườn riêng của bạn đặt ngay lối vào thảm cỏ.", hieu_qua: {}, tieu_hao: false, mua_1_lan: true, cooldown_giay: 0, pos: { left: "69%", bottom: "32%" }, icon: "🪵" }
+  { id: "duong_xi", nhom: "thuc_an", ten: "Dương xỉ tổ chim (Asplenium)", gia: 15, mo_ta: "Lá dương xỉ non mọc trên thân cây ẩm rừng Trường Sơn, món ăn nhẹ khoái khẩu của Sao La.", hieu_qua: { no_bung: 25 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "🌿" },
+  { id: "la_sung", nhom: "thuc_an", ten: "Lá sung ven suối (Ficus)", gia: 28, mo_ta: "Lá sung rừng xanh mướt dọc khe suối, giàu chất xơ giúp Sao La khỏe khoắn và vui vẻ.", hieu_qua: { no_bung: 35, vui_ve: 8 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "🍃" },
+  { id: "mon_thuc", nhom: "thuc_an", ten: "Thiên niên kiện / Môn thục (Homalomena)", gia: 45, mo_ta: "Loài thảo mộc đặc trưng dưới tán rừng kín thường xanh, bổ sung nhiều dinh dưỡng tự nhiên.", hieu_qua: { no_bung: 48, vui_ve: 12 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "🌱" },
+  { id: "ray_rung", nhom: "thuc_an", ten: "Cây chi Ráy rừng (Schismatoglottis)", gia: 65, mo_ta: "Cụm lá ráy rừng mọng nước vùng núi cao, giúp Sao La no lâu và tràn đầy năng lượng.", hieu_qua: { no_bung: 62, vui_ve: 16 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "🪴" },
+  { id: "ho_trom", nhom: "thuc_an", ten: "Lá cây họ Trôm (Sterculiaceae)", gia: 95, mo_ta: "Thực phẩm thượng hạng của Sao La ngoài tự nhiên, hồi phục độ no và tăng nhiều niềm vui.", hieu_qua: { no_bung: 75, vui_ve: 24 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "🍀" },
+  { id: "nuoc_suoi", nhom: "cham_soc", ten: "Nước suối mát Trường Sơn", gia: 20, mo_ta: "Dòng nước suối đầu nguồn trong vắt giúp tắm mát, làm sạch lông và giải khát nhẹ.", hieu_qua: { sach_se: 32, no_bung: 8 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "💧" },
+  { id: "thao_duoc", nhom: "cham_soc", ten: "Thảo dược hồi sức", gia: 120, mo_ta: "Bài thuốc quý từ rừng già, cấp cứu vực Sao La dậy khi xỉu — nâng mọi chỉ số (No, Vui, Sạch) lên tối thiểu 65%.", hieu_qua: { min_all: 65 }, tieu_hao: true, mua_1_lan: false, cooldown_giay: 0, pos: null, icon: "🧪" },
+  { id: "ban_chai", nhom: "cham_soc", ten: "Bàn chải gỗ mộc", gia: 240, mo_ta: "Bàn chải chải lông thủ công từ gỗ rừng. Mua 1 lần dùng mãi (hồi chiêu 4 giờ).", hieu_qua: { sach_se: 26, vui_ve: 10 }, tieu_hao: false, mua_1_lan: true, cooldown_giay: 14400, pos: null, icon: "🪥" },
+  { id: "bong_may", nhom: "do_choi", ten: "Bóng đan mây tre", gia: 260, mo_ta: "Quả bóng đan từ sợi mây rừng cho Sao La nô đùa trên bãi cỏ (hồi chiêu 3 giờ, hơi lấm bẩn).", hieu_qua: { vui_ve: 26, sach_se: -8 }, tieu_hao: false, mua_1_lan: true, cooldown_giay: 10800, pos: null, icon: "🧶" },
+  { id: "sao_truc", nhom: "do_choi", ten: "Sáo trúc ngân vang", gia: 380, mo_ta: "Tiếng sáo trúc du dương giữa núi rừng giúp Sao La thư giãn tuyệt đối (hồi chiêu 4 giờ).", hieu_qua: { vui_ve: 38 }, tieu_hao: false, mua_1_lan: true, cooldown_giay: 14400, pos: null, icon: "🪈" },
+  { id: "lan_rung", nhom: "trang_tri", ten: "Khóm hoa lan rừng", gia: 300, mo_ta: "Khóm phong lan nở rộ bên bờ hồ, thu hút bướm rừng ghé thăm khu vườn.", hieu_qua: {}, tieu_hao: false, mua_1_lan: true, cooldown_giay: 0, pos: { left: "43%", bottom: "18%" }, icon: "🌸" },
+  { id: "den_dom_dom", nhom: "trang_tri", ten: "Đèn lồng đom đóm", gia: 420, mo_ta: "Chiếc đèn lồng mộc treo dưới nhánh cây cổ thụ tỏa ánh sáng ấm áp cùng đom đóm lung linh.", hieu_qua: {}, tieu_hao: false, mua_1_lan: true, cooldown_giay: 0, pos: { left: "81%", bottom: "26%" }, icon: "🏮" },
+  { id: "ghe_da", nhom: "trang_tri", ten: "Ghế đá nghỉ chân", gia: 360, mo_ta: "Băng ghế đá phủ rêu xanh trên thảm cỏ — bấm vào ghế để Sao La chạy tới ngồi thư giãn!", hieu_qua: {}, tieu_hao: false, mua_1_lan: true, cooldown_giay: 0, pos: { left: "65%", bottom: "20%" }, icon: "🪑" },
+  { id: "bang_ten", nhom: "trang_tri", ten: "Bảng gỗ chủ vườn", gia: 480, mo_ta: "Tấm bảng gỗ khắc tên khu vườn riêng của bạn đặt bên thảm cỏ xanh.", hieu_qua: {}, tieu_hao: false, mua_1_lan: true, cooldown_giay: 0, pos: { left: "39%", bottom: "36%" }, icon: "🪵" },
+  { id: "hoa_sen", nhom: "trang_tri", ten: "Cụm hoa sen & lá súng", gia: 260, mo_ta: "Đóa sen hồng phấn cùng lá súng xanh nổi nhẹ trên mặt hồ nước Trường Sơn.", hieu_qua: {}, tieu_hao: false, mua_1_lan: true, cooldown_giay: 0, pos: { left: "14%", bottom: "16%" }, icon: "🪷" },
+  { id: "leu_trai", nhom: "trang_tri", ten: "Lều dã ngoại Trường Sơn", gia: 460, mo_ta: "Chiếc lều vải tam giác ấm cúng trên bãi cỏ — ban đêm cửa lều tỏa ánh đèn vàng dịu.", hieu_qua: {}, tieu_hao: false, mua_1_lan: true, cooldown_giay: 0, pos: { left: "22%", bottom: "37%" }, icon: "⛺" },
+  { id: "chuong_gio", nhom: "trang_tri", ten: "Chuông gió trúc rừng", gia: 320, mo_ta: "Bộ chuông gió ống trúc treo trên cành cây cổ thụ ngân vang cùng nốt nhạc theo gió.", hieu_qua: {}, tieu_hao: false, mua_1_lan: true, cooldown_giay: 0, pos: { left: "94%", bottom: "29%" }, icon: "🎐" },
+  { id: "suoi_nam", nhom: "trang_tri", ten: "Cụm nấm phát sáng", gia: 290, mo_ta: "Cụm nấm rừng rực sắc cam-xanh cạnh tảng đá lớn, phát sáng lung linh khi màn đêm buông xuống.", hieu_qua: {}, tieu_hao: false, mua_1_lan: true, cooldown_giay: 0, pos: { left: "72%", bottom: "31%" }, icon: "🍄" }
 ];
 
 function _vuonCatalogMap() {
@@ -1659,38 +1690,98 @@ function _vuonGiaiDoan(cap) {
   return "Thần Thú Rừng Nguyên Sinh";
 }
 function _vuonSucKhoe(noBung, vuiVe, sachSe) {
-  if (noBung < 20 || vuiVe < 20 || sachSe < 20) return "om";
-  if (noBung < 50 || vuiVe < 50 || sachSe < 50) return "can_cham";
+  var nr = Math.round(Number(noBung || 0));
+  var vr = Math.round(Number(vuiVe || 0));
+  var sr = Math.round(Number(sachSe || 0));
+  if (nr < 20 || vr < 20 || sr < 20) return "om";
+  if (nr < 50 || vr < 50 || sr < 50) return "can_cham";
   return "khoe_vui";
+}
+function _vuonTruPhanDoan1Buoc(val, mucCao, mucVua, mucThap, heSo) {
+  var v = Math.max(0, Math.min(100, Number(val || 0)));
+  var muc = v >= 70 ? mucCao : (v >= 30 ? mucVua : mucThap);
+  var kq = v - muc * Number(heSo == null ? 1 : heSo);
+  return Math.max(0, Math.round(kq * 10000) / 10000);
+}
+function _vuonPhanTichPhut(chuoiGio, macDinh) {
+  if (!chuoiGio) return macDinh;
+  var m = /^\s*(\d{1,2})\s*[:hH]\s*(\d{0,2})\s*$/.exec(String(chuoiGio));
+  if (!m) return macDinh;
+  var h = Number(m[1]), p = Number(m[2] || 0);
+  if (h >= 0 && h < 24 && p >= 0 && p < 60) return h * 60 + p;
+  return macDinh;
+}
+function _vuonDangTrongGioNgu(msUtc, phutNgu, phutDay) {
+  if (phutNgu === phutDay) return false;
+  var vnDate = new Date(msUtc + 7 * 3600000);
+  var p = vnDate.getUTCHours() * 60 + vnDate.getUTCMinutes();
+  if (phutNgu > phutDay) return p >= phutNgu || p < phutDay;
+  return p >= phutNgu && p < phutDay;
+}
+function _vuonApDungTruOnline(noBung, vuiVe, sachSe, soPhut, dangNgu) {
+  var heSo = dangNgu ? VUON_HE_SO_NGU : 1.0;
+  var noV = Number(noBung || 0), vuiV = Number(vuiVe || 0), sachV = Number(sachSe || 0);
+  for (var i = 0; i < Math.max(0, Math.floor(soPhut)); i++) {
+    noV = _vuonTruPhanDoan1Buoc(noV, 1.0, 1.6, 2.5, heSo);
+    sachV = _vuonTruPhanDoan1Buoc(sachV, 1.0, 1.6, 2.5, heSo);
+    var vuiThap = (noV < 30 || sachV < 30) ? 3.0 : 2.5;
+    vuiV = _vuonTruPhanDoan1Buoc(vuiV, 1.0, 1.6, vuiThap, heSo);
+  }
+  return { no_bung: noV, vui_ve: vuiV, sach_se: sachV };
+}
+function _vuonApDungTruOffline(noBung, vuiVe, sachSe, startMs, soGio, phutNgu, phutDay) {
+  var noV = Number(noBung || 0), vuiV = Number(vuiVe || 0), sachV = Number(sachSe || 0);
+  for (var i = 0; i < Math.max(0, Math.floor(soGio)); i++) {
+    var midMs = startMs + i * 3600000 + 1800000;
+    var heSo = _vuonDangTrongGioNgu(midMs, phutNgu, phutDay) ? VUON_HE_SO_NGU : 1.0;
+    noV = _vuonTruPhanDoan1Buoc(noV, 5.0, 9.0, 14.0, heSo);
+    sachV = _vuonTruPhanDoan1Buoc(sachV, 5.0, 9.0, 14.0, heSo);
+    vuiV = _vuonTruPhanDoan1Buoc(vuiV, 5.0, 9.0, 14.0, heSo);
+  }
+  return { no_bung: noV, vui_ve: vuiV, sach_se: sachV };
+}
+function _vuonGiayHoiChieuCon(mocStr, cdGiay, nowMs) {
+  if (!mocStr || cdGiay <= 0) return 0;
+  var lMs = parseYmdHmsMs(mocStr);
+  if (lMs === null) return 0;
+  return Math.max(0, Math.floor(cdGiay - (nowMs - lMs) / 1000));
 }
 function _vuonGetOrInit(uid) {
   var rows = dbReadTable("vuon_trang_thai");
   for (var i = 0; i < rows.length; i++) {
     if (Number(rows[i].user_id) === uid) return rows[i];
   }
+  var nowStr = vnNowStr();
   return dbInsert("vuon_trang_thai", {
     user_id: uid, cap: 1, exp: 0, no_bung: 80, vui_ve: 80, sach_se: 80,
-    lan_cham: vnNowStr(), lan_vuot_ve: "", vuot_ve_ngay: "", vuot_ve_dem: 0
+    lan_cham: nowStr, lan_online: nowStr, lan_vuot_ve: "", vuot_ve_ngay: "", vuot_ve_dem: 0,
+    tuong_tac_ngay: "", tam_song_dem: 0, tam_song_cuoi: "", nghi_cay_dem: 0, nghi_cay_cuoi: ""
   }, false);
 }
-function _vuonApplyDecay(vt) {
+function _vuonApplyDecay(vt, capNhatOnline, phutNgu, phutDay) {
   var nowMs = vnNowUtcMs();
-  var lastMs = parseYmdHmsMs(vt.lan_cham);
-  if (lastMs === null) {
-    vt.lan_cham = vnNowStr();
+  var nowStr = vnNowStr();
+  var pNgu = phutNgu != null ? phutNgu : 22 * 60;
+  var pDay = phutDay != null ? phutDay : 6 * 60;
+  var mocMs = parseYmdHmsMs(vt.lan_online) || parseYmdHmsMs(vt.lan_cham);
+  if (mocMs === null) {
+    vt.lan_cham = nowStr;
+    vt.lan_online = nowStr;
     dbMarkDirty("vuon_trang_thai");
     return vt;
   }
-  var gio = Math.min(168, Math.max(0, (nowMs - lastMs) / 3600000));
-  if (gio >= 0.25) {
-    var noBung = Math.max(0, Math.min(100, Number(vt.no_bung || 0) - Math.floor(gio * 2.5)));
-    var sachSe = Math.max(0, Math.min(100, Number(vt.sach_se || 0) - Math.floor(gio * 2.0)));
-    var rateVui = (noBung < 25 || sachSe < 25) ? 3.5 : 2.0;
-    var vuiVe = Math.max(0, Math.min(100, Number(vt.vui_ve || 0) - Math.floor(gio * rateVui)));
-    vt.no_bung = noBung;
-    vt.sach_se = sachSe;
-    vt.vui_ve = vuiVe;
-    vt.lan_cham = vnNowStr();
+  var deltaH = Math.max(0, (nowMs - mocMs) / 3600000);
+  if (deltaH >= 1.0) {
+    var soGio = Math.min(VUON_GIO_OFFLINE_MAX, Math.floor(deltaH));
+    var kq = _vuonApDungTruOffline(vt.no_bung, vt.vui_ve, vt.sach_se, mocMs, soGio, pNgu, pDay);
+    vt.no_bung = kq.no_bung;
+    vt.vui_ve = kq.vui_ve;
+    vt.sach_se = kq.sach_se;
+    vt.lan_cham = nowStr;
+    if (capNhatOnline !== false) vt.lan_online = nowStr;
+    dbMarkDirty("vuon_trang_thai");
+  } else if (capNhatOnline !== false && !vt.lan_online) {
+    vt.lan_online = nowStr;
     dbMarkDirty("vuon_trang_thai");
   }
   return vt;
@@ -1709,66 +1800,78 @@ function _vuonCongExp(vt, congExp) {
   dbMarkDirty("vuon_trang_thai");
   return cap > capCu;
 }
-function vuonBuildState(uid) {
+function vuonBuildState(uid, capNhatOnline, phutNgu, phutDay) {
   var u = findUserRow(uid);
   if (!u) return null;
-  var vt = _vuonApplyDecay(_vuonGetOrInit(uid));
+  var vt = _vuonApplyDecay(_vuonGetOrInit(uid), capNhatOnline, phutNgu, phutDay);
   var nowMs = vnNowUtcMs();
   var homNay = vnTodayStr();
   var vvNgay = String(vt.vuot_ve_ngay || "");
   var vvDem = vvNgay === homNay ? Number(vt.vuot_ve_dem || 0) : 0;
   var vvConLai = Math.max(0, VUON_VUOT_VE_MAX_NGAY - vvDem);
-  var vvLastMs = parseYmdHmsMs(vt.lan_vuot_ve);
-  var vvHoiCon = vvLastMs !== null ? Math.max(0, Math.ceil(VUON_VUOT_VE_CD - (nowMs - vvLastMs) / 1000)) : 0;
-  var cap = Math.max(1, Number(vt.cap || 1));
-  var noBung = Number(vt.no_bung || 0), vuiVe = Number(vt.vui_ve || 0), sachSe = Number(vt.sach_se || 0);
+  var vvHoiCon = _vuonGiayHoiChieuCon(vt.lan_vuot_ve, VUON_VUOT_VE_CD, nowMs);
+
+  var cungNgayTt = String(vt.tuong_tac_ngay || "") === homNay;
+  var daTamSong = cungNgayTt ? Number(vt.tam_song_dem || 0) : 0;
+  var daNghiCay = cungNgayTt ? Number(vt.nghi_cay_dem || 0) : 0;
+  var tuongTacOut = {
+    tam_song_con: Math.max(0, VUON_TAM_SONG_MAX_NGAY - daTamSong),
+    tam_song_toi_da: VUON_TAM_SONG_MAX_NGAY,
+    tam_song_cho_giay: _vuonGiayHoiChieuCon(vt.tam_song_cuoi, VUON_TAM_SONG_CD, nowMs),
+    nghi_cay_con: Math.max(0, VUON_NGHI_CAY_MAX_NGAY - daNghiCay),
+    nghi_cay_toi_da: VUON_NGHI_CAY_MAX_NGAY,
+    nghi_cay_cho_giay: _vuonGiayHoiChieuCon(vt.nghi_cay_cuoi, VUON_NGHI_CAY_CD, nowMs)
+  };
+
+  var noBung = Math.max(0, Math.min(100, Math.round(Number(vt.no_bung || 0))));
+  var vuiVe = Math.max(0, Math.min(100, Math.round(Number(vt.vui_ve || 0))));
+  var sachSe = Math.max(0, Math.min(100, Math.round(Number(vt.sach_se || 0))));
   var sucKhoe = _vuonSucKhoe(noBung, vuiVe, sachSe);
-  var canExp = _vuonCanExp(cap);
 
-  var catMap = _vuonCatalogMap();
-  var tuiDo = [];
+  var tuiMap = {};
   dbReadTable("vuon_tui_do").forEach(function (r) {
-    if (Number(r.user_id) !== uid) return;
-    var meta = catMap[String(r.item_id)];
-    if (!meta || Number(r.so_luong || 0) <= 0) return;
-    var cdCon = 0;
-    if (!meta.tieu_hao && meta.cooldown_giay > 0 && r.lan_dung_cuoi) {
-      var lMs = parseYmdHmsMs(r.lan_dung_cuoi);
-      if (lMs !== null) cdCon = Math.max(0, Math.ceil(meta.cooldown_giay - (nowMs - lMs) / 1000));
-    }
+    if (Number(r.user_id) === uid && Number(r.so_luong || 0) > 0) tuiMap[String(r.item_id)] = r;
+  });
+  var tuiDo = [];
+  for (var ci = 0; ci < VUON_CATALOG.length; ci++) {
+    var meta = VUON_CATALOG[ci];
+    var r = tuiMap[meta.id];
+    if (!r) continue;
+    var cdCon = (!meta.tieu_hao && meta.cooldown_giay > 0) ? _vuonGiayHoiChieuCon(r.lan_dung_cuoi, meta.cooldown_giay, nowMs) : 0;
     tuiDo.push({
-      item_id: meta.id, nhom: meta.nhom, ten: meta.ten, mo_ta: meta.mo_ta, hieu_qua: meta.hieu_qua,
-      tieu_hao: meta.tieu_hao, mua_1_lan: meta.mua_1_lan, cooldown_giay: meta.cooldown_giay,
-      icon: meta.icon, so_luong: Number(r.so_luong || 0), hoi_chieu_con: cdCon
+      id: meta.id, item_id: meta.id, nhom: meta.nhom, ten: meta.ten, gia: meta.gia,
+      mo_ta: meta.mo_ta, hieu_qua: meta.hieu_qua, tieu_hao: meta.tieu_hao, mua_1_lan: meta.mua_1_lan,
+      cooldown_giay: meta.cooldown_giay, icon: meta.icon, so_luong: Number(r.so_luong || 0),
+      lan_dung_cuoi: String(r.lan_dung_cuoi || ""), hoi_chieu_con: cdCon
     });
-  });
+  }
 
-  var trangTri = [];
+  var ttMap = {};
   dbReadTable("vuon_trang_tri").forEach(function (r) {
-    if (Number(r.user_id) !== uid) return;
-    var meta = catMap[String(r.item_id)];
-    if (!meta) return;
-    trangTri.push({
-      item_id: meta.id, ten: meta.ten, mo_ta: meta.mo_ta, pos: meta.pos,
-      icon: meta.icon, dang_bat: Boolean(Number(r.dang_bat || 0))
-    });
+    if (Number(r.user_id) === uid) ttMap[String(r.item_id)] = r;
   });
+  var trangTri = [];
+  for (var di = 0; di < VUON_CATALOG.length; di++) {
+    var dm = VUON_CATALOG[di];
+    if (dm.nhom !== "trang_tri") continue;
+    var tr = ttMap[dm.id];
+    if (!tr) continue;
+    trangTri.push({
+      id: dm.id, item_id: dm.id, ten: dm.ten, mo_ta: dm.mo_ta, pos: dm.pos,
+      icon: dm.icon, dang_bat: Number(tr.dang_bat || 0) ? 1 : 0
+    });
+  }
 
   var petTt = _petTrangThai(uid);
-  var skinShop = petTt.skin.filter(function (s) { return Number(s.gia || 0) > 0; }).map(function (s) {
-    return Object.assign({}, s, { dang_mac: s.id === petTt.skin_dang_mac });
-  });
-
   return {
     trang_thai: {
-      cap: cap, exp: Number(vt.exp || 0), can_exp: canExp, giai_doan: _vuonGiaiDoan(cap),
       no_bung: noBung, vui_ve: vuiVe, sach_se: sachSe, suc_khoe: sucKhoe,
-      vuot_ve_con_lai: vvConLai, vuot_ve_hoi_con: vvHoiCon
+      vuot_ve_con_lai: vvConLai, vuot_ve_toi_da: VUON_VUOT_VE_MAX_NGAY, vuot_ve_hoi_con: vvHoiCon
     },
-    suc_khoe: sucKhoe, can_exp: canExp,
+    tuong_tac: tuongTacOut,
+    suc_khoe: sucKhoe,
     educoin: Number(u.educoin || 0), score: Number(u.score || 0), username: u.username || "",
     tui_do: tuiDo, trang_tri: trangTri,
-    skin_shop: skinShop, skin: petTt.skin, skin_dang_mac: petTt.skin_dang_mac,
     skin_hien_tai: petTt.skin_hien_tai, so_khung: petTt.so_khung, fps: petTt.fps, hieu_ung: petTt.hieu_ung,
     catalog: VUON_CATALOG
   };
