@@ -158,3 +158,34 @@ Script sẽ tự động:
 1. Làm sạch & hợp nhất phiếu thật mới cùng bộ cân bằng & biên.
 2. Chạy đầy đủ **5-Fold CV trên phiếu thật (ZERO leakage)**, **5-Fold Multi-Label CV**, **32 Stress-Tests** và **Monotonicity Audit**.
 3. Xuất ra [du_lieu_ml_v2.csv](file:///d:/KHTT/test_dinh_huong/du_lieu_ml_v2.csv), [dinh_huong_model_v2.joblib](file:///d:/KHTT/test_dinh_huong/dinh_huong_model_v2.joblib), [dinh_huong_model_v2.json](file:///d:/KHTT/test_dinh_huong/dinh_huong_model_v2.json) và **tự động cập nhật thẳng** [Frontend/dinh-huong-model-v2.js](file:///d:/KHTT/Frontend/dinh-huong-model-v2.js).
+
+---
+
+## 6. Kiểm toán sâu & Nâng cấp lên ML V3 Ensemble (`v3_ensemble_soft_mlp_6mon`)
+
+Sau khi đưa kiến trúc 2 tầng (Tầng 1 ML + Tầng 2 Cây tâm lý học ẩn tên môn) vào vận hành trên 6 môn GDPT 2018 + 7 câu Likert (bỏ Q8/Q9), kiểm toán thực nghiệm trên **138 phiếu thật** và **30 ca biên** phát hiện **5 điểm nghẽn** ở bản V2 và đã xử lý triệt để trong [train_dinh_huong_v3.py](file:///d:/KHTT/test_dinh_huong/train_dinh_huong_v3.py):
+
+### 6.1. 5 điểm nghẽn đã chứng minh ở V2 ➔ Giải pháp V3
+1. **Lệch không gian Train / Inference (`48` đặc trưng có Q8/Q9 vs thực tế chỉ hỏi `6 điểm + 7 Likert`):**
+   - Bản V2 phải dùng phép "biên hóa" `wK = 0.55` trên JS nên gây lệch giả tới `26%` trong cùng cụm KHTN (`Lý 68.2%` vs `Hóa 94.4%` ở hồ sơ giống hệt nhau).
+   - **V3:** Huấn luyện thuần trên **47 đặc trưng quan sát 100% ở production**, bỏ hoàn toàn phép vá biên hóa JS ➔ Lý/Hóa/Sinh cân bằng hoàn hảo (`92.8%`) và nhường quyền tách phân môn chuẩn xác cho **Tầng 2 ATI**.
+2. **Mâu thuẫn `Không học chuyên` (`KC = 63.7%` đồng thời với `Lý = 86.8%`, `Toán = 86.8%`):**
+   - Do 19 phiếu thật `Không học chuyên` có điểm học bạ rất cao (`TB 8.84–9.43`), V2 ép `y[KC] = 1` gây nhầm lẫn trên học sinh STEM thực thụ.
+   - **V3:** Định nghĩa lại `KC` là **phần bù trơn sạch** của năng lực & động lực thi chuyên (`sigmoid((0.55 - best_spec)/0.10)`), chỉ cường hóa phiếu `KC` khi thực sự thiếu nền hoặc tụt động lực ➔ ca STEM lỗi ở V2 giờ ra `Toán 84.8% | KC 3.2%`.
+3. **Lạm phát điểm học bạ THCS (`LS&ĐL` TB `9.45`, `Tin` TB `9.20` vs `Văn` TB `8.70`):**
+   - Ở V2, học sinh chuyên Văn/Toán có `LS&ĐL = 10.0` thường bị `Sử/Địa` cướp hạng #1.
+   - **V3:** Bổ sung **6 đặc trưng khử lạm phát điểm học bạ (`norm_adv`)** theo mặt bằng thực tế 138 phiếu + **6 đặc trưng tương phản sở thích nội tại (`udiff`)** (cứu học sinh khiêm tốn đánh giá cao nhất ở mức `3/5`) + hiệu chỉnh nhẹ lạm phát điểm trong mục tiêu mềm.
+4. **Nhãn cứng nhị phân `0/1` gây bão hòa xác suất:**
+   - Học sinh điểm `9.5` nhưng hứng thú chỉ `3/5` bị V2 đẩy vọt `90–92%`, khó phân biệt với hồ sơ `10.0 + 5/5`.
+   - **V3:** Huấn luyện **Ensemble 3 mạng MLP hồi quy trên không gian Logit** với mục tiêu mềm liên tục `[0.02..0.98]` + **Ensemble 2 mạng MLP Ranker** ➔ `Full 9.5 + [3]*7` đạt mức vừa phải `79.5%`, còn `Full 10 + [5]*7` đạt `97.7–98.4%`.
+5. **Kéo tụt môn chưa đo ở Tầng 2 (`tier2-engine.js`):**
+   - Thay mức tiên nghiệm cứng `0.35` (kéo tụt oan các môn ngoài nhánh Tầng 2) bằng **co mềm Bayes (`0.62·T1 + 0.38·0.35`)** khi có xác suất ML V3, đồng thời nâng trọng số Tầng 2 (`w2 = 0.54`) cho các phân môn anh em `Lý/Hóa/Sinh` và `Sử/Địa` khi ATI đã đo rõ (`>= 0.65`).
+
+### 6.2. Kết quả kiểm định ML V3 (`train_dinh_huong_v3.py`, 5.604 mẫu, ZERO leakage)
+- **30 / 30 Stress-Test cực đoan & thực tế (chế độ Strict 6 điểm + 7 Likert):** **`100.0%` PASS** (`Full 10+5`, `Full 10+1`, `Full 9.5+3`, `STEM thật`, `Học lệch`, `Điểm liệt`, `Đam mê điểm yếu`, `Giỏi nhưng ghét`, `TB 7.2`, `KHTN/LS&ĐL cân bằng`).
+- **Tính đơn điệu (3.600 phép thử ngẫu nhiên):** Điểm **`100.00%`** · Sở thích **`94.94%`**.
+- **5-Fold Real CV (138 phiếu thật, Strict không Q8/Q9, ZERO leakage):**
+  - Xác nhận đúng `CÓ` cho học sinh chuyên (`spec_yes_recall`): **`89.9%`** (107/119 học sinh chuyên thật).
+  - Top-3 trúng chính xác môn chuyên thật (`spec_top3_exact`): **`63.9%`** · Top-3 đúng nhóm lớn (`top3_macro`): **`60.9%`**.
+- **Kích thước gói offline trình duyệt:** `118.7 KB` (`dinh-huong-model-v2.js`, suy luận `< 1 ms`, sai số Python vs JS `0.000000`).
+

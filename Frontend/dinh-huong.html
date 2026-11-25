@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.css" />
   <link rel="stylesheet" href="style.css?v=11" />
   <link rel="stylesheet" href="style3.css" />
-  <link rel="stylesheet" href="dinh-huong.css?v=4" />
+  <link rel="stylesheet" href="dinh-huong.css?v=6" />
 </head>
 
 <body class="dh-page">
@@ -136,6 +136,7 @@
 
         <!-- Khung trượt 1 câu duy nhất -->
         <div class="dh-q-stage" id="qStage">
+          <span class="dh-q-subtag" id="qSubtag" hidden></span>
           <p class="dh-q-prompt" id="qPrompt"></p>
           <div class="dh-q-scale" id="qScale" role="radiogroup" aria-labelledby="qPrompt"></div>
           <div class="dh-q-hints" id="qHints">
@@ -190,9 +191,14 @@
 
         <div class="dh-result-footer">
           <div class="dh-result-secondary">
-            <button type="button" class="dh-nut-phu" id="btnSuaLai">
-              <i class="fa-solid fa-rotate-left"></i> Sửa điểm / Đánh giá lại
-            </button>
+            <div class="dh-result-sec-btns">
+              <button type="button" class="dh-nut-phu" id="btnDoiMon">
+                <i class="fa-solid fa-repeat"></i> Đổi môn muốn kiểm tra
+              </button>
+              <button type="button" class="dh-nut-phu" id="btnSuaLai">
+                <i class="fa-solid fa-rotate-left"></i> Sửa điểm / Đánh giá lại
+              </button>
+            </div>
             <a href="khaosat.html" class="dh-link-plain">Tự chọn môn khác ở Khảo sát trường</a>
           </div>
         </div>
@@ -220,8 +226,8 @@
   </main>
 
   <script src="ky-thi.js"></script>
-  <script src="dinh-huong-model-v2.js?v=1"></script>
-  <script src="dinh-huong.js?v=5"></script>
+  <script src="dinh-huong-model-v2.js?v=4"></script>
+  <script src="dinh-huong.js?v=9"></script>
   <script src="script.js?v=17"></script>
 </body>
 

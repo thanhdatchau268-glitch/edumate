@@ -7,7 +7,7 @@
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
-  const API_BASE = "http://127.0.0.1:5000";
+  const API_BASE = window.API_BASE || "http://127.0.0.1:5000";
 
   // 6 đầu điểm chuẩn GDPT 2018 (gộp Lý-Hóa-Sinh -> KHTN và Sử-Địa -> LS&ĐL)
   const MON_DIEM = [
@@ -34,20 +34,67 @@
     "Mình thích học ngoại ngữ"
   ];
 
-  const KHTN_PREF_PROMPT = "Trong môn KHTN (Lý – Hóa – Sinh), phân môn nào bạn hứng thú hoặc tự tin nhất?";
+  // Câu 8: Thiết kế theo tình huống tò mò khoa học tự nhiên (giữ nguyên 100% ánh xạ đầu vào ML V2: ly/hoa/sinh/deu)
+  const KHTN_PREF_TAG = `<i class="fa-solid fa-flask"></i> Khám phá cụm Khoa học Tự nhiên (Lý – Hóa – Sinh)`;
+  const KHTN_PREF_PROMPT = "Khi gặp một hiện tượng thú vị ngoài đời hay trong phòng thí nghiệm, bạn hay tò mò nhất về điều gì?";
   const KHTN_PREF_OPTS = [
-    { key: "ly", ten: "Vật Lý", mota: "Cơ học, điện học, quang học & giải bài công thức" },
-    { key: "hoa", ten: "Hóa học", mota: "Phản ứng hóa học, chất, bảng tuần hoàn & thí nghiệm" },
-    { key: "sinh", ten: "Sinh học", mota: "Tế bào, cơ thể người, di truyền & thế giới tự nhiên" },
-    { key: "deu", ten: "Ngang nhau / Không thiên KHTN", mota: "Các phần KHTN bình thường ngang nhau" }
+    {
+      key: "ly",
+      icon: "fa-bolt-lightning",
+      chip: "Vật lí",
+      ten: "Cơ chế, lực & năng lượng vận hành",
+      mota: "Thích hiểu vì sao máy móc chạy, điện – ánh sáng – chuyển động hoạt động ra sao và giải bằng công thức, quy luật."
+    },
+    {
+      key: "hoa",
+      icon: "fa-flask-vial",
+      chip: "Hóa học",
+      ten: "Phản ứng & sự biến đổi của các chất",
+      mota: "Thích xem chất này gặp chất kia đổi màu, tạo chất mới, cân bằng phương trình và lý giải bản chất vật chất."
+    },
+    {
+      key: "sinh",
+      icon: "fa-dna",
+      chip: "Sinh học",
+      ten: "Thế giới sống & cơ thể con người",
+      mota: "Thích khám phá tế bào, di truyền, hệ sinh thái và cách sinh vật hay cơ thể người vận hành, thích nghi."
+    },
+    {
+      key: "deu",
+      icon: "fa-scale-balanced",
+      chip: "Ngang nhau",
+      ten: "Thích đều cả 3 / Không thiên cụm KHTN",
+      mota: "Cả Lý – Hóa – Sinh với mình đều ngang nhau, hoặc thế mạnh và hứng thú chính nằm ở nhóm môn khác."
+    }
   ];
   const TEN_KHTN_PREF = { ly: "Vật Lý", hoa: "Hóa học", sinh: "Sinh học", deu: "Ngang nhau" };
 
-  const LSDL_PREF_PROMPT = "Trong môn LS&ĐL (Lịch sử – Địa lí), phân môn nào bạn hứng thú hoặc tự tin nhất?";
+  // Câu 9: Thiết kế theo dự án khám phá đất nước / quê hương (giữ nguyên 100% ánh xạ đầu vào ML V2: su/dia/deu)
+  const LSDL_PREF_TAG = `<i class="fa-solid fa-earth-asia"></i> Khám phá cụm Lịch sử &amp; Địa lí (Sử – Địa)`;
+  const LSDL_PREF_PROMPT = "Nếu được làm một dự án tìm hiểu về đất nước hoặc quê hương mình, bạn hứng thú phụ trách góc nhìn nào nhất?";
   const LSDL_PREF_OPTS = [
-    { key: "su", ten: "Lịch sử", mota: "Sự kiện, nhân vật, diễn biến lịch sử & phân tích tư liệu" },
-    { key: "dia", ten: "Địa lí", mota: "Bản đồ, khí hậu, kinh tế – xã hội & phân tích biểu đồ số liệu" },
-    { key: "deu", ten: "Ngang nhau / Không thiên LS&ĐL", mota: "Cả hai phân môn Sử & Địa bình thường ngang nhau", wide: true }
+    {
+      key: "su",
+      icon: "fa-landmark",
+      chip: "Lịch sử",
+      ten: "Lần theo dòng thời gian & câu chuyện xưa",
+      mota: "Thích tìm hiểu các mốc sự kiện, nhân vật, đọc tư liệu cũ để lý giải vì sao lịch sử rẽ sang bước ngoặt đó."
+    },
+    {
+      key: "dia",
+      icon: "fa-earth-asia",
+      chip: "Địa lí",
+      ten: "Đọc bản đồ, khí hậu & số liệu vùng miền",
+      mota: "Thích xem lược đồ, biểu đồ kinh tế – dân số, tự nhiên và giải thích vì sao mỗi vùng đất phát triển khác nhau."
+    },
+    {
+      key: "deu",
+      icon: "fa-scale-balanced",
+      chip: "Ngang nhau",
+      ten: "Ngang nhau cả 2 / Không thiên cụm LS&ĐL",
+      mota: "Mình thấy Sử và Địa bình thường ngang nhau, hoặc hứng thú chính nằm ở các môn khác.",
+      wide: true
+    }
   ];
   const TEN_LSDL_PREF = { su: "Lịch sử", dia: "Địa lí", deu: "Ngang nhau" };
 
@@ -234,30 +281,54 @@
       return `<button type="button" class="${cls.join(" ")}" data-qdot="${i}" aria-label="Câu ${i + 1}">${i + 1}</button>`;
     }).join("");
 
+    const stageEl = $("qStage");
+    const subtagEl = $("qSubtag");
     const scaleEl = $("qScale");
     const hintsEl = $("qHints");
     if (laCauKhtn) {
+      if (stageEl) stageEl.classList.add("is-scenario");
+      if (subtagEl) {
+        subtagEl.innerHTML = KHTN_PREF_TAG;
+        subtagEl.hidden = false;
+      }
       $("qPrompt").textContent = `${q + 1}. ${KHTN_PREF_PROMPT}`;
       scaleEl.classList.add("is-khtn-opts");
       if (hintsEl) hintsEl.hidden = true;
       scaleEl.innerHTML = KHTN_PREF_OPTS.map((o) => `
         <button type="button" class="dh-khtn-opt" role="radio" aria-checked="${S.khtnPref === o.key}" data-khtn="${o.key}">
+          <div class="dh-khtn-opt-head">
+            <span class="dh-khtn-ico"><i class="fa-solid ${o.icon}"></i></span>
+            <span class="dh-khtn-chip">${esc(o.chip)}</span>
+            <span class="dh-khtn-check"><i class="fa-solid fa-circle-check"></i></span>
+          </div>
           <span class="dh-khtn-opt-title">${esc(o.ten)}</span>
           <span class="dh-khtn-opt-sub">${esc(o.mota)}</span>
         </button>
       `).join("");
     } else if (laCauLsdl) {
+      if (stageEl) stageEl.classList.add("is-scenario");
+      if (subtagEl) {
+        subtagEl.innerHTML = LSDL_PREF_TAG;
+        subtagEl.hidden = false;
+      }
       $("qPrompt").textContent = `${q + 1}. ${LSDL_PREF_PROMPT}`;
       scaleEl.classList.add("is-khtn-opts");
       if (hintsEl) hintsEl.hidden = true;
       scaleEl.innerHTML = LSDL_PREF_OPTS.map((o) => `
         <button type="button" class="dh-khtn-opt${o.wide ? " is-wide" : ""}" role="radio" aria-checked="${S.lsdlPref === o.key}" data-lsdl="${o.key}">
+          <div class="dh-khtn-opt-head">
+            <span class="dh-khtn-ico"><i class="fa-solid ${o.icon}"></i></span>
+            <span class="dh-khtn-chip">${esc(o.chip)}</span>
+            <span class="dh-khtn-check"><i class="fa-solid fa-circle-check"></i></span>
+          </div>
           <span class="dh-khtn-opt-title">${esc(o.ten)}</span>
           <span class="dh-khtn-opt-sub">${esc(o.mota)}</span>
         </button>
       `).join("");
     } else {
       const val = S.thich[q];
+      if (stageEl) stageEl.classList.remove("is-scenario");
+      if (subtagEl) subtagEl.hidden = true;
       $("qPrompt").textContent = `${q + 1}. ${THICH[q]}`;
       scaleEl.classList.remove("is-khtn-opts");
       if (hintsEl) hintsEl.hidden = false;
@@ -273,8 +344,10 @@
     const daTraLoi = S.thich.filter((x) => x > 0).length + (S.khtnPref ? 1 : 0) + (S.lsdlPref ? 1 : 0);
     if (daTraLoi === TONG_CAU) {
       $("qStatus").textContent = `Đã hoàn thành ${daTraLoi}/${TONG_CAU} câu — sẵn sàng chọn môn muốn chuyên!`;
+    } else if (laCauKhtn) {
+      $("qStatus").textContent = `Đã trả lời ${daTraLoi}/${TONG_CAU} câu · Chọn góc nhìn bạn thấy hứng thú nhất`;
     } else if (laCauLsdl) {
-      $("qStatus").textContent = `Đã trả lời ${daTraLoi}/${TONG_CAU} câu · Chọn phân môn LS&ĐL để sang bước tiếp`;
+      $("qStatus").textContent = `Đã trả lời ${daTraLoi}/${TONG_CAU} câu · Chọn góc nhìn bạn thích nhất để sang bước tiếp`;
     } else {
       $("qStatus").textContent = `Đã trả lời ${daTraLoi}/${TONG_CAU} câu · Chọn 1 mức để tự chuyển câu tiếp`;
     }
@@ -327,6 +400,7 @@
     const cur = S.qIdx;
     S.thich[cur] = val;
     $("loi").textContent = "";
+    if (window.AmThanh && window.AmThanh.chon) window.AmThanh.chon();
 
     $("qScale").querySelectorAll(".dh-scale-btn").forEach((b) => {
       b.setAttribute("aria-checked", String(Number(b.dataset.v) === val));
@@ -703,6 +777,161 @@
     }
   }
 
+  // ---------- Thông điệp phán quyết thông minh cho các trường hợp đặc biệt (giữ 100% quyết định CÓ/KHÔNG của ML V2) ----------
+  function taoThongDiepPhanQuyet(monMuon, laPhuHop, itemMuon, hangMuon, kq, d, thich) {
+    const tenMuon = tenHienThi(monMuon);
+    const vals = MON_DIEM.map(([k]) => (typeof d[k] === "number" ? d[k] : 0));
+    const mean6 = kq.tom_tat.mean_6;
+    const min6 = Math.min(...vals);
+    const core3 = ((d.toan || 0) + (d.van || 0) + (d.anh || 0)) / 3;
+    const minCore3 = Math.min(d.toan || 0, d.van || 0, d.anh || 0);
+    const subjThich = [thich[0], thich[1], thich[2], thich[3], thich[5], thich[6]];
+    const maxSubjThich = Math.max(...subjThich);
+    const meanSubjThich = subjThich.reduce((a, b) => a + b, 0) / 6;
+    const tuHoc = thich[4] || 3;
+
+    const itemDaiTra = kq.tat_ca.find((x) => x.mon === "Không học chuyên");
+    const daiTraUuTien = Boolean(itemDaiTra && itemDaiTra.xac_suat >= kq.yes_threshold);
+    const chuyenList = kq.tat_ca.filter((x) => x.mon !== "Không học chuyên");
+    const top1Chuyen = chuyenList[0];
+    const top2Chuyen = chuyenList[1];
+
+    const allRounderSuper = mean6 >= 9.2 && min6 >= 8.5 && meanSubjThich >= 3.8 && tuHoc >= 4;
+    const highApathetic = mean6 >= 8.5 && maxSubjThich <= 2 && tuHoc <= 2;
+    const coreFail = minCore3 < 3.5 || core3 < 5.0;
+
+    const monMap = {
+      "Toán": ["toan", 0], "Văn": ["van", 1], "Anh": ["anh", 6], "Tin": ["tin", 5],
+      "Lý": ["khtn", 2], "Hóa": ["khtn", 2], "Sinh": ["khtn", 2],
+      "Sử": ["lsdl", 3], "Địa": ["lsdl", 3]
+    };
+
+    if (monMuon === "Không học chuyên") {
+      if (laPhuHop) {
+        if (highApathetic) {
+          return {
+            title: "CÓ — Một quyết định cực kỳ tỉnh táo và biết lắng nghe bản thân! 🌿",
+            desc: `Hồ sơ đạt <strong>${itemMuon.xac_suat}%</strong> cho Không học chuyên (TB 6 môn <strong>${mean6}</strong> nhưng mức hứng thú các môn và tự học đều ở mức thấp).`,
+            special: "Học giỏi không có nghĩa là bắt buộc phải gồng mình thi chuyên. Chọn hệ đại trà giúp bạn giữ tinh thần thoải mái, tránh quá tải và có thời gian tìm đam mê thật sự."
+          };
+        }
+        if (coreFail) {
+          return {
+            title: "CÓ — Lựa chọn thực tế và cực kỳ hợp lý ở thời điểm này! 👍",
+            desc: `Nền 3 môn cơ sở Toán–Văn–Anh (TB <strong>${core3.toFixed(2)}</strong>, thấp nhất <strong>${minCore3.toFixed(1)}</strong>) cần được củng cố vững chắc trước khi đặt áp lực thi chuyên (<strong>${itemMuon.xac_suat}%</strong> phù hợp đại trà).`,
+            special: "Chọn đúng sức ở hiện tại là bước đệm thông minh nhất — làm chắc kiến thức cốt lõi sẽ giúp bạn tự tin và đạt kết quả cao hơn."
+          };
+        }
+        return {
+          title: `CÓ — ${tenMuon} phù hợp với hồ sơ hiện tại của bạn 👍`,
+          desc: `Mô hình ML V2 đánh giá <strong>${esc(tenMuon)}</strong> đạt mức phù hợp độc lập <strong>${itemMuon.xac_suat}%</strong> (xếp hạng <strong>#${hangMuon}/10</strong>).`,
+          special: ""
+        };
+      }
+
+      // laPhuHop === false khi chọn Không học chuyên -> bạn rất có tiềm năng thi chuyên!
+      if (allRounderSuper || (mean6 >= 9.0 && top1Chuyen && top1Chuyen.xac_suat >= 82)) {
+        return {
+          title: "KHÔNG — Bạn không đi thi chuyên là uổng phí một nhân tài đó! 🏆",
+          desc: `Nền điểm quá ấn tượng (TB <strong>${mean6}/10</strong>) kèm động lực tự học tốt (<strong>${tuHoc}/5</strong>) — hướng Không học chuyên chỉ đạt <strong>${itemMuon.xac_suat}%</strong>.`,
+          special: top1Chuyen
+            ? `Với hồ sơ này, bạn hoàn toàn đủ bản lĩnh chinh chiến lớp chuyên — mũi nhọn sáng nhất hiện tại là ${tenHienThi(top1Chuyen.mon)} (${top1Chuyen.xac_suat}%). Thử xem 3 gợi ý bên dưới nhé!`
+            : "Đừng bỏ lỡ cơ hội thử sức ở một lớp chuyên đúng thế mạnh của mình nhé!"
+        };
+      }
+      if (top1Chuyen && top1Chuyen.xac_suat >= 75 && !coreFail) {
+        return {
+          title: `KHÔNG — Bạn có mũi nhọn ${tenHienThi(top1Chuyen.mon)} quá sắc, bỏ thi chuyên hơi phí đó! ✨`,
+          desc: `Hướng Không học chuyên chỉ đạt <strong>${itemMuon.xac_suat}%</strong>, trong khi <strong>${esc(tenHienThi(top1Chuyen.mon))}</strong> lên tới <strong>${top1Chuyen.xac_suat}%</strong>.`,
+          special: "Bạn đang có một thế mạnh rất rõ nét — hãy nghía qua 3 gợi ý phù hợp nhất bên dưới trước khi chốt nhé!"
+        };
+      }
+      return {
+        title: "KHÔNG — Bạn có tiềm năng thi chuyên rất sáng, thử cân nhắc trước khi bỏ qua nhé! ✨",
+        desc: `Hướng Không học chuyên chỉ đạt <strong>${itemMuon.xac_suat}%</strong> (xếp <strong>#${hangMuon}/10</strong>). Dưới đây là 3 môn chuyên phù hợp nhất với bạn:`,
+        special: ""
+      };
+    }
+
+    // Chọn 1 trong 9 môn chuyên
+    const info = monMap[monMuon] || ["toan", 0];
+    const [scoreKey, tIdx] = info;
+    const sc = typeof d[scoreKey] === "number" ? d[scoreKey] : 0;
+    const thichMon = thich[tIdx] || 3;
+    const otherVals = MON_DIEM.filter(([k]) => k !== scoreKey).map(([k]) => (typeof d[k] === "number" ? d[k] : 0));
+    const meanOthers = otherVals.length ? otherVals.reduce((a, b) => a + b, 0) / otherVals.length : mean6;
+    const isSpiked = sc >= 9.1 && thichMon >= 4 && (sc - meanOthers) >= 1.5 && !coreFail;
+
+    if (laPhuHop) {
+      if (allRounderSuper && thichMon >= 4) {
+        return {
+          title: `CÓ — Đỉnh quá bạn ơi, ${tenMuon} sinh ra là để bạn thử sức! 🚀`,
+          desc: `Mô hình ML V2 đánh giá <strong>${esc(tenMuon)}</strong> đạt <strong>${itemMuon.xac_suat}%</strong> phù hợp độc lập (xếp <strong>#${hangMuon}/10</strong>).`,
+          special: `Hồ sơ toàn năng (TB ${mean6}/10) như thế này mà không đi thi chuyên thì thật sự uổng phí một nhân tài! Bạn hoàn toàn đủ nội lực để bứt phá ở đội tuyển ${monMuon}.`
+        };
+      }
+      if (isSpiked) {
+        return {
+          title: `CÓ — Đúng chất “dị nhân” một môn, quá hợp đầu tư ${tenMuon}! ⚡`,
+          desc: `Mũi nhọn <strong>${sc.toFixed(1)}đ</strong> (vượt mặt bằng các môn còn lại +${(sc - meanOthers).toFixed(1)}đ) cùng hứng thú <strong>${thichMon}/5</strong> giúp <strong>${esc(tenMuon)}</strong> đạt <strong>${itemMuon.xac_suat}%</strong>.`,
+          special: `Những bạn có một môn sở trường vượt trội rất hay tỏa sáng ở lớp chuyên — chỉ cần giữ 3 môn cơ sở Toán–Văn–Anh (hiện TB ${core3.toFixed(2)}) ở mức an toàn là đẹp!`
+        };
+      }
+      const dualStrong = top1Chuyen && top2Chuyen
+        && top1Chuyen.xac_suat >= 75 && top2Chuyen.xac_suat >= 72
+        && (monMuon === top1Chuyen.mon || monMuon === top2Chuyen.mon);
+      return {
+        title: itemMuon.xac_suat >= 82
+          ? `CÓ — Chuẩn bài rồi, bạn cực kỳ phù hợp với ${tenMuon}! 🌟`
+          : `CÓ — Bạn phù hợp với ${tenMuon}`,
+        desc: `Mô hình đánh giá <strong>${esc(tenMuon)}</strong> đạt mức phù hợp độc lập <strong>${itemMuon.xac_suat}%</strong> (xếp hạng <strong>#${hangMuon}/10</strong> trong hồ sơ của bạn).`,
+        special: dualStrong
+          ? `Bạn có tố chất song chuyên rất đẹp! Ngoài ${monMuon}, hướng ${tenHienThi(monMuon === top1Chuyen.mon ? top2Chuyen.mon : top1Chuyen.mon)} (${(monMuon === top1Chuyen.mon ? top2Chuyen : top1Chuyen).xac_suat}%) cũng cực kỳ sáng giá.`
+          : ""
+      };
+    }
+
+    // laPhuHop === false khi chọn 1 trong 9 môn chuyên
+    if (coreFail) {
+      return {
+        title: `KHÔNG — Khoan vội thi ${tenMuon}, củng cố gốc cơ sở trước mới bền! 🛡️`,
+        desc: `<strong>${esc(tenMuon)}</strong> chỉ đạt <strong>${itemMuon.xac_suat}%</strong> vì nền 3 môn cơ sở Toán–Văn–Anh đang thấp (TB <strong>${core3.toFixed(2)}</strong>, thấp nhất <strong>${minCore3.toFixed(1)}</strong>).`,
+        special: sc >= 8.5
+          ? `Điểm môn này (${sc.toFixed(1)}) rất tốt, nhưng thi chuyên vẫn bắt buộc vượt ngưỡng điểm liệt ở 3 môn cơ sở. Hãy kéo chắc Toán–Văn–Anh lên trước nhé!`
+          : "Ưu tiên hệ đại trà và củng cố gốc Toán–Văn–Anh lúc này sẽ hiệu quả và nhẹ áp lực hơn nhiều."
+      };
+    }
+    if (highApathetic) {
+      return {
+        title: `KHÔNG — Điểm bạn rất cao nhưng trái tim chưa “bật đèn xanh” cho ${tenMuon} 🌿`,
+        desc: `<strong>${esc(tenMuon)}</strong> chỉ đạt <strong>${itemMuon.xac_suat}%</strong> trong khi <strong>Không học chuyên</strong> đạt <strong>${itemDaiTra ? itemDaiTra.xac_suat : 0}%</strong> do bạn chấm hứng thú các môn & tự học đều thấp (≤ 2/5).`,
+        special: "Học giỏi vì chăm khác với gắn bó chuyên sâu nhiều năm — nếu thi chuyên khi chưa có cảm hứng thật, bạn sẽ rất dễ tụt năng lượng."
+      };
+    }
+    if (sc < 7.5 && thichMon >= 4) {
+      return {
+        title: `KHÔNG — Lửa đam mê có sẵn rồi, nhưng điểm ${monMuon} (${sc.toFixed(1)}) chưa kịp lên tốc! 🔥`,
+        desc: `<strong>${esc(tenMuon)}</strong> hiện đạt <strong>${itemMuon.xac_suat}%</strong> (xếp <strong>#${hangMuon}/10</strong>). Dưới đây là 3 môn chuyên phù hợp hơn với nền điểm hiện tại:`,
+        special: `Đừng tắt đam mê — nếu vẫn muốn theo ${tenMuon}, hãy tập trung kéo nền điểm vượt mốc 8.5+ trước rồi quay lại chinh phục nhé!`
+      };
+    }
+    if (sc >= 8.5 && thichMon <= 2) {
+      return {
+        title: `KHÔNG — Học giỏi ${monMuon} chưa chắc đã hạnh phúc khi vào lớp ${tenMuon}! ⚖️`,
+        desc: `Điểm nền đạt <strong>${sc.toFixed(1)}</strong> nhưng mức hứng thú chỉ <strong>${thichMon}/5</strong> khiến <strong>${esc(tenMuon)}</strong> chỉ đạt <strong>${itemMuon.xac_suat}%</strong>.`,
+        special: "Giỏi một môn không có nghĩa là bắt buộc phải thi chuyên môn đó. Xem thử 3 hướng khớp cả điểm lẫn sở thích thật của bạn bên dưới nhé!"
+      };
+    }
+    const moTaPhu = daiTraUuTien
+      ? `${esc(tenMuon)} hiện chỉ đạt <strong>${itemMuon.xac_suat}%</strong>. Hồ sơ hiện nghiêng mạnh về <strong>Không học chuyên (${itemDaiTra.xac_suat}%)</strong>; nếu bạn vẫn muốn tham khảo hướng chuyên, dưới đây là 3 môn gần nhất:`
+      : `${esc(tenMuon)} hiện chỉ đạt <strong>${itemMuon.xac_suat}%</strong> (xếp <strong>#${hangMuon}/10</strong>). Dưới đây là 3 môn chuyên phù hợp nhất với bạn:`;
+    return {
+      title: `KHÔNG — ${tenMuon} chưa phù hợp nhất lúc này`,
+      desc: moTaPhu,
+      special: ""
+    };
+  }
+
   function chayDuDoan() {
     const err = kiemTra(0) || kiemTra(1) || kiemTra(2);
     if (err) {
@@ -725,28 +954,28 @@
     const monMuon = S.monMuon;
     const itemMuon = kq.tat_ca.find((x) => x.mon === monMuon) || kq.tat_ca[0];
     const hangMuon = kq.tat_ca.findIndex((x) => x.mon === monMuon) + 1;
-    // Phán quyết CÓ / KHÔNG dựa trực tiếp trên xác suất phù hợp độc lập (Multi-Label Calibrated >= 50%)
+    // Phán quyết CÓ / KHÔNG dựa trực tiếp trên xác suất phù hợp độc lập của ML V2 (Multi-Label Calibrated >= 50%)
     const laPhuHop = itemMuon.xac_suat >= kq.yes_threshold;
-    const itemDaiTra = kq.tat_ca.find((x) => x.mon === "Không học chuyên");
-    const daiTraUuTien = Boolean(itemDaiTra && itemDaiTra.xac_suat >= kq.yes_threshold);
 
     $("dhForm").hidden = true;
     $("dhProgress").hidden = true;
     $("resultPanel").hidden = false;
     $("techDetails").open = false;
 
-    const tenMuon = tenHienThi(monMuon);
     const lyDoMuon = (itemMuon.ly_do || []).map((r) => `<li>${esc(r)}</li>`).join("");
+    const msg = taoThongDiepPhanQuyet(monMuon, laPhuHop, itemMuon, hangMuon, kq, diemDung, S.thich);
+
     if (laPhuHop) {
       $("verdictBox").innerHTML = `
         <div class="dh-verdict is-yes">
           <div class="dh-verdict-top">
             <span class="dh-verdict-badge">CÓ</span>
             <div>
-              <h2>CÓ — Bạn phù hợp với ${esc(tenMuon)}</h2>
-              <p>Mô hình đánh giá <strong>${esc(tenMuon)}</strong> đạt mức phù hợp độc lập <strong>${itemMuon.xac_suat}%</strong> (xếp hạng <strong>#${hangMuon}/10</strong> trong hồ sơ của bạn).</p>
+              <h2>${esc(msg.title)}</h2>
+              <p>${msg.desc}</p>
             </div>
           </div>
+          ${msg.special ? `<div class="dh-verdict-special">${esc(msg.special)}</div>` : ""}
         </div>
       `;
       $("goiYKhung").hidden = true;
@@ -754,21 +983,19 @@
       chonMucTieuHienTai(monMuon, true);
       if (window.AmThanh && window.AmThanh.dung) window.AmThanh.dung(1);
     } else {
-      const goiY3 = kq.tat_ca.filter((x) => x.mon !== "Không học chuyên").slice(0, 3);
+      const goiY3 = kq.tat_ca.filter((x) => x.mon !== "Không học chuyên" && x.mon !== monMuon).slice(0, 3);
       S.goiY3 = goiY3;
-      const moTaPhu = (daiTraUuTien && monMuon !== "Không học chuyên")
-        ? `${esc(tenMuon)} hiện chỉ đạt <strong>${itemMuon.xac_suat}%</strong>. Hồ sơ hiện nghiêng mạnh về <strong>Không học chuyên (${itemDaiTra.xac_suat}%)</strong>; nếu bạn vẫn muốn tham khảo hướng chuyên, dưới đây là 3 môn gần nhất:`
-        : `${esc(tenMuon)} hiện chỉ đạt <strong>${itemMuon.xac_suat}%</strong> (xếp <strong>#${hangMuon}/10</strong>). Dưới đây là 3 môn chuyên phù hợp nhất với bạn:`;
 
       $("verdictBox").innerHTML = `
         <div class="dh-verdict is-no">
           <div class="dh-verdict-top">
             <span class="dh-verdict-badge">KHÔNG</span>
             <div>
-              <h2>KHÔNG — ${esc(tenMuon)} chưa phù hợp nhất lúc này</h2>
-              <p>${moTaPhu}</p>
+              <h2>${esc(msg.title)}</h2>
+              <p>${msg.desc}</p>
             </div>
           </div>
+          ${msg.special ? `<div class="dh-verdict-special">${esc(msg.special)}</div>` : ""}
           <ul class="dh-verdict-reasons">${lyDoMuon}</ul>
         </div>
       `;
@@ -811,6 +1038,14 @@
     if (window.AmThanh && window.AmThanh.chon) window.AmThanh.chon();
     chonMucTieuHienTai(card.dataset.goiyMon, false);
   });
+
+  const btnDoiMon = $("btnDoiMon");
+  if (btnDoiMon) {
+    btnDoiMon.addEventListener("click", () => {
+      hienBuoc(2);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
 
   $("btnSuaLai").addEventListener("click", () => {
     hienBuoc(0);
